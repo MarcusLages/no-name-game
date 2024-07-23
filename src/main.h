@@ -3,8 +3,8 @@
 
 //* DEFINITIONS
 // Window rendering variables
-#define SCREEN_WIDTH    1600
-#define SCREEN_HEIGHT   900
+#define SCREEN_WIDTH    1280
+#define SCREEN_HEIGHT   720
 #define FRAME_RATE      60
 
 //* ENUMS
