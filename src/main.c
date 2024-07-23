@@ -1,6 +1,6 @@
 #include "raylib.h"
 #include "raymath.h"
-#include "main.h"
+#include "screen.h"
 
 //* FUNCTION PROTOTYPES
 // Game life cicle functions
