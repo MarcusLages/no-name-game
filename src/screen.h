@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef SCREEN_H
+#define SCREEN_H
 
 //* DEFINITIONS
 // Window rendering variables
@@ -31,9 +31,9 @@ void MainMenuRender();
 void MainMenuUnload();
 
 // Dungeon functions
-void DungeonStartup();
-void DungeonUpdate();
-void DungeonRender();
-void DungeonUnload();
+// void DungeonStartup();
+// void DungeonUpdate();
+// void DungeonRender();
+// void DungeonUnload();
 
-#endif // !MAIN_H
+#endif // !SCREEN_H
