@@ -1,6 +1,12 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+//* DEFINITIONS
+// Window rendering variables
+#define SCREEN_WIDTH    1600
+#define SCREEN_HEIGHT   900
+#define FRAME_RATE      60
+
 //* ENUMS
 enum GameScreen {
     MAIN_MENU = 0,

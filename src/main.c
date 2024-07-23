@@ -2,12 +2,6 @@
 #include "raymath.h"
 #include "main.h"
 
-//* DEFINITIONS
-// Window rendering variables
-#define SCREEN_WIDTH    1600
-#define SCREEN_HEIGHT   900
-#define FRAME_RATE      60
-
 //* FUNCTION PROTOTYPES
 // Game life cicle functions
 static void GameStartup();  
