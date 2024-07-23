@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "raymath.h"
 
 //----------------------------------------------------------------------------------
 // Local Variables Definition (local to this module)
