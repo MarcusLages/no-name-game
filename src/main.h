@@ -15,4 +15,19 @@ extern Camera2D camera;
 extern GameScreen currentScreen;
 extern GameScreen nextScreen;
 
+//------------------------------------------
+//* SCREEN FUNCTION PROTOTYPES
+
+// Main menu functions
+void MainMenuStartup();
+void MainMenuUpdate();
+void MainMenuRender();
+void MainMenuUnload();
+
+// Dungeon functions
+void DungeonStartup();
+void DungeonUpdate();
+void DungeonRender();
+void DungeonUnload();
+
 #endif // !MAIN_H
