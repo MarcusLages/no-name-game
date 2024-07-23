@@ -1,21 +1,25 @@
 #include "raylib.h"
 #include "raymath.h"
+#include "main.h"
 
-// * DEFINITIONS
+//* DEFINITIONS
 // Window rendering variables
 #define SCREEN_WIDTH    1600
 #define SCREEN_HEIGHT   900
 #define FRAME_RATE      60
 
-// * FUNCTION PROTOTYPES
+//* FUNCTION PROTOTYPES
 // Game life cicle functions
 static void GameStartup();  
 static void GameUpdate();
 static void GameRender();
 static void GameClosing();
 
-// * VARIABLES
+//* VARIABLES
 Camera2D camera;
+GameScreen currentScreen;
+GameScreen nextScreen;
+
 
 int main() {
     GameStartup();
