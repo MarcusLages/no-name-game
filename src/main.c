@@ -82,12 +82,12 @@ static void GameUpdate() {
 
 static void GameRender() {
     BeginMode2D(camera);
-        BeginDrawing();
-            switch(currentScreen) {
-                case MAIN_MENU:
-                    MainMenuRender();
-                    break;
-                case DUNGEON:
+    BeginDrawing();
+        switch(currentScreen) {
+            case MAIN_MENU:
+                MainMenuRender();
+                break;
+            case DUNGEON:
                     DungeonRender();
                     break;
                 default: break;
