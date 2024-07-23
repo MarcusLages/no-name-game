@@ -3,7 +3,7 @@
 #include "screen.h"
 
 void DungeonStartup() {
-
+    currentScreen = DUNGEON;
 }
 
 void DungeonUpdate() {
