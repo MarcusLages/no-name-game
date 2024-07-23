@@ -14,6 +14,9 @@ static void GameUpdate();
 static void GameRender();
 static void GameClosing();
 
+// * VARIABLES
+Camera2D camera;
+
 int main() {
     GameStartup();
 
@@ -31,11 +34,18 @@ static void GameStartup() {
     // Initialize window
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "No name game name");
     SetTargetFPS(FRAME_RATE);
+
+    // Initialize camera
+    camera.target = (Vector2) {0, 0};
+    camera.offset = (Vector2) {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2};
+    camera.rotation = 0.0f;
+    camera.zoom = 3.0f;
 }
 
 static void GameUpdate() {}
 
 static void GameRender() {
+    BeginMode2D(camera);
     BeginDrawing();
         ClearBackground(BLACK);
     EndDrawing();
