@@ -31,9 +31,9 @@ void MainMenuRender();
 void MainMenuUnload();
 
 // Dungeon functions
-// void DungeonStartup();
-// void DungeonUpdate();
-// void DungeonRender();
-// void DungeonUnload();
+void DungeonStartup();
+void DungeonUpdate();
+void DungeonRender();
+void DungeonUnload();
 
 #endif // !SCREEN_H
