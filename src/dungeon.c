@@ -30,9 +30,12 @@ void DungeonStartup() {
 void DungeonUpdate() {}
 
 void DungeonRender() {
+    Tile tile;
+
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         for (int i = 0; i < WORLD_WIDTH; i++) {
-            DrawTile(i, j, 5, 0);
+            tile = world[i][j];
+            DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 5, 0);
         }
     }
 }

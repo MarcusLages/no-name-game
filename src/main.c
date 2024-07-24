@@ -34,16 +34,21 @@ static void GameStartup() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "No name game name");
     SetTargetFPS(FRAME_RATE);
 
-    currentScreen = MAIN_MENU;
-    nextScreen = MAIN_MENU;
+    // currentScreen = MAIN_MENU;
+    // nextScreen = MAIN_MENU;
 
-    MainMenuStartup();
+    //MainMenuStartup();
+
+    currentScreen = DUNGEON;
+    nextScreen = DUNGEON;
+
+    DungeonStartup();
 
     // Initialize camera
-    // camera.target = (Vector2) {0, 0};
-    // camera.offset = (Vector2) {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2};
-    // camera.rotation = 0.0f;
-    // camera.zoom = 3.0f;
+    camera.target = (Vector2) {25, 25};
+    camera.offset = (Vector2) {0, 0};
+    camera.rotation = 0.0f;
+    camera.zoom = 3.0f;
 }
 
 static void GameUpdate() {
