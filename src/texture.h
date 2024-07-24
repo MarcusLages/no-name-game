@@ -11,6 +11,7 @@
 
 #define TILE_WIDTH 16
 #define TILE_HEIGHT 16
+#define ENTITY_TILE_HEIGHT 32
 
 #define MAX_TEXTURES 3
 
@@ -34,5 +35,6 @@ extern Texture2D *textures;
 //------------------------------------------
 //* FUNCTION PROTOTYPES
 void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y, TextureFile tileTexture);
+void DrawEntityTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y, TextureFile tileTexture);
 
 #endif //TEXTURE_H

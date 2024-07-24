@@ -1,6 +1,9 @@
 #ifndef ENTITIES_H
 #define ENTITIES_H
 
+#include "raylib.h"
+#include "raymath.h"
+
 // Enum for the action state of entities for animation and properties.
 typedef enum GameState {
     IDLE = 0,
@@ -24,6 +27,13 @@ typedef struct Enemy {
     GameState state;
     int health;
 } Enemy;
+
+// Structure to represent information needed for a Sprite Animation 
+typedef struct Animation {
+    int fps;
+    Rectangle *rectangles;
+    Texture2D *textures;
+} Animation;
 
 //* VARIABLES
 

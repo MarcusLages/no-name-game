@@ -59,6 +59,9 @@ void DungeonRender() {
             DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 0, TILE_MAP);
         }
     }
+
+    // just to view player sprite
+    DrawTile(0, 0, 0, 0, TILE_PLAYER);
 }
 
 void DungeonUnload() {
@@ -83,7 +86,7 @@ void StartCamera() {
     camera.target = (Vector2) {25, 25};
     camera.offset = (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
     camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
+    camera.zoom = 4.0f;
 }
 
 /**
@@ -99,13 +102,13 @@ void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y, Text
         (float) (texture_tile_x * TILE_WIDTH), 
         (float) (texture_tile_y * TILE_HEIGHT), 
         (float) TILE_WIDTH, 
-        (float) TILE_HEIGHT 
+        (float) (tileTexture > TILE_MAP ? ENTITY_TILE_HEIGHT : TILE_HEIGHT) 
         };
     Rectangle dest = { 
         (float) x_pos, 
         (float) y_pos, 
         (float) TILE_WIDTH, 
-        (float) TILE_HEIGHT
+        (float) (tileTexture > TILE_MAP ? ENTITY_TILE_HEIGHT : TILE_HEIGHT) 
         };
     Vector2 origin = { 0, 0 };
     DrawTexturePro(
