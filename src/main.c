@@ -1,5 +1,3 @@
-#include "raylib.h"
-#include "raymath.h"
 #include "screen.h"
 
 //* FUNCTION PROTOTYPES
@@ -12,7 +10,7 @@ static void GameClosing();
 
 //* VARIABLES
 // Global variables
-Camera2D camera;
+Camera2D camera = {};
 
 // Variable for checking current screen that needs to be updated/rendered.
 GameScreen currentScreen;
@@ -44,15 +42,12 @@ static void GameStartup() {
     // Sets up initial screen to Main Menu
     currentScreen = MAIN_MENU;
     nextScreen = MAIN_MENU;
+    // currentScreen = DUNGEON;
+    // nextScreen = DUNGEON;
 
     // Starts up Main Menu
     MainMenuStartup();
-
-    // Initialize camera
-    // camera.target = (Vector2) {0, 0};
-    // camera.offset = (Vector2) {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2};
-    // camera.rotation = 0.0f;
-    // camera.zoom = 3.0f;
+    // DungeonStartup();
 }
 
 static void GameUpdate() {
@@ -95,7 +90,6 @@ static void GameUpdate() {
 
 static void GameRender() {
     // Starts the camera and rendering process
-    BeginMode2D(camera);
     BeginDrawing();
 
         // Renders the currentScreen
@@ -104,7 +98,9 @@ static void GameRender() {
                 MainMenuRender();
                 break;
             case DUNGEON:
+                BeginMode2D(camera);
                 DungeonRender();
+                EndMode2D();
                 break;
             default: break;
         }
