@@ -51,7 +51,7 @@ void DungeonRender() {
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         for (int i = 0; i < WORLD_WIDTH; i++) {
             tile = world[i][j];
-            DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 5, 0);
+            DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 0);
         }
     }
 }
@@ -69,9 +69,7 @@ void DungeonUnload() {
  * Starts the 2D camera by initializing it.
  */
 void StartCamera() {
-    // Initialize camera
-    // TODO: make camera responsive
-    camera.target = (Vector2) {1000, 1000};
+    camera.target = (Vector2) {25, 25};
     camera.offset = (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
