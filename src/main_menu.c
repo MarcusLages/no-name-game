@@ -23,9 +23,31 @@ void MainMenuStartup() {
 void MainMenuUpdate() {}
 
 void MainMenuRender() {
+    // Initial generic button
+    Rectangle button = {
+        .x = CenterComponentX(240),
+        .y = SCREEN_HEIGHT / 2,
+        .width = 240,
+        .height = 60
+    };
+
     // Draft clear background main menu
-    ClearBackground(BLACK);
-    DrawText("No Name Game Name", SCREEN_WIDTH / 3 + 120, SCREEN_HEIGHT / 2, 50, RAYWHITE);
+    ClearBackground(GRAY);
+
+    // Game name
+    DrawText("No Name Game Name", CenterComponentX(460), SCREEN_HEIGHT / 3, 50, BLACK);
+
+    // Start button
+    DrawRectangle(button.x, button.y, button.width, button.height, BLACK);
+    DrawText("Start", CenterComponentX(MeasureText("Start", 40)), button.y + 10, 40, RAYWHITE);
+
+    // Options button
+    button.y += button.height + 20;
+    DrawRectangle(button.x, button.y, button.width, button.height, BLACK);
+
+    // Quit button
+    button.y += button.height + 20;
+    DrawRectangle(button.x, button.y, button.width, button.height, BLACK);
 }
 
 void MainMenuUnload() {}
