@@ -1,6 +1,9 @@
 #include "screen.h"
 #include "texture.h"
 
+Tile **world;
+Texture2D *textures;
+
 void DungeonStartup() {
     currentScreen = DUNGEON;
 

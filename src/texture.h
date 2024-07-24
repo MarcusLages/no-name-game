@@ -20,4 +20,8 @@ typedef struct Tile {
 extern Tile **world;
 extern Texture2D *textures;
 
+//------------------------------------------
+//* FUNCTION PROTOTYPES
+void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y);
+
 #endif //TEXTURE_H
