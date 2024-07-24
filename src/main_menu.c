@@ -2,6 +2,19 @@
 #include "raymath.h"
 #include "screen.h"
 
+//* ENUMERATIONS
+
+// Button options for the main menu
+typedef enum MenuButtons {
+    START_BUTTON = 0,
+    OPTIONS_BUTTON,
+    EXIT_BUTTON
+} MenuButtons;
+
+static int CenterComponentX(int componentWidth) {
+    return (SCREEN_WIDTH - componentWidth) / 2;
+}
+
 void MainMenuStartup() {
     // Sets up currentScreen
     currentScreen = MAIN_MENU;
