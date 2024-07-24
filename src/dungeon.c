@@ -16,9 +16,14 @@ void DungeonStartup() {
     currentScreen = DUNGEON;
 
     // Loads the game's tilemap into heap as Texture2D
+    textures = (Texture2D*) malloc(MAX_TEXTURES * sizeof(Texture2D));
+
     Image img = LoadImage("resources/tilemap.png");
-    textures = (Texture2D*) malloc(sizeof(Texture2D));
-    textures[1] = LoadTextureFromImage(img);
+    textures[TILE_MAP] = LoadTextureFromImage(img);
+    img = LoadImage("resources/player-tilemap.png");
+    textures[TILE_PLAYER] = LoadTextureFromImage(img);
+    img = LoadImage("resources/enemy-tilemap.png");
+    textures[TILE_ENEMY] = LoadTextureFromImage(img);
 
     // Unloads the image as it is no longer needed
     UnloadImage(img);
@@ -51,7 +56,7 @@ void DungeonRender() {
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         for (int i = 0; i < WORLD_WIDTH; i++) {
             tile = world[i][j];
-            DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 0);
+            DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 0, TILE_MAP);
         }
     }
 }
@@ -63,6 +68,12 @@ void DungeonUnload() {
     }
     free(world);
     world = NULL;
+
+    for(int i = 0; i < MAX_TEXTURES; i++) {
+        UnloadTexture(textures[i]);
+    }
+    free(textures);
+    textures = NULL;
 }
 
 /**
@@ -83,7 +94,7 @@ void StartCamera() {
  * @param texture_tile_x the x-coord the tile in present on
  * @param texture_tile_y the y-coord the tile in present on
  */
-void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y) {
+void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y, TextureFile tileTexture) {
     Rectangle source = { 
         (float) (texture_tile_x * TILE_WIDTH), 
         (float) (texture_tile_y * TILE_HEIGHT), 
@@ -98,7 +109,7 @@ void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y) {
         };
     Vector2 origin = { 0, 0 };
     DrawTexturePro(
-        textures[1],
+        textures[tileTexture],
         source, 
         dest, 
         origin,
