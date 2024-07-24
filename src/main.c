@@ -40,11 +40,14 @@ static void GameStartup() {
     SetTargetFPS(FRAME_RATE);
 
     // Sets up initial screen to Main Menu
-    currentScreen = MAIN_MENU;
-    nextScreen = MAIN_MENU;
+    //currentScreen = MAIN_MENU;
+    //nextScreen = MAIN_MENU;
+    currentScreen = DUNGEON;
+    nextScreen = DUNGEON;
 
     // Starts up Main Menu
-    MainMenuStartup();
+    //MainMenuStartup();
+    DungeonStartup();
 }
 
 static void GameUpdate() {
@@ -102,6 +105,7 @@ static void GameRender() {
         }
 
     EndDrawing();
+    EndMode2D();
 }
 
 static void GameClosing() {
