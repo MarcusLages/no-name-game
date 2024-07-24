@@ -45,12 +45,6 @@ static void GameStartup() {
 
     // Starts up Main Menu
     MainMenuStartup();
-
-    // Initialize camera
-    camera.target = (Vector2) {25, 25};
-    camera.offset = (Vector2) {0, 0};
-    camera.rotation = 0.0f;
-    camera.zoom = 3.0f;
 }
 
 static void GameUpdate() {

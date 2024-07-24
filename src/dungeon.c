@@ -7,6 +7,10 @@ Tile **world;
 // A reference to the game's tilemap
 Texture2D *textures;
 
+//------------------------------------------
+//* FUNCTION PROTOTYPES
+void StartCamera();
+
 void DungeonStartup() {
     // Sets the current screen 
     currentScreen = DUNGEON;
@@ -32,7 +36,7 @@ void DungeonStartup() {
             tiles[i] =  tile;
         }
         world[j] = tiles;
-    }
+    }    
 }
 
 void DungeonUpdate() {}
@@ -59,7 +63,18 @@ void DungeonUnload() {
 }
 
 /**
- * This function is reponsible for drawing tiles at (x, y) from the tilemap at (x, y).
+ * Starts the 2D camera by initializing it.
+ */
+void StartCamera() {
+    // Initialize camera
+    camera.target = (Vector2) {25, 25};
+    camera.offset = (Vector2) {0, 0};
+    camera.rotation = 0.0f;
+    camera.zoom = 3.0f;
+}
+
+/**
+ * Draws tiles at (x, y) from the tilemap from (x, y).
  * 
  * @param x_pos the x-coord to draw on
  * @param y_pos the y-coord to draw on
