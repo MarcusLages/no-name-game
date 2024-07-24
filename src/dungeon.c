@@ -35,7 +35,7 @@ void DungeonRender() {
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         for (int i = 0; i < WORLD_WIDTH; i++) {
             tile = world[i][j];
-            DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 5, 0);
+            DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 0);
         }
     }
 }
