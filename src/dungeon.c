@@ -41,7 +41,12 @@ void DungeonRender() {
 }
 
 void DungeonUnload() {
-    
+    for (int j = 0; j < WORLD_HEIGHT; j++) {
+        free(world[j]);
+        world[j] = NULL;
+    }
+    free(world);
+    world = NULL;
 }
 
 void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y) {
