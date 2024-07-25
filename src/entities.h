@@ -9,6 +9,7 @@
 #define ENTITY_TILE_HEIGHT 32
 
 #define ENTITY_IDLE_FPS 4
+#define ENTITY_MOVING_FPS 8
 
 // Enum for the action state of entities for animation and properties.
 typedef enum GameState {
@@ -70,7 +71,7 @@ void SpriteUnload(Animation animation);
 
 // Player functions
 void PlayerStartup();
-void PlayerRender();
+void PlayerRender(GameState state);
 void PlayerMovement();
 void PlayerUnload();
 
