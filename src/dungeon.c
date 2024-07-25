@@ -10,6 +10,10 @@ Texture2D *textures;
 
 //------------------------------------------
 //* FUNCTION PROTOTYPES
+
+/**
+ * Starts the 2D camera by initializing it.
+ */
 void StartCamera();
 
 void DungeonStartup() {
@@ -52,10 +56,12 @@ void DungeonStartup() {
 
 void DungeonUpdate() {
     PlayerMovement();
+    
+    // Update camera to follow the player
+    camera.target = (Vector2) {player.x + 8, player.y + 16};
 }
 
 void DungeonRender() {
-    ClearBackground(BLACK);
     Tile tile;
 
     // Rendering each tile by calling DrawTile
@@ -68,8 +74,6 @@ void DungeonRender() {
 
     // Draw player on the screen
     DrawTile(player.x, player.y, 0, 0, TILE_PLAYER);
-
-    camera.target = (Vector2) {player.x + 8, player.y + 16};
 }
 
 void DungeonUnload() {
@@ -89,11 +93,8 @@ void DungeonUnload() {
     textures = NULL;
 }
 
-/**
- * Starts the 2D camera by initializing it.
- */
 void StartCamera() {
-    camera.target = (Vector2) {player.x, player.y};
+    camera.target = (Vector2) {player.x + 8, player.y + 16};
     camera.offset = (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
