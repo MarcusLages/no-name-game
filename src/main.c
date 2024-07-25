@@ -91,6 +91,7 @@ static void GameUpdate() {
 static void GameRender() {
     // Starts the camera and rendering process
     BeginDrawing();
+        ClearBackground(BLACK);
 
         // Renders the currentScreen
         switch(currentScreen) {
