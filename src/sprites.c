@@ -4,13 +4,14 @@
 //TODO: these function need to be present in player.c they are present here for now
 
 void SpriteUpdate() {
-    Animation stationaryAnimation = CreateAnimation(2, FindNumOfTiles(ENTITY_TILE_WIDTH, TILE_PLAYER_IDLE), (Rectangle[]) {
-            {0, 0, 16, 32},
-            {1 * ENTITY_TILE_WIDTH, 0, 16, 32},
-            {2 * ENTITY_TILE_WIDTH, 0, 16, 32},
-            {3 * ENTITY_TILE_WIDTH, 0, 16, 32}},
-            (Rectangle) {0, 0, 16, 32}, 
-            textures[TILE_PLAYER_IDLE]);
+    Animation stationaryAnimation = CreateAnimation(ENTITY_IDLE_FPS, 
+        FindNumOfTiles(ENTITY_TILE_WIDTH, TILE_PLAYER_IDLE), (Rectangle[]) {
+        {0, 0, 16, 32},
+        {1 * ENTITY_TILE_WIDTH, 0, 16, 32},
+        {2 * ENTITY_TILE_WIDTH, 0, 16, 32},
+        {3 * ENTITY_TILE_WIDTH, 0, 16, 32}},
+        (Rectangle) {0, 0, 16, 32}, 
+        textures[TILE_PLAYER_IDLE]);
 
     DrawAnimation(stationaryAnimation, stationaryAnimation.destination, 0.0f, WHITE);
 }

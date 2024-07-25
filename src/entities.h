@@ -7,6 +7,8 @@
 #define ENTITY_TILE_WIDTH 16
 #define ENTITY_TILE_HEIGHT 32
 
+#define ENTITY_IDLE_FPS 4
+
 // Enum for the action state of entities for animation and properties.
 typedef enum GameState {
     IDLE = 0,
