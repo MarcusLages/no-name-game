@@ -45,7 +45,23 @@ extern Player player;
 
 //------------------------------------------
 //* FUNCTION PROTOTYPES
+
+/**
+ * Draws the provided animation at the destination rectangle. 
+ * 
+ * Assumes that the GameState has been checked for the entity and the animation desired is provided.
+ * 
+ * @param animation the animation profile as a structure of the sprite
+ * @param dest the destination rectangle
+ * @param origin the origin
+ * @param rotation the rotation of the Rectangles to draw
+ * @param color the tint profile
+ */
 void DrawAnimation(Animation animation, Rectangle dest, Vector2 origin, float rotation, Color color);
+
+/**
+ * Responsible for updating the Sprites
+ */
 void SpriteUpdate();
 
 #endif // !ENTITIES_H
