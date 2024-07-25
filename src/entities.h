@@ -17,23 +17,15 @@ typedef enum GameState {
     ATTACKING
 } GameState;
 
-//* Player
-// Structure to represent the player.
-typedef struct Player {
+//* Entity
+// Structure to represent a player / enemy.
+typedef struct Entity {
     int x;
     int y;
     int speed;
-    GameState state;
-} Player;
-
-//* Enemy
-// Structure to represent the player.
-typedef struct Enemy {
-    int x;
-    int y;
-    GameState state;
     int health;
-} Enemy;
+    GameState state;
+} Entity;
 
 // Structure to represent information needed for a Sprite Animation 
 typedef struct Animation {
@@ -45,7 +37,9 @@ typedef struct Animation {
 
 //* VARIABLES
 
-extern Player player;
+extern Entity player;
+// The animation for an idle player
+extern Animation idlePlayerAnimation;
 
 //------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -106,7 +100,7 @@ Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeigh
 /**
  * Responsible for updating the Sprites
  */
-void SpriteUpdate();
+void SpriteRender(Entity entity, Animation animation);
 
 /**
  * Responsible for unloading the Sprites
@@ -115,6 +109,8 @@ void SpriteUnload();
 
 // Player functions
 void PlayerStartup();
+void PlayerRender();
 void PlayerMovement();
+void PlayerUnload();
 
 #endif // !ENTITIES_H

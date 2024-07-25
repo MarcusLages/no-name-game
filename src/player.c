@@ -2,12 +2,17 @@
 #include "raymath.h"
 #include "entities.h"
 
-Player player;
+// The player entity
+Entity player;
+
+// The animation for an idle player
+Animation idlePlayerAnimation;
 
 void PlayerStartup() {
     player.x = 0;
     player.y = 0;
     player.speed = 4;
+    player.health = 1;
     player.state = IDLE;
 }
 
@@ -34,9 +39,18 @@ void PlayerMovement() {
 }
 
 void PlayerRender() {
+    int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, TILE_PLAYER_IDLE);
 
+    // Initializing the indle animation
+    idlePlayerAnimation = CreateAnimation(
+        ENTITY_IDLE_FPS, 
+        numOfTiles,
+        GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE), 
+        textures[TILE_PLAYER_IDLE]);
+        
+    SpriteRender(player, idlePlayerAnimation);
 }
 
 void PlayerUnload() {
-
+    SpriteUnload(idlePlayerAnimation);
 }

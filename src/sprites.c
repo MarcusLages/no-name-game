@@ -1,21 +1,7 @@
 #include "entities.h"
 
-//* VARIABLES
-
-// The animation for an idle player
-Animation idlePlayerAnimation;
-
-void SpriteUpdate() {
-    int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, TILE_PLAYER_IDLE);
-
-    // Initializing the indle animation
-    idlePlayerAnimation = CreateAnimation(ENTITY_IDLE_FPS, 
-        numOfTiles,
-        GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE), 
-        textures[TILE_PLAYER_IDLE]);
-
-    //
-    DrawAnimation(idlePlayerAnimation, (Rectangle) {0, 0, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 0.0f, WHITE);
+void SpriteRender(Entity entity, Animation animation) {
+    DrawAnimation(animation, (Rectangle) {entity.x, entity.y, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 0.0f, WHITE);
 }
 
 void SpriteUnload() {
@@ -43,7 +29,7 @@ void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color co
     int idx = (int) (GetTime() * animation.fps) % animation.numOfRectangles;
     Rectangle source = animation.rectangles[idx];
     Vector2 origin = { 0, 0 };
-
+    
     DrawTexturePro(animation.textures, source, dest, origin, rotation, color);
 }
 

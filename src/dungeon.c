@@ -51,7 +51,6 @@ void DungeonStartup() {
 }
 
 void DungeonUpdate() {
-    // SpriteUpdate();
     PlayerMovement();
     
     // Update camera to follow the player
@@ -70,10 +69,13 @@ void DungeonRender() {
     }
 
     // Draw player on the screen
-    DrawTile(player.x, player.y, 0, 0, TILE_PLAYER_IDLE);
+    PlayerRender();
 }
 
 void DungeonUnload() {
+    //Unloads the player sprites and animations.
+    PlayerUnload();
+
     // Unloads all tiles
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         free(world[j]);
