@@ -5,7 +5,6 @@
 Player player;
 
 void PlayerStartup() {
-    
 }
 
 void PlayerUpdate() {

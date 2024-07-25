@@ -89,14 +89,6 @@ void StartCamera() {
     camera.zoom = 4.0f;
 }
 
-/**
- * Draws tiles at (x, y) from the tilemap from (x, y).
- * 
- * @param x_pos the x-coord to draw on
- * @param y_pos the y-coord to draw on
- * @param texture_tile_x the x-coord the tile in present on
- * @param texture_tile_y the y-coord the tile in present on
- */
 void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y, TextureFile tileTexture) {
     Rectangle source = { 
         (float) (texture_tile_x * TILE_WIDTH), 
