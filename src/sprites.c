@@ -1,6 +1,8 @@
 #include "texture.h"
 #include "entities.h"
 
+//TODO: these function need to be present in player.c they are present here for now
+
 void SpriteUpdate() {
     Animation stationaryAnimation = {
         .fps = 2,
