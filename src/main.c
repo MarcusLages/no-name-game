@@ -89,6 +89,7 @@ static void GameUpdate() {
 }
 
 static void GameRender() {
+    ClearBackground(BLACK);
     // Starts the camera and rendering process
     BeginDrawing();
 

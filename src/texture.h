@@ -11,7 +11,6 @@
 
 #define TILE_WIDTH 16
 #define TILE_HEIGHT 16
-#define ENTITY_TILE_HEIGHT 32
 
 #define MAX_TEXTURES 3
 
@@ -24,7 +23,7 @@ typedef struct Tile {
 //* ENUMERATIONS
 typedef enum TextureFile {
     TILE_MAP = 0,
-    TILE_PLAYER,
+    TILE_PLAYER_IDLE,
     TILE_ENEMY
 } TextureFile;
 

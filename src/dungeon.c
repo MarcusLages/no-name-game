@@ -1,5 +1,6 @@
 #include "screen.h"
 #include "texture.h"
+#include "entities.h"
 
 // 2D array of type Tile for the world level
 Tile **world;
@@ -20,8 +21,8 @@ void DungeonStartup() {
 
     Image img = LoadImage("resources/tilemap.png");
     textures[TILE_MAP] = LoadTextureFromImage(img);
-    img = LoadImage("resources/player-tilemap.png");
-    textures[TILE_PLAYER] = LoadTextureFromImage(img);
+    img = LoadImage("resources/player-idle.png");
+    textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
     img = LoadImage("resources/enemy-tilemap.png");
     textures[TILE_ENEMY] = LoadTextureFromImage(img);
 
@@ -47,6 +48,7 @@ void DungeonStartup() {
 }
 
 void DungeonUpdate() {
+    // SpriteUpdate();
 }
 
 void DungeonRender() {
@@ -61,7 +63,8 @@ void DungeonRender() {
     }
 
     // just to view player sprite
-    DrawTile(0, 0, 0, 0, TILE_PLAYER);
+    //DrawTile(0, 0, 0, 0, TILE_PLAYER);
+    SpriteUpdate();
 }
 
 void DungeonUnload() {
