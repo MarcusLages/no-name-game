@@ -5,7 +5,7 @@ void SpriteUpdate() {
     int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, TILE_PLAYER_IDLE);
     Animation stationaryAnimation = CreateAnimation(ENTITY_IDLE_FPS, 
         numOfTiles,
-        GetRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE),
+        GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE),
         (Rectangle) {0, 0, 16, 32}, 
         textures[TILE_PLAYER_IDLE]);
 
@@ -36,7 +36,7 @@ void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color co
     DrawTexturePro(animation.textures, source, dest, origin, rotation, color);
 }
 
-Rectangle* GetRectangles(int numOfRectangles, int tileWidth, int tileHeight, TextureFile textureFile) {
+Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight, TextureFile textureFile) {
     Rectangle *rectangles = (Rectangle*) malloc(sizeof(Rectangle) * numOfRectangles);
     for (int i = 0; i < numOfRectangles; i++) {
         Rectangle r = {i * tileWidth, 0, tileWidth, tileHeight};

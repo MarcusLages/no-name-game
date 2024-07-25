@@ -80,7 +80,7 @@ int FindNumOfTiles(int tileWidth, TextureFile textureFile);
 /**
  * 
  */
-Rectangle* GetRectangles(int numOfRectangles, int tileWidth, int tileHeight, TextureFile textureFile);
+Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight, TextureFile textureFile);
 
 /**
  * Responsible for updating the Sprites
