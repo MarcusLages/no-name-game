@@ -39,4 +39,10 @@ typedef struct Animation {
 
 extern Player player;
 
+//* FUNCTION PROTOTYPES
+
+// Player functions
+void PlayerStartup();
+void PlayerMovement();
+
 #endif // !ENTITIES_H

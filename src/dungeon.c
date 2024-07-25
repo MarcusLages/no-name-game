@@ -1,5 +1,6 @@
 #include "screen.h"
 #include "texture.h"
+#include "entities.h"
 
 // 2D array of type Tile for the world level
 Tile **world;
@@ -20,12 +21,14 @@ void DungeonStartup() {
 
     Image img = LoadImage("resources/tilemap.png");
     textures[TILE_MAP] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
     img = LoadImage("resources/player-tilemap.png");
     textures[TILE_PLAYER] = LoadTextureFromImage(img);
+    UnloadImage(img);
+    
     img = LoadImage("resources/enemy-tilemap.png");
     textures[TILE_ENEMY] = LoadTextureFromImage(img);
-
-    // Unloads the image as it is no longer needed
     UnloadImage(img);
 
     world = (Tile**) malloc(WORLD_WIDTH * sizeof(Tile*));
@@ -43,13 +46,16 @@ void DungeonStartup() {
         world[j] = tiles;
     }   
 
-    StartCamera(); 
+    StartCamera();
+    PlayerStartup();
 }
 
 void DungeonUpdate() {
+    PlayerMovement();
 }
 
 void DungeonRender() {
+    ClearBackground(BLACK);
     Tile tile;
 
     // Rendering each tile by calling DrawTile
@@ -60,11 +66,14 @@ void DungeonRender() {
         }
     }
 
-    // just to view player sprite
-    DrawTile(0, 0, 0, 0, TILE_PLAYER);
+    // Draw player on the screen
+    DrawTile(player.x, player.y, 0, 0, TILE_PLAYER);
+
+    camera.target = (Vector2) {player.x + 8, player.y + 16};
 }
 
 void DungeonUnload() {
+    // Unloads all tiles
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         free(world[j]);
         world[j] = NULL;
@@ -72,6 +81,7 @@ void DungeonUnload() {
     free(world);
     world = NULL;
 
+    // Unloads texture array
     for(int i = 0; i < MAX_TEXTURES; i++) {
         UnloadTexture(textures[i]);
     }
@@ -83,7 +93,7 @@ void DungeonUnload() {
  * Starts the 2D camera by initializing it.
  */
 void StartCamera() {
-    camera.target = (Vector2) {25, 25};
+    camera.target = (Vector2) {player.x, player.y};
     camera.offset = (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
