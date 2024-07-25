@@ -86,4 +86,9 @@ Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeigh
  */
 void SpriteUpdate();
 
+/**
+ * Responsible for unloading the Sprites
+ */
+void SpriteUnload();
+
 #endif // !ENTITIES_H

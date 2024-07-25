@@ -1,14 +1,23 @@
 #include "texture.h"
 #include "entities.h"
 
+//* VARIABLES
+
+// The animation for an idle player
+Animation idlePlayerAnimation;
+
 void SpriteUpdate() {
     int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, TILE_PLAYER_IDLE);
-    Animation stationaryAnimation = CreateAnimation(ENTITY_IDLE_FPS, 
+    idlePlayerAnimation = CreateAnimation(ENTITY_IDLE_FPS, 
         numOfTiles,
         GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE), 
         textures[TILE_PLAYER_IDLE]);
 
-    DrawAnimation(stationaryAnimation, (Rectangle) {0, 0, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 0.0f, WHITE);
+    DrawAnimation(idlePlayerAnimation, (Rectangle) {0, 0, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 0.0f, WHITE);
+}
+
+void SpriteUnload() {
+    UnloadAnimation(idlePlayerAnimation);
 }
 
 Animation CreateAnimation(int fps, int numOfRectangles, Rectangle *rectangles, Texture2D tiles) {
