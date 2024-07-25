@@ -60,8 +60,20 @@ extern Player player;
  */
 void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color color);
 
-Animation CreateAnimation(int fps, int numOfRectangles, Rectangle rectangles[], Rectangle dest, Texture2D textures);
+/**
+ * 
+ */
+Animation CreateAnimation(int fps, int numOfRectangles, Rectangle rectangles[], Rectangle dest, Texture2D tiles);
+
+/**
+ * 
+ */
 void UnloadAnimation(Animation animation);
+
+/**
+ * 
+ */
+int FindNumOfTiles(int tileWidth, TextureFile textureFile);
 
 /**
  * Responsible for updating the Sprites

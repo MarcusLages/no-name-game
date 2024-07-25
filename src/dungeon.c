@@ -48,7 +48,7 @@ void DungeonStartup() {
 }
 
 void DungeonUpdate() {
-    SpriteUpdate();
+    // SpriteUpdate();
 }
 
 void DungeonRender() {
@@ -61,6 +61,7 @@ void DungeonRender() {
             DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 0, TILE_MAP);
         }
     }
+    SpriteUpdate();
 }
 
 void DungeonUnload() {
