@@ -48,21 +48,25 @@ extern Animation idlePlayerAnimation;
  * Constructs an instance of an Animation struct and returns it.
  * 
  * @param fps the rate at which the sprite rectangles are updated.
- * @param numOfRectangles the number of rectangles/tiles in the sprite.
- * @param rectangles an array of rectangles where each Reactangle represents a tile in the sprite.
+ * @param textureFileType the type of texture as a TextureFile.
  * @param tiles the sprite texture as a Texture2D.
  * @returns an animation.
  */
 Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles);
 
 /**
- * Responsible for updating the Sprites
+ * Responsible for rendering the entity with the specified animation.
+ * 
+ * @param entity the entity to render 
+ * @param animation the animation to apply to the entity
  */
 void SpriteRender(Entity entity, Animation animation);
 
 /**
  * Responsible for unloading the Sprites by unallocating the memory 
  * used to store the rectangles in an animation.
+ * 
+ * @param animation the animation to unallocate
  */
 void SpriteUnload(Animation animation);
 

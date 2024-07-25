@@ -7,7 +7,6 @@
  * 
  * @param animation the animation profile as a structure of the sprite.
  * @param dest the destination rectangle.
- * @param origin the origin.
  * @param rotation the rotation of the Rectangles to draw.
  * @param color the tint profile.
  * 
