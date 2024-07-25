@@ -8,21 +8,14 @@ void SpriteUpdate() {
             {0, 0, 16, 32},
             {1 * ENTITY_TILE_WIDTH, 0, 16, 32},
             {2 * ENTITY_TILE_WIDTH, 0, 16, 32},
-            {3 * ENTITY_TILE_WIDTH, 0, 16, 32}}, 
+            {3 * ENTITY_TILE_WIDTH, 0, 16, 32}},
+            (Rectangle) {0, 0, 16, 32}, 
             textures[TILE_PLAYER_IDLE]);
 
-    Rectangle dest = { 
-        (float) 0, 
-        (float) 0, 
-        (float) 16, 
-        (float) 32
-        };
-    Vector2 origin = { 0, 0 };
-
-    DrawAnimation(stationaryAnimation, dest, origin, 0.0f, WHITE);
+    DrawAnimation(stationaryAnimation, stationaryAnimation.destination, 0.0f, WHITE);
 }
 
-Animation CreateAnimation(int fps, int numOfRectangles, Rectangle rectangles[], Texture2D textures) {
+Animation CreateAnimation(int fps, int numOfRectangles, Rectangle rectangles[], Rectangle dest, Texture2D textures) {
     Rectangle *rect = (Rectangle*) malloc(sizeof(Rectangle) * numOfRectangles);
 
     for (int i = 0; i < numOfRectangles; i++) {
@@ -33,7 +26,8 @@ Animation CreateAnimation(int fps, int numOfRectangles, Rectangle rectangles[], 
         .fps = fps,
         .numOfRectangles = numOfRectangles,
         .rectangles = rect,
-        .textures = textures
+        .textures = textures,
+        .destination = dest
     };
 
     return animation;
@@ -44,8 +38,9 @@ void UnloadAnimation(Animation animation) {
     animation.rectangles = NULL;
 }    
 
-void DrawAnimation(Animation animation, Rectangle dest, Vector2 origin, float rotation, Color color) {
+void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color color) {
     int idx = (int) (GetTime() * animation.fps) % animation.numOfRectangles;
     Rectangle source = animation.rectangles[idx];
+    Vector2 origin = { 0, 0 };
     DrawTexturePro(animation.textures, source, dest, origin, rotation, color);
 }

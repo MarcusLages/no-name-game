@@ -36,6 +36,7 @@ typedef struct Animation {
     int fps;
     int numOfRectangles;
     Rectangle *rectangles;
+    Rectangle destination;
     Texture2D textures;
 } Animation;
 
@@ -57,9 +58,9 @@ extern Player player;
  * @param rotation the rotation of the Rectangles to draw
  * @param color the tint profile
  */
-void DrawAnimation(Animation animation, Rectangle dest, Vector2 origin, float rotation, Color color);
+void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color color);
 
-Animation CreateAnimation(int fps, int numOfRectangles, Rectangle rectangles[], Texture2D textures);
+Animation CreateAnimation(int fps, int numOfRectangles, Rectangle rectangles[], Rectangle dest, Texture2D textures);
 void UnloadAnimation(Animation animation);
 
 /**
