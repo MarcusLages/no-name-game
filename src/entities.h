@@ -65,7 +65,7 @@ void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color co
 /**
  * 
  */
-Animation CreateAnimation(int fps, int numOfRectangles, Rectangle rectangles[], Rectangle dest, Texture2D tiles);
+Animation CreateAnimation(int fps, int numOfRectangles, Rectangle *rectangles, Rectangle dest, Texture2D tiles);
 
 /**
  * 
@@ -76,6 +76,11 @@ void UnloadAnimation(Animation animation);
  * 
  */
 int FindNumOfTiles(int tileWidth, TextureFile textureFile);
+
+/**
+ * 
+ */
+Rectangle* GetRectangles(int numOfRectangles, int tileWidth, int tileHeight, TextureFile textureFile);
 
 /**
  * Responsible for updating the Sprites
