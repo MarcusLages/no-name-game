@@ -61,10 +61,6 @@ void DungeonRender() {
             DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 0, TILE_MAP);
         }
     }
-
-    // just to view player sprite
-    //DrawTile(0, 0, 0, 0, TILE_PLAYER);
-    SpriteUpdate();
 }
 
 void DungeonUnload() {

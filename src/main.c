@@ -10,7 +10,7 @@ static void GameClosing();
 
 //* VARIABLES
 // Global variables
-Camera2D camera = {};
+Camera2D camera;
 
 // Variable for checking current screen that needs to be updated/rendered.
 GameScreen currentScreen;
@@ -89,7 +89,6 @@ static void GameUpdate() {
 }
 
 static void GameRender() {
-    ClearBackground(BLACK);
     // Starts the camera and rendering process
     BeginDrawing();
 
