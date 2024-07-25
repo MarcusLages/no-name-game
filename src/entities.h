@@ -68,7 +68,7 @@ void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color co
  * @param tiles the sprite texture as a Texture2D.
  * @returns an animation.
  */
-Animation CreateAnimation(int fps, int numOfRectangles, Rectangle *rectangles, Texture2D tiles);
+Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles);
 
 /**
  * Unallocates the memory used to store the rectangles in an animation.

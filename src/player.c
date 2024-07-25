@@ -39,13 +39,10 @@ void PlayerMovement() {
 }
 
 void PlayerRender() {
-    int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, TILE_PLAYER_IDLE);
-
     // Initializing the indle animation
     idlePlayerAnimation = CreateAnimation(
         ENTITY_IDLE_FPS, 
-        numOfTiles,
-        GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE), 
+        TILE_PLAYER_IDLE,
         textures[TILE_PLAYER_IDLE]);
         
     SpriteRender(player, idlePlayerAnimation);

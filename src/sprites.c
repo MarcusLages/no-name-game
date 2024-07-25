@@ -4,14 +4,13 @@ void SpriteRender(Entity entity, Animation animation) {
     DrawAnimation(animation, (Rectangle) {entity.x, entity.y, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 0.0f, WHITE);
 }
 
-void SpriteUnload() {
-    UnloadAnimation(idlePlayerAnimation);
-}
+Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles) {
+    int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, textureFileType);
+    Rectangle *rectangles = GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, textureFileType);
 
-Animation CreateAnimation(int fps, int numOfRectangles, Rectangle *rectangles, Texture2D tiles) {
     Animation animation = {
         .fps = fps,
-        .numOfRectangles = numOfRectangles,
+        .numOfRectangles = numOfTiles,
         .rectangles = rectangles,
         .textures = tiles
     };
@@ -48,4 +47,8 @@ Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeigh
 
 int FindNumOfTiles(int tileWidth, TextureFile textureFile) {
     return textures[textureFile].width / tileWidth;
+}
+
+void SpriteUnload() {
+    UnloadAnimation(idlePlayerAnimation);
 }
