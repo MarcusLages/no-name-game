@@ -5,20 +5,18 @@ void SpriteUpdate() {
     int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, TILE_PLAYER_IDLE);
     Animation stationaryAnimation = CreateAnimation(ENTITY_IDLE_FPS, 
         numOfTiles,
-        GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE),
-        (Rectangle) {0, 0, 16, 32}, 
+        GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE), 
         textures[TILE_PLAYER_IDLE]);
 
-    DrawAnimation(stationaryAnimation, stationaryAnimation.destination, 0.0f, WHITE);
+    DrawAnimation(stationaryAnimation, (Rectangle) {0, 0, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 0.0f, WHITE);
 }
 
-Animation CreateAnimation(int fps, int numOfRectangles, Rectangle *rectangles, Rectangle dest, Texture2D tiles) {
+Animation CreateAnimation(int fps, int numOfRectangles, Rectangle *rectangles, Texture2D tiles) {
     Animation animation = {
         .fps = fps,
         .numOfRectangles = numOfRectangles,
         .rectangles = rectangles,
-        .textures = tiles,
-        .destination = dest
+        .textures = tiles
     };
 
     return animation;

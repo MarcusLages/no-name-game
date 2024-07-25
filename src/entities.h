@@ -38,7 +38,6 @@ typedef struct Animation {
     int fps;
     int numOfRectangles;
     Rectangle *rectangles;
-    Rectangle destination;
     Texture2D textures;
 } Animation;
 
@@ -65,7 +64,7 @@ void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color co
 /**
  * 
  */
-Animation CreateAnimation(int fps, int numOfRectangles, Rectangle *rectangles, Rectangle dest, Texture2D tiles);
+Animation CreateAnimation(int fps, int numOfRectangles, Rectangle *rectangles, Texture2D tiles);
 
 /**
  * 
