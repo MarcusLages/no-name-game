@@ -24,6 +24,7 @@ typedef struct Tile {
 typedef enum TextureFile {
     TILE_MAP = 0,
     TILE_PLAYER_IDLE,
+    TILE_PLAYER_MOVE,
     TILE_ENEMY
 } TextureFile;
 

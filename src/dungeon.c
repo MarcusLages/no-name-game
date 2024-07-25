@@ -26,6 +26,8 @@ void DungeonStartup() {
     textures[TILE_MAP] = LoadTextureFromImage(img);
     img = LoadImage("resources/player-idle.png");
     textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
+    img = LoadImage("resources/player-movement.png");
+    textures[TILE_PLAYER_MOVE] = LoadTextureFromImage(img);
     img = LoadImage("resources/enemy-tilemap.png");
     textures[TILE_ENEMY] = LoadTextureFromImage(img);
     UnloadImage(img);
