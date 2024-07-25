@@ -59,6 +59,9 @@ extern Player player;
  */
 void DrawAnimation(Animation animation, Rectangle dest, Vector2 origin, float rotation, Color color);
 
+Animation CreateAnimation(int fps, int numOfRectangles, Rectangle rectangles[], Texture2D textures);
+void UnloadAnimation(Animation animation);
+
 /**
  * Responsible for updating the Sprites
  */

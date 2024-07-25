@@ -48,7 +48,7 @@ void DungeonStartup() {
 }
 
 void DungeonUpdate() {
-    // SpriteUpdate();
+    SpriteUpdate();
 }
 
 void DungeonRender() {
