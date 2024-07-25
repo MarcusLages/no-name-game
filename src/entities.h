@@ -38,8 +38,6 @@ typedef struct Animation {
 //* VARIABLES
 
 extern Entity player;
-// The animation for an idle player
-extern Animation idlePlayerAnimation;
 
 //------------------------------------------
 //* FUNCTION PROTOTYPES
