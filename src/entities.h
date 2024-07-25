@@ -3,6 +3,7 @@
 
 #include "raylib.h"
 #include "raymath.h"
+#include "texture.h"
 
 #define ENTITY_TILE_WIDTH 16
 #define ENTITY_TILE_HEIGHT 32
@@ -21,6 +22,7 @@ typedef enum GameState {
 typedef struct Player {
     int x;
     int y;
+    int speed;
     GameState state;
 } Player;
 
@@ -110,5 +112,9 @@ void SpriteUpdate();
  * Responsible for unloading the Sprites
  */
 void SpriteUnload();
+
+// Player functions
+void PlayerStartup();
+void PlayerMovement();
 
 #endif // !ENTITIES_H

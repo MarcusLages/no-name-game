@@ -1,4 +1,3 @@
-#include "texture.h"
 #include "entities.h"
 
 //* VARIABLES

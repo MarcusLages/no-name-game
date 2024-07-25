@@ -10,6 +10,10 @@ Texture2D *textures;
 
 //------------------------------------------
 //* FUNCTION PROTOTYPES
+
+/**
+ * Starts the 2D camera by initializing it.
+ */
 void StartCamera();
 
 void DungeonStartup() {
@@ -25,8 +29,6 @@ void DungeonStartup() {
     textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
     img = LoadImage("resources/enemy-tilemap.png");
     textures[TILE_ENEMY] = LoadTextureFromImage(img);
-
-    // Unloads the image as it is no longer needed
     UnloadImage(img);
 
     world = (Tile**) malloc(WORLD_WIDTH * sizeof(Tile*));
@@ -44,11 +46,16 @@ void DungeonStartup() {
         world[j] = tiles;
     }   
 
-    StartCamera(); 
+    StartCamera();
+    PlayerStartup();
 }
 
 void DungeonUpdate() {
     // SpriteUpdate();
+    PlayerMovement();
+    
+    // Update camera to follow the player
+    camera.target = (Vector2) {player.x + 8, player.y + 16};
 }
 
 void DungeonRender() {
@@ -61,10 +68,13 @@ void DungeonRender() {
             DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 0, TILE_MAP);
         }
     }
-    SpriteUpdate();
+
+    // Draw player on the screen
+    DrawTile(player.x, player.y, 0, 0, TILE_PLAYER_IDLE);
 }
 
 void DungeonUnload() {
+    // Unloads all tiles
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         free(world[j]);
         world[j] = NULL;
@@ -72,6 +82,7 @@ void DungeonUnload() {
     free(world);
     world = NULL;
 
+    // Unloads texture array
     for(int i = 0; i < MAX_TEXTURES; i++) {
         UnloadTexture(textures[i]);
     }
@@ -79,24 +90,13 @@ void DungeonUnload() {
     textures = NULL;
 }
 
-/**
- * Starts the 2D camera by initializing it.
- */
 void StartCamera() {
-    camera.target = (Vector2) {25, 25};
+    camera.target = (Vector2) {player.x + 8, player.y + 16};
     camera.offset = (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
 }
 
-/**
- * Draws tiles at (x, y) from the tilemap from (x, y).
- * 
- * @param x_pos the x-coord to draw on
- * @param y_pos the y-coord to draw on
- * @param texture_tile_x the x-coord the tile in present on
- * @param texture_tile_y the y-coord the tile in present on
- */
 void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y, TextureFile tileTexture) {
     Rectangle source = { 
         (float) (texture_tile_x * TILE_WIDTH), 
