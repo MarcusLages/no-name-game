@@ -16,6 +16,7 @@ typedef enum GameState {
 typedef struct Player {
     int x;
     int y;
+    int speed;
     GameState state;
 } Player;
 
