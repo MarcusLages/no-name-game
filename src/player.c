@@ -84,9 +84,7 @@ void PlayerAttack() {
     if (IsKeyPressed(KEY_E)) {
         DrawText("PRESSING E", 0, 50, 15, RED);
         player.state = ATTACKING;
-    } else if (IsKeyDown(KEY_E)) {
-        player.state = IDLE;
-    }
+    } 
 }
 
 void PlayerRender() {  
@@ -98,6 +96,7 @@ void PlayerRender() {
             SpriteRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT, true);
             break;
         case ATTACKING:
+            // render prev state animation too
             SpriteRender(player, attackPlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, false);
             break;
         default:
