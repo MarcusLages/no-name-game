@@ -19,6 +19,7 @@ void PlayerStartup() {
     player.speed = 4;
     player.health = 1;
     player.direction = (Vector2) {0, 0};
+    player.face = 1;
     player.state = IDLE;
 
     // Initializing the idle animation
@@ -40,16 +41,20 @@ void PlayerMovement() {
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
         player.direction.x++;
         player.state = MOVING;
+        player.face = 1;
     } else if(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
         player.direction.x--;
         player.state = MOVING;
+        player.face = -1;
     }
     if(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
         player.direction.y++;
         player.state = MOVING;
+        player.face = 1;
     } else if(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
         player.direction.y--;
         player.state = MOVING;
+        player.face = 1;
     }
     
     if(player.direction.x == 0 && player.direction.y == 0) {
@@ -61,20 +66,15 @@ void PlayerMovement() {
 
     player.x += player.direction.x * player.speed;
     player.y += player.direction.y * player.speed;
-    
 }
 
 void PlayerRender(GameState state) {  
     switch (state) {
         case IDLE:
-            SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
+            SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT);
             break;
         case MOVING:
-            if (player.direction.x < 0) {
-                SpriteRender(player, movingPlayerAnimation, -ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
-            } else {
-                SpriteRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
-            }            
+            SpriteRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT);
             break;
         case ATTACKING:
             break;

@@ -19,12 +19,19 @@ typedef enum GameState {
 } GameState;
 
 //* Entity
-// Structure to represent a player / enemy.
+
+/**
+ * Structure to represent a player / enemy.
+ * NOTE: face must be either 1 or -1 where:
+ *           -1 indicates the character is facing WEST (LEFT) and
+ *            1 indicates the character is facing EAST (RIGHT) (DEFAULT CASE)
+ */
 typedef struct Entity {
     int x;
     int y;
     int speed;
     int health;
+    int face;
     Vector2 direction;
     GameState state;
 } Entity;
