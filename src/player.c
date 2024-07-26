@@ -50,11 +50,9 @@ void PlayerMovement() {
     if(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
         player.direction.y++;
         player.state = MOVING;
-        player.face = 1;
     } else if(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
         player.direction.y--;
         player.state = MOVING;
-        player.face = 1;
     }
     
     if(player.direction.x == 0 && player.direction.y == 0) {
