@@ -38,11 +38,11 @@ extern Texture2D *textures;
 /**
  * Draws tiles at (x, y) from the tilemap from (x, y).
  * 
- * @param x_pos the x-coord to draw on
- * @param y_pos the y-coord to draw on
- * @param texture_tile_x the x-coord the tile in present on
- * @param texture_tile_y the y-coord the tile in present on
+ * @param xPos the x-coord to draw on
+ * @param yPos the y-coord to draw on
+ * @param textureTileX the x-coord the tile in present on
+ * @param textureTileY the y-coord the tile in present on
  */
-void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y, TextureFile tileTexture);
+void DrawTile(int xPos, int yPos, int textureTileX, int textureTileY, TextureFile tileTexture);
 
 #endif //TEXTURE_H
