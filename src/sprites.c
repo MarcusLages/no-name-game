@@ -7,12 +7,14 @@
  * 
  * @param animation the animation profile as a structure of the sprite.
  * @param dest the destination rectangle.
+ * @param entityWidth the width of the entity rectangle.
+ * @param entityHeight the height of the entity rectangle.
  * @param rotation the rotation of the Rectangles to draw.
  * @param color the tint profile.
  * 
  * Uses DrawTexturePro from Raylib.
  */
-void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color color);
+void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, Color color);
 
 /**
  * Returns the number of tiles present in a specified sprite with the given tile width.
@@ -31,18 +33,23 @@ int FindNumOfTiles(int tileWidth, TextureFile textureFile);
  * @param numOfRectangles the number of rectangles/tiles in the sprite.
  * @param tileWidth the width of a single tile.
  * @param tileHeight the height of a single tile.
- * @param textureFile the type of TextureFile to look at.
  * @returns a pointer to an array of Rectangles.
  */
-Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight, TextureFile textureFile);
+Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight);
 
-void SpriteRender(Entity entity, Animation animation) {
-    DrawAnimation(animation, (Rectangle) {entity.x, entity.y, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 0.0f, WHITE);
+void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight) {
+    DrawAnimation(
+        animation, 
+        (Rectangle) {entity.x, entity.y, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 
+        entityWidth, 
+        entityHeight, 
+        0.0f, 
+        WHITE);
 }
 
 Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles) {
     int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, textureFileType);
-    Rectangle *rectangles = GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, textureFileType);
+    Rectangle *rectangles = GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
 
     Animation animation = {
         .fps = fps,
@@ -59,16 +66,18 @@ void SpriteUnload(Animation animation) {
     animation.rectangles = NULL;
 }
 
-void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color color) {
+void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, Color color) {
     // grabing a new index every new frame since the game was started
     int idx = (int) (GetTime() * animation.fps) % animation.numOfRectangles;
     Rectangle source = animation.rectangles[idx];
+    source.width = entityWidth;
+    source.height = entityHeight;
     Vector2 origin = { 0, 0 };
     
     DrawTexturePro(animation.textures, source, dest, origin, rotation, color);
 }
 
-Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight, TextureFile textureFile) {
+Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight) {
     // Allocating memory for the appropiate amount of rectangles
     Rectangle *rectangles = (Rectangle*) malloc(sizeof(Rectangle) * numOfRectangles);
 

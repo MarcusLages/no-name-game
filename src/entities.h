@@ -25,6 +25,7 @@ typedef struct Entity {
     int y;
     int speed;
     int health;
+    Vector2 direction;
     GameState state;
 } Entity;
 
@@ -56,10 +57,12 @@ Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles)
 /**
  * Responsible for rendering the entity with the specified animation.
  * 
- * @param entity the entity to render 
- * @param animation the animation to apply to the entity
+ * @param entity the entity to render.
+ * @param animation the animation to apply to the entity.
+ * @param entityWidth the width of the entity rectangle.
+ * @param entityHeight the height of the entity rectangle.
  */
-void SpriteRender(Entity entity, Animation animation);
+void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight);
 
 /**
  * Responsible for unloading the Sprites by unallocating the memory 

@@ -13,11 +13,15 @@ Animation idlePlayerAnimation;
 // The animation for the player moving 
 Animation movingPlayerAnimation;
 
+// The animation for the player moving left
+Animation movingPlayerAnimationLeft;
+
 void PlayerStartup() {
     player.x = 0;
     player.y = 0;
     player.speed = 4;
     player.health = 1;
+    player.direction = (Vector2) {0, 0};
     player.state = IDLE;
 
     // Initializing the idle animation
@@ -34,44 +38,47 @@ void PlayerStartup() {
 }
 
 void PlayerMovement() {        
-    Vector2 direction = {0, 0};
+    player.direction = (Vector2) {0, 0};
 
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
-        direction.x++;
+        player.direction.x++;
+        player.state = MOVING;
     } else if(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
-        direction.x--;
+        player.direction.x--;
+        player.state = MOVING;
     }
     if(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
-        direction.y++;
+        player.direction.y++;
+        player.state = MOVING;
     } else if(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
-        direction.y--;
+        player.direction.y--;
+        player.state = MOVING;
     }
-
-    player.state = MOVING;
     
-    if(direction.x == 0 && direction.y == 0) {
+    if(player.direction.x == 0 && player.direction.y == 0) {
         player.state = IDLE;
         return;
     }        
 
-    direction = Vector2Normalize(direction);
+    player.direction = Vector2Normalize(player.direction);
 
-    player.x += direction.x * player.speed;
-    player.y += direction.y * player.speed;
+    player.x += player.direction.x * player.speed;
+    player.y += player.direction.y * player.speed;
     
 }
 
-void PlayerRender(GameState state) {       
+void PlayerRender(GameState state) {  
     switch (state) {
         case IDLE:
-            SpriteRender(player, idlePlayerAnimation);
+            SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
             break;
         case MOVING:
-            SpriteRender(player, movingPlayerAnimation);
+            SpriteRender(player, movingPlayerAnimation, -ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
             break;
         case ATTACKING:
             break;
         default:
+            DrawText(TextFormat("State: %d, Player: (x: %d, y: %d) ", player.state, player.x, player.y), 0, 0, 20, RED);
             break;
     }    
 }
