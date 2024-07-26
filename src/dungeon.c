@@ -102,10 +102,16 @@ void StartCamera() {
 void LoadTextures() {
     Image img = LoadImage("resources/tilemap.png");
     textures[TILE_MAP] = LoadTextureFromImage(img);
-    img = LoadImage("resources/player-idle.png");
+    UnloadImage(img);
+
+    img = LoadImage("resources/player-idle.png");    
     textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
     img = LoadImage("resources/player-movement.png");
     textures[TILE_PLAYER_MOVE] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
     img = LoadImage("resources/enemy-tilemap.png");
     textures[TILE_ENEMY] = LoadTextureFromImage(img);
     UnloadImage(img);
