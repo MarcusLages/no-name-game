@@ -41,8 +41,6 @@ typedef struct Entity {
 typedef struct Animation {
     int fps;
     int numOfRectangles;
-    int xOffset;
-    int yOffset;
     Rectangle *rectangles;
     Texture2D textures;
 } Animation;
@@ -62,7 +60,7 @@ extern Entity player;
  * @param tiles the sprite texture as a Texture2D.
  * @returns an animation.
  */
-Animation CreateAnimation(int fps, int xOffset, int yOffset, TextureFile textureFileType, Texture2D tiles);
+Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles);
 
 /**
  * Responsible for rendering the entity with the specified animation.
@@ -72,7 +70,7 @@ Animation CreateAnimation(int fps, int xOffset, int yOffset, TextureFile texture
  * @param entityWidth the width of the entity rectangle.
  * @param entityHeight the height of the entity rectangle.
  */
-void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight, bool loop);
+void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight, int xOffset, int yOffset, bool loop);
 
 /**
  * Responsible for unloading the Sprites by unallocating the memory 

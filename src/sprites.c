@@ -36,25 +36,23 @@ int FindNumOfTiles(int tileWidth, TextureFile textureFile);
  */
 Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight);
 
-void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight, bool loop) {
+void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight, int xOffset, int yOffset, bool loop) {
     DrawAnimation(
         animation, 
-        (Rectangle) {entity.x, entity.y, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 
+        (Rectangle) {entity.x + xOffset, entity.y + yOffset, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 
         entityWidth, 
         entityHeight, 
         0.0f,
-        true);
+        loop);
 }
 
-Animation CreateAnimation(int fps, int xOffset, int yOffset, TextureFile textureFileType, Texture2D tiles) {
+Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles) {
     int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, textureFileType);
     Rectangle *rectangles = GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
 
     Animation animation = {
         .fps = fps,
         .numOfRectangles = numOfTiles,
-        .xOffset = xOffset,
-        .yOffset = yOffset,
         .rectangles = rectangles,
         .textures = tiles
     };
@@ -68,22 +66,11 @@ void SpriteUnload(Animation animation) {
 }
 
 void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, bool loop) {
-    int idx;
-    Rectangle source;
-    if (!loop) {
-        for (int i = 0; i < animation.numOfRectangles; i++) {
-            idx = (int) (GetTime() * animation.fps) % animation.numOfRectangles;
-            source = animation.rectangles[idx];
-        }
-    } else {
-            idx = (int) (GetTime() * animation.fps) % animation.numOfRectangles;
-            source = animation.rectangles[idx];
-    }
+    int idx = (int) (GetTime() * animation.fps) % animation.numOfRectangles;
+    Rectangle source = animation.rectangles[idx];
 
     source.width = entityWidth;
     source.height = entityHeight;
-    dest.x += animation.xOffset;
-    dest.y += animation.yOffset;
     DrawTexturePro(animation.textures, source, dest, (Vector2) { 0, 0 }, rotation, WHITE);
 }
 

@@ -26,22 +26,18 @@ void PlayerStartup() {
     // Initializing the idle animation
     idlePlayerAnimation = CreateAnimation(
         ENTITY_IDLE_FPS,
-        0, 0,
         TILE_PLAYER_IDLE,
         textures[TILE_PLAYER_IDLE]);
 
     // Initializing the moving animation
     movingPlayerAnimation = CreateAnimation(
         ENTITY_MOVING_FPS,
-        0, 0, 
         TILE_PLAYER_MOVE,
         textures[TILE_PLAYER_MOVE]);
 
     // Initializing the attacking animation
     attackPlayerAnimation = CreateAnimation(
         ENTITY_ATTACK_FPS,
-        ENTITY_TILE_WIDTH,
-        0, 
         TILE_PLAYER_ATTACK,
         textures[TILE_PLAYER_ATTACK]);
 }
@@ -79,7 +75,7 @@ void PlayerMovement() {
 }
 
 void PlayerAttack() {
-    if (IsKeyPressed(KEY_E)) {
+    if (IsKeyDown(KEY_E)) {
         DrawText("PRESSING E", 0, 50, 15, RED);
         player.state = ATTACKING;
     } 
@@ -88,14 +84,14 @@ void PlayerAttack() {
 void PlayerRender() {  
     switch (player.state) {
         case IDLE:
-            SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT, true);
+            SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT, 0, 0, true);
             break;
         case MOVING:
-            SpriteRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT, true);
+            SpriteRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT, 0, 0, true);
             break;
         case ATTACKING:
             // render prev state animation too
-            SpriteRender(player, attackPlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, false);
+            SpriteRender(player, attackPlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, ENTITY_TILE_WIDTH * player.face, 0, false);
             break;
         default:
             break;
