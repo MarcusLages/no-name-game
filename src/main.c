@@ -117,9 +117,7 @@ static void GameRender() {
                 EndMode2D();
                 break;
             case TEST_SCREEN:
-                BeginMode2D(camera);
                 TestScreenRender();
-                EndMode2D();
                 break;
             default: break;
         }
