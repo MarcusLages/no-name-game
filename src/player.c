@@ -78,7 +78,6 @@ void PlayerRender(GameState state) {
         case ATTACKING:
             break;
         default:
-            DrawText(TextFormat("State: %d, Player: (x: %d, y: %d) ", player.state, player.x, player.y), 0, 0, 20, RED);
             break;
     }    
 }
