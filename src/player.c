@@ -1,5 +1,3 @@
-#include "raylib.h"
-#include "raymath.h"
 #include "entities.h"
 
 // The player entity
