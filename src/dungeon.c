@@ -52,6 +52,7 @@ void DungeonStartup() {
 
 void DungeonUpdate() {
     PlayerMovement();
+    PlayerAttack();
     
     // Update camera to follow the player
     camera.target = (Vector2) {player.x + 8, player.y + 16};
@@ -68,7 +69,7 @@ void DungeonRender() {
         }
     }
 
-    // Draw player on the screen
+    // Draw player on the screen  
     PlayerRender();
 }
 

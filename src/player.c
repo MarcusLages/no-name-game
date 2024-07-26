@@ -68,11 +68,7 @@ void PlayerMovement() {
     if(player.direction.x == 0 && player.direction.y == 0) {
         player.state = IDLE;
         return;
-    }
-    
-    if (IsKeyDown(KEY_E)) {
-        player.state = ATTACKING;
-    }        
+    }     
 
     player.direction = Vector2Normalize(player.direction);
 
@@ -80,16 +76,25 @@ void PlayerMovement() {
     player.y += player.direction.y * player.speed;
 }
 
+void PlayerAttack() {
+    if (IsKeyPressed(KEY_E)) {
+        DrawText("PRESSING E", 0, 50, 15, RED);
+        player.state = ATTACKING;
+    } else if (IsKeyDown(KEY_E)) {
+        player.state = IDLE;
+    }
+}
+
 void PlayerRender() {  
     switch (player.state) {
         case IDLE:
-            SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT);
+            SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT, true);
             break;
         case MOVING:
-            SpriteRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT);
+            SpriteRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT, true);
             break;
         case ATTACKING:
-            SpriteRender(player, attackPlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT);
+            SpriteRender(player, attackPlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, false);
             break;
         default:
             break;

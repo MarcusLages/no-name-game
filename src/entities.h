@@ -70,7 +70,7 @@ Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles)
  * @param entityWidth the width of the entity rectangle.
  * @param entityHeight the height of the entity rectangle.
  */
-void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight);
+void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight, bool loop);
 
 /**
  * Responsible for unloading the Sprites by unallocating the memory 
@@ -84,6 +84,7 @@ void SpriteUnload(Animation animation);
 void PlayerStartup();
 void PlayerRender();
 void PlayerMovement();
+void PlayerAttack();
 void PlayerUnload();
 
 #endif // !ENTITIES_H
