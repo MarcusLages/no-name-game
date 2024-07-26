@@ -10,6 +10,7 @@
 
 #define ENTITY_IDLE_FPS 4
 #define ENTITY_MOVING_FPS 8
+#define ENTITY_ATTACK_FPS 4
 
 // Enum for the action state of entities for animation and properties.
 typedef enum GameState {

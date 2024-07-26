@@ -13,6 +13,9 @@ Animation idlePlayerAnimation;
 // The animation for the player moving 
 Animation movingPlayerAnimation;
 
+// The animation for a player attach
+Animation attackPlayerAnimation;
+
 void PlayerStartup() {
     player.x = 0;
     player.y = 0;
@@ -33,6 +36,12 @@ void PlayerStartup() {
         ENTITY_MOVING_FPS, 
         TILE_PLAYER_MOVE,
         textures[TILE_PLAYER_MOVE]);
+
+    // Initializing the attacking animation
+    attackPlayerAnimation = CreateAnimation(
+        ENTITY_ATTACK_FPS, 
+        TILE_PLAYER_ATTACK,
+        textures[TILE_PLAYER_ATTACK]);
 }
 
 void PlayerMovement() {        
@@ -53,6 +62,10 @@ void PlayerMovement() {
     } else if(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
         player.direction.y--;
         player.state = MOVING;
+    }
+
+    if (IsKeyDown(KEY_E)) {
+        player.state = ATTACKING;
     }
     
     if(player.direction.x == 0 && player.direction.y == 0) {
@@ -75,6 +88,7 @@ void PlayerRender(GameState state) {
             SpriteRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT);
             break;
         case ATTACKING:
+            SpriteRender(player, attackPlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT);
             break;
         default:
             break;
@@ -83,4 +97,6 @@ void PlayerRender(GameState state) {
 
 void PlayerUnload() {
     SpriteUnload(idlePlayerAnimation);
+    SpriteUnload(movingPlayerAnimation);
+    SpriteUnload(attackPlayerAnimation);
 }

@@ -112,6 +112,12 @@ void LoadTextures() {
     textures[TILE_PLAYER_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
+    // temp testing for non-loop animation. This should be an attack animation
+    img = LoadImage("resources/enemy-1-movement.png");
+    textures[TILE_PLAYER_ATTACK] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    // NOTE: This tile map will be remove we must render each individual sprite. See /resources.
     img = LoadImage("resources/enemy-tilemap.png");
     textures[TILE_ENEMY] = LoadTextureFromImage(img);
     UnloadImage(img);
