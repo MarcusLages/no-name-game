@@ -73,7 +73,11 @@ void PlayerRender(GameState state) {
             SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
             break;
         case MOVING:
-            SpriteRender(player, movingPlayerAnimation, -ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
+            if (player.direction.x < 0) {
+                SpriteRender(player, movingPlayerAnimation, -ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
+            } else {
+                SpriteRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
+            }            
             break;
         case ATTACKING:
             break;
