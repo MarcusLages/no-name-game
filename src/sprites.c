@@ -10,11 +10,10 @@
  * @param entityWidth the width of the entity rectangle.
  * @param entityHeight the height of the entity rectangle.
  * @param rotation the rotation of the Rectangles to draw.
- * @param color the tint profile.
  * 
  * Uses DrawTexturePro from Raylib.
  */
-void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, Color color, bool loop);
+void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, bool loop);
 
 /**
  * Returns the number of tiles present in a specified sprite with the given tile width.
@@ -43,8 +42,7 @@ void SpriteRender(Entity entity, Animation animation, int entityWidth, int entit
         (Rectangle) {entity.x, entity.y, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 
         entityWidth, 
         entityHeight, 
-        0.0f, 
-        WHITE,
+        0.0f,
         true);
 }
 
@@ -69,7 +67,7 @@ void SpriteUnload(Animation animation) {
     animation.rectangles = NULL;
 }
 
-void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, Color color, bool loop) {
+void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, bool loop) {
     int idx;
     Rectangle source;
     if (!loop) {
@@ -86,7 +84,7 @@ void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int ent
     source.height = entityHeight;
     dest.x += animation.xOffset;
     dest.y += animation.yOffset;
-    DrawTexturePro(animation.textures, source, dest, (Vector2) { 0, 0 }, rotation, color);
+    DrawTexturePro(animation.textures, source, dest, (Vector2) { 0, 0 }, rotation, WHITE);
 }
 
 Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight) {
