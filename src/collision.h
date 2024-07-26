@@ -17,6 +17,6 @@ typedef struct RayCollision2D {
 } RayCollision2D;
 
 RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox);
-RayCollision2D HitboxCollision(Rectangle hitboxIn, Rectangle hitboxTarget);
+RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle hitboxTarget);
 
 #endif //!COLLISION_H
