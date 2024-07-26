@@ -69,7 +69,7 @@ void DungeonRender() {
     }
 
     // Draw player on the screen
-    PlayerRender(player.state);
+    PlayerRender();
 }
 
 void DungeonUnload() {

@@ -82,7 +82,7 @@ void SpriteUnload(Animation animation);
 
 // Player functions
 void PlayerStartup();
-void PlayerRender(GameState state);
+void PlayerRender();
 void PlayerMovement();
 void PlayerUnload();
 

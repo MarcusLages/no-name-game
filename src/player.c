@@ -55,22 +55,23 @@ void PlayerMovement() {
         player.direction.x--;
         player.state = MOVING;
         player.face = -1;
-    }
+    } 
+    
     if(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
         player.direction.y++;
         player.state = MOVING;
     } else if(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
         player.direction.y--;
         player.state = MOVING;
-    }
-
-    if (IsKeyDown(KEY_E)) {
-        player.state = ATTACKING;
-    }
+    }   
     
     if(player.direction.x == 0 && player.direction.y == 0) {
         player.state = IDLE;
         return;
+    }
+    
+    if (IsKeyDown(KEY_E)) {
+        player.state = ATTACKING;
     }        
 
     player.direction = Vector2Normalize(player.direction);
@@ -79,8 +80,8 @@ void PlayerMovement() {
     player.y += player.direction.y * player.speed;
 }
 
-void PlayerRender(GameState state) {  
-    switch (state) {
+void PlayerRender() {  
+    switch (player.state) {
         case IDLE:
             SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT);
             break;
