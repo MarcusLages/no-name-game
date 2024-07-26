@@ -13,9 +13,6 @@ Animation idlePlayerAnimation;
 // The animation for the player moving 
 Animation movingPlayerAnimation;
 
-// The animation for the player moving left
-Animation movingPlayerAnimationLeft;
-
 void PlayerStartup() {
     player.x = 0;
     player.y = 0;
