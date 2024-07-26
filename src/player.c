@@ -27,19 +27,23 @@ void PlayerStartup() {
 
     // Initializing the idle animation
     idlePlayerAnimation = CreateAnimation(
-        ENTITY_IDLE_FPS, 
+        ENTITY_IDLE_FPS,
+        0, 0,
         TILE_PLAYER_IDLE,
         textures[TILE_PLAYER_IDLE]);
 
     // Initializing the moving animation
     movingPlayerAnimation = CreateAnimation(
-        ENTITY_MOVING_FPS, 
+        ENTITY_MOVING_FPS,
+        0, 0, 
         TILE_PLAYER_MOVE,
         textures[TILE_PLAYER_MOVE]);
 
     // Initializing the attacking animation
     attackPlayerAnimation = CreateAnimation(
-        ENTITY_ATTACK_FPS, 
+        ENTITY_ATTACK_FPS,
+        ENTITY_TILE_WIDTH,
+        0, 
         TILE_PLAYER_ATTACK,
         textures[TILE_PLAYER_ATTACK]);
 }

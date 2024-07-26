@@ -41,6 +41,8 @@ typedef struct Entity {
 typedef struct Animation {
     int fps;
     int numOfRectangles;
+    int xOffset;
+    int yOffset;
     Rectangle *rectangles;
     Texture2D textures;
 } Animation;
@@ -60,7 +62,7 @@ extern Entity player;
  * @param tiles the sprite texture as a Texture2D.
  * @returns an animation.
  */
-Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles);
+Animation CreateAnimation(int fps, int xOffset, int yOffset, TextureFile textureFileType, Texture2D tiles);
 
 /**
  * Responsible for rendering the entity with the specified animation.

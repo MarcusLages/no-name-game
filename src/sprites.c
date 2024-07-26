@@ -48,13 +48,15 @@ void SpriteRender(Entity entity, Animation animation, int entityWidth, int entit
         true);
 }
 
-Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles) {
+Animation CreateAnimation(int fps, int xOffset, int yOffset, TextureFile textureFileType, Texture2D tiles) {
     int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, textureFileType);
     Rectangle *rectangles = GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
 
     Animation animation = {
         .fps = fps,
         .numOfRectangles = numOfTiles,
+        .xOffset = xOffset,
+        .yOffset = yOffset,
         .rectangles = rectangles,
         .textures = tiles
     };
@@ -82,6 +84,8 @@ void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int ent
 
     source.width = entityWidth;
     source.height = entityHeight;
+    dest.x += animation.xOffset;
+    dest.y += animation.yOffset;
     DrawTexturePro(animation.textures, source, dest, (Vector2) { 0, 0 }, rotation, color);
 }
 
