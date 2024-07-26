@@ -4,6 +4,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "texture.h"
+#include "collision.h"
 
 #define ENTITY_TILE_WIDTH 16
 #define ENTITY_TILE_HEIGHT 32
@@ -17,8 +18,6 @@ typedef enum GameState {
     MOVING,
     ATTACKING
 } GameState;
-
-//* Entity
 
 /**
  * Structure to represent a player / enemy.
@@ -51,6 +50,7 @@ extern Entity player;
 //------------------------------------------
 //* FUNCTION PROTOTYPES
 
+//* General entity sprites and visuals
 /**
  * Constructs an instance of an Animation struct and returns it.
  * 
@@ -79,7 +79,11 @@ void SpriteRender(Entity entity, Animation animation, int entityWidth, int entit
  */
 void SpriteUnload(Animation animation);
 
-// Player functions
+//* General entity logic
+RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
+RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
+
+//* Player functions
 void PlayerStartup();
 void PlayerRender(GameState state);
 void PlayerMovement();

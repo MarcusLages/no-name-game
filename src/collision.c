@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "collision.h"
+#include "entities.h"
 
 //* DEFINITIONS
 
@@ -99,8 +100,9 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
     
 }
 
-RayCollision2D HitboxCollision(Rectangle hitboxIn, Rectangle hitboxTarget) {
-    // RayCollision2D collision;
+RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle hitboxTarget) {
+    RayCollision2D collision;
+
 }
 
 static void swap(float * a, float * b) {
