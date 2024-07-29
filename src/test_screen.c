@@ -13,16 +13,30 @@ typedef struct RectEntity {
 
 RectEntity examples[10];
 Ray2D mouse;
+float deltaTime;
 
 void TestScreenStartup() {
     // Setup the current screen.
     currentScreen = TEST_SCREEN;
 
-    examples[0] = (Rectangle) {
-        .x = SCREEN_WIDTH / 2 - 50,
-        .y = SCREEN_HEIGHT / 2 - 50,
-        .width = 100,
-        .height = 100
+    examples[0] = (RectEntity) {
+        .rec = (Rectangle) {
+            .x = 0,
+            .y = 0,
+            .width = 100,
+            .height = 100
+        },
+        .col = YELLOW
+    };
+    
+    examples[1] = (RectEntity) {
+        .rec = (Rectangle) {
+            .x = SCREEN_WIDTH / 2 - 50,
+            .y = SCREEN_HEIGHT / 2 - 50,
+            .width = 100,
+            .height = 100
+        },
+        .col = WHITE
     };
 
     mouse = (Ray2D) {
@@ -32,24 +46,38 @@ void TestScreenStartup() {
 }
 
 void TestScreenUpdate() {
+    deltaTime = GetFrameTime();
+
     mouse.direction = GetMousePosition();
+    mouse.direction.x -= examples[0].rec.x + examples[0].rec.width / 2;
+    mouse.direction.y -= examples[0].rec.y + examples[0].rec.height / 2;
+
+    if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        mouse.direction = Vector2Normalize(mouse.direction);
+        examples[0].dir.x += mouse.direction.x * 100.0f * deltaTime;
+        examples[0].dir.y += mouse.direction.y * 100.0f * deltaTime;
+    }
+
+    for(int i = 1; i < 2; i++) {
+        RayCollision2D collision;
+        collision = HitboxCollision(examples[0].rec, examples[0].dir, examples[i].rec);
+        
+        if(collision.hit == true && collision.timeHit >= 0) {
+            examples[0].dir.x += collision.normalVector.x * ABS(examples[0].dir.x) * (1 - collision.timeHit);
+            examples[0].dir.y += collision.normalVector.y * ABS(examples[0].dir.y) * (1 - collision.timeHit);
+        }
+    }
+
+    examples[0].rec.x += examples[0].dir.x * deltaTime;
+    examples[0].rec.y += examples[0].dir.y * deltaTime;
 }
 
-void TestScreenRender() {
-    RayCollision2D collision = RayRectCollision(mouse, examples[0]);
-    if (collision.hit == true) {
-        DrawRectangleRec(examples[0], RED);
-        DrawCircle((int) collision.contactPoint.x, (int) collision.contactPoint.y, 3, BLUE);
-        DrawLine(collision.contactPoint.x, collision.contactPoint.y,
-                collision.contactPoint.x + collision.normalVector.x * 20,
-                collision.contactPoint.y + collision.normalVector.y * 20,
-                GREEN);
-    } else
-        DrawRectangleRec(examples[0], YELLOW);
+void TestScreenRender() {    
+    DrawText(TextFormat("Mouse vector direction: (%.2f, %.2f)", examples[0].dir.x, examples[0].dir.y), 100, 300, 15, RED);
 
-    DrawLine(mouse.origin.x, mouse.origin.y, mouse.direction.x, mouse.direction.y, RAYWHITE);
+    for(int i = 0; i < 2; i++)
+        DrawRectangleRec(examples[i].rec, examples[i].col);
     
-    DrawText(TextFormat("Collision time: %.2f", collision.timeHit), 100, 300, 15, RED);
 }
 
 void TestScreenUnload() {
