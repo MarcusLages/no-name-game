@@ -14,7 +14,7 @@ typedef struct Ray2D {
     /** Vector2 representing the origin point of the 2D ray. */
     Vector2 origin;
     /** Vector2 representing the direction point of the 2D ray.
-     * ? @attention Can be used in relative or absolute position to the origin.
+     * ! @attention Needs to be used in relative position to the origin for collisions.
      */
     Vector2 direction;
 } Ray2D;
