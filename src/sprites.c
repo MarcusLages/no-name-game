@@ -42,16 +42,16 @@ void AnimationRender(Entity entity, Animation animation, int entityWidth,
     int entityHeight, int xOffset, int yOffset, float rotation, bool loop) {
     DrawAnimation(
         animation, 
-        (Rectangle) {entity.x + xOffset, entity.y + yOffset, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 
+        (Rectangle) {entity.x + xOffset, entity.y + yOffset, entityWidth < 0 ? -entityWidth : entityWidth, entityHeight < 0 ? -entityHeight : entityHeight}, 
         entityWidth, 
         entityHeight, 
         rotation,
         loop);
 }
 
-Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles) {
-    int numOfTiles = FindNumOfTiles(ENTITY_TILE_WIDTH, textureFileType);
-    Rectangle *rectangles = GetSpriteRectangles(numOfTiles, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT);
+Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureFileType, Texture2D tiles) {
+    int numOfTiles = FindNumOfTiles(tileWidth, textureFileType);
+    Rectangle *rectangles = GetSpriteRectangles(numOfTiles, tileWidth, tileHeight);
 
     Animation animation = {
         .fps = fps,

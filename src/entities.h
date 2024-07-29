@@ -12,7 +12,7 @@
 #define ENTITY_MOVING_FPS 8
 #define ENTITY_ATTACK_FPS 4
 
-#define ENITIY_ATTACK_FRAMES 30
+#define ENITIY_ATTACK_FRAMES 45
 
 // Enum for the action state of entities for animation and properties.
 typedef enum GameState {
@@ -61,11 +61,13 @@ extern Entity player;
  * Constructs an instance of an Animation struct and returns it.
  * 
  * @param fps the rate at which the sprite rectangles are updated.
+ * @param tileWidth the width of a single tile.
+ * @param tileHeight the height of a single tile.
  * @param textureFileType the type of texture as a TextureFile.
  * @param tiles the sprite texture as a Texture2D.
  * @returns an animation.
  */
-Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles);
+Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureFileType, Texture2D tiles);
 
 /**
  * Responsible for rendering the entity with the specified animation.

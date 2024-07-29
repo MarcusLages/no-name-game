@@ -26,18 +26,24 @@ void PlayerStartup() {
     // Initializing the idle animation
     idlePlayerAnimation = CreateAnimation(
         ENTITY_IDLE_FPS,
+        ENTITY_TILE_WIDTH,
+        ENTITY_TILE_HEIGHT,
         TILE_PLAYER_IDLE,
         textures[TILE_PLAYER_IDLE]);
 
     // Initializing the moving animation
     movingPlayerAnimation = CreateAnimation(
         ENTITY_MOVING_FPS,
+        ENTITY_TILE_WIDTH,
+        ENTITY_TILE_HEIGHT,
         TILE_PLAYER_MOVE,
         textures[TILE_PLAYER_MOVE]);
 
     // Initializing the attacking animation
     attackPlayerAnimation = CreateAnimation(
         ENTITY_ATTACK_FPS,
+        32,
+        32,
         TILE_PLAYER_ATTACK,
         textures[TILE_PLAYER_ATTACK]);
 }
@@ -93,8 +99,8 @@ void PlayerRender() {
             break;
         case ATTACKING:
             // render attack animation on top of player animations (may require a different entity)
-            AnimationRender(player, attackPlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, 
-                ENTITY_TILE_WIDTH * player.face, 0, 0.0f, false);
+            AnimationRender(player, attackPlayerAnimation, 32, 32, 
+                32 * player.face, 0, 90.0f, false);
             attackPlayerAnimation.animationFrame++;
             break;
         default:

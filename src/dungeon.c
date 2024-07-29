@@ -114,7 +114,7 @@ void LoadTextures() {
     UnloadImage(img);
 
     // temp testing for non-loop animation. This should be an attack animation
-    img = LoadImage("resources/enemy-1-movement.png");
+    img = LoadImage("resources/player-attack.png");
     textures[TILE_PLAYER_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
