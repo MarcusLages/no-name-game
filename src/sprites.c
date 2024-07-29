@@ -10,12 +10,11 @@
  * @param entityWidth the width of the entity rectangle.
  * @param entityHeight the height of the entity rectangle.
  * @param rotation the rotation of the Rectangles to draw.
- * @param loop true if animation needs to loop false otherwise.
  * 
  * Uses DrawTexturePro from Raylib.
  */
 void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, 
-    float rotation, bool loop);
+    float rotation);
 
 /**
  * Returns the number of tiles present in a specified sprite with the given tile width.
@@ -47,18 +46,19 @@ void AnimationRender(Entity entity, Animation animation, int entityWidth,
                      entityHeight < 0 ? -entityHeight : entityHeight}, 
         entityWidth, 
         entityHeight, 
-        rotation,
-        loop);
+        rotation);
 }
 
 Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureFileType, Texture2D tiles) {
     int numOfTiles = FindNumOfTiles(tileWidth, textureFileType);
     Rectangle *rectangles = GetSpriteRectangles(numOfTiles, tileWidth, tileHeight);
+    Timer *timer = (Timer*) malloc(sizeof(Timer));
 
     Animation animation = {
         .fps = fps,
         .numOfRectangles = numOfTiles,
         .rectangles = rectangles,
+        .timer = timer,
         .textures = tiles
     };
 
@@ -67,24 +67,26 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
 
 void AnimationUnload(Animation animation) {
     free(animation.rectangles);
+    free(animation.timer);
     animation.rectangles = NULL;
+    animation.timer = NULL;
 }
 
 void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, 
-    float rotation, bool loop) {
-    //if (!loop && animation.animationFrame == ENITIY_ATTACK_FRAMES) return; 
-    double time = GetTime(); 
-    int idx = (int) (time * animation.fps) % animation.numOfRectangles;
-    if (!loop) {
-        DrawText(TextFormat("idx: %d", idx), 0, 0, 15, RED);
-        DrawText(TextFormat("Time: %f", time), 0, 20, 15, RED);
-        DrawText(TextFormat("Num of rect: %d", animation.numOfRectangles), 0, 40, 15, RED);
-        DrawText(TextFormat("Ani fps: %d", animation.fps), 0, 60, 15, RED);
-    }
+    float rotation) {
+    if (TimerDone(animation.timer)) return; 
+
+    int idx = (int) (GetElapsedTime(animation.timer) * animation.fps) % animation.numOfRectangles;
+    // if (!loop) {
+    //     DrawText(TextFormat("idx: %d", idx), 0, 0, 15, RED);
+    //     DrawText(TextFormat("Time: %f", time), 0, 20, 15, RED);
+    //     DrawText(TextFormat("Num of rect: %d", animation.numOfRectangles), 0, 40, 15, RED);
+    //     DrawText(TextFormat("Ani fps: %d", animation.fps), 0, 60, 15, RED);
+    // }
     
-    if (!loop && animation.animationFrame == ENITIY_ATTACK_FRAMES) {
-        return; 
-    }
+    // if (!loop && animation.animationFrame == ENITIY_ATTACK_FRAMES) {
+    //     return; 
+    // }
 
     Rectangle source = animation.rectangles[idx];
 

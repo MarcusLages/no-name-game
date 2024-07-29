@@ -47,6 +47,10 @@ void PlayerStartup() {
         32,
         TILE_PLAYER_ATTACK,
         textures[TILE_PLAYER_ATTACK]);
+
+    // Starting timers for both idle and moving animations
+    StartTimer(idlePlayerAnimation.timer, -1.0f);
+    StartTimer(movingPlayerAnimation.timer, -1.0f);
 }
 
 void PlayerMovement() {        
@@ -80,10 +84,12 @@ void PlayerMovement() {
 }
 
 void PlayerAttack() {
-    if (IsKeyPressed(KEY_E)) player.attacking = true;
+    if (IsKeyPressed(KEY_E)) {
+        player.attacking = true;
+        StartTimer(attackPlayerAnimation.timer, 1.0f);
+    }
 
-    if (attackPlayerAnimation.animationFrame == ENITIY_ATTACK_FRAMES) {
-        attackPlayerAnimation.animationFrame = 0;
+    if (TimerDone(attackPlayerAnimation.timer)) {
         player.attacking = false;
     }
 }
@@ -92,19 +98,18 @@ void PlayerRender() {
     switch (player.state) {
         case IDLE:
             AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
-                ENTITY_TILE_HEIGHT, 0, 0, 0.0f, true);
+                ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case (MOVING):
             AnimationRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
-                ENTITY_TILE_HEIGHT, 0, 0, 0.0f, true);
+                ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         default:
             break;
     }
     if (player.attacking) {
         AnimationRender(player, attackPlayerAnimation, 32, 32 * player.face, 
-            32, 0, 90.0f, false);
-        attackPlayerAnimation.animationFrame++;
+            32, 0, 90.0f);
     }
 }
 

@@ -7,14 +7,16 @@ void StartTimer(Timer *timer, double lifetime) {
     timer->lifeTime = lifetime;
 }
 
-bool TimerDone(Timer timer) {
-    return GetTime() - timer.startTime >= timer.lifeTime;
+bool TimerDone(Timer *timer) {
+    if (timer->lifeTime == -1.0f) return false;
+    return GetTime() - timer->startTime >= timer->lifeTime;
 }
 
-double GetElapsed(Timer timer) {
-    return GetTime() - timer.startTime;
+double GetElapsedTime(Timer *timer) {    
+    return GetTime() - timer->startTime;
 }
 
-double TimeRemaining(Timer timer) {
-    return timer.startTime + timer.lifeTime - GetTime();
+double TimeRemaining(Timer *timer) {
+    if (timer->lifeTime == 0.0f) return -1.0f;
+    return timer->startTime + timer->lifeTime - GetTime();
 }

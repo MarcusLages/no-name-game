@@ -4,6 +4,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "texture.h"
+#include "timer.h"
 
 #define ENTITY_TILE_WIDTH 16
 #define ENTITY_TILE_HEIGHT 32
@@ -41,14 +42,19 @@ typedef struct Entity {
 } Entity;
 
 /**
- * Structure to represent information needed for a Sprite Animation
+ * @brief Represents information needed for a Sprite Animation.
+ * 
+ * @attention Timer checking is not handled internally and must be handled in order to control various states.
+ * 
+ * @note - Timer must be started with StartTimer from timer.c see Timer.
+ * @note - Each animation must be unloaded with AnimationUnload.
  */
 typedef struct Animation {
     int fps;
     int numOfRectangles;
-    int animationFrame;
     Rectangle *rectangles;
     Texture2D textures;
+    Timer *timer;
 } Animation;
 
 //* VARIABLES
@@ -80,10 +86,9 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
  * @param xOffset the pixel offset in the x direction from the current x of the entity.
  * @param yOffset the pixel offset in the y direction from the current y of the entity.
  * @param rotation the rotation amount as a float.
- * @param loop indicates if the animation should loop.
  */
 void AnimationRender(Entity entity, Animation animation, int entityWidth, 
-    int entityHeight, int xOffset, int yOffset, float rotation, bool loop);
+    int entityHeight, int xOffset, int yOffset, float rotation);
 
 /**
  * Responsible for unloading the Animations by unallocating the memory 
