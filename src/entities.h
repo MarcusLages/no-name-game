@@ -21,7 +21,7 @@ typedef enum GameState {
     ATTACKING
 } GameState;
 
-//* Entity
+//* Structures
 
 /**
  * Structure to represent a player / enemy.
@@ -39,7 +39,9 @@ typedef struct Entity {
     GameState state;
 } Entity;
 
-// Structure to represent information needed for a Sprite Animation 
+/**
+ * Structure to represent information needed for a Sprite Animation
+ */
 typedef struct Animation {
     int fps;
     int numOfRectangles;
@@ -72,16 +74,21 @@ Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles)
  * @param animation the animation to apply to the entity.
  * @param entityWidth the width of the entity rectangle.
  * @param entityHeight the height of the entity rectangle.
+ * @param xOffset the pixel offset in the x direction from the current x of the entity.
+ * @param yOffset the pixel offset in the y direction from the current y of the entity.
+ * @param rotation the rotation amount as a float.
+ * @param loop indicates if the animation should loop.
  */
-void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight, int xOffset, int yOffset, bool loop);
+void AnimationRender(Entity entity, Animation animation, int entityWidth, 
+    int entityHeight, int xOffset, int yOffset, float rotation, bool loop);
 
 /**
- * Responsible for unloading the Sprites by unallocating the memory 
+ * Responsible for unloading the Animations by unallocating the memory 
  * used to store the rectangles in an animation.
  * 
- * @param animation the animation to unallocate
+ * @param animation the animation to unallocate.
  */
-void SpriteUnload(Animation animation);
+void AnimationUnload(Animation animation);
 
 // Player functions
 void PlayerStartup();

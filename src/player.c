@@ -84,14 +84,17 @@ void PlayerAttack() {
 void PlayerRender() {
     switch (player.state) {
         case IDLE:
-            SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT, 0, 0, true);
+            AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+                ENTITY_TILE_HEIGHT, 0, 0, 0.0f, true);
             break;
         case MOVING:
-            SpriteRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT, 0, 0, true);
+            AnimationRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+                ENTITY_TILE_HEIGHT, 0, 0, 0.0f, true);
             break;
         case ATTACKING:
-            // render prev state animation too
-            SpriteRender(player, attackPlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, ENTITY_TILE_WIDTH * player.face, 0, false);
+            // render attack animation on top of player animations (may require a different entity)
+            AnimationRender(player, attackPlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, 
+                ENTITY_TILE_WIDTH * player.face, 0, 0.0f, false);
             attackPlayerAnimation.animationFrame++;
             break;
         default:
@@ -100,7 +103,7 @@ void PlayerRender() {
 }
 
 void PlayerUnload() {
-    SpriteUnload(idlePlayerAnimation);
-    SpriteUnload(movingPlayerAnimation);
-    SpriteUnload(attackPlayerAnimation);
+    AnimationUnload(idlePlayerAnimation);
+    AnimationUnload(movingPlayerAnimation);
+    AnimationUnload(attackPlayerAnimation);
 }

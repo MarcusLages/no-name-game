@@ -5,15 +5,17 @@
  * 
  * Assumes that the GameState has been checked for the entity and the animation desired is provided.
  * 
- * @param animation the animation profile as a structure of the sprite.
+ * @param animation the animation to draw.
  * @param dest the destination rectangle.
  * @param entityWidth the width of the entity rectangle.
  * @param entityHeight the height of the entity rectangle.
  * @param rotation the rotation of the Rectangles to draw.
+ * @param loop true if animation needs to loop false otherwise.
  * 
  * Uses DrawTexturePro from Raylib.
  */
-void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, bool loop);
+void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, 
+    float rotation, bool loop);
 
 /**
  * Returns the number of tiles present in a specified sprite with the given tile width.
@@ -25,7 +27,7 @@ void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int ent
 int FindNumOfTiles(int tileWidth, TextureFile textureFile);
 
 /**
- * Returns a pointer to an array of rectangles.
+ * Returns a pointer to an array of rectangles where each rectangle marks the x, y, width, and height of a sprite tile.
  * 
  * The array of rectangles depends on the type of TextureFile given and number of rectangles present.
  * 
@@ -36,13 +38,14 @@ int FindNumOfTiles(int tileWidth, TextureFile textureFile);
  */
 Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight);
 
-void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight, int xOffset, int yOffset, bool loop) {
+void AnimationRender(Entity entity, Animation animation, int entityWidth, 
+    int entityHeight, int xOffset, int yOffset, float rotation, bool loop) {
     DrawAnimation(
         animation, 
         (Rectangle) {entity.x + xOffset, entity.y + yOffset, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT}, 
         entityWidth, 
         entityHeight, 
-        0.0f,
+        rotation,
         loop);
 }
 
@@ -60,12 +63,13 @@ Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles)
     return animation;
 }
 
-void SpriteUnload(Animation animation) {
+void AnimationUnload(Animation animation) {
     free(animation.rectangles);
     animation.rectangles = NULL;
 }
 
-void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, bool loop) {
+void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, 
+    float rotation, bool loop) {
     if (!loop && animation.animationFrame == ENITIY_ATTACK_FRAMES) return; 
     
     int idx = (int) (GetTime() * animation.fps) % animation.numOfRectangles;
