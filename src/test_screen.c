@@ -3,7 +3,15 @@
 #include "screen.h"
 #include "collision.h"
 
-Rectangle examples[10];
+#define ABS(x) (x > 0 ? x : x * (-1))
+
+typedef struct RectEntity {
+    Rectangle rec;
+    Vector2 dir;
+    Color col;
+} RectEntity;
+
+RectEntity examples[10];
 Ray2D mouse;
 
 void TestScreenStartup() {
