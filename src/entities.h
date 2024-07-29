@@ -12,6 +12,8 @@
 #define ENTITY_MOVING_FPS 8
 #define ENTITY_ATTACK_FPS 4
 
+#define ENITIY_ATTACK_FRAMES 30
+
 // Enum for the action state of entities for animation and properties.
 typedef enum GameState {
     IDLE = 0,
@@ -41,6 +43,7 @@ typedef struct Entity {
 typedef struct Animation {
     int fps;
     int numOfRectangles;
+    int animationFrame;
     Rectangle *rectangles;
     Texture2D textures;
 } Animation;

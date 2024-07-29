@@ -66,6 +66,8 @@ void SpriteUnload(Animation animation) {
 }
 
 void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, bool loop) {
+    if (!loop && animation.animationFrame == ENITIY_ATTACK_FRAMES) return; 
+    
     int idx = (int) (GetTime() * animation.fps) % animation.numOfRectangles;
     Rectangle source = animation.rectangles[idx];
 

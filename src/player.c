@@ -47,23 +47,21 @@ void PlayerMovement() {
 
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
         player.direction.x++;
-        player.state = MOVING;
         player.face = 1;
     } else if(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
         player.direction.x--;
-        player.state = MOVING;
         player.face = -1;
     } 
     
     if(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
         player.direction.y++;
-        player.state = MOVING;
     } else if(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
         player.direction.y--;
-        player.state = MOVING;
-    }   
+    }
+
+    player.state = player.state == ATTACKING ? ATTACKING : MOVING;
     
-    if(player.direction.x == 0 && player.direction.y == 0) {
+    if(player.direction.x == 0 && player.direction.y == 0 && player.state != ATTACKING) {
         player.state = IDLE;
         return;
     }     
@@ -75,13 +73,15 @@ void PlayerMovement() {
 }
 
 void PlayerAttack() {
-    if (IsKeyDown(KEY_E)) {
-        DrawText("PRESSING E", 0, 50, 15, RED);
-        player.state = ATTACKING;
-    } 
+    if (IsKeyPressed(KEY_E)) player.state = ATTACKING;
+
+    if (attackPlayerAnimation.animationFrame == ENITIY_ATTACK_FRAMES) {
+        attackPlayerAnimation.animationFrame = 0;
+        player.state = IDLE;
+    }
 }
 
-void PlayerRender() {  
+void PlayerRender() {
     switch (player.state) {
         case IDLE:
             SpriteRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, ENTITY_TILE_HEIGHT, 0, 0, true);
@@ -92,6 +92,7 @@ void PlayerRender() {
         case ATTACKING:
             // render prev state animation too
             SpriteRender(player, attackPlayerAnimation, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, ENTITY_TILE_WIDTH * player.face, 0, false);
+            attackPlayerAnimation.animationFrame++;
             break;
         default:
             break;
