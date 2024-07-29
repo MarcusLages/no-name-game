@@ -32,6 +32,7 @@
 static void swap(float * a, float * b);
 
 RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
+    // Initializes the collision structure with no collision hit.
     RayCollision2D collision;
     collision.hit = false;
 
