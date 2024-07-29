@@ -37,8 +37,8 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
 
     // Instead of using absolute direction from the origin point
     // we are changing it to use the direction based on the origin point
-    ray.direction.x -= ray.origin.x;
-    ray.direction.y -= ray.origin.y;
+    // ray.direction.x -= ray.origin.x;
+    // ray.direction.y -= ray.origin.y;
     
     // Get the near collision point and far collision point in terms
     // of time of collision normalized from 0 to 1.
