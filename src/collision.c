@@ -102,12 +102,38 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
     }
 
     collision.hit = true;
+    
     return collision;
     
 }
 
 RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle hitboxTarget) {
     RayCollision2D collision;
+    float deltaTime = GetFrameTime();
+
+    if(direction.x == 0 && direction.y == 0) {
+        collision.hit = false;
+        return collision;
+    }
+
+    Rectangle expandedTarget = (Rectangle) {
+        .x = hitboxTarget.x - (hitboxIn.width / 2),
+        .y = hitboxTarget.y - (hitboxIn.height / 2),
+        .width = hitboxTarget.width + hitboxIn.width,
+        .height = hitboxTarget.height + hitboxIn.height
+    };
+
+    Ray2D hitboxRay = (Ray2D) {
+        .origin = { hitboxIn.x + hitboxIn.width / 2, hitboxIn.y + hitboxIn.height / 2 },
+        .direction = { direction.x * deltaTime, direction.y * deltaTime }
+    };
+
+    collision = RayRectCollision(hitboxRay, expandedTarget);
+
+    if(collision.timeHit <= 1) collision.hit = true;
+    else collision.hit = false;
+
+    return collision;
 
 }
 
