@@ -5,7 +5,9 @@
 #include "raymath.h"
 
 /**
- * Struct representing a 2D ray with origin and direction.
+ * @brief Struct representing a 2D ray with origin and direction.
+ * 
+ * ! @attention Direction vector needs to be used in relative position to the origin for collisions.
  * 
  * @param Vector2 origin
  * @param Vector2 direction
@@ -20,7 +22,7 @@ typedef struct Ray2D {
 } Ray2D;
 
 /**
- * Struct representing the result of a ray collision.
+ * @brief Struct representing the result of a ray collision.
  * 
  * @param hit bool
  * @param timeHit float
@@ -36,6 +38,7 @@ typedef struct RayCollision2D {
     /** Float variable that represents when the collision occures relative to the origin/direction distance ray.
      * ? @attention Zero (0) represents zero distance from origin to collision.
      * ? @attention One (1) represents collision at the ray's direction point.
+     * ? @attention Minus number (-n) represents collision at the opposite direction of the ray.
     */
     float timeHit;
     /** Vector2 with the coordinate of the point of contact/collision of the ray with the shape. */
@@ -45,7 +48,10 @@ typedef struct RayCollision2D {
 } RayCollision2D;
 
 /**
- * Function used to check if there was a collision between a Ray2D and a Rectangle hitbox.
+ * @brief Function used to check if there was a collision between a Ray2D and a Rectangle hitbox.
+ * 
+ * ? @attention Important to check the timeHit (-n, -1, 0, +1 or +n) of the returned collision
+ *              even if the collision.hit is true.
  * 
  * @param ray Ray2D
  * @param hitbox Rectangle
@@ -54,7 +60,7 @@ typedef struct RayCollision2D {
 RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox);
 
 /**
- * Function used to check if there was a collision between a moving Rectangle with a direction
+ * @brief Function used to check if there was a collision between a moving Rectangle with a direction
  * Vector2 and target Rectangle.
  * 
  * @param hitboxIn Rectangle
