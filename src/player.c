@@ -21,6 +21,7 @@ void PlayerStartup() {
     player.health = 1;
     player.direction = (Vector2) {0, 0};
     player.face = 1;
+    player.attacking = false;
     player.state = IDLE;
 
     // Initializing the idle animation
@@ -65,9 +66,9 @@ void PlayerMovement() {
         player.direction.y--;
     }
 
-    player.state = player.state == ATTACKING ? ATTACKING : MOVING;
+    player.state = MOVING;
     
-    if(player.direction.x == 0 && player.direction.y == 0 && player.state != ATTACKING) {
+    if(player.direction.x == 0 && player.direction.y == 0) {
         player.state = IDLE;
         return;
     }     
@@ -79,11 +80,11 @@ void PlayerMovement() {
 }
 
 void PlayerAttack() {
-    if (IsKeyPressed(KEY_E)) player.state = ATTACKING;
+    if (IsKeyPressed(KEY_E)) player.attacking = true;
 
     if (attackPlayerAnimation.animationFrame == ENITIY_ATTACK_FRAMES) {
         attackPlayerAnimation.animationFrame = 0;
-        player.state = IDLE;
+        player.attacking = false;
     }
 }
 
@@ -93,19 +94,18 @@ void PlayerRender() {
             AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f, true);
             break;
-        case MOVING:
+        case (MOVING):
             AnimationRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f, true);
             break;
-        case ATTACKING:
-            // render attack animation on top of player animations (may require a different entity)
-            AnimationRender(player, attackPlayerAnimation, 32, 32, 
-                32 * player.face, 0, 90.0f, false);
-            attackPlayerAnimation.animationFrame++;
-            break;
         default:
             break;
-    }    
+    }
+    if (player.attacking) {
+        AnimationRender(player, attackPlayerAnimation, 32, 32 * player.face, 
+            32, 0, 90.0f, false);
+        attackPlayerAnimation.animationFrame++;
+    }
 }
 
 void PlayerUnload() {

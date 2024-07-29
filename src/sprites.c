@@ -72,9 +72,20 @@ void AnimationUnload(Animation animation) {
 
 void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, 
     float rotation, bool loop) {
-    if (!loop && animation.animationFrame == ENITIY_ATTACK_FRAMES) return; 
+    //if (!loop && animation.animationFrame == ENITIY_ATTACK_FRAMES) return; 
+    double time = GetTime(); 
+    int idx = (int) (time * animation.fps) % animation.numOfRectangles;
+    if (!loop) {
+        DrawText(TextFormat("idx: %d", idx), 0, 0, 15, RED);
+        DrawText(TextFormat("Time: %f", time), 0, 20, 15, RED);
+        DrawText(TextFormat("Num of rect: %d", animation.numOfRectangles), 0, 40, 15, RED);
+        DrawText(TextFormat("Ani fps: %d", animation.fps), 0, 60, 15, RED);
+    }
     
-    int idx = (int) (GetTime() * animation.fps) % animation.numOfRectangles;
+    if (!loop && animation.animationFrame == ENITIY_ATTACK_FRAMES) {
+        return; 
+    }
+
     Rectangle source = animation.rectangles[idx];
 
     source.width = entityWidth;

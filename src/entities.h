@@ -35,6 +35,7 @@ typedef struct Entity {
     int speed;
     int health;
     int face;
+    bool attacking;
     Vector2 direction;
     GameState state;
 } Entity;
