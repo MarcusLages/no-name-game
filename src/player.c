@@ -90,19 +90,16 @@ void PlayerMovement() {
 
 void PlayerAttack() {
     if (IsKeyPressed(KEY_E)) {
-        //player.attacking = true;
         player.state = ATTACKING;
         StartTimer(attackPlayerAnimation.timer, 0.5f);
     }
 
     if (player.state == ATTACKING && TimerDone(attackPlayerAnimation.timer)) {
-        //player.attacking = false;
         player.state = IDLE;
     }
 }
 
 void PlayerRender() {
-    DrawText(TextFormat("STATE: %d", player.state), 0, 0, 15, RED);
     switch (player.state) {
         case IDLE:
             AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
@@ -114,10 +111,6 @@ void PlayerRender() {
             break;
         case ATTACKING:
             RenderPlayerAttack();
-            // AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
-            //     ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
-            // AnimationRender(player, attackPlayerAnimation, 32, 32 * player.face, 
-            //     32, 0, 90.0f);
             break;
         default:
             break;
