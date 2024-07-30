@@ -9,7 +9,7 @@
  * @param startTime the start time of this timer in seconds.
  * @param lifeTime the amount of second this timer should last for.
  * 
- * @attention declaring a Timer with a lifeTime of 0 creates a timer that lasts for the lifetime of the game.
+ * @attention declaring a Timer with a lifeTime of -1 creates a timer that lasts for the lifetime of the game.
  */
 typedef struct Timer {
     // Start time in seconds

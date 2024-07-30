@@ -44,15 +44,19 @@ typedef struct Entity {
 /**
  * @brief Represents information needed for a Sprite Animation.
  * 
- * @attention Timer checking is not handled internally and must be handled in order to control various states.
+ * ! @attention Timer checking is not handled internally and must be handled in order to control various states.
  * 
- * @note - Timer must be started with StartTimer from timer.c see Timer.
- * @note - Each animation must be unloaded with AnimationUnload.
+ * ? @note - Timer must be started with StartTimer from timer.c see Timer.
+ * ? @note - Each animation must be unloaded with AnimationUnload.
  */
 typedef struct Animation {
+    /** The frames per second of this animation. */
     int fps;
+    /** The number of rectangles that capture each tile in textures. */
     int numOfRectangles;
+    /** The list of reactangles the capture each tile's x, y, width and height in textures. */ 
     Rectangle *rectangles;
+    //
     Texture2D textures;
     Timer *timer;
 } Animation;
