@@ -21,8 +21,8 @@ void PlayerStartup() {
     player.health = 1;
     player.direction = (Vector2) {0, 0};
     player.face = 1;
-    player.attacking = false;
     player.state = IDLE;
+    player.directionFace = RIGHT;
 
     // Initializing the idle animation
     idlePlayerAnimation = CreateAnimation(
@@ -60,15 +60,19 @@ void PlayerMovement() {
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
         player.direction.x++;
         player.face = 1;
+        player.directionFace = RIGHT;
     } else if(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
         player.direction.x--;
         player.face = -1;
+        player.directionFace = LEFT;
     } 
     
     if(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
         player.direction.y++;
+        player.directionFace = DOWN;
     } else if(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
         player.direction.y--;
+        player.directionFace = UP;
     }
 
     player.state = player.state == ATTACKING ? ATTACKING : MOVING;
@@ -88,7 +92,7 @@ void PlayerAttack() {
     if (IsKeyPressed(KEY_E)) {
         //player.attacking = true;
         player.state = ATTACKING;
-        StartTimer(attackPlayerAnimation.timer, 1.0f);
+        StartTimer(attackPlayerAnimation.timer, 0.5f);
     }
 
     if (player.state == ATTACKING && TimerDone(attackPlayerAnimation.timer)) {
@@ -109,18 +113,38 @@ void PlayerRender() {
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case ATTACKING:
-            AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
-                ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
-            AnimationRender(player, attackPlayerAnimation, 32, 32 * player.face, 
-                32, 0, 90.0f);
+            RenderPlayerAttack();
+            // AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+            //     ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+            // AnimationRender(player, attackPlayerAnimation, 32, 32 * player.face, 
+            //     32, 0, 90.0f);
             break;
         default:
             break;
     }
-    // if (player.attacking) {
-    //     AnimationRender(player, attackPlayerAnimation, 32, 32 * player.face, 
-    //         32, 0, 90.0f);
-    // }
+}
+
+void RenderPlayerAttack() {
+    // This numbers are temporaily here to test animation direction
+    // A better idea id needed for these numbers instead of approximating
+    switch (player.directionFace) {
+        case RIGHT:
+            AnimationRender(player, attackPlayerAnimation, 32, 32, 32, 0, 90.0f);
+            break;
+        case DOWN:
+            AnimationRender(player, attackPlayerAnimation, 32, 32, 25, 48, 180.0f);
+            break;
+        case LEFT:
+            AnimationRender(player, attackPlayerAnimation, 32, -32, 16, 0, 90.0f);
+            break;
+        case UP:
+            AnimationRender(player, attackPlayerAnimation, -32, 32, -10, 0, 0.0f);
+            break;
+        default:
+            break;
+    }
+    AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+        ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
 }
 
 void PlayerUnload() {

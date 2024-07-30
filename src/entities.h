@@ -11,16 +11,25 @@
 
 #define ENTITY_IDLE_FPS 2
 #define ENTITY_MOVING_FPS 8
-#define ENTITY_ATTACK_FPS 4
-
-#define ENITIY_ATTACK_FRAMES 45
+#define ENTITY_ATTACK_FPS 8
 
 // Enum for the action state of entities for animation and properties.
 typedef enum GameState {
     IDLE = 0,
     MOVING,
-    ATTACKING
+    ATTACKING,
+    // MOVING_LEFT,
+    // MOVING_RIGHT,
+    // MOVING_UP,
+    // MOVING_DOWN
 } GameState;
+
+typedef enum Direction {
+    RIGHT = 0,
+    DOWN,
+    LEFT,
+    UP
+} Direction;
 
 //* Structures
 
@@ -36,9 +45,9 @@ typedef struct Entity {
     int speed;
     int health;
     int face;
-    bool attacking;
     Vector2 direction;
     GameState state;
+    Direction directionFace;
 } Entity;
 
 /**
@@ -105,6 +114,7 @@ void AnimationUnload(Animation animation);
 // Player functions
 void PlayerStartup();
 void PlayerRender();
+void RenderPlayerAttack();
 void PlayerMovement();
 void PlayerAttack();
 void PlayerUnload();
