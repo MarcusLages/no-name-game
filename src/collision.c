@@ -108,14 +108,20 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
 }
 
 RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle hitboxTarget) {
+    // Initializes the collision structure with no collition
     RayCollision2D collision;
+    // Gets the delta time during the collision
     float deltaTime = GetFrameTime();
 
+    // Considers that initially the Rectangles are not steady and inside each other and
+    // returns if the direction is zero
     if(direction.x == 0 && direction.y == 0) {
         collision.hit = false;
         return collision;
     }
 
+    // Creates an expanded target rectangle based on the size of the hitboxIn rectangle which
+    // is where the direction ray will collide.
     Rectangle expandedTarget = (Rectangle) {
         .x = hitboxTarget.x - (hitboxIn.width / 2),
         .y = hitboxTarget.y - (hitboxIn.height / 2),
@@ -123,13 +129,20 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
         .height = hitboxTarget.height + hitboxIn.height
     };
 
+    // Creates a Ray2D from the origin of the hitboxIn rectangle to the direction vector,
+    // but modulated by deltaTime.
     Ray2D hitboxRay = (Ray2D) {
         .origin = { hitboxIn.x + hitboxIn.width / 2, hitboxIn.y + hitboxIn.height / 2 },
         .direction = { direction.x * deltaTime, direction.y * deltaTime }
     };
 
+    // Gets the collision of the hitboxIn moving using direction with the
+    // expandedTarget Rectangle
     collision = RayRectCollision(hitboxRay, expandedTarget);
 
+    // After the ray collision is done, checks if the time of the collision is less than one.
+    // Which means if the ray gets to the hitboxTarget on the actual direction Vector2 or if it's
+    // just in the direction of the target and will collide later.
     if(collision.timeHit <= 1) collision.hit = true;
     else collision.hit = false;
 
