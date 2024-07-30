@@ -53,7 +53,8 @@ void PlayerStartup() {
     StartTimer(movingPlayerAnimation.timer, -1.0f);
 }
 
-void PlayerMovement() {        
+void PlayerMovement() {       
+    if (player.state == ATTACKING) return; 
     player.direction = (Vector2) {0, 0};
 
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
@@ -70,9 +71,9 @@ void PlayerMovement() {
         player.direction.y--;
     }
 
-    player.state = MOVING;
+    player.state = player.state == ATTACKING ? ATTACKING : MOVING;
     
-    if(player.direction.x == 0 && player.direction.y == 0) {
+    if(player.direction.x == 0 && player.direction.y == 0 && player.state != ATTACKING) {
         player.state = IDLE;
         return;
     }     
@@ -85,32 +86,41 @@ void PlayerMovement() {
 
 void PlayerAttack() {
     if (IsKeyPressed(KEY_E)) {
-        player.attacking = true;
+        //player.attacking = true;
+        player.state = ATTACKING;
         StartTimer(attackPlayerAnimation.timer, 1.0f);
     }
 
-    if (TimerDone(attackPlayerAnimation.timer)) {
-        player.attacking = false;
+    if (player.state == ATTACKING && TimerDone(attackPlayerAnimation.timer)) {
+        //player.attacking = false;
+        player.state = IDLE;
     }
 }
 
 void PlayerRender() {
+    DrawText(TextFormat("STATE: %d", player.state), 0, 0, 15, RED);
     switch (player.state) {
         case IDLE:
             AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
-        case (MOVING):
+        case MOVING:
             AnimationRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+            break;
+        case ATTACKING:
+            AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+                ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+            AnimationRender(player, attackPlayerAnimation, 32, 32 * player.face, 
+                32, 0, 90.0f);
             break;
         default:
             break;
     }
-    if (player.attacking) {
-        AnimationRender(player, attackPlayerAnimation, 32, 32 * player.face, 
-            32, 0, 90.0f);
-    }
+    // if (player.attacking) {
+    //     AnimationRender(player, attackPlayerAnimation, 32, 32 * player.face, 
+    //         32, 0, 90.0f);
+    // }
 }
 
 void PlayerUnload() {

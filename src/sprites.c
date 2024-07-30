@@ -38,7 +38,7 @@ int FindNumOfTiles(int tileWidth, TextureFile textureFile);
 Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight);
 
 void AnimationRender(Entity entity, Animation animation, int entityWidth, 
-    int entityHeight, int xOffset, int yOffset, float rotation, bool loop) {
+    int entityHeight, int xOffset, int yOffset, float rotation) {
     DrawAnimation(
         animation, 
         (Rectangle) {entity.x + xOffset, entity.y + yOffset, 
@@ -77,16 +77,6 @@ void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int ent
     if (TimerDone(animation.timer)) return; 
 
     int idx = (int) (GetElapsedTime(animation.timer) * animation.fps) % animation.numOfRectangles;
-    // if (!loop) {
-    //     DrawText(TextFormat("idx: %d", idx), 0, 0, 15, RED);
-    //     DrawText(TextFormat("Time: %f", time), 0, 20, 15, RED);
-    //     DrawText(TextFormat("Num of rect: %d", animation.numOfRectangles), 0, 40, 15, RED);
-    //     DrawText(TextFormat("Ani fps: %d", animation.fps), 0, 60, 15, RED);
-    // }
-    
-    // if (!loop && animation.animationFrame == ENITIY_ATTACK_FRAMES) {
-    //     return; 
-    // }
 
     Rectangle source = animation.rectangles[idx];
 
