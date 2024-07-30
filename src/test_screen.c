@@ -53,6 +53,36 @@ void TestScreenStartup() {
         .col = WHITE
     };
 
+    examples[2] = (RectEntity) {
+        .rec = (Rectangle) {
+            .x = SCREEN_WIDTH / 2 - 150,
+            .y = SCREEN_HEIGHT / 2 - 50,
+            .width = 100,
+            .height = 100
+        },
+        .col = WHITE
+    };
+    
+    examples[3] = (RectEntity) {
+        .rec = (Rectangle) {
+            .x = SCREEN_WIDTH / 2 - 250,
+            .y = SCREEN_HEIGHT / 2 - 50,
+            .width = 100,
+            .height = 100
+        },
+        .col = WHITE
+    };
+    
+    examples[4] = (RectEntity) {
+        .rec = (Rectangle) {
+            .x = SCREEN_WIDTH / 2 - 350,
+            .y = SCREEN_HEIGHT / 2 - 50,
+            .width = 100,
+            .height = 100
+        },
+        .col = WHITE
+    };
+
     mouse = (Ray2D) {
         .origin = (Vector2) { 200, 200 },
         .direction = GetMousePosition()
@@ -76,7 +106,7 @@ void TestScreenUpdate() {
         examples[0].dir.y += mouse.direction.y * 100.0f * deltaTime;
     }
 
-    for(int i = 1; i < 2; i++) {
+    for(int i = 1; i < 5; i++) {
         RayCollision2D collision;
         collision = HitboxCollision(examples[0].rec, examples[0].dir, examples[i].rec);
         
@@ -99,7 +129,7 @@ void TestScreenUpdate() {
 void TestScreenRender() {    
     DrawText(TextFormat("Mouse vector direction: (%.2f, %.2f)", examples[0].dir.x, examples[0].dir.y), 100, 300, 15, RED);
 
-    for(int i = 0; i < 2; i++)
+    for(int i = 0; i < 5; i++)
         DrawRectangleRec(examples[i].rec, examples[i].col);
     
 }
