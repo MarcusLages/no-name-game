@@ -6,32 +6,32 @@
 /**
  * @brief Represents a timer.
  * 
- * @param startTime the start time of this timer in seconds.
- * @param lifeTime the amount of second this timer should last for.
+ * @param startTime double
+ * @param lifeTime double
  * 
- * @attention declaring a Timer with a lifeTime of -1 creates a timer that lasts for the lifetime of the game.
+ * ! @attention declaring a Timer with a lifeTime of -1 creates a timer that lasts for the lifetime of the game.
  */
 typedef struct Timer {
-    // Start time in seconds
+    // Start time of this timer in seconds.
     double startTime;
-    // Lifetime of this timer in seconds
+    // The amount of seconds this timer should last for.
     double lifeTime;
 } Timer;
 
 //* FUNCTION PROTOTYPES
 
 /**
- * Starts the specified Timer with the specified time.
+ * @brief Starts the specified Timer with the specified time.
  * 
  * @param timer the timer to start.
  * @param lifetime the life of the timer in seconds.
  * 
- * @attention declaring a Timer with a lifeTime of 0 creates a timer that lasts for the lifetime of the game.
+ * ! @attention declaring a Timer with a lifeTime of -1 creates a timer that lasts for the lifetime of the game.
  */
 void StartTimer(Timer *timer, double lifetime);
 
 /**
- * Determines if the specified timer is complete.
+ * @brief Determines if the specified timer is complete.
  * 
  * @param timer the timer to check.
  * @returns true if the timer is done false otherwise.
@@ -39,7 +39,7 @@ void StartTimer(Timer *timer, double lifetime);
 bool TimerDone(Timer *timer);
 
 /**
- * Returns the time elaspsed so far with the specified timer.
+ * @brief Returns the time elaspsed so far with the specified timer.
  * 
  * @param timer the timer to check.
  * @returns the time elaspsed.
@@ -47,7 +47,7 @@ bool TimerDone(Timer *timer);
 double GetElapsedTime(Timer *timer);
 
 /**
- * Returns the time remaining with the specified timer.
+ * @brief Returns the time remaining with the specified timer.
  * 
  * @param timer the timer to check.
  * @returns the time remaining.
