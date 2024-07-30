@@ -36,9 +36,9 @@ typedef struct RayCollision2D {
      */
     bool hit;
     /** Float variable that represents when the collision occures relative to the origin/direction distance ray.
-     * ? @attention Zero (0) represents zero distance from origin to collision.
-     * ? @attention One (1) represents collision at the ray's direction point.
-     * ? @attention Minus number (-n) represents collision at the opposite direction of the ray.
+     * ? @note Zero (0) represents zero distance from origin to collision.
+     * ? @note One (1) represents collision at the ray's direction point.
+     * ? @note Minus number (-n) represents collision at the opposite direction of the ray.
     */
     float timeHit;
     /** Vector2 with the coordinate of the point of contact/collision of the ray with the shape. */
@@ -50,12 +50,12 @@ typedef struct RayCollision2D {
 /**
  * @brief Function used to check if there was a collision between a Ray2D and a Rectangle hitbox.
  * 
- * ? @attention Important to check the timeHit (-n, -1, 0, +1 or +n) of the returned collision
- *              even if the collision.hit is true.
- * 
  * @param ray Ray2D
  * @param hitbox Rectangle
  * @return RayCollision2D
+ * 
+ * ? @note Important to check the timeHit (-n, -1, 0, +1 or +n) of the returned collision
+ *              even if the collision.hit is true.
  */
 RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox);
 
