@@ -49,8 +49,8 @@ void PlayerStartup() {
         textures[TILE_PLAYER_ATTACK]);
 
     // Starting timers for both idle and moving animations
-    StartTimer((*idlePlayerAnimation).timer, -1.0f);
-    StartTimer((*movingPlayerAnimation).timer, -1.0f);
+    StartTimer(idlePlayerAnimation->timer, -1.0f);
+    StartTimer(movingPlayerAnimation->timer, -1.0f);
 }
 
 void PlayerMovement() {
@@ -94,10 +94,10 @@ void PlayerMovement() {
 void PlayerAttack() {
     if (IsKeyPressed(KEY_E)) {
         player.state = ATTACKING;
-        StartTimer((*attackPlayerAnimation).timer, 0.5f);
+        StartTimer(attackPlayerAnimation->timer, 0.5f);
     }
 
-    if (player.state == ATTACKING && TimerDone((*attackPlayerAnimation).timer)) {
+    if (player.state == ATTACKING && TimerDone(attackPlayerAnimation->timer)) {
         player.state = IDLE;
     }
 }

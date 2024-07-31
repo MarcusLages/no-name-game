@@ -69,10 +69,10 @@ Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile t
 
 void AnimationUnload(Animation *animation) {
     // freeing animation's attributes
-    free((*animation).rectangles);
-    free((*animation).timer);
-    (*animation).rectangles = NULL;
-    (*animation).timer = NULL;
+    free(animation->rectangles);
+    free(animation->timer);
+    animation->rectangles = NULL;
+    animation->timer = NULL;
     // freeing animation
     free(animation);
     animation = NULL;
@@ -80,14 +80,14 @@ void AnimationUnload(Animation *animation) {
 
 void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, 
     float rotation) {
-    if (TimerDone((*animation).timer)) return; 
+    if (TimerDone(animation->timer)) return; 
 
-    int idx = (int) (GetElapsedTime((*animation).timer) * (*animation).fps) % (*animation).numOfRectangles;
-    Rectangle source = (*animation).rectangles[idx];
+    int idx = (int) (GetElapsedTime(animation->timer) * animation->fps) % animation->numOfRectangles;
+    Rectangle source = animation->rectangles[idx];
 
     source.width = entityWidth;
     source.height = entityHeight;
-    DrawTexturePro((*animation).textures, source, dest, (Vector2) { 0, 0 }, rotation, WHITE);
+    DrawTexturePro(animation->textures, source, dest, (Vector2) { 0, 0 }, rotation, WHITE);
 }
 
 Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight) {
