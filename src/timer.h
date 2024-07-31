@@ -1,10 +1,11 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+//-----------------------------------------
 //* STUCTURES
 
 /**
- * @brief Represents a timer.
+ * Represents a timer.
  * 
  * @param startTime double
  * @param lifeTime double
@@ -12,16 +13,17 @@
  * ! @attention declaring a Timer with a lifeTime of -1 creates a timer that lasts for the lifetime of the game.
  */
 typedef struct Timer {
-    // Start time of this timer in seconds.
+    /** Start time of this timer in seconds. */ 
     double startTime;
-    // The amount of seconds this timer should last for.
+    /** The amount of seconds this timer should last for. */ 
     double lifeTime;
 } Timer;
 
+//-----------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**
- * @brief Starts the specified Timer with the specified time.
+ * Starts the specified Timer with the specified time.
  * 
  * @param timer the timer to start.
  * @param lifetime the life of the timer in seconds.
@@ -31,7 +33,7 @@ typedef struct Timer {
 void StartTimer(Timer *timer, double lifetime);
 
 /**
- * @brief Determines if the specified timer is complete.
+ * Determines if the specified timer is complete.
  * 
  * @param timer the timer to check.
  * @returns true if the timer is done false otherwise.
@@ -39,7 +41,7 @@ void StartTimer(Timer *timer, double lifetime);
 bool TimerDone(Timer *timer);
 
 /**
- * @brief Returns the time elaspsed so far with the specified timer.
+ * Returns the time elaspsed so far with the specified timer.
  * 
  * @param timer the timer to check.
  * @returns the time elaspsed.
@@ -47,7 +49,7 @@ bool TimerDone(Timer *timer);
 double GetElapsedTime(Timer *timer);
 
 /**
- * @brief Returns the time remaining with the specified timer.
+ *Returns the time remaining with the specified timer.
  * 
  * @param timer the timer to check.
  * @returns the time remaining.
