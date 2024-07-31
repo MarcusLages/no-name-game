@@ -134,16 +134,16 @@ extern Entity player;
 /**
  * Constructs an instance of an Animation struct and returns it.
  * 
- * ! @attention This function is responsible for creating instances of rectangles and timer in the heap.
+ * ! @attention This function is responsible for creating the animation, animation.reactangles, and animation.timer in the heap.
  * 
  * @param fps the rate at which the sprite rectangles are updated.
  * @param tileWidth the width of a single tile.
  * @param tileHeight the height of a single tile.
  * @param textureFileType the type of texture as a TextureFile.
  * @param tiles the sprite texture as a Texture2D.
- * @returns an animation.
+ * @returns a pointer to an animation in memory.
  */
-Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureFileType, Texture2D tiles);
+Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureFileType, Texture2D tiles);
 
 /**
  * Responsible for rendering the entity with the specified animation.
@@ -156,18 +156,18 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
  * @param yOffset -ydirection pixel offset from the current y of the entity.
  * @param rotation the rotation amount as a float.
  */
-void AnimationRender(Entity entity, Animation animation, int entityWidth, 
+void AnimationRender(Entity entity, Animation *animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation);
 
 /**
  * Responsible for unloading an animation by unallocating the memory 
  * used to store the rectangles and the timer in an animation.
  * 
- * ! @attention This function frees the memory of the stored rectangles and timer.
+ * ! @attention This function frees the memory of animation.rectangles, animation.timer and the animation.
  * 
  * @param animation the animation to unallocate.
  */
-void AnimationUnload(Animation animation);
+void AnimationUnload(Animation *animation);
 
 // Player functions
 

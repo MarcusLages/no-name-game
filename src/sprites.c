@@ -15,7 +15,7 @@
  * 
  * ? Uses DrawTexturePro from Raylib.
  */
-void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation);
+void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, float rotation);
 
 /**
  * Returns the number of tiles present in a specified sprite with the given tile width.
@@ -37,7 +37,7 @@ int FindNumOfTiles(int tileWidth, TextureFile textureFile);
  */
 Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight);
 
-void AnimationRender(Entity entity, Animation animation, int entityWidth, 
+void AnimationRender(Entity entity, Animation *animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation) {
     DrawAnimation(
         animation, 
@@ -49,13 +49,14 @@ void AnimationRender(Entity entity, Animation animation, int entityWidth,
         rotation);
 }
 
-Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureFileType, Texture2D tiles) {
+Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureFileType, Texture2D tiles) {
     int numOfTiles = FindNumOfTiles(tileWidth, textureFileType);
     Rectangle *rectangles = GetSpriteRectangles(numOfTiles, tileWidth, tileHeight);
     Timer *timer = (Timer*) malloc(sizeof(Timer));
 
-    /** Creating an animation. NOTE: timer is not started only an instance is created */ 
-    Animation animation = {
+    /** Creating an animation. NOTE: timer is not started only an instance is created */     
+    Animation *animation = (Animation*) malloc(sizeof(Animation));
+    *animation = (Animation) {
         .fps = fps,
         .numOfRectangles = numOfTiles,
         .rectangles = rectangles,
@@ -66,23 +67,27 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
     return animation;
 }
 
-void AnimationUnload(Animation animation) {
-    free(animation.rectangles);
-    free(animation.timer);
-    animation.rectangles = NULL;
-    animation.timer = NULL;
+void AnimationUnload(Animation *animation) {
+    // freeing animation's attributes
+    free((*animation).rectangles);
+    free((*animation).timer);
+    (*animation).rectangles = NULL;
+    (*animation).timer = NULL;
+    // freeing animation
+    free(animation);
+    animation = NULL;
 }
 
-void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, 
+void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, 
     float rotation) {
-    if (TimerDone(animation.timer)) return; 
+    if (TimerDone((*animation).timer)) return; 
 
-    int idx = (int) (GetElapsedTime(animation.timer) * animation.fps) % animation.numOfRectangles;
-    Rectangle source = animation.rectangles[idx];
+    int idx = (int) (GetElapsedTime((*animation).timer) * (*animation).fps) % (*animation).numOfRectangles;
+    Rectangle source = (*animation).rectangles[idx];
 
     source.width = entityWidth;
     source.height = entityHeight;
-    DrawTexturePro(animation.textures, source, dest, (Vector2) { 0, 0 }, rotation, WHITE);
+    DrawTexturePro((*animation).textures, source, dest, (Vector2) { 0, 0 }, rotation, WHITE);
 }
 
 Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight) {

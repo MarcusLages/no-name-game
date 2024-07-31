@@ -6,13 +6,13 @@ Entity player;
 //* Player Animations
 
 // The animation for an idle player
-Animation idlePlayerAnimation;
+Animation *idlePlayerAnimation;
 
 // The animation for the player moving 
-Animation movingPlayerAnimation;
+Animation *movingPlayerAnimation;
 
 // The animation for a player attach
-Animation attackPlayerAnimation;
+Animation *attackPlayerAnimation;
 
 void PlayerStartup() {
     player.x = 0;
@@ -49,8 +49,8 @@ void PlayerStartup() {
         textures[TILE_PLAYER_ATTACK]);
 
     // Starting timers for both idle and moving animations
-    StartTimer(idlePlayerAnimation.timer, -1.0f);
-    StartTimer(movingPlayerAnimation.timer, -1.0f);
+    StartTimer((*idlePlayerAnimation).timer, -1.0f);
+    StartTimer((*movingPlayerAnimation).timer, -1.0f);
 }
 
 void PlayerMovement() {
@@ -94,10 +94,10 @@ void PlayerMovement() {
 void PlayerAttack() {
     if (IsKeyPressed(KEY_E)) {
         player.state = ATTACKING;
-        StartTimer(attackPlayerAnimation.timer, 0.5f);
+        StartTimer((*attackPlayerAnimation).timer, 0.5f);
     }
 
-    if (player.state == ATTACKING && TimerDone(attackPlayerAnimation.timer)) {
+    if (player.state == ATTACKING && TimerDone((*attackPlayerAnimation).timer)) {
         player.state = IDLE;
     }
 }
