@@ -9,6 +9,7 @@
 #define ENTITY_TILE_HEIGHT 32
 
 #define ENTITY_IDLE_FPS 4
+#define ENTITY_MOVING_FPS 8
 
 // Enum for the action state of entities for animation and properties.
 typedef enum GameState {
@@ -17,23 +18,23 @@ typedef enum GameState {
     ATTACKING
 } GameState;
 
-//* Player
-// Structure to represent the player.
-typedef struct Player {
+//* Entity
+
+/**
+ * Structure to represent a player / enemy.
+ * NOTE: face must be either 1 or -1 where:
+ *           -1 indicates the character is facing WEST (LEFT) and
+ *            1 indicates the character is facing EAST (RIGHT) (DEFAULT CASE)
+ */
+typedef struct Entity {
     int x;
     int y;
     int speed;
-    GameState state;
-} Player;
-
-//* Enemy
-// Structure to represent the player.
-typedef struct Enemy {
-    int x;
-    int y;
-    GameState state;
     int health;
-} Enemy;
+    int face;
+    Vector2 direction;
+    GameState state;
+} Entity;
 
 // Structure to represent information needed for a Sprite Animation 
 typedef struct Animation {
@@ -45,76 +46,43 @@ typedef struct Animation {
 
 //* VARIABLES
 
-extern Player player;
+extern Entity player;
 
 //------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**
- * Draws the provided animation at the destination rectangle. 
- * 
- * Assumes that the GameState has been checked for the entity and the animation desired is provided.
- * 
- * @param animation the animation profile as a structure of the sprite.
- * @param dest the destination rectangle.
- * @param origin the origin.
- * @param rotation the rotation of the Rectangles to draw.
- * @param color the tint profile.
- * 
- * Uses DrawTexturePro from Raylib.
- */
-void DrawAnimation(Animation animation, Rectangle dest, float rotation, Color color);
-
-/**
  * Constructs an instance of an Animation struct and returns it.
  * 
  * @param fps the rate at which the sprite rectangles are updated.
- * @param numOfRectangles the number of rectangles/tiles in the sprite.
- * @param rectangles an array of rectangles where each Reactangle represents a tile in the sprite.
+ * @param textureFileType the type of texture as a TextureFile.
  * @param tiles the sprite texture as a Texture2D.
  * @returns an animation.
  */
-Animation CreateAnimation(int fps, int numOfRectangles, Rectangle *rectangles, Texture2D tiles);
+Animation CreateAnimation(int fps, TextureFile textureFileType, Texture2D tiles);
 
 /**
- * Unallocates the memory used to store the rectangles in an animation.
- */
-void UnloadAnimation(Animation animation);
-
-/**
- * Returns the number of tiles present in a specified sprite with the given tile width.
+ * Responsible for rendering the entity with the specified animation.
  * 
- * @param tileWidth the with of a single tile on the sprite.
- * @param textureFile the type of TextureFile to calculate.
- * @returns number of tiles as an int.
+ * @param entity the entity to render.
+ * @param animation the animation to apply to the entity.
+ * @param entityWidth the width of the entity rectangle.
+ * @param entityHeight the height of the entity rectangle.
  */
-int FindNumOfTiles(int tileWidth, TextureFile textureFile);
+void SpriteRender(Entity entity, Animation animation, int entityWidth, int entityHeight);
 
 /**
- * Returns a pointer to an array of rectangles.
+ * Responsible for unloading the Sprites by unallocating the memory 
+ * used to store the rectangles in an animation.
  * 
- * The array of rectangles depends on the type of TextureFile given and number of rectangles present.
- * 
- * @param numOfRectangles the number of rectangles/tiles in the sprite.
- * @param tileWidth the width of a single tile.
- * @param tileHeight the height of a single tile.
- * @param textureFile the type of TextureFile to look at.
- * @returns a pointer to an array of Rectangles.
+ * @param animation the animation to unallocate
  */
-Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight, TextureFile textureFile);
-
-/**
- * Responsible for updating the Sprites
- */
-void SpriteUpdate();
-
-/**
- * Responsible for unloading the Sprites
- */
-void SpriteUnload();
+void SpriteUnload(Animation animation);
 
 // Player functions
 void PlayerStartup();
+void PlayerRender(GameState state);
 void PlayerMovement();
+void PlayerUnload();
 
 #endif // !ENTITIES_H

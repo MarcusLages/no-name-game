@@ -15,22 +15,23 @@ Texture2D *textures;
  */
 void StartCamera();
 
+/**
+ * Loads all of the textures required for the dungeon by populating the array of textures.
+ */
+void LoadTextures();
+
 void DungeonStartup() {
     // Sets the current screen 
     currentScreen = DUNGEON;
 
-    // Loads the game's tilemap into heap as Texture2D
+    // Allocate memory for the game's textures as Texture2D
     textures = (Texture2D*) malloc(MAX_TEXTURES * sizeof(Texture2D));
 
-    Image img = LoadImage("resources/tilemap.png");
-    textures[TILE_MAP] = LoadTextureFromImage(img);
-    img = LoadImage("resources/player-idle.png");
-    textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
-    img = LoadImage("resources/enemy-tilemap.png");
-    textures[TILE_ENEMY] = LoadTextureFromImage(img);
-    UnloadImage(img);
-
+    // Allocate memory for the word as a 2D array of Tile
     world = (Tile**) malloc(WORLD_WIDTH * sizeof(Tile*));
+
+    // Populating textures array with the texture images
+    LoadTextures();
 
     // Allocating tiles of type Tile into 2D array
     for (int j = 0; j < WORLD_HEIGHT; j++) {
@@ -50,7 +51,6 @@ void DungeonStartup() {
 }
 
 void DungeonUpdate() {
-    // SpriteUpdate();
     PlayerMovement();
     
     // Update camera to follow the player
@@ -69,10 +69,13 @@ void DungeonRender() {
     }
 
     // Draw player on the screen
-    DrawTile(player.x, player.y, 0, 0, TILE_PLAYER_IDLE);
+    PlayerRender(player.state);
 }
 
 void DungeonUnload() {
+    //Unloads the player sprites and animations.
+    PlayerUnload();
+
     // Unloads all tiles
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         free(world[j]);
@@ -94,6 +97,24 @@ void StartCamera() {
     camera.offset = (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
+}
+
+void LoadTextures() {
+    Image img = LoadImage("resources/tilemap.png");
+    textures[TILE_MAP] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    img = LoadImage("resources/player-idle.png");    
+    textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    img = LoadImage("resources/player-movement.png");
+    textures[TILE_PLAYER_MOVE] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    img = LoadImage("resources/enemy-tilemap.png");
+    textures[TILE_ENEMY] = LoadTextureFromImage(img);
+    UnloadImage(img);
 }
 
 void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y, TextureFile tileTexture) {
