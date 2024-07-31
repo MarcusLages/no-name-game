@@ -3,7 +3,7 @@
 //* FUNCTION PROTOTYPES
 
 /**
- * @brief Draws the provided animation at the destination rectangle. 
+ * Draws the provided animation at the destination rectangle. 
  * 
  * ? @note Assumes that the GameState has been handles for the entity and the animation desired is provided.
  * 
@@ -18,7 +18,7 @@
 void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation);
 
 /**
- * @brief Returns the number of tiles present in a specified sprite with the given tile width.
+ * Returns the number of tiles present in a specified sprite with the given tile width.
  * 
  * @param tileWidth the with of a single tile on the sprite.
  * @param textureFile the type of TextureFile to calculate.
@@ -27,7 +27,7 @@ void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int ent
 int FindNumOfTiles(int tileWidth, TextureFile textureFile);
 
 /**
- * @brief Returns a pointer to an array of rectangles where each rectangle marks the 
+ * Returns a pointer to an array of rectangles where each rectangle marks the 
  * x, y, width, and height of a sprite tile.
  * 
  * @param numOfRectangles the number of rectangles/tiles in the sprite.
@@ -54,6 +54,7 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
     Rectangle *rectangles = GetSpriteRectangles(numOfTiles, tileWidth, tileHeight);
     Timer *timer = (Timer*) malloc(sizeof(Timer));
 
+    /** Creating an animation. NOTE: timer is not started only an instance is created */ 
     Animation animation = {
         .fps = fps,
         .numOfRectangles = numOfTiles,
@@ -77,7 +78,6 @@ void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int ent
     if (TimerDone(animation.timer)) return; 
 
     int idx = (int) (GetElapsedTime(animation.timer) * animation.fps) % animation.numOfRectangles;
-
     Rectangle source = animation.rectangles[idx];
 
     source.width = entityWidth;

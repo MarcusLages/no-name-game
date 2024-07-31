@@ -13,6 +13,9 @@
 #define ENTITY_MOVING_FPS 8
 #define ENTITY_ATTACK_FPS 8
 
+#define TEMP_ATTACK_WIDTH 32
+#define TEMP_ATTACK_HEIGHT 32
+
 //------------------------------------------
 //* ENUMS
 
@@ -147,10 +150,10 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
  * 
  * @param entity the entity to render.
  * @param animation the animation to apply to the entity.
- * @param entityWidth the width of the entity rectangle.
- * @param entityHeight the height of the entity rectangle.
- * @param xOffset the pixel offset in the x direction from the current x of the entity.
- * @param yOffset the pixel offset in the y direction from the current y of the entity.
+ * @param entityWidth the width of the entity.
+ * @param entityHeight the height of the entity.
+ * @param xOffset x-direction pixel offset from the current x of the entity.
+ * @param yOffset -ydirection pixel offset from the current y of the entity.
  * @param rotation the rotation amount as a float.
  */
 void AnimationRender(Entity entity, Animation animation, int entityWidth, 

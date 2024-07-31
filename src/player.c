@@ -43,8 +43,8 @@ void PlayerStartup() {
     // Initializing the attacking animation
     attackPlayerAnimation = CreateAnimation(
         ENTITY_ATTACK_FPS,
-        32,
-        32,
+        TEMP_ATTACK_WIDTH,
+        TEMP_ATTACK_HEIGHT,
         TILE_PLAYER_ATTACK,
         textures[TILE_PLAYER_ATTACK]);
 
@@ -53,7 +53,8 @@ void PlayerStartup() {
     StartTimer(movingPlayerAnimation.timer, -1.0f);
 }
 
-void PlayerMovement() {       
+void PlayerMovement() {
+    // Ensuring the player cannot move while attacking   
     if (player.state == ATTACKING) return; 
     player.direction = (Vector2) {0, 0};
 
@@ -75,8 +76,10 @@ void PlayerMovement() {
         player.directionFace = UP;
     }
 
+    // Set the player to MOVING if not ATTACKING.
     player.state = player.state == ATTACKING ? ATTACKING : MOVING;
     
+    // Set the player to IDLE if not ATTACKING or moving on any direction
     if(player.direction.x == 0 && player.direction.y == 0 && player.state != ATTACKING) {
         player.state = IDLE;
         return;
@@ -118,24 +121,27 @@ void PlayerRender() {
 }
 
 void RenderPlayerAttack() {
-    // This numbers are temporaily here to test animation direction
-    // A better idea id needed for these numbers instead of approximating
     switch (player.directionFace) {
         case RIGHT:
-            AnimationRender(player, attackPlayerAnimation, 32, 32, 32, 0, 90.0f);
+            AnimationRender(player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+                32, 0, 90.0f);
             break;
         case DOWN:
-            AnimationRender(player, attackPlayerAnimation, 32, 32, 25, 48, 180.0f);
+            AnimationRender(player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+                25, 48, 180.0f);
             break;
         case LEFT:
-            AnimationRender(player, attackPlayerAnimation, 32, -32, 16, 0, 90.0f);
+            AnimationRender(player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
+                16, 0, 90.0f);
             break;
         case UP:
-            AnimationRender(player, attackPlayerAnimation, -32, 32, -10, 0, 0.0f);
+            AnimationRender(player, attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+                -10, 0, 0.0f);
             break;
         default:
             break;
     }
+    // Rendering idle animation of player as the player should not move while attacking.
     AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
         ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
 }
