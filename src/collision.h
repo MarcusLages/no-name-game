@@ -56,6 +56,7 @@ typedef struct RayCollision2D {
  * 
  * ? @note Important to check the timeHit (-n, -1, 0, +1 or +n) of the returned collision
  *              even if the collision.hit is true.
+ * ? @note Resolving the collision is still necessary. This function is only for detection.
  */
 RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox);
 
@@ -67,6 +68,8 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox);
  * @param direction Vector2
  * @param hitboxTarget Rectangle
  * @return RayCollision2D
+ * 
+ * ? @note Resolving the collision is still necessary. This function is only for detection.
  */
 RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle hitboxTarget);
 
