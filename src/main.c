@@ -40,14 +40,14 @@ static void GameStartup() {
     SetTargetFPS(FRAME_RATE);
 
     // Sets up initial screen to Main Menu
-    // currentScreen = MAIN_MENU;
-    // nextScreen = MAIN_MENU;
-    currentScreen = DUNGEON;
-    nextScreen = DUNGEON;
+    currentScreen = MAIN_MENU;
+    nextScreen = MAIN_MENU;
+    // currentScreen = DUNGEON;
+    // nextScreen = DUNGEON;
 
     // Starts up Main Menu
-    // MainMenuStartup();
-    DungeonStartup();
+    MainMenuStartup();
+    // DungeonStartup();
 }
 
 static void GameUpdate() {
@@ -70,7 +70,7 @@ static void GameUpdate() {
                 MainMenuStartup();
                 break;
             case DUNGEON:
-                MainMenuStartup();
+                DungeonStartup();
                 break;
             default: break;
         }
