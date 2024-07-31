@@ -70,7 +70,7 @@ static void GameUpdate() {
                 MainMenuStartup();
                 break;
             case DUNGEON:
-                MainMenuStartup();
+                DungeonStartup();
                 break;
             default: break;
         }
