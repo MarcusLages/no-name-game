@@ -22,8 +22,8 @@
 /**
  * Enum for the action state of entities for animation and properties.
  * 
- * @param IDLE equals 0
- * @param MOVING equals 1
+ * @param IDLE      equals 0
+ * @param MOVING    equals 1
  * @param ATTACKING equals 2
  */
 typedef enum GameState {
@@ -39,9 +39,9 @@ typedef enum GameState {
  * Enum for the direction the entity is facing.
  * 
  * @param RIGHT equals 0
- * @param DOWN equals 1
- * @param LEFT equals 2
- * @param UP equals 3
+ * @param DOWN  equals 1
+ * @param LEFT  equals 2
+ * @param UP    equals 3
  */
 typedef enum Direction {
     /** Indicates the entity is facing right. */
