@@ -153,10 +153,10 @@ Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile t
  * @param entityWidth the width of the entity.
  * @param entityHeight the height of the entity.
  * @param xOffset x-direction pixel offset from the current x of the entity.
- * @param yOffset -ydirection pixel offset from the current y of the entity.
+ * @param yOffset y-direction pixel offset from the current y of the entity.
  * @param rotation the rotation amount as a float.
  */
-void AnimationRender(Entity entity, Animation *animation, int entityWidth, 
+void AnimationRender(Entity *entity, Animation *animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation);
 
 /**

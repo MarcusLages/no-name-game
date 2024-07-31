@@ -105,11 +105,11 @@ void PlayerAttack() {
 void PlayerRender() {
     switch (player.state) {
         case IDLE:
-            AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+            AnimationRender(&player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case MOVING:
-            AnimationRender(player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+            AnimationRender(&player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case ATTACKING:
@@ -123,26 +123,26 @@ void PlayerRender() {
 void RenderPlayerAttack() {
     switch (player.directionFace) {
         case RIGHT:
-            AnimationRender(player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+            AnimationRender(&player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
                 32, 0, 90.0f);
             break;
         case DOWN:
-            AnimationRender(player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+            AnimationRender(&player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
                 25, 48, 180.0f);
             break;
         case LEFT:
-            AnimationRender(player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
+            AnimationRender(&player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
                 16, 0, 90.0f);
             break;
         case UP:
-            AnimationRender(player, attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+            AnimationRender(&player, attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
                 -10, 0, 0.0f);
             break;
         default:
             break;
     }
     // Rendering idle animation of player as the player should not move while attacking.
-    AnimationRender(player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+    AnimationRender(&player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
         ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
 }
 

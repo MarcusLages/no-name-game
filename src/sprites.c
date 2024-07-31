@@ -37,11 +37,11 @@ int FindNumOfTiles(int tileWidth, TextureFile textureFile);
  */
 Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight);
 
-void AnimationRender(Entity entity, Animation *animation, int entityWidth, 
+void AnimationRender(Entity *entity, Animation *animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation) {
     DrawAnimation(
         animation, 
-        (Rectangle) {entity.x + xOffset, entity.y + yOffset, 
+        (Rectangle) {entity->x + xOffset, entity->y + yOffset, 
                      entityWidth < 0 ? -entityWidth : entityWidth, 
                      entityHeight < 0 ? -entityHeight : entityHeight}, 
         entityWidth, 
