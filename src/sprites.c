@@ -1,23 +1,24 @@
 #include "entities.h"
 
-/**
- * Draws the provided animation at the destination rectangle. 
- * 
- * Assumes that the GameState has been checked for the entity and the animation desired is provided.
- * 
- * @param animation the animation to draw.
- * @param dest the destination rectangle.
- * @param entityWidth the width of the entity rectangle.
- * @param entityHeight the height of the entity rectangle.
- * @param rotation the rotation of the Rectangles to draw.
- * 
- * Uses DrawTexturePro from Raylib.
- */
-void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, 
-    float rotation);
+//* FUNCTION PROTOTYPES
 
 /**
- * Returns the number of tiles present in a specified sprite with the given tile width.
+ * @brief Draws the provided animation at the destination rectangle. 
+ * 
+ * ? @note Assumes that the GameState has been handles for the entity and the animation desired is provided.
+ * 
+ * @param animation the animation to draw.
+ * @param dest the destination rectangle to draw on.
+ * @param entityWidth the width of an entity's sprite tile.
+ * @param entityHeight the height of an entity's sprite tile.
+ * @param rotation the rotation of the Rectangles to draw.
+ * 
+ * ? Uses DrawTexturePro from Raylib.
+ */
+void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int entityHeight, float rotation);
+
+/**
+ * @brief Returns the number of tiles present in a specified sprite with the given tile width.
  * 
  * @param tileWidth the with of a single tile on the sprite.
  * @param textureFile the type of TextureFile to calculate.
@@ -26,13 +27,12 @@ void DrawAnimation(Animation animation, Rectangle dest, int entityWidth, int ent
 int FindNumOfTiles(int tileWidth, TextureFile textureFile);
 
 /**
- * Returns a pointer to an array of rectangles where each rectangle marks the x, y, width, and height of a sprite tile.
- * 
- * The array of rectangles depends on the type of TextureFile given and number of rectangles present.
+ * @brief Returns a pointer to an array of rectangles where each rectangle marks the 
+ * x, y, width, and height of a sprite tile.
  * 
  * @param numOfRectangles the number of rectangles/tiles in the sprite.
- * @param tileWidth the width of a single tile.
- * @param tileHeight the height of a single tile.
+ * @param tileWidth the width of a single sprite tile.
+ * @param tileHeight the height of a single sprite tile.
  * @returns a pointer to an array of Rectangles.
  */
 Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight);
