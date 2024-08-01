@@ -6,13 +6,13 @@ Entity player;
 //* Player Animations
 
 // The animation for an idle player
-Animation *idlePlayerAnimation;
+Animation* idlePlayerAnimation;
 
 // The animation for the player moving 
-Animation *movingPlayerAnimation;
+Animation* movingPlayerAnimation;
 
 // The animation for a player attach
-Animation *attackPlayerAnimation;
+Animation* attackPlayerAnimation;
 
 void PlayerStartup() {
     player.x = 0;
@@ -20,13 +20,13 @@ void PlayerStartup() {
     player.speed = 4;
     player.health = 1;
     player.direction = (Vector2) {0, 0};
-    player.face = 1;
+    player.faceValue = 1;
     player.state = IDLE;
     player.directionFace = RIGHT;
 
     // Initializing the idle animation
     idlePlayerAnimation = CreateAnimation(
-        ENTITY_IDLE_FPS,
+        DEFAULT_IDLE_FPS,
         ENTITY_TILE_WIDTH,
         ENTITY_TILE_HEIGHT,
         TILE_PLAYER_IDLE,
@@ -34,7 +34,7 @@ void PlayerStartup() {
 
     // Initializing the moving animation
     movingPlayerAnimation = CreateAnimation(
-        ENTITY_MOVING_FPS,
+        DEFAULT_MOVING_FPS,
         ENTITY_TILE_WIDTH,
         ENTITY_TILE_HEIGHT,
         TILE_PLAYER_MOVE,
@@ -42,7 +42,7 @@ void PlayerStartup() {
 
     // Initializing the attacking animation
     attackPlayerAnimation = CreateAnimation(
-        ENTITY_ATTACK_FPS,
+        DEFAULT_ATTACK_FPS,
         TEMP_ATTACK_WIDTH,
         TEMP_ATTACK_HEIGHT,
         TILE_PLAYER_ATTACK,
@@ -54,17 +54,17 @@ void PlayerStartup() {
 }
 
 void PlayerMovement() {
-    // Ensuring the player cannot move while attacking   
+    // Ensures the player cannot move while attacking   
     if (player.state == ATTACKING) return; 
     player.direction = (Vector2) {0, 0};
 
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
         player.direction.x++;
-        player.face = 1;
+        player.faceValue = 1;
         player.directionFace = RIGHT;
     } else if(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
         player.direction.x--;
-        player.face = -1;
+        player.faceValue = -1;
         player.directionFace = LEFT;
     } 
     
@@ -87,6 +87,7 @@ void PlayerMovement() {
 
     player.direction = Vector2Normalize(player.direction);
 
+    // TODO: add delta time
     player.x += player.direction.x * player.speed;
     player.y += player.direction.y * player.speed;
 }
@@ -105,11 +106,11 @@ void PlayerAttack() {
 void PlayerRender() {
     switch (player.state) {
         case IDLE:
-            AnimationRender(&player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+            AnimationRender(&player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case MOVING:
-            AnimationRender(&player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+            AnimationRender(&player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case ATTACKING:
@@ -142,7 +143,7 @@ void RenderPlayerAttack() {
             break;
     }
     // Rendering idle animation of player as the player should not move while attacking.
-    AnimationRender(&player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.face, 
+    AnimationRender(&player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
         ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
 }
 

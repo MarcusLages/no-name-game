@@ -32,8 +32,8 @@ typedef enum TextureFile {
 } TextureFile;
 
 //* GLOBAL VARIABLES
-extern Tile **world;
-extern Texture2D *textures;
+extern Tile** world;
+extern Texture2D* textures;
 
 //------------------------------------------
 //* FUNCTION PROTOTYPES

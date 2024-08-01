@@ -1,3 +1,9 @@
+/**
+ * //////////////////////////////////////////////////////////////////////////
+ * ? OBS: This file is only for testing collisions and will be replaced.
+ * //////////////////////////////////////////////////////////////////////////
+ */
+
 #include "raylib.h"
 #include "raymath.h"
 #include "screen.h"
@@ -29,7 +35,7 @@ RectEntity examples[10];
 Ray2D mouse;
 float deltaTime;
 // Linked list of the collisions that ocurred in this update
-CollisionList * collisionList;
+CollisionNode* collisionList;
 
 void TestScreenStartup() {
     // Setup the current screen.
@@ -136,7 +142,7 @@ void TestScreenUpdate() {
     SortCollisionList(collisionList);
 
     //* Resolves the collisions from closest to furthest collision.
-    CollisionList * resolvingNode = collisionList;
+    CollisionNode* resolvingNode = collisionList;
     while(resolvingNode != NULL) {
         RayCollision2D collision;
         collision = HitboxCollision(examples[0].rec, examples[0].dir, examples[resolvingNode->collidedHitbox.index].rec);
@@ -168,4 +174,8 @@ void TestScreenRender() {
 }
 
 void TestScreenUnload() {
+    //* Frees the collision list in the memory
+    if(collisionList != NULL)
+        FreeCollisionList(collisionList);
+    collisionList = NULL;
 }

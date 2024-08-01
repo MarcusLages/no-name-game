@@ -2,10 +2,10 @@
 #include "entities.h"
 
 // 2D array of type Tile for the world level
-Tile **world;
+Tile** world;
 
 // A reference to the game's tilemap
-Texture2D *textures;
+Texture2D* textures;
 
 //------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -13,12 +13,12 @@ Texture2D *textures;
 /**
  * Starts the 2D camera by initializing it.
  */
-void StartCamera();
+static void StartCamera();
 
 /**
  * Loads all of the textures required for the dungeon by populating the array of textures.
  */
-void LoadTextures();
+static void LoadTextures();
 
 void DungeonStartup() {
     // Sets the current screen 
@@ -93,14 +93,14 @@ void DungeonUnload() {
     textures = NULL;
 }
 
-void StartCamera() {
+static void StartCamera() {
     camera.target = (Vector2) {player.x + 8, player.y + 16};
     camera.offset = (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
 }
 
-void LoadTextures() {
+static void LoadTextures() {
     Image img = LoadImage("resources/tilemap.png");
     textures[TILE_MAP] = LoadTextureFromImage(img);
     UnloadImage(img);
@@ -119,9 +119,9 @@ void LoadTextures() {
     UnloadImage(img);
 
     // NOTE: This tile map will be remove we must render each individual sprite. See /resources.
-    img = LoadImage("resources/enemy-tilemap.png");
-    textures[TILE_ENEMY] = LoadTextureFromImage(img);
-    UnloadImage(img);
+    // img = LoadImage("resources/enemy-tilemap.png");
+    // textures[TILE_ENEMY] = LoadTextureFromImage(img);
+    // UnloadImage(img);
 }
 
 void DrawTile(int xPos, int yPos, int textureTileX, int textureTileY, TextureFile tileTexture) {

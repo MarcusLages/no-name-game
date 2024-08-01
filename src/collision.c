@@ -16,12 +16,12 @@
 //* FUNCTION PROTOTYPES
 
 /**
- * Swap the value of two nodes in the CollisionList linked list.
+ * Swap the value of two nodes in the CollisionNode linked list.
  * 
- * @param nodeA CollisionList*
- * @param nodeB CollisionList*
+ * @param nodeA CollisionNode*
+ * @param nodeB CollisionNode*
  */
-static void SwapCollisionNode(CollisionList * nodeA, CollisionList * nodeB);
+static void SwapCollisionNode(CollisionNode * nodeA, CollisionNode * nodeB);
 
 RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
     // Initializes the collision structure with no collision hit.
@@ -145,8 +145,8 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
 
 }
 
-CollisionList * CreateCollisionList(int index, float timeHit) {
-    CollisionList * newList = (CollisionList *) malloc(sizeof(CollisionList));
+CollisionNode * CreateCollisionList(int index, float timeHit) {
+    CollisionNode * newList = (CollisionNode *) malloc(sizeof(CollisionNode));
     if (newList == NULL) {
         exit(EXIT_FAILURE);
     }
@@ -155,13 +155,13 @@ CollisionList * CreateCollisionList(int index, float timeHit) {
     return newList;
 }
 
-void AddCollisionNode(CollisionList * head, int index, float timeHit) {
-    CollisionList * currentNode;
-    CollisionList * newNode;
+void AddCollisionNode(CollisionNode* head, int index, float timeHit) {
+    CollisionNode * currentNode;
+    CollisionNode * newNode;
 
     currentNode = head;
 
-    newNode = (CollisionList *) malloc(sizeof(CollisionList));
+    newNode = (CollisionNode*) malloc(sizeof(CollisionNode));
     if (newNode == NULL) {
         exit(EXIT_FAILURE);
     }
@@ -175,11 +175,11 @@ void AddCollisionNode(CollisionList * head, int index, float timeHit) {
     currentNode->next = newNode;
 }
 
-void SortCollisionList(CollisionList * head) {
+void SortCollisionList(CollisionNode* head) {
     if(head == NULL) return;
 
-    CollisionList * currentNode;
-    CollisionList * indexNode;
+    CollisionNode * currentNode;
+    CollisionNode * indexNode;
 
     currentNode = head;
     indexNode = head->next;
@@ -197,10 +197,10 @@ void SortCollisionList(CollisionList * head) {
     }
 }
 
-void FreeCollisionList(CollisionList * head) {
+void FreeCollisionList(CollisionNode* head) {
     if(head == NULL) return;
     
-    CollisionList * currentNode;
+    CollisionNode* currentNode;
     while(head != NULL) {
         currentNode = head;
         head = head->next;
@@ -209,7 +209,7 @@ void FreeCollisionList(CollisionList * head) {
     }
 }
 
-static void SwapCollisionNode(CollisionList * nodeA, CollisionList * nodeB) {
+static void SwapCollisionNode(CollisionNode* nodeA, CollisionNode* nodeB) {
     CollidedHitboxInfo temp;
     temp = nodeA->collidedHitbox;
     nodeA->collidedHitbox = nodeB->collidedHitbox;

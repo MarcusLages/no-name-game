@@ -49,7 +49,7 @@ typedef struct RayCollision2D {
 } RayCollision2D;
 
 /**
- * Structure that contains information about the collided hitbox so it
+ * Structure that contains information about a specific collided hitbox so it
  * can be sorted for better collision resolving.
  * 
  * @param index int
@@ -65,17 +65,17 @@ typedef struct CollidedHitboxInfo {
 } CollidedHitboxInfo;
 
 /**
- * Collision linked list struct to keep track of the detected collisions.
+ * Collision node struct to keep track of the detected collisions in a collision linked list.
  * 
  * @param collidedHitbox CollidedHitboxInfo
- * @param next CollisionList *
+ * @param next CollisionNode *
  */
-typedef struct CollisionList CollisionList;
-struct CollisionList {
+typedef struct CollisionNode CollisionNode;
+struct CollisionNode {
     /** Information about the collided hitbox. */
     CollidedHitboxInfo collidedHitbox;
     /** Pointer to the next node on the list. */
-    CollisionList * next;
+    CollisionNode* next;
 };
 
 //* FUNCTION PROTOTYPES
@@ -112,29 +112,29 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
  * @param collision RayCollision2D
  * @return Pointer to the head of the CollisionList
  */
-CollisionList * CreateCollisionList(int index, float timeHit);
+CollisionNode* CreateCollisionList(int index, float timeHit);
 
 /**
- * Adds a RayCollision2D to the end of the CollisionList linked list.
+ * Adds a RayCollision2D to the end of the CollisionNode linked list.
  * 
- * @param head CollisionList*
+ * @param head CollisionNode*
  * @param RayCollision2D collision
  */
-void AddCollisionNode(CollisionList * head, int index, float timeHit);
+void AddCollisionNode(CollisionNode* head, int index, float timeHit);
 
 /**
- * Sorts a CollisionList linked list based on the collisionTime of the
+ * Sorts a CollisionNode linked list based on the collisionTime of the
  * RayCollision2D in the node.
  * 
- * @param head CollisionList*
+ * @param head CollisionNode*
  */
-void SortCollisionList(CollisionList * head);
+void SortCollisionList(CollisionNode* head);
 
 /**
- * Frees the memory of all the nodes in the CollisionList linked list.
+ * Frees the memory of all the nodes in the CollisionNode linked list.
  * 
- * @param head CollisionList*
+ * @param head CollisionNode*
  */
-void FreeCollisionList(CollisionList * head);
+void FreeCollisionList(CollisionNode* head);
 
 #endif //!COLLISION_H

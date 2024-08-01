@@ -17,25 +17,26 @@ static int CenterComponentX(int componentWidth);
 //* ENUMERATIONS
 
 /**
- * Enumeration representing the possible menu buttons.
+ * Enumeration representing the possible menu mainMenuButtonBox.
  * 
  * @param START_BUTTON 0
  * @param OPTIONS_BUTTON 1
  * @param EXIT_BUTTON 2
  */
-typedef enum MainMenuButtons {
+typedef enum MainMenuOptions {
     START_BUTTON = 0,
     OPTIONS_BUTTON,
     EXIT_BUTTON
-} MainMenuButtons;
+} MainMenuOptions;
 
 //* VARIABLES
 
+// TODO: Change variables to not be global.
 // Array with all button text options for the main menu.
-char menuButtonsText[MAX_MENU_BUTTONS][8] = {"Start", "Options", "Exit"};
+char mainMenuOptionsText[MAX_MENU_BUTTONS][8] = {"Start", "Options", "Exit"};
 
 // Button box array
-Rectangle buttons[MAX_MENU_BUTTONS];
+Rectangle mainMenuButtonBox[MAX_MENU_BUTTONS];
 
 // Represents the index of the clicked button.
 // ? (-1) represents no button clicked
@@ -47,15 +48,15 @@ void MainMenuStartup() {
 
     hoveredButton = -1;
 
-    int buttonY = SCREEN_HEIGHT / 2;
+    int initialButtonY = SCREEN_HEIGHT / 2;
     for(int i = 0; i < MAX_MENU_BUTTONS; i++) {
-        buttons[i] = (Rectangle) {
+        mainMenuButtonBox[i] = (Rectangle) {
             .x = (float) CenterComponentX(240),
-            .y = buttonY,
+            .y = initialButtonY,
             .width = 240,
             .height = 60
         };
-        buttonY += 60 + 20;
+        initialButtonY += 60 + 20;
     }
 }
 
@@ -64,7 +65,7 @@ void MainMenuUpdate() {
 
     // Checks mouse click or hover on a button on the main menu
     for(int i = 0; i < MAX_MENU_BUTTONS; i++) {
-        if(CheckCollisionPointRec(mouse, buttons[i])) {
+        if(CheckCollisionPointRec(mouse, mainMenuButtonBox[i])) {
             // If mouse hovered, changes the value of the hoveredButton var to the
             // index of the mouse button and breaks the collision checking loop.
             if(!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -98,10 +99,10 @@ void MainMenuRender() {
     // Game name
     DrawText("No Name Game Name", CenterComponentX(460), SCREEN_HEIGHT / 3, 50, BLACK);
 
-    // Draws all buttons
+    // Draws all mainMenuButtonBox
     for(int i = 0; i < MAX_MENU_BUTTONS; i++) {
-        DrawRectangleRec(buttons[i], ((i == hoveredButton) ? RED : BLACK));
-        DrawText(menuButtonsText[i], CenterComponentX(MeasureText(menuButtonsText[i], 40)), buttons[i].y + 10, 40, RAYWHITE);
+        DrawRectangleRec(mainMenuButtonBox[i], ((i == hoveredButton) ? RED : BLACK));
+        DrawText(mainMenuOptionsText[i], CenterComponentX(MeasureText(mainMenuOptionsText[i], 40)), mainMenuButtonBox[i].y + 10, 40, RAYWHITE);
     }
 
 }

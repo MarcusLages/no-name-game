@@ -17,29 +17,31 @@
  * 
  * ! @attention returns if given a NULL animation.
  */
-void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, float rotation);
+static void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, float rotation);
 
 /**
- * Returns a pointer to an array of rectangles where each rectangle marks the 
+ * Returns a pointer to an array of frames where each rectangle marks the 
  * x, y, width, and height of a sprite tile.
  * 
- * @param numOfRectangles the number of rectangles/tiles in the sprite.
+ * ! @attention This pointer will point to a location in heap that must be freed.
+ * 
+ * @param numOfFrames the number of frames/tiles in the sprite.
  * @param tileWidth the width of a single sprite tile.
  * @param tileHeight the height of a single sprite tile.
  * @returns a pointer to an array of Rectangles.
  */
-Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight);
+static Rectangle* GetSpriteRectangles(int numOfFrames, int tileWidth, int tileHeight);
 
 /**
  * Returns the number of tiles present in a specified sprite with the given tile width.
  * 
+ * ! @attention returns -1 if given an invalid textureType.
+ * 
  * @param tileWidth the with of a single tile on the sprite.
  * @param textureFile the type of TextureFile to calculate.
  * @returns number of tiles as an int.
- * 
- * ! @attention returns -1 if given an invalid textureType.
  */
-int FindNumOfTiles(int tileWidth, TextureFile textureType);
+static int FindNumOfTiles(int tileWidth, TextureFile textureType);
 
 void AnimationRender(Entity *entity, Animation *animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation) {
@@ -54,11 +56,11 @@ void AnimationRender(Entity *entity, Animation *animation, int entityWidth,
         rotation);
 }
 
-Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D tiles) {
+Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D texture) {
     if (textureType < TILE_MAP || textureType > TILE_ENEMY_ATTACK) return NULL;
 
     int numOfTiles = FindNumOfTiles(tileWidth, textureType);
-    Rectangle *rectangles = GetSpriteRectangles(numOfTiles, tileWidth, tileHeight);
+    Rectangle *frames = GetSpriteRectangles(numOfTiles, tileWidth, tileHeight);
     Timer *timer = (Timer*) malloc(sizeof(Timer));
 
     /** Creating an animation. NOTE: timer is not started only an instance is created */     
@@ -68,10 +70,10 @@ Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile t
     
     *animation = (Animation) {
         .fps = fps,
-        .numOfRectangles = numOfTiles,
-        .rectangles = rectangles,
+        .numOfFrames = numOfTiles,
+        .frames = frames,
         .timer = timer,
-        .textures = tiles
+        .texture = texture
     };
 
     return animation;
@@ -81,9 +83,9 @@ void AnimationUnload(Animation *animation) {
     if (animation == NULL) return;
 
     // freeing animation's attributes
-    free(animation->rectangles);
+    free(animation->frames);
     free(animation->timer);
-    animation->rectangles = NULL;
+    animation->frames = NULL;
     animation->timer = NULL;
 
     // freeing animation
@@ -91,33 +93,33 @@ void AnimationUnload(Animation *animation) {
     animation = NULL;
 }
 
-void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, 
+static void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, 
     float rotation) {
     if (TimerDone(animation->timer) || animation == NULL) return; 
 
-    int idx = (int) (GetElapsedTime(animation->timer) * animation->fps) % animation->numOfRectangles;
-    Rectangle source = animation->rectangles[idx];
+    int idx = (int) (GetElapsedTime(animation->timer) * animation->fps) % animation->numOfFrames;
+    Rectangle source = animation->frames[idx];
 
     source.width = entityWidth;
     source.height = entityHeight;
-    DrawTexturePro(animation->textures, source, dest, (Vector2) { 0, 0 }, rotation, WHITE);
+    DrawTexturePro(animation->texture, source, dest, (Vector2) { 0, 0 }, rotation, WHITE);
 }
 
-Rectangle* GetSpriteRectangles(int numOfRectangles, int tileWidth, int tileHeight) {
-    // Allocating memory for the appropiate amount of rectangles
-    Rectangle *rectangles = (Rectangle*) malloc(sizeof(Rectangle) * numOfRectangles);
-    if (rectangles == NULL) exit(EXIT_FAILURE);
+static Rectangle* GetSpriteRectangles(int numOfFrames, int tileWidth, int tileHeight) {
+    // Allocating memory for the appropiate amount of frames
+    Rectangle *frames = (Rectangle*) malloc(sizeof(Rectangle) * numOfFrames);
+    if (frames == NULL) exit(EXIT_FAILURE);
 
     // Populating the array
-    for (int i = 0; i < numOfRectangles; i++) {
+    for (int i = 0; i < numOfFrames; i++) {
         Rectangle r = {i * tileWidth, 0, tileWidth, tileHeight};
-        rectangles[i] = r;
+        frames[i] = r;
     }
 
-    return rectangles;
+    return frames;
 }
 
-int FindNumOfTiles(int tileWidth, TextureFile textureType) {
+static int FindNumOfTiles(int tileWidth, TextureFile textureType) {
     if (textureType < TILE_MAP || textureType > TILE_ENEMY_ATTACK) return -1;
     return textures[textureType].width / tileWidth;
 }

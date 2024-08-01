@@ -10,10 +10,11 @@
 #define ENTITY_TILE_WIDTH 16
 #define ENTITY_TILE_HEIGHT 32
 
-#define ENTITY_IDLE_FPS 2
-#define ENTITY_MOVING_FPS 8
-#define ENTITY_ATTACK_FPS 8
+#define DEFAULT_IDLE_FPS 2
+#define DEFAULT_MOVING_FPS 8
+#define DEFAULT_ATTACK_FPS 8
 
+// ? OBS: Might be nuked later
 #define TEMP_ATTACK_WIDTH 32
 #define TEMP_ATTACK_HEIGHT 32
 
@@ -23,9 +24,9 @@
 /**
  * Enum for the action state of entities for animation and properties.
  * 
- * @param IDLE      equals 0
- * @param MOVING    equals 1
- * @param ATTACKING equals 2
+ * @param IDLE      0
+ * @param MOVING    1
+ * @param ATTACKING 2
  */
 typedef enum GameState {
     /** Highlights the idle state of an entity. */
@@ -39,10 +40,10 @@ typedef enum GameState {
 /**
  * Enum for the direction the entity is facing.
  * 
- * @param RIGHT equals 0
- * @param DOWN  equals 1
- * @param LEFT  equals 2
- * @param UP    equals 3
+ * @param RIGHT 0
+ * @param DOWN  1
+ * @param LEFT  2
+ * @param UP    3
  */
 typedef enum Direction {
     /** Indicates the entity is facing right. */
@@ -65,12 +66,12 @@ typedef enum Direction {
  * @param y              int
  * @param speed          int
  * @param health         int
- * @param face           int
+ * @param faceValue           int
  * @param direction      Vector2
  * @param state          GameState
  * @param directionFace  Direction
  * 
- * @note face must be either 1 or -1 where:
+ * @note Face must be either 1 or -1 where:
  * 
  *  - -1 indicates the character is facing WEST (LEFT) and
  * 
@@ -85,13 +86,13 @@ typedef struct Entity {
     int speed;
     /** The health of the entity. */
     int health;
-    /** The face of the entity (right or left) */
-    int face;
+    /** The faceValue of the entity (right, left) */
+    int faceValue;
     /** The directional movement of the entity. */
     Vector2 direction;
     /** The GameState of the entity. */
     GameState state;
-    /** The Direction the entity is facing. */
+    /** The Direction the entity is facing. (right, down, left, up) */
     Direction directionFace;
 } Entity;
 
@@ -106,22 +107,22 @@ typedef struct Entity {
 typedef struct Animation {
     /** The frames per second of this animation. */
     int fps;
-    /** The number of rectangles that capture each tile in textures. */
-    int numOfRectangles;
+    /** The number of frames that capture each tile in texture. */
+    int numOfFrames;
     /** 
-     * The list of reactangles the capture each tile's x, y, width and height in textures. 
+     * The list of frames the capture each tile's x, y, width and height in texture. 
      * 
      * ! @attention This pointer will point to a location in heap that must be freed.
      */ 
-    Rectangle *rectangles;
-    /** The textures for this animation. */
-    Texture2D textures;
+    Rectangle* frames;
+    /** The texture for this animation. */
+    Texture2D texture;
     /** 
      * The time for this animation.
      * 
      * ! @attention This pointer will point to a location in heap that must be freed.
      */
-    Timer *timer;
+    Timer* timer;
 } Animation;
 
 //------------------------------------------
@@ -138,16 +139,16 @@ extern Entity player;
  * 
  * ! @note This function is responsible for creating the animation, animation.reactangles, and animation.timer in the heap.
  * 
- * @param fps the rate at which the sprite rectangles are updated.
+ * @param fps the rate at which the sprite frames are updated.
  * @param tileWidth the width of a single tile.
  * @param tileHeight the height of a single tile.
  * @param textureFileType the type of texture as a TextureFile.
- * @param tiles the sprite texture as a Texture2D.
+ * @param texture the sprite texture as a Texture2D.
  * @returns a pointer to an animation in memory.
  * 
  * ! @attention returns NULL if given an invalid textureType.
  */
-Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D tiles);
+Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D texture);
 
 /**
  * Responsible for rendering the entity with the specified animation.
@@ -162,20 +163,20 @@ Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile t
  * 
  * ! @attention returns if given either a NULL entity or animation.
  */
-void AnimationRender(Entity *entity, Animation *animation, int entityWidth, 
+void AnimationRender(Entity* entity, Animation* animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation);
 
 /**
  * Responsible for unloading an animation by unallocating the memory 
- * used to store the rectangles and the timer in an animation.
+ * used to store the frames and the timer in an animation.
  * 
- * ! @note This function frees the memory of animation.rectangles, animation.timer and the animation.
+ * ! @note This function frees the memory of animation.frames, animation.timer and the animation.
  * 
  * @param animation the animation to unallocate.
  * 
  * ! @attention returns if given a NULL animation.
  */
-void AnimationUnload(Animation *animation);
+void AnimationUnload(Animation* animation);
 
 //* General entity logic
 RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
@@ -186,7 +187,7 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
 /**
  * Initializes the player entity, animations, and timers. 
  * 
- * Starts any timers that are needed that are needed for the whole duration of the game.
+ * ? Timers started here are needed for the whole duration of the game.
  */
 void PlayerStartup();
 
@@ -197,6 +198,8 @@ void PlayerMovement();
 
 /**
  * Handles the player's attack.
+ * 
+ * ? Manages the timer for the player attack animation.
  * TODO: collisions, enemy health, etc..
  */
 void PlayerAttack();
