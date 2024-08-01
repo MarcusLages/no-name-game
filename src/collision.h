@@ -5,7 +5,7 @@
 #include "raymath.h"
 
 /**
- * @brief Struct representing a 2D ray with origin and direction.
+ * Struct representing a 2D ray with origin and direction.
  * 
  * ! @attention Direction vector needs to be used in relative position to the origin for collisions.
  * 
@@ -22,7 +22,7 @@ typedef struct Ray2D {
 } Ray2D;
 
 /**
- * @brief Struct representing the result of a ray collision.
+ * Struct representing the result of a ray collision.
  * 
  * @param hit bool
  * @param timeHit float
@@ -48,7 +48,21 @@ typedef struct RayCollision2D {
 } RayCollision2D;
 
 /**
- * @brief Function used to check if there was a collision between a Ray2D and a Rectangle hitbox.
+ * Collision linked list struct to keep track of the detected collisions.
+ * 
+ * @param collisionVal RayCollision2D
+ * @param next CollisionList *
+ */
+typedef struct CollisionList CollisionList;
+struct CollisionList {
+    RayCollision2D collisionVal;
+    CollisionList * next;
+};
+
+//* FUNCTION PROTOTYPES
+
+/**
+ * Function used to check if there was a collision between a Ray2D and a Rectangle hitbox.
  * 
  * @param ray Ray2D
  * @param hitbox Rectangle
@@ -61,7 +75,7 @@ typedef struct RayCollision2D {
 RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox);
 
 /**
- * @brief Function used to check if there was a collision between a moving Rectangle with a direction
+ * Function used to check if there was a collision between a moving Rectangle with a direction
  * Vector2 and target Rectangle.
  * 
  * @param hitboxIn Rectangle
