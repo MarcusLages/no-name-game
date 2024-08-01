@@ -48,14 +48,32 @@ typedef struct RayCollision2D {
 } RayCollision2D;
 
 /**
+ * Structure that contains information about the collided hitbox so it
+ * can be sorted for better collision resolving.
+ * 
+ * @param index int
+ * @param timeHit float
+ * 
+ * @note Check RayCollision2D for more in-depth information about timeHit.
+ */
+typedef struct CollidedHitboxInfo {
+    /** Index of the collided hitbox in the array of hitboxes. */
+    int index;
+    /** Contact time of the collision. Used to sort the closest collision.*/
+    float timeHit;
+} CollidedHitboxInfo;
+
+/**
  * Collision linked list struct to keep track of the detected collisions.
  * 
- * @param collisionVal RayCollision2D
+ * @param collidedHitbox CollidedHitboxInfo
  * @param next CollisionList *
  */
 typedef struct CollisionList CollisionList;
 struct CollisionList {
-    RayCollision2D collisionVal;
+    /** Information about the collided hitbox. */
+    CollidedHitboxInfo collidedHitbox;
+    /** Pointer to the next node on the list. */
     CollisionList * next;
 };
 
@@ -66,7 +84,7 @@ struct CollisionList {
  * 
  * @param ray Ray2D
  * @param hitbox Rectangle
- * @return RayCollision2D
+ * @return Information about the collision.
  * 
  * ? @note Important to check the timeHit (-n, -1, 0, +1 or +n) of the returned collision
  *              even if the collision.hit is true.
@@ -81,7 +99,7 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox);
  * @param hitboxIn Rectangle
  * @param direction Vector2
  * @param hitboxTarget Rectangle
- * @return RayCollision2D
+ * @return Information about the collision.
  * 
  * ? @note Resolving the collision is still necessary. This function is only for detection.
  */
