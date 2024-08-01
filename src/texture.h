@@ -3,7 +3,6 @@
 
 #include "raylib.h"
 #include "raymath.h"
-#include <stdlib.h>
 
 //* DEFINITIONS
 #define WORLD_WIDTH 50
