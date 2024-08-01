@@ -49,6 +49,10 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
         .x = (hitbox.x + hitbox.width - ray.origin.x) / ray.direction.x,
         .y = (hitbox.y + hitbox.height - ray.origin.y) / ray.direction.y
     };
+
+    // Check for cases in which you divide by zero because it's too close to the target.
+    if(nearColTime.x != nearColTime.x || nearColTime.y != nearColTime.y) return collision;
+    if(farColTime.x != farColTime.x || farColTime.y != farColTime.y) return collision;
     
     // Sort the collision point in case they are in different quadrants
     // instead of the origin quadrant (0,0)
