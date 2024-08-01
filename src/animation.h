@@ -1,8 +1,6 @@
 #ifndef ANIMATION_H_
 #define ANIMATION_H_
 
-#include "raylib.h"
-#include "raymath.h"
 #include "texture.h"
 #include "timer.h"
 

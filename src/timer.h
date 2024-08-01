@@ -1,7 +1,9 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include <stdlib.h>
+#include "raylib.h"
+#include "raymath.h"
+#include "stdlib.h"
 
 //-----------------------------------------
 //* STUCTURES

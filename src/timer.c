@@ -1,5 +1,3 @@
-#include "raylib.h"
-#include "raymath.h"
 #include "timer.h"
 
 void StartTimer(Timer* timer, double lifetime) {

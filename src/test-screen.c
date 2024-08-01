@@ -4,8 +4,6 @@
  * //////////////////////////////////////////////////////////////////////////
  */
 
-#include "raylib.h"
-#include "raymath.h"
 #include "screen.h"
 #include "collision.h"
 

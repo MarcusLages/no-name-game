@@ -1,5 +1,3 @@
-#include "raylib.h"
-#include "raymath.h"
 #include "collision.h"
 
 //* DEFINITIONS

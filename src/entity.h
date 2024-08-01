@@ -1,8 +1,6 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "raylib.h"
-#include "raymath.h"
 #include "animation.h"
 #include "collision.h"
 

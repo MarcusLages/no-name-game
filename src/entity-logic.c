@@ -1,5 +1,3 @@
-#include "raylib.h"
-#include "raymath.h"
 #include "entity.h"
 
 RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget) {}

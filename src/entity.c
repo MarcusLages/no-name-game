@@ -1,4 +1,4 @@
-#include "entities.h"
+#include "entity.h"
 
 //* FUNCTION PROTOTYPES
 
