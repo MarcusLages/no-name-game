@@ -135,8 +135,7 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
     // After the ray collision is done, checks if the time of the collision is less than one.
     // Which means if the ray gets to the hitboxTarget on the actual direction Vector2 or if it's
     // just in the direction of the target and will collide later.
-    if(collision.timeHit <= 1) collision.hit = true;
-    else collision.hit = false;
+    if(collision.hit == false || collision.timeHit > 1) collision.hit = false;
 
     return collision;
 
