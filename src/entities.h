@@ -134,7 +134,7 @@ extern Entity player;
 /**
  * Constructs an instance of an Animation struct and returns it.
  * 
- * ! @attention This function is responsible for creating the animation, animation.reactangles, and animation.timer in the heap.
+ * ! @note This function is responsible for creating the animation, animation.reactangles, and animation.timer in the heap.
  * 
  * @param fps the rate at which the sprite rectangles are updated.
  * @param tileWidth the width of a single tile.
@@ -142,8 +142,10 @@ extern Entity player;
  * @param textureFileType the type of texture as a TextureFile.
  * @param tiles the sprite texture as a Texture2D.
  * @returns a pointer to an animation in memory.
+ * 
+ * ! @attention returns NULL if given an invalid textureType.
  */
-Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureFileType, Texture2D tiles);
+Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D tiles);
 
 /**
  * Responsible for rendering the entity with the specified animation.
@@ -155,6 +157,8 @@ Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile t
  * @param xOffset x-direction pixel offset from the current x of the entity.
  * @param yOffset y-direction pixel offset from the current y of the entity.
  * @param rotation the rotation amount as a float.
+ * 
+ * ! @attention returns if given either a NULL entity or animation.
  */
 void AnimationRender(Entity *entity, Animation *animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation);
@@ -163,9 +167,11 @@ void AnimationRender(Entity *entity, Animation *animation, int entityWidth,
  * Responsible for unloading an animation by unallocating the memory 
  * used to store the rectangles and the timer in an animation.
  * 
- * ! @attention This function frees the memory of animation.rectangles, animation.timer and the animation.
+ * ! @note This function frees the memory of animation.rectangles, animation.timer and the animation.
  * 
  * @param animation the animation to unallocate.
+ * 
+ * ! @attention returns if given a NULL animation.
  */
 void AnimationUnload(Animation *animation);
 

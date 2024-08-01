@@ -26,7 +26,9 @@ typedef enum TextureFile {
     TILE_PLAYER_IDLE,
     TILE_PLAYER_MOVE,
     TILE_PLAYER_ATTACK,
-    TILE_ENEMY
+    TILE_ENEMY_IDLE,
+    TILE_ENEMY_MOVE,
+    TILE_ENEMY_ATTACK
 } TextureFile;
 
 //* GLOBAL VARIABLES
