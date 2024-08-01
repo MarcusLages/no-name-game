@@ -28,10 +28,16 @@ typedef struct RectEntity {
 RectEntity examples[10];
 Ray2D mouse;
 float deltaTime;
+// Linked list of the collisions that ocurred in this update
+CollisionList * collisionList;
 
 void TestScreenStartup() {
     // Setup the current screen.
     currentScreen = TEST_SCREEN;
+    
+    // ! IMPORTANT
+    // Initializes the pointer to NULL.
+    collisionList = NULL;
 
     examples[0] = (RectEntity) {
         .rec = (Rectangle) {
@@ -90,6 +96,7 @@ void TestScreenStartup() {
 }
 
 void TestScreenUpdate() {
+    // Delta time = time between frames, used to maintain consistent speed/velocity
     deltaTime = GetFrameTime();
 
     // * Get direction Vector2 relative to the origin point of the Rectangle (middle)
@@ -116,9 +123,31 @@ void TestScreenUpdate() {
         //      ignores collisions behind the hitboxIn rectangle
         // = 0: considers the collision in which both rectangles are touching each other
         if(collision.hit == true && collision.timeHit >= 0) {
+            // If a collision appears, instead of instantly resolving the collision,
+            // adds the collided hitbox index to a collision list.
+            if(collisionList == NULL)
+                collisionList = CreateCollisionList(i, collision.timeHit);
+            else
+                AddCollisionNode(collisionList, i, collision.timeHit);
+        }
+    }
+
+    //* Sorts the collision in terms of closest to furthest collision hitbox (smaller to bigger hitTime)
+    SortCollisionList(collisionList);
+
+    //* Resolves the collisions from closest to furthest collision.
+    CollisionList * resolvingNode = collisionList;
+    while(resolvingNode != NULL) {
+        RayCollision2D collision;
+        collision = HitboxCollision(examples[0].rec, examples[0].dir, examples[resolvingNode->collidedHitbox.index].rec);
+        if(collision.hit == true && collision.timeHit >= 0) {
+            //* Formula to recalculate the direction vector according to the collision.
+            // A force is added in the direction of contact normal vector of the collision proportional to:
+            // the force of the direction vector in that direction and the "timeHit" of collision.
             examples[0].dir.x += collision.normalVector.x * ABS(examples[0].dir.x) * (1 - collision.timeHit);
             examples[0].dir.y += collision.normalVector.y * ABS(examples[0].dir.y) * (1 - collision.timeHit);
         }
+        resolvingNode = resolvingNode->next;
     }
 
     // * Moves the rectangle according to the direction Vector 2 * deltaTime (modularity)
@@ -126,14 +155,17 @@ void TestScreenUpdate() {
     examples[0].rec.y += examples[0].dir.y * deltaTime;
 }
 
-void TestScreenRender() {    
+void TestScreenRender() {
     DrawText(TextFormat("Mouse vector direction: (%.2f, %.2f)", examples[0].dir.x, examples[0].dir.y), 100, 300, 15, RED);
 
     for(int i = 0; i < 5; i++)
         DrawRectangleRec(examples[i].rec, examples[i].col);
-    
+
+    //* Frees the collision list in the memory
+    if(collisionList != NULL)
+        FreeCollisionList(collisionList);
+    collisionList = NULL;
 }
 
 void TestScreenUnload() {
-
 }
