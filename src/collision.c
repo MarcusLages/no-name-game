@@ -145,9 +145,73 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
 
 }
 
-static void swap(float * a, float * b) {
-    float temp;
-    temp = *a;
-    *a = *b;
-    *b = temp;
+CollisionList * CreateCollisionList(int index, float timeHit) {
+    CollisionList * newList = (CollisionList *) malloc(sizeof(CollisionList));
+    if (newList == NULL) {
+        exit(EXIT_FAILURE);
+    }
+    newList->collidedHitbox = (CollidedHitboxInfo) { index, timeHit };
+    newList->next = NULL;
+    return newList;
+}
+
+void AddCollisionNode(CollisionList * head, int index, float timeHit) {
+    CollisionList * currentNode;
+    CollisionList * newNode;
+
+    currentNode = head;
+
+    newNode = (CollisionList *) malloc(sizeof(CollisionList));
+    if (newNode == NULL) {
+        exit(EXIT_FAILURE);
+    }
+
+    newNode->collidedHitbox = (CollidedHitboxInfo) { index, timeHit };
+    newNode->next = NULL;
+
+    while(currentNode->next != NULL)
+        currentNode = currentNode->next;
+
+    currentNode->next = newNode;
+}
+
+void SortCollisionList(CollisionList * head) {
+    if(head == NULL) return;
+
+    CollisionList * currentNode;
+    CollisionList * indexNode;
+
+    currentNode = head;
+    indexNode = head->next;
+
+    while(currentNode->next != NULL) {
+        while(indexNode != NULL) {
+            if(currentNode->collidedHitbox.timeHit > indexNode->collidedHitbox.timeHit) {
+                SwapCollisionNode(currentNode, indexNode);
+            }
+
+            indexNode = indexNode->next;
+        }
+
+        currentNode = currentNode->next;
+    }
+}
+
+void FreeCollisionList(CollisionList * head) {
+    if(head == NULL) return;
+    
+    CollisionList * currentNode;
+    while(head != NULL) {
+        currentNode = head;
+        head = head->next;
+        free(currentNode);
+        currentNode = NULL;
+    }
+}
+
+static void SwapCollisionNode(CollisionList * nodeA, CollisionList * nodeB) {
+    CollidedHitboxInfo temp;
+    temp = nodeA->collidedHitbox;
+    nodeA->collidedHitbox = nodeB->collidedHitbox;
+    nodeB->collidedHitbox = temp;
 }

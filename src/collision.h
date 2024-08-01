@@ -105,4 +105,35 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox);
  */
 RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle hitboxTarget);
 
+/**
+ * Creates a linked lists for detected collisions and returns a pointer to the list.
+ * 
+ * @param collision RayCollision2D
+ * @return Pointer to the head of the CollisionList
+ */
+CollisionList * CreateCollisionList(int index, float timeHit);
+
+/**
+ * Adds a RayCollision2D to the end of the CollisionList linked list.
+ * 
+ * @param head CollisionList*
+ * @param RayCollision2D collision
+ */
+void AddCollisionNode(CollisionList * head, int index, float timeHit);
+
+/**
+ * Sorts a CollisionList linked list based on the collisionTime of the
+ * RayCollision2D in the node.
+ * 
+ * @param head CollisionList*
+ */
+void SortCollisionList(CollisionList * head);
+
+/**
+ * Frees the memory of all the nodes in the CollisionList linked list.
+ * 
+ * @param head CollisionList*
+ */
+void FreeCollisionList(CollisionList * head);
+
 #endif //!COLLISION_H
