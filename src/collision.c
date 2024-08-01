@@ -1,7 +1,6 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "collision.h"
-#include "entities.h"
 
 //* DEFINITIONS
 

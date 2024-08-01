@@ -1,4 +1,4 @@
-#include "entities.h"
+#include "player.h"
 
 // The player entity
 Entity player;
