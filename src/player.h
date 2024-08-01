@@ -1,7 +1,7 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#include "entities.h"
+#include "entity.h"
 
 /**
  * Initializes the player entity, animations, and timers. 

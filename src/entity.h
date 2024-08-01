@@ -1,5 +1,5 @@
-#ifndef ENTITIES_H
-#define ENTITIES_H
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #include "raylib.h"
 #include "raymath.h"
@@ -123,4 +123,4 @@ void EntityRender(Entity* entity, Animation* animation, int entityWidth,
 RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
 RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
 
-#endif // !ENTITIES_H
+#endif // !ENTITY_H
