@@ -1,4 +1,4 @@
-#include "timer.h"
+#include "../include/timer.h"
 
 void StartTimer(Timer* timer, double lifetime) {
     if (timer == NULL) return;

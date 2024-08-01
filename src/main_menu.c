@@ -1,4 +1,4 @@
-#include "screen.h"
+#include "../include/screen.h"
 
 #define MAX_MENU_BUTTONS 3
 

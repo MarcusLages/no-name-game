@@ -1,4 +1,4 @@
-#include "screen.h"
+#include "../include/screen.h"
 
 //* FUNCTION PROTOTYPES
 // Game life cicle functions

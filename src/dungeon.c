@@ -1,5 +1,5 @@
-#include "screen.h"
-#include "player.h"
+#include "../include/screen.h"
+#include "../include/player.h"
 
 // 2D array of type Tile for the world level
 Tile** world;

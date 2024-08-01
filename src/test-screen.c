@@ -4,8 +4,8 @@
  * //////////////////////////////////////////////////////////////////////////
  */
 
-#include "screen.h"
-#include "collision.h"
+#include "../include/screen.h"
+#include "../include/collision.h"
 
 /**
  * Macro function to get the absolute/module value of a number.

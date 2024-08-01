@@ -1,4 +1,4 @@
-#include "animation.h"
+#include "../include/animation.h"
 
 /**
  * Returns a pointer to an array of frames where each rectangle marks the 
