@@ -1,6 +1,7 @@
 #ifndef COLLISION_H
 #define COLLISION_H
 
+#include <stdlib.h>
 #include "raylib.h"
 #include "raymath.h"
 
