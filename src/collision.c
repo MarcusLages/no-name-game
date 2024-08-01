@@ -6,30 +6,22 @@
 //* DEFINITIONS
 
 /**
- * Macro function to get the max between two values.
+ * Macro to swap two number variables.
  * 
  * @param a Number
  * @param b Number
  */
-#define max(a, b) ((a > b) ? a : b)
-
-/**
- * Macro function to get the min between two values.
- * 
- * @param a Number
- * @param b Number
- */
-#define min(a, b) ((a < b) ? a : b)
+#define swap(a, b) ((a != b) ? (a += b, b = a - b, a -= b) : 0)
 
 //* FUNCTION PROTOTYPES
 
 /**
- * Swaps two float values.
+ * Swap the value of two nodes in the CollisionList linked list.
  * 
- * @param a Pointer to a float number
- * @param b Pointer to a float number
+ * @param nodeA CollisionList*
+ * @param nodeB CollisionList*
  */
-static void swap(float * a, float * b);
+static void SwapCollisionNode(CollisionList * nodeA, CollisionList * nodeB);
 
 RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
     // Initializes the collision structure with no collision hit.
@@ -60,8 +52,8 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
     
     // Sort the collision point in case they are in different quadrants
     // instead of the origin quadrant (0,0)
-    if (nearColTime.x > farColTime.x) swap(&nearColTime.x, &farColTime.x);
-    if (nearColTime.y > farColTime.y) swap(&nearColTime.y, &farColTime.y);
+    if (nearColTime.x > farColTime.x) swap(nearColTime.x, farColTime.x);
+    if (nearColTime.y > farColTime.y) swap(nearColTime.y, farColTime.y);
 
     // Checks for collision rules, if they are not met,
     // returns RayCollision2D structure with no hit
@@ -69,8 +61,8 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
         return collision;
 
     // Calculate time of collision
-    collision.timeHit = max(nearColTime.x, nearColTime.y);
-    float farTime = max(farColTime.x, farColTime.y);
+    collision.timeHit = __max(nearColTime.x, nearColTime.y);
+    float farTime = __min(farColTime.x, farColTime.y);
 
     // Rejects collisions that happen entirely before the origin point of the ray (at negative time).
     // ? NOTE: Depending on your use of ray collision, you might need to fine tune this.
