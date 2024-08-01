@@ -124,16 +124,16 @@ void LoadTextures() {
     UnloadImage(img);
 }
 
-void DrawTile(int x_pos, int y_pos, int texture_tile_x, int texture_tile_y, TextureFile tileTexture) {
+void DrawTile(int xPos, int yPos, int textureTileX, int textureTileY, TextureFile tileTexture) {
     Rectangle source = { 
-        (float) (texture_tile_x * TILE_WIDTH), 
-        (float) (texture_tile_y * TILE_HEIGHT), 
+        (float) (textureTileX * TILE_WIDTH), 
+        (float) (textureTileY * TILE_HEIGHT), 
         (float) TILE_WIDTH, 
         (float) (tileTexture > TILE_MAP ? ENTITY_TILE_HEIGHT : TILE_HEIGHT) 
         };
     Rectangle dest = { 
-        (float) x_pos, 
-        (float) y_pos, 
+        (float) xPos, 
+        (float) yPos, 
         (float) TILE_WIDTH, 
         (float) (tileTexture > TILE_MAP ? ENTITY_TILE_HEIGHT : TILE_HEIGHT) 
         };

@@ -5,6 +5,7 @@
 #include "raymath.h"
 #include "texture.h"
 #include "timer.h"
+#include "collision.h"
 
 #define ENTITY_TILE_WIDTH 16
 #define ENTITY_TILE_HEIGHT 32
@@ -131,6 +132,7 @@ extern Entity player;
 //------------------------------------------
 //* FUNCTION PROTOTYPES
 
+//* General entity sprites and visuals
 /**
  * Constructs an instance of an Animation struct and returns it.
  * 
@@ -175,7 +177,11 @@ void AnimationRender(Entity *entity, Animation *animation, int entityWidth,
  */
 void AnimationUnload(Animation *animation);
 
-// Player functions
+//* General entity logic
+RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
+RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
+
+//* Player functions
 
 /**
  * Initializes the player entity, animations, and timers. 

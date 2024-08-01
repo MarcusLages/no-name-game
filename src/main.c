@@ -42,12 +42,13 @@ static void GameStartup() {
     // Sets up initial screen to Main Menu
     currentScreen = MAIN_MENU;
     nextScreen = MAIN_MENU;
-    // currentScreen = DUNGEON;
-    // nextScreen = DUNGEON;
+    // currentScreen = TEST_SCREEN;
+    // nextScreen = TEST_SCREEN;
+
 
     // Starts up Main Menu
     MainMenuStartup();
-    // DungeonStartup();
+    // TestScreenStartup();
 }
 
 static void GameUpdate() {
@@ -61,6 +62,9 @@ static void GameUpdate() {
             case DUNGEON:
                 DungeonUnload();
                 break;
+            case TEST_SCREEN:
+                TestScreenUnload();
+                break;
             default: break;
         }
 
@@ -71,6 +75,9 @@ static void GameUpdate() {
                 break;
             case DUNGEON:
                 DungeonStartup();
+                break;
+            case TEST_SCREEN:
+                TestScreenStartup();
                 break;
             default: break;
         }
@@ -83,6 +90,9 @@ static void GameUpdate() {
                 break;
             case DUNGEON:
                 DungeonUpdate();
+                break;
+            case TEST_SCREEN:
+                TestScreenUpdate();
                 break;
             default: break;
     }
@@ -103,6 +113,9 @@ static void GameRender() {
                 DungeonRender();
                 EndMode2D();
                 break;
+            case TEST_SCREEN:
+                TestScreenRender();
+                break;
             default: break;
         }
 
@@ -117,6 +130,9 @@ static void GameClosing() {
                 break;
             case DUNGEON:
                 DungeonUnload();
+                break;
+            case TEST_SCREEN:
+                TestScreenUnload();
                 break;
             default: break;
     }

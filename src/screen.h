@@ -15,7 +15,8 @@ enum GameScreen {
     MAIN_MENU = 0,
     DUNGEON = 1,
     SETTINGS = 2,
-    PAUSE = 3
+    PAUSE = 3,
+    TEST_SCREEN = 99
 };
 typedef enum GameScreen GameScreen;
 
@@ -38,5 +39,11 @@ void DungeonStartup();
 void DungeonUpdate();
 void DungeonRender();
 void DungeonUnload();
+
+// TestScreen functions
+void TestScreenStartup();
+void TestScreenUpdate();
+void TestScreenRender();
+void TestScreenUnload();
 
 #endif // !SCREEN_H
