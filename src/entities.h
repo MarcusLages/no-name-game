@@ -3,8 +3,7 @@
 
 #include "raylib.h"
 #include "raymath.h"
-#include "texture.h"
-#include "timer.h"
+#include "animation.h"
 #include "collision.h"
 
 #define ENTITY_TILE_WIDTH 16
@@ -96,35 +95,6 @@ typedef struct Entity {
     Direction directionFace;
 } Entity;
 
-/**
- * Represents information needed for a Sprite Animation.
- * 
- * ! @attention Timer checking is not handled internally and must be handled in order to control various states.
- * 
- * ? @note - Timer must be started with StartTimer from timer.c see Timer.
- * ? @note - Each animation must be unloaded with AnimationUnload.
- */
-typedef struct Animation {
-    /** The frames per second of this animation. */
-    int fps;
-    /** The number of frames that capture each tile in texture. */
-    int numOfFrames;
-    /** 
-     * The list of frames the capture each tile's x, y, width and height in texture. 
-     * 
-     * ! @attention This pointer will point to a location in heap that must be freed.
-     */ 
-    Rectangle* frames;
-    /** The texture for this animation. */
-    Texture2D texture;
-    /** 
-     * The time for this animation.
-     * 
-     * ! @attention This pointer will point to a location in heap that must be freed.
-     */
-    Timer* timer;
-} Animation;
-
 //------------------------------------------
 //* VARIABLES
 
@@ -132,23 +102,6 @@ extern Entity player;
 
 //------------------------------------------
 //* FUNCTION PROTOTYPES
-
-//* General entity sprites and visuals
-/**
- * Constructs an instance of an Animation struct and returns it.
- * 
- * ! @note This function is responsible for creating the animation, animation.reactangles, and animation.timer in the heap.
- * 
- * @param fps the rate at which the sprite frames are updated.
- * @param tileWidth the width of a single tile.
- * @param tileHeight the height of a single tile.
- * @param textureFileType the type of texture as a TextureFile.
- * @param texture the sprite texture as a Texture2D.
- * @returns a pointer to an animation in memory.
- * 
- * ! @attention returns NULL if given an invalid textureType.
- */
-Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D texture);
 
 /**
  * Responsible for rendering the entity with the specified animation.
@@ -163,20 +116,8 @@ Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile t
  * 
  * ! @attention returns if given either a NULL entity or animation.
  */
-void AnimationRender(Entity* entity, Animation* animation, int entityWidth, 
+void EntityRender(Entity* entity, Animation* animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation);
-
-/**
- * Responsible for unloading an animation by unallocating the memory 
- * used to store the frames and the timer in an animation.
- * 
- * ! @note This function frees the memory of animation.frames, animation.timer and the animation.
- * 
- * @param animation the animation to unallocate.
- * 
- * ! @attention returns if given a NULL animation.
- */
-void AnimationUnload(Animation* animation);
 
 //* General entity logic
 RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
