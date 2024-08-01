@@ -1,6 +1,8 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+#include <stdlib.h>
+
 //-----------------------------------------
 //* STUCTURES
 
@@ -28,7 +30,8 @@ typedef struct Timer {
  * @param timer the timer to start.
  * @param lifetime the life of the timer in seconds.
  * 
- * ! @attention declaring a Timer with a lifeTime of -1 creates a timer that lasts for the lifetime of the game.
+ * ? @note declaring a Timer with a lifeTime of -1 creates a timer that lasts for the lifetime of the game.
+ * ! @attention returns if given a NULL pointer.
  */
 void StartTimer(Timer *timer, double lifetime);
 
@@ -37,6 +40,8 @@ void StartTimer(Timer *timer, double lifetime);
  * 
  * @param timer the timer to check.
  * @returns true if the timer is done false otherwise.
+ * 
+ * ! @attention returns -1 if given a NULL pointer.
  */
 bool TimerDone(Timer *timer);
 
@@ -45,6 +50,8 @@ bool TimerDone(Timer *timer);
  * 
  * @param timer the timer to check.
  * @returns the time elaspsed.
+ * 
+ * ! @attention returns -1.0 if given a NULL pointer.
  */
 double GetElapsedTime(Timer *timer);
 
@@ -52,7 +59,9 @@ double GetElapsedTime(Timer *timer);
  *Returns the time remaining with the specified timer.
  * 
  * @param timer the timer to check.
- * @returns the time remaining.
+ * @returns the time remaining. Returns INFINITY if the timer was started with -1.0f (infinite timer).
+ * 
+ * ! @attention returns -1.0 if given a NULL pointer.
  */
 double TimeRemaining(Timer *timer);
 
