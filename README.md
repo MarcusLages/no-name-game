@@ -1,6 +1,6 @@
 # no-name-game
-A simple 2D dungeon crawler game coded in C using the Raylib library.
-Our focus is creating 
+A simple 2D dungeon crawler game coded in C using the Raylib library (https://github.com/raysan5/raylib).
+Our focus is using to exercise our knowledge in C, data structures, game programming fundamentals, code design patterns, etc.
 
 # Programmers
 Marcus Lages (@MarcusLages)
