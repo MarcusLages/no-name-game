@@ -1,12 +1,12 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+#include <stdlib.h>
 #include "raylib.h"
 #include "raymath.h"
-#include <stdlib.h>
 
-//-----------------------------------------
-//* STUCTURES
+//* -----------------------------------------
+//* STRUCTS
 
 /**
  * Represents a timer.
@@ -23,7 +23,7 @@ typedef struct Timer {
     double lifeTime;
 } Timer;
 
-//-----------------------------------------
+//* -----------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**

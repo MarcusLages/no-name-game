@@ -1,18 +1,24 @@
 #include "../include/player.h"
 
-// The player entity
+//* ------------------------------------------
+//* GLOBAL VARIABLES
+
 Entity player;
 
-//* Player Animations
-
-// The animation for an idle player
 Animation* idlePlayerAnimation;
-
-// The animation for the player moving 
-Animation* movingPlayerAnimation;
-
-// The animation for a player attach
+Animation* movingPlayerAnimation; 
 Animation* attackPlayerAnimation;
+
+//* ------------------------------------------
+//* FUNCTION PROTOTYPES
+
+/**
+ * Renders the player attack animation based off of it's Direction.
+ */
+static void RenderPlayerAttack();
+
+//* ------------------------------------------
+//* FUNCTION IMPLEMENTATIONS
 
 void PlayerStartup() {
     player.x = 0;
@@ -121,7 +127,7 @@ void PlayerRender() {
     }
 }
 
-void RenderPlayerAttack() {
+static void RenderPlayerAttack() {
     switch (player.directionFace) {
         case RIGHT:
             EntityRender(&player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
