@@ -128,6 +128,8 @@ extern Entity player;
  * @param xOffset       X-direction pixel offset from the current x of the entity.
  * @param yOffset       Y-direction pixel offset from the current y of the entity.
  * @param rotation      Rotation amount as a float.
+ * 
+ * ? @note rotation rotates the animation relative to the (entity.x + xOffset), (entity.y + yOffset)
  */
 void EntityRender(Entity* entity, Animation* animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation);

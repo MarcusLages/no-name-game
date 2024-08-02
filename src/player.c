@@ -154,20 +154,28 @@ static void RenderPlayerAttack() {
         ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
     switch (player.directionFace) {
         case RIGHT:
-            EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
-                32, 0, 90.0f);
+            EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
+                TEMP_ATTACK_WIDTH + 2, TEMP_ATTACK_HEIGHT + 6, 180.0f);
+            // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+            // 32, 0, 90.0f);
             break;
         case DOWN:
-            EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
-                25, 48, 180.0f);
+            EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, 
+                -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 40, TEMP_ATTACK_HEIGHT + 16, -90.0f);
+            // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+            //     25, 48, 180.0f);
             break;
         case LEFT:
-            EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
-                16, 0, 90.0f);
+            EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+                TEMP_ATTACK_WIDTH - 48, TEMP_ATTACK_HEIGHT - 26, 0.0f);
+            // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
+            // 16, 0, 90.0f);
             break;
         case UP:
-            EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
-                -10, 0, 0.0f);
+            EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, 
+                -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 40, TEMP_ATTACK_HEIGHT - 6, -90.0f);
+            //  EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+            //     -10, 0, 0.0f);
             break;
         default:
             break;
