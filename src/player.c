@@ -149,6 +149,9 @@ void PlayerRender() {
 }
 
 static void RenderPlayerAttack() {
+    // Rendering idle animation of player as the player should not move while attacking.
+    EntityRender(&player, &idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
+        ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
     switch (player.directionFace) {
         case RIGHT:
             EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
@@ -169,9 +172,6 @@ static void RenderPlayerAttack() {
         default:
             break;
     }
-    // Rendering idle animation of player as the player should not move while attacking.
-    EntityRender(&player, &idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
-        ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
 }
 
 void PlayerUnload() {
