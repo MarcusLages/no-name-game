@@ -79,7 +79,9 @@ double GetElapsedTime(Timer* timer);
  * 
  * @param timer Timer to check.
  * 
- * @returns Time remaining. Returns INFINITY if the timer was started with -1.0f (infinite timer).
+ * @returns Time remaining. 
+ * 
+ * ? @note Returns INFINITY if the timer was started with -1.0f (infinite timer).
  */
 double TimeRemaining(Timer* timer);
 
