@@ -1,5 +1,8 @@
 #include "../include/timer.h"
 
+//* ------------------------------------------
+//* FUNCTION IMPLEMENTATIONS
+
 void StartTimer(Timer* timer, double lifetime) {
     if (timer == NULL) return;
     timer->startTime = GetTime();

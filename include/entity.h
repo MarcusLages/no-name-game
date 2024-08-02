@@ -15,22 +15,22 @@
 #define TEMP_ATTACK_WIDTH 32
 #define TEMP_ATTACK_HEIGHT 32
 
-//------------------------------------------
+//* ------------------------------------------
 //* ENUMS
 
 /**
- * Enum for the action state of entities for animation and properties.
+ * Enum for the action state of entities.
  * 
  * @param IDLE      0
  * @param MOVING    1
  * @param ATTACKING 2
  */
 typedef enum GameState {
-    /** Highlights the idle state of an entity. */
+    /** The idle state of an entity. */
     IDLE = 0,
-    /** Highlights the moving state of an entity. */
+    /** The moving state of an entity. */
     MOVING,
-    /** Highlights the attacking state of an entity. */
+    /** The attacking state of an entity. */
     ATTACKING
 } GameState;
 
@@ -43,18 +43,18 @@ typedef enum GameState {
  * @param UP    3
  */
 typedef enum Direction {
-    /** Indicates the entity is facing right. */
+    /** The entity is facing right. */
     RIGHT = 0,
-    /** Indicates the entity is facing down. */
+    /** The entity is facing down. */
     DOWN,
-    /** Indicates the entity is facing left. */
+    /** The entity is facing left. */
     LEFT,
-    /** Indicates the entity is facing up. */
+    /** The entity is facing up. */
     UP
 } Direction;
 
-//------------------------------------------
-//* Structures
+//* ------------------------------------------
+//* STRUCTS
 
 /**
  * Structure to represent an entity (player / enemy).
@@ -63,7 +63,7 @@ typedef enum Direction {
  * @param y              int
  * @param speed          int
  * @param health         int
- * @param faceValue           int
+ * @param faceValue      int
  * @param direction      Vector2
  * @param state          GameState
  * @param directionFace  Direction
@@ -75,49 +75,52 @@ typedef enum Direction {
  *  - 1 indicates the character is facing EAST (RIGHT) (DEFAULT CASE)
  */
 typedef struct Entity {
-    /** The x-position of the entity. */
+    /** X-position of the entity. */
     int x;
-    /** The y-position of the entity. */
+    /** Y-position of the entity. */
     int y;
-    /** The speed the entity moves at. */
+    /** Speed the entity moves at. */
     int speed;
-    /** The health of the entity. */
+    /** Health of the entity. */
     int health;
     /** The faceValue of the entity (right, left) */
     int faceValue;
-    /** The directional movement of the entity. */
+    /** Directional movement of the entity. */
     Vector2 direction;
-    /** The GameState of the entity. */
+    /** GameState of the entity. */
     GameState state;
-    /** The Direction the entity is facing. (right, down, left, up) */
+    /** Direction the entity is facing. (right, down, left, up) */
     Direction directionFace;
 } Entity;
 
-//------------------------------------------
-//* VARIABLES
+//* ------------------------------------------
+//* GLOBAL VARIABLES
 
+/** The player entity. */
 extern Entity player;
 
-//------------------------------------------
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**
  * Responsible for rendering the entity with the specified animation.
  * 
- * @param entity the entity to render.
- * @param animation the animation to apply to the entity.
- * @param entityWidth the width of the entity.
- * @param entityHeight the height of the entity.
- * @param xOffset x-direction pixel offset from the current x of the entity.
- * @param yOffset y-direction pixel offset from the current y of the entity.
- * @param rotation the rotation amount as a float.
- * 
  * ! @attention returns if given either a NULL entity or animation.
+ * 
+ * @param entity        Entity to render.
+ * @param animation     Animation to apply to the entity.
+ * @param entityWidth   Width of the entity.
+ * @param entityHeight  Height of the entity.
+ * @param xOffset       X-direction pixel offset from the current x of the entity.
+ * @param yOffset       Y-direction pixel offset from the current y of the entity.
+ * @param rotation      Rotation amount as a float. * 
  */
 void EntityRender(Entity* entity, Animation* animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation);
 
+//* ------------------------------------------
 //* General entity logic
+
 RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
 RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
 

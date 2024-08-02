@@ -3,6 +3,21 @@
 
 #include "entity.h"
 
+//* ------------------------------------------
+//* GLOBAL VARIABLES
+
+/** The animation for an idle player. */
+extern Animation* idlePlayerAnimation;
+
+/** The animation for the player moving. */
+extern Animation* movingPlayerAnimation;
+
+/** The animation for a player attack. */
+extern Animation* attackPlayerAnimation;
+
+//* ------------------------------------------
+//* FUNCTION PROTOTYPES
+
 /**
  * Initializes the player entity, animations, and timers. 
  * 
@@ -27,11 +42,6 @@ void PlayerAttack();
  * Renders the player animation based off of it's GameState.
  */
 void PlayerRender();
-
-/**
- * Renders the player attack animation based off of it's Direction.
- */
-void RenderPlayerAttack();
 
 /**
  * Unloads all the animations associated with the player entity.
