@@ -6,7 +6,7 @@
 #include "raymath.h"
 
 //* -----------------------------------------
-//* STRUCTS
+//* STRUCTURES
 
 /**
  * Represents a timer.

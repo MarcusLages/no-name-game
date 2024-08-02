@@ -56,7 +56,6 @@ Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile t
     return animation;
 }
 
-
 void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, 
     float rotation) {
     if (TimerDone(animation->timer) || animation == NULL) return; 

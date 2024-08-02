@@ -1,5 +1,6 @@
 #include "../include/collision.h"
 
+//* ------------------------------------------
 //* DEFINITIONS
 
 /**
@@ -10,6 +11,7 @@
  */
 #define swap(a, b) ((a != b) ? (a += b, b = a - b, a -= b) : 0)
 
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**
@@ -19,6 +21,9 @@
  * @param nodeB CollisionNode*
  */
 static void SwapCollisionNode(CollisionNode* nodeA, CollisionNode* nodeB);
+
+//* ------------------------------------------
+//* FUNCTION IMPLEMENTATIONS
 
 RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
     // Initializes the collision structure with no collision hit.

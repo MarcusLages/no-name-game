@@ -5,7 +5,7 @@
 #include "timer.h"
 
 //* ------------------------------------------
-//* STRUCTS
+//* STRUCTURES
 
 /**
  * Represents a Sprite Animation.

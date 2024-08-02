@@ -1,19 +1,12 @@
 #include "../include/screen.h"
 
+//* ------------------------------------------
+//* DEFINITIONS
+
+/** Number of buttons displayed on main menu screen. */
 #define MAX_MENU_BUTTONS 3
 
-//* FUNCTIONS PROTOTYPES
-
-/** 
- * Used to return the x position that a component should have to be
- * centered on the screen based on its width.
- * 
- * @param componentWidth
- * @return Centered x position the component should have 
- * 
-*/
-static int CenterComponentX(int componentWidth);
-
+//* ------------------------------------------
 //* ENUMERATIONS
 
 /**
@@ -29,18 +22,37 @@ typedef enum MainMenuOptions {
     EXIT_BUTTON
 } MainMenuOptions;
 
-//* VARIABLES
+//* ------------------------------------------
+//* MODULAR VARIABLES
 
 // TODO: Change variables to not be global.
-// Array with all button text options for the main menu.
-char mainMenuOptionsText[MAX_MENU_BUTTONS][8] = {"Start", "Options", "Exit"};
+/** Array with all button text options for the main menu. */
+static char mainMenuOptionsText[MAX_MENU_BUTTONS][8] = {"Start", "Options", "Exit"};
 
-// Button box array
-Rectangle mainMenuButtonBox[MAX_MENU_BUTTONS];
+/** Button box array */
+static Rectangle mainMenuButtonBox[MAX_MENU_BUTTONS];
 
-// Represents the index of the clicked button.
-// ? (-1) represents no button clicked
-int hoveredButton;
+/**
+ * Represents the index of the clicked button.
+ * ? (-1) represents no button clicked
+ */
+static int hoveredButton;
+
+//* ------------------------------------------
+//* FUNCTIONS PROTOTYPES
+
+/** 
+ * Used to return the x position that a component should have to be
+ * centered on the screen based on its width.
+ * 
+ * @param componentWidth
+ * @return Centered x position the component should have 
+ * 
+*/
+static int CenterComponentX(int componentWidth);
+
+//* ------------------------------------------
+//* FUNCTION IMPLEMENTATIONS
 
 void MainMenuStartup() {
     // Sets up currentScreen

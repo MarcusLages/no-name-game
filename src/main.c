@@ -1,24 +1,35 @@
 #include "../include/screen.h"
 
-//* FUNCTION PROTOTYPES
-// Game life cicle functions
+//* ------------------------------------------
+//* GLOBAL VARIABLES
 
-static void GameStartup();  
-static void GameUpdate();
-static void GameRender();
-static void GameClosing();
-
-//* VARIABLES
-// Global variables
+/** Camera object used in non-menu screens. */
 Camera2D camera;
 
-// Variable for checking current screen that needs to be updated/rendered.
+/** Current screen the game will be displaying. */
 GameScreen currentScreen;
 
-// Variable for checking next screen that needs to be transitioned into.
+/** Next screen the game will be displaying (used for transitions and loading new screens). */
 GameScreen nextScreen;
 
-// Entry point for the game.
+//* ------------------------------------------
+//* FUNCTION PROTOTYPES
+
+//* Game life cicle functions
+
+/** Starts and loads all initial game resources (window, framerate, camera, etc.). */
+static void GameStartup();
+/** Updates current game state. */
+static void GameUpdate();
+/** Renders current game state on the screen. */
+static void GameRender();
+/** Unloads (frees memory of) all currently used game resources and closes game window and task. */
+static void GameClosing();
+
+//* ------------------------------------------
+//* FUNCTION IMPLEMENTATIONS
+
+/** Entry point for the game. */
 int main() {
     GameStartup();
 

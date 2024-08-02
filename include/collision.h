@@ -5,6 +5,9 @@
 #include "raylib.h"
 #include "raymath.h"
 
+//* ------------------------------------------
+//* STRUCTURES
+
 /**
  * Struct representing a 2D ray with origin and direction.
  * 
@@ -80,6 +83,7 @@ struct CollisionNode {
     CollisionNode* next;
 };
 
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**

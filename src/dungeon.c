@@ -1,13 +1,16 @@
 #include "../include/screen.h"
 #include "../include/player.h"
 
-// 2D array of type Tile for the world level
+//* ------------------------------------------
+//* GLOBAL VARIABLES
+
+/** 2D array of type Tile for the world level (texture.h) */ 
 Tile** world;
 
-// A reference to the game's tilemap
+/** A reference to the game's tilemap (texture.h) */
 Texture2D* textures;
 
-//------------------------------------------
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**
@@ -19,6 +22,9 @@ static void StartCamera();
  * Loads all of the textures required for the dungeon by populating the array of textures.
  */
 static void LoadTextures();
+
+//* ------------------------------------------
+//* FUNCTION IMPLEMENTATIONS
 
 void DungeonStartup() {
     // Sets the current screen 

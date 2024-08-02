@@ -1,9 +1,6 @@
 #include "../include/entity.h"
 
 //* ------------------------------------------
-//* FUNCTION PROTOTYPES
-
-//* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
 void EntityRender(Entity* entity, Animation* animation, int entityWidth, 

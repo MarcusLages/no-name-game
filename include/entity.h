@@ -18,7 +18,7 @@
 #define TEMP_ATTACK_HEIGHT 32
 
 //* ------------------------------------------
-//* ENUMS
+//* ENUMERATIONS
 
 /**
  * Enum for the action state of entities.
@@ -56,19 +56,19 @@ typedef enum Direction {
 } Direction;
 
 //* ------------------------------------------
-//* STRUCTS
+//* STRUCTURES
 
 /**
  * Structure to represent an entity (player / enemy).
  * 
- * @param x              int
- * @param y              int
- * @param speed          int
- * @param health         int
- * @param faceValue      int
- * @param direction      Vector2
- * @param state          GameState
- * @param directionFace  Direction
+ * @param x              X coordinate on the screen
+ * @param y              Y coordinate on the screen
+ * @param speed          Scalar speed
+ * @param health         Health points
+ * @param faceValue      Entity is turned to right or left
+ * @param direction      Direction vector of the movement/velocity
+ * @param state          Action state
+ * @param directionFace  Direction entity is facing to (R, D, L, U)
  * 
  * @note Face must be either 1 or -1 where:
  * 
@@ -87,7 +87,7 @@ typedef struct Entity {
     int health;
     /** The faceValue of the entity (right, left) */
     int faceValue;
-    /** Directional movement of the entity. */
+    /** Directional movement vector of the entity. */
     Vector2 direction;
     /** GameState of the entity. */
     GameState state;
