@@ -41,7 +41,7 @@ static void RenderPlayerAttack();
 void PlayerStartup() {
     player.x = 0;
     player.y = 0;
-    player.speed = 4;
+    player.speed = 300;
     player.health = 1;
     player.direction = (Vector2) {0, 0};
     player.faceValue = 1;
@@ -80,6 +80,8 @@ void PlayerStartup() {
 void PlayerMovement() {
     // Ensures the player cannot move while attacking   
     if (player.state == ATTACKING) return; 
+
+    float deltaTime = GetFrameTime();
     player.direction = (Vector2) {0, 0};
 
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
@@ -111,9 +113,8 @@ void PlayerMovement() {
 
     player.direction = Vector2Normalize(player.direction);
 
-    // TODO: add delta time
-    player.x += player.direction.x * player.speed;
-    player.y += player.direction.y * player.speed;
+    player.x += player.direction.x * player.speed * deltaTime;
+    player.y += player.direction.y * player.speed * deltaTime;
 }
 
 void PlayerAttack() {
