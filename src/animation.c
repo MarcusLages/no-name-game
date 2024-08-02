@@ -48,7 +48,7 @@ Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile t
 }
 
 
-void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, 
+void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, 
     float rotation) {
     if (TimerDone(animation->timer) || animation == NULL) return; 
 
@@ -60,7 +60,7 @@ void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int en
     DrawTexturePro(animation->texture, source, dest, (Vector2) { 0, 0 }, rotation, WHITE);
 }
 
-void AnimationUnload(Animation *animation) {
+void AnimationUnload(Animation* animation) {
     if (animation == NULL) return;
 
     // freeing animation's attributes

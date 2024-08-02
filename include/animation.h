@@ -68,7 +68,7 @@ Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile t
  * 
  * ! @attention returns if given a NULL animation.
  */
-void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, float rotation);
+void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, float rotation);
 
 /**
  * Responsible for unloading an animation by unallocating the memory 

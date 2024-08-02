@@ -18,7 +18,7 @@
  * @param nodeA CollisionNode*
  * @param nodeB CollisionNode*
  */
-static void SwapCollisionNode(CollisionNode * nodeA, CollisionNode * nodeB);
+static void SwapCollisionNode(CollisionNode* nodeA, CollisionNode* nodeB);
 
 RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
     // Initializes the collision structure with no collision hit.
@@ -142,8 +142,8 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
 
 }
 
-CollisionNode * CreateCollisionList(int index, float timeHit) {
-    CollisionNode * newList = (CollisionNode *) malloc(sizeof(CollisionNode));
+CollisionNode* CreateCollisionList(int index, float timeHit) {
+    CollisionNode* newList = (CollisionNode*) malloc(sizeof(CollisionNode));
     if (newList == NULL) {
         exit(EXIT_FAILURE);
     }

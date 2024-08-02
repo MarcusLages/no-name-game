@@ -2,7 +2,7 @@
 
 //* FUNCTION PROTOTYPES
 
-void EntityRender(Entity *entity, Animation *animation, int entityWidth, 
+void EntityRender(Entity* entity, Animation* animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation) {
     if (entity == NULL || animation == NULL) return;
     DrawAnimation(
