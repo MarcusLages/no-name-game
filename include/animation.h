@@ -33,16 +33,16 @@ typedef struct Animation {
     int numOfFrames;
     /** 
      * ! @attention This pointer will point to a location in heap that must be freed.
+     * 
      * The list of frames the capture each tile's x, y, width and height in texture.
      */ 
     Rectangle* frames;
     /** The texture for this animation. */
     Texture2D texture;
     /** 
-     * ! @attention This pointer will point to a location in heap that must be freed.
      * The time for this animation. 
      */
-    Timer* timer;
+    Timer timer;
 } Animation;
 
 //* ------------------------------------------
@@ -51,8 +51,8 @@ typedef struct Animation {
 /**
  * Constructs an instance of an Animation in memory and returns a pointer.
  * 
- * ! @attention returns NULL if given an invalid textureType.
- * ! @note This function is responsible for creating the animation, animation.reactangles, and animation.timer in the heap.
+ * ! @attention returns an empty Animation if given an invalid textureType.
+ * ! @note This function is responsible for creating animation.reactangles in the heap.
  * 
  * @param fps               Rate at which the sprite frames are updated.
  * @param tileWidth         Width of a single tile.
@@ -60,9 +60,9 @@ typedef struct Animation {
  * @param textureFileType   Type of texture as a TextureFile.
  * @param texture           Sprite texture as a Texture2D.
  * 
- * @returns A pointer to an animation in memory. 
+ * @returns An Animation. 
  */
-Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D texture);
+Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D texture);
 
 /**
  * Draws the provided animation at the destination rectangle. 
@@ -86,7 +86,7 @@ void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int en
  * used to store the frames and the timer in an animation.
  * 
  * ! @attention returns if given a NULL animation.
- * ! @note This function frees the memory of animation.frames, animation.timer and the animation.
+ * ! @note This function frees the memory of animation.frames.
  * 
  * @param animation The animation to unallocate.
  */

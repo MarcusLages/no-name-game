@@ -43,35 +43,29 @@ static int FindNumOfTiles(int tileWidth, TextureFile textureType);
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
-Animation* CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D texture) {
-    if (textureType < TILE_MAP || textureType > TILE_ENEMY_ATTACK) return NULL;
+Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D texture) {
+    //! Returning a blank animation if an incorrect textureType is given.
+    if (textureType < TILE_MAP || textureType > TILE_ENEMY_ATTACK) return (Animation) {};
 
     int numOfTiles = FindNumOfTiles(tileWidth, textureType);
     Rectangle *frames = GetSpriteRectangles(numOfTiles, tileWidth, tileHeight);
-    Timer *timer = (Timer*) malloc(sizeof(Timer));
-
-    /** Creating an animation. NOTE: timer is not started only an instance is created. */     
-    Animation *animation = (Animation*) malloc(sizeof(Animation));
-
-    // If allocation fails program exits.
-    if (timer == NULL || animation == NULL) exit(EXIT_FAILURE);
     
-    *animation = (Animation) {
+    Animation animation = (Animation) {
         .fps = fps,
         .numOfFrames = numOfTiles,
         .frames = frames,
-        .timer = timer,
+        .timer = (Timer) {},
         .texture = texture
     };
 
     return animation;
 }
 
-void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int entityHeight, 
+void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, 
     float rotation) {
-    if (TimerDone(animation->timer) || animation == NULL) return; 
+    if (TimerDone(&animation->timer) || animation == NULL) return; 
 
-    int idx = (int) (GetElapsedTime(animation->timer) * animation->fps) % animation->numOfFrames;
+    int idx = (int) (GetElapsedTime(&animation->timer) * animation->fps) % animation->numOfFrames;
     Rectangle source = animation->frames[idx];
 
     source.width = entityWidth;
@@ -82,21 +76,16 @@ void DrawAnimation(Animation *animation, Rectangle dest, int entityWidth, int en
 void AnimationUnload(Animation *animation) {
     if (animation == NULL) return;
 
-    // Freeing frames and timer from the animation.
+    // Freeing frames rom the animation.
     free(animation->frames);
-    free(animation->timer);
     animation->frames = NULL;
-    animation->timer = NULL;
-
-    // Freeing the animation.
-    free(animation);
     animation = NULL;
 }
 
 static Rectangle* GetSpriteRectangles(int numOfFrames, int tileWidth, int tileHeight) {
-    Rectangle *frames = (Rectangle*) malloc(sizeof(Rectangle) * numOfFrames);
+    Rectangle* frames = (Rectangle*) malloc(sizeof(Rectangle) * numOfFrames);
 
-    // If allocation fails program exits.
+    //! If allocation fails program exits.
     if (frames == NULL) exit(EXIT_FAILURE);
 
     // Populating the array.
