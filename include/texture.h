@@ -2,7 +2,6 @@
 #define TEXTURE_H
 
 #include "raylib.h"
-#include "raymath.h"
 
 //* DEFINITIONS
 #define WORLD_WIDTH 50

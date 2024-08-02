@@ -2,7 +2,6 @@
 #define SCREEN_H
 
 #include "raylib.h"
-#include "raymath.h"
 
 //* DEFINITIONS
 // Window rendering variables

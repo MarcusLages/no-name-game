@@ -63,7 +63,7 @@ typedef enum Direction {
  * @param y              int
  * @param speed          int
  * @param health         int
- * @param faceValue           int
+ * @param faceValue      int
  * @param direction      Vector2
  * @param state          GameState
  * @param directionFace  Direction
