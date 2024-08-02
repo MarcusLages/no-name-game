@@ -12,6 +12,7 @@
 
 #include "../include/screen.h"
 #include "../include/player.h"
+#include "../include/enemy.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
