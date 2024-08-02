@@ -1,3 +1,13 @@
+/***********************************************************************************************
+*
+**   player.c is responsible for implementating functions to setup a player, manage movement, and attacks. 
+**   Animations are created on setup and managed based on player movements and attack.
+*   
+*    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
+*    @version 1.0
+*
+***********************************************************************************************/
+
 #include "../include/player.h"
 
 //* ------------------------------------------
@@ -5,9 +15,17 @@
 
 Entity player;
 
-Animation* idlePlayerAnimation;
-Animation* movingPlayerAnimation; 
-Animation* attackPlayerAnimation;
+//* ------------------------------------------
+//* MODULAR VARIABLES
+
+/** The animation for an idle player. */
+static Animation* idlePlayerAnimation;
+
+/** The animation for the player moving. */
+static Animation* movingPlayerAnimation;
+
+/** The animation for a player attack. */
+static Animation* attackPlayerAnimation;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
