@@ -4,7 +4,9 @@
 #include "raylib.h"
 #include "raymath.h"
 
+//* ------------------------------------------
 //* DEFINITIONS
+
 #define WORLD_WIDTH 50
 #define WORLD_HEIGHT 50
 
@@ -13,13 +15,15 @@
 
 #define MAX_TEXTURES 5
 
-//* STRUCTURES
+//* ------------------------------------------
+//* STRUCTS
 typedef struct Tile {
     int x;
     int y;
 } Tile;
 
-//* ENUMERATIONS
+//* ------------------------------------------
+//* ENUMS
 typedef enum TextureFile {
     TILE_MAP = 0,
     TILE_PLAYER_IDLE,
@@ -30,11 +34,12 @@ typedef enum TextureFile {
     TILE_ENEMY_ATTACK
 } TextureFile;
 
+//* ------------------------------------------
 //* GLOBAL VARIABLES
 extern Tile** world;
 extern Texture2D* textures;
 
-//------------------------------------------
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**

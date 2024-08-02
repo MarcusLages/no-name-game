@@ -4,6 +4,8 @@
 #include "animation.h"
 #include "collision.h"
 
+//* ------------------------------------------
+//* DEFINITIONS
 #define ENTITY_TILE_WIDTH 16
 #define ENTITY_TILE_HEIGHT 32
 
