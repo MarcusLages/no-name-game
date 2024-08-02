@@ -1,7 +1,7 @@
 /***********************************************************************************************
 *
-**   player.c is responsible for implementating functions to setup a player, manage movement, and attacks. 
-**   Animations are created on setup and managed based on player movements and attack.
+**   player.c is responsible for implementating functions to setup a player, manage movement, 
+**   and attacks. Animations are created on setup and managed based on player movements and attack.
 *   
 *    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
 *    @version 1.0
@@ -19,13 +19,13 @@ Entity player;
 //* MODULAR VARIABLES
 
 /** The animation for an idle player. */
-static Animation* idlePlayerAnimation;
+static Animation idlePlayerAnimation;
 
 /** The animation for the player moving. */
-static Animation* movingPlayerAnimation;
+static Animation movingPlayerAnimation;
 
 /** The animation for a player attack. */
-static Animation* attackPlayerAnimation;
+static Animation attackPlayerAnimation;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -73,8 +73,8 @@ void PlayerStartup() {
         textures[TILE_PLAYER_ATTACK]);
 
     // Starting timers for both idle and moving animations
-    StartTimer(idlePlayerAnimation->timer, -1.0f);
-    StartTimer(movingPlayerAnimation->timer, -1.0f);
+    StartTimer(&idlePlayerAnimation.timer, -1.0f);
+    StartTimer(&movingPlayerAnimation.timer, -1.0f);
 }
 
 void PlayerMovement() {
@@ -119,10 +119,10 @@ void PlayerMovement() {
 void PlayerAttack() {
     if (IsKeyPressed(KEY_E)) {
         player.state = ATTACKING;
-        StartTimer(attackPlayerAnimation->timer, 0.5f);
+        StartTimer(&attackPlayerAnimation.timer, 0.5f);
     }
 
-    if (player.state == ATTACKING && TimerDone(attackPlayerAnimation->timer)) {
+    if (player.state == ATTACKING && TimerDone(&attackPlayerAnimation.timer)) {
         player.state = IDLE;
     }
 }
@@ -130,11 +130,11 @@ void PlayerAttack() {
 void PlayerRender() {
     switch (player.state) {
         case IDLE:
-            EntityRender(&player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
+            EntityRender(&player, &idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case MOVING:
-            EntityRender(&player, movingPlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
+            EntityRender(&player, &movingPlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
                 ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case ATTACKING:
@@ -148,31 +148,31 @@ void PlayerRender() {
 static void RenderPlayerAttack() {
     switch (player.directionFace) {
         case RIGHT:
-            EntityRender(&player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+            EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
                 32, 0, 90.0f);
             break;
         case DOWN:
-            EntityRender(&player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+            EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
                 25, 48, 180.0f);
             break;
         case LEFT:
-            EntityRender(&player, attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
+            EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
                 16, 0, 90.0f);
             break;
         case UP:
-            EntityRender(&player, attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+            EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
                 -10, 0, 0.0f);
             break;
         default:
             break;
     }
     // Rendering idle animation of player as the player should not move while attacking.
-    EntityRender(&player, idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
+    EntityRender(&player, &idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
         ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
 }
 
 void PlayerUnload() {
-    AnimationUnload(idlePlayerAnimation);
-    AnimationUnload(movingPlayerAnimation);
-    AnimationUnload(attackPlayerAnimation);
+    AnimationUnload(&idlePlayerAnimation);
+    AnimationUnload(&movingPlayerAnimation);
+    AnimationUnload(&attackPlayerAnimation);
 }
