@@ -132,15 +132,22 @@ static void LoadTextures() {
     textures[TILE_PLAYER_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    // temp testing for non-loop animation. This should be an attack animation
     img = LoadImage("resources/player-attack.png");
     textures[TILE_PLAYER_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    // NOTE: This tile map will be remove we must render each individual sprite. See /resources.
-    // img = LoadImage("resources/enemy-tilemap.png");
-    // textures[TILE_ENEMY] = LoadTextureFromImage(img);
-    // UnloadImage(img);
+    img = LoadImage("resources/enemy-1-idle.png");
+    textures[TILE_ENEMY_IDLE] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    img = LoadImage("resources/enemy-1-movement.png");
+    textures[TILE_ENEMY_MOVE] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    //! NOTE: player attack is used here temporailly. New asset must be found.
+    img = LoadImage("resources/player-attack.png");
+    textures[TILE_ENEMY_ATTACK] = LoadTextureFromImage(img);
+    UnloadImage(img);
 }
 
 void DrawTile(int xPos, int yPos, int textureTileX, int textureTileY, TextureFile tileTexture) {

@@ -32,7 +32,7 @@ static Animation attackEnemyAnimation;
 //* FUNCTION IMPLEMENTATIONS
 
 void EnemyStartup() {
-
+    
 }
 
 void EnemyMovement() {
@@ -48,5 +48,5 @@ void EnemyRender() {
 }
 
 void EnemyUnload() {
-    
+
 }

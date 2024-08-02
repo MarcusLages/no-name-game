@@ -28,7 +28,7 @@
 #define TILE_HEIGHT     16
 
 /** How many textures are loaded in the game.  */
-#define MAX_TEXTURES    5
+#define MAX_TEXTURES    7
 
 //* ------------------------------------------
 //* ENUMERATIONS
