@@ -1,3 +1,14 @@
+/**********************************************************************************************
+*
+**   animation.h is responsible for classifying, creating, and drawing sprite animations.
+*   
+*    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
+*    @version 1.0
+*
+*?   @note timer.h and texture.h are used.
+*
+**********************************************************************************************/
+
 #ifndef ANIMATION_H_
 #define ANIMATION_H_
 
@@ -22,14 +33,14 @@ typedef struct Animation {
     int numOfFrames;
     /** 
      * ! @attention This pointer will point to a location in heap that must be freed.
-     * The list of frames the capture each tile's x, y, width and height in texture.      * 
+     * The list of frames the capture each tile's x, y, width and height in texture.
      */ 
     Rectangle* frames;
     /** The texture for this animation. */
     Texture2D texture;
     /** 
      * ! @attention This pointer will point to a location in heap that must be freed.
-     * The time for this animation.     * 
+     * The time for this animation. 
      */
     Timer* timer;
 } Animation;

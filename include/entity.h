@@ -1,3 +1,14 @@
+/***********************************************************************************************
+*
+**   entity.h is responsible for defining properties needed for entities.
+*   
+*    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
+*    @version 1.0
+*
+*?   @note animation.h and collision.h are used.
+*
+***********************************************************************************************/
+
 #ifndef ENTITY_H
 #define ENTITY_H
 
@@ -6,6 +17,7 @@
 
 //* ------------------------------------------
 //* DEFINITIONS
+
 #define ENTITY_TILE_WIDTH 16
 #define ENTITY_TILE_HEIGHT 32
 
@@ -115,7 +127,7 @@ extern Entity player;
  * @param entityHeight  Height of the entity.
  * @param xOffset       X-direction pixel offset from the current x of the entity.
  * @param yOffset       Y-direction pixel offset from the current y of the entity.
- * @param rotation      Rotation amount as a float. * 
+ * @param rotation      Rotation amount as a float.
  */
 void EntityRender(Entity* entity, Animation* animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation);

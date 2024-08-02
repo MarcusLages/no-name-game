@@ -1,3 +1,12 @@
+/***********************************************************************************************
+*
+**   entity.c is responsible for implementating functions needed to manage entities.
+*   
+*    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
+*    @version 1.0
+*
+***********************************************************************************************/
+
 #include "../include/entity.h"
 
 //* ------------------------------------------

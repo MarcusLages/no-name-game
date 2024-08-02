@@ -1,3 +1,13 @@
+/***********************************************************************************************
+*
+**   timer.c implements functions to start a timer, check if it has completed, see time passed, 
+**   and time remaining.
+*   
+*    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
+*    @version 1.0
+*
+***********************************************************************************************/
+
 #include "../include/timer.h"
 
 //* ------------------------------------------

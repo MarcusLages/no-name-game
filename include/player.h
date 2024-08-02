@@ -1,19 +1,19 @@
+/***********************************************************************************************
+*
+**   player.h is responsible for classifying processes needed to handle the player on startup, 
+**   update, render, and unload.
+*   
+*    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
+*    @version 1.0
+*
+*?   @note entity.h is used.
+*
+***********************************************************************************************/
+
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
 #include "entity.h"
-
-//* ------------------------------------------
-//* GLOBAL VARIABLES
-
-/** The animation for an idle player. */
-extern Animation* idlePlayerAnimation;
-
-/** The animation for the player moving. */
-extern Animation* movingPlayerAnimation;
-
-/** The animation for a player attack. */
-extern Animation* attackPlayerAnimation;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -21,7 +21,7 @@ extern Animation* attackPlayerAnimation;
 /**
  * Initializes the player entity, animations, and timers. 
  * 
- * ? Timers started here are needed for the whole duration of the game.
+ * ? @note Timers started here are needed for the whole duration of the game.
  */
 void PlayerStartup();
 
@@ -33,7 +33,7 @@ void PlayerMovement();
 /**
  * Handles the player's attack.
  * 
- * ? Manages the timer for the player attack animation.
+ * ? @note Manages the timer for the player attack animation.
  * TODO: collisions, enemy health, etc..
  */
 void PlayerAttack();
