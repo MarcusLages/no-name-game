@@ -115,8 +115,14 @@ void PlayerMovement() {
 
     player.direction = Vector2Normalize(player.direction);
 
-    player.x += player.direction.x * player.speed * deltaTime;
-    player.y += player.direction.y * player.speed * deltaTime;
+    player.direction.x *= player.speed * deltaTime;
+    player.direction.y *= player.speed * deltaTime;
+
+    // PlayerWorldCollision();
+    // PlayerEnemyCollision();
+    
+    player.x += player.direction.x;
+    player.y += player.direction.y;
 }
 
 void PlayerAttack() {
