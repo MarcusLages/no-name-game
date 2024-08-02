@@ -3,8 +3,10 @@
 **   player.c is responsible for implementating functions to setup a player, manage movement, and attacks. 
 **   Animations are created on setup and managed based on player movements and attack.
 *   
-*    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
-*    @version 1.0
+*    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
+*    @version 0.1
+*
+*    @include player.h
 *
 ***********************************************************************************************/
 

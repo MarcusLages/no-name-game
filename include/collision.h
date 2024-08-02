@@ -1,3 +1,16 @@
+/**********************************************************************************************
+*
+**   collision.h is responsible for dealing with general collision detection and information
+**   for 2D rays and rectangles.
+*   
+*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+*    @version 0.1
+*
+*    @include raymath.h, raylib.h, stdlib.h
+*    @cite raylib
+*
+**********************************************************************************************/
+
 #ifndef COLLISION_H
 #define COLLISION_H
 

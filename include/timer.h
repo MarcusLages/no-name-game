@@ -2,11 +2,11 @@
 *
 **   timer.h is responsible for defining a simple timer to be easily used to time game processes.
 *   
-*    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
-*    @version 1.0
+*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+*    @version 0.1
 *
-*?   @note raymath.h and raylib.h are used.
-*?   @cite raylib
+*    @include raymath.h, raylib.h
+*    @cite raylib
 *
 ***********************************************************************************************/
 

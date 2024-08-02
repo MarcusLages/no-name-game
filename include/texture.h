@@ -1,3 +1,16 @@
+/**********************************************************************************************
+*
+**   texture.h is responsible for dealing with general texture, tile and tilemap information
+**   and display.
+*   
+*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+*    @version 0.1
+*
+*    @include raylib.h
+*    @cite raylib
+*
+**********************************************************************************************/
+
 #ifndef TEXTURE_H
 #define TEXTURE_H
 

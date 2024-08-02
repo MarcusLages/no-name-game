@@ -1,3 +1,15 @@
+/**********************************************************************************************
+*
+**   dungeon.c is responsible for dealing and assemblying all functionalities related to the
+**   dungeon game screen.
+*   
+*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+*    @version 0.1
+*
+*    @include screen.h, player.h
+*
+**********************************************************************************************/
+
 #include "../include/screen.h"
 #include "../include/player.h"
 

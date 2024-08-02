@@ -1,3 +1,17 @@
+/**********************************************************************************************
+*
+**   screen.h is responsible for dealing with screen, game stages and window related actions
+**   and settings in the game, as well as connecting all game screens through the game life
+**   cycle functions.
+*   
+*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+*    @version 0.1
+*
+*    @include raylib.h
+*    @cite raylib
+*
+**********************************************************************************************/
+
 #ifndef SCREEN_H
 #define SCREEN_H
 
@@ -9,7 +23,7 @@
 /** Window rendering variables (size and refresh rate). */
 #define SCREEN_WIDTH    1280
 #define SCREEN_HEIGHT   720
-#define FRAME_RATE      60
+#define FRAME_RATE      144
 
 //* ------------------------------------------
 //* ENUMERATIONS

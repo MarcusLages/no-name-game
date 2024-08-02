@@ -3,8 +3,10 @@
 **   timer.c implements functions to start a timer, check if it has completed, see time passed, 
 **   and time remaining.
 *   
-*    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
-*    @version 1.0
+*    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
+*    @version 0.1
+*
+*    @include timer.h
 *
 ***********************************************************************************************/
 

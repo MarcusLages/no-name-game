@@ -3,10 +3,10 @@
 **   player.h is responsible for classifying processes needed to handle the player on startup, 
 **   update, render, and unload.
 *   
-*    @authors Marcus Vinicius Lages Santos and Samarjit Bhogal
-*    @version 1.0
+*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+*    @version 0.1
 *
-*?   @note entity.h is used.
+*    @include entity.h
 *
 ***********************************************************************************************/
 

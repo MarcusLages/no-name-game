@@ -1,3 +1,16 @@
+/***********************************************************************************************
+*
+**   main.c is responsible for taking care of initializing basic core functionalities and all
+**   low-level assemblying of the code, managing the game life cycle functions, choosing which
+**   screens to load, update, render, unload and transition to.
+*   
+*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+*    @version 0.1
+*
+*    @include screen.h
+*
+***********************************************************************************************/
+
 #include "../include/screen.h"
 
 //* ------------------------------------------

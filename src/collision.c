@@ -1,3 +1,15 @@
+/**********************************************************************************************
+*
+**   collision.c is responsible to implementing functions for general collision detection and
+**   information for 2D rays and rectangles.
+*   
+*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+*    @version 0.1
+*
+*    @include collision.h
+*
+**********************************************************************************************/
+
 #include "../include/collision.h"
 
 //* ------------------------------------------
