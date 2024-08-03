@@ -67,11 +67,14 @@ void DungeonStartup() {
 
     StartCamera();
     PlayerStartup();
+    EnemyStartup();
 }
 
 void DungeonUpdate() {
     PlayerMovement();
     PlayerAttack();
+    EnemyMovement();
+    EnemyAttack();
     
     // Update camera to follow the player
     camera.target = (Vector2) {player.x + 8, player.y + 16};
@@ -90,11 +93,15 @@ void DungeonRender() {
 
     // Draw player on the screen  
     PlayerRender();
+    EnemyRender();
 }
 
 void DungeonUnload() {
     //Unloads the player sprites and animations.
     PlayerUnload();
+
+    //Unloads the enemy sprites and animations.
+    EnemyUnload();
 
     // Unloads all tiles
     for (int j = 0; j < WORLD_HEIGHT; j++) {
