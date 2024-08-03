@@ -97,5 +97,7 @@ void EnemyRender() {
 }
 
 void EnemyUnload() {
-
+    AnimationUnload(&idleEnemyAnimation);
+    AnimationUnload(&movingEnemyAnimation);
+    AnimationUnload(&attackEnemyAnimation);
 }
