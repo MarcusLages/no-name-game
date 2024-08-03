@@ -36,7 +36,7 @@ void EnemyStartup() {
     enemy.y = 10;
     enemy.speed = 300;
     enemy.health = 100;
-    enemy.direction = (Vector2) {0, 0};
+    enemy.direction = Vector2Zero();
     enemy.faceValue = 1;
     enemy.state = IDLE;
     enemy.directionFace = RIGHT;

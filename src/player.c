@@ -45,7 +45,7 @@ void PlayerStartup() {
     player.y = 0;
     player.speed = 300;
     player.health = 1;
-    player.direction = (Vector2) {0, 0};
+    player.direction = Vector2Zero();
     player.faceValue = 1;
     player.state = IDLE;
     player.directionFace = RIGHT;
@@ -79,12 +79,13 @@ void PlayerStartup() {
     StartTimer(&movingPlayerAnimation.timer, -1.0f);
 }
 
+//TODO: Movement is buggy, Vector normalization is not working properly. Player cannot move diagonally ata lower speeds.
 void PlayerMovement() {
     // Ensures the player cannot move while attacking   
     if (player.state == ATTACKING) return; 
 
     float deltaTime = GetFrameTime();
-    player.direction = (Vector2) {0, 0};
+    player.direction = Vector2Zero();
 
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
         player.direction.x++;
