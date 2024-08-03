@@ -57,9 +57,12 @@ void DungeonStartup() {
         for (int i = 0; i < WORLD_WIDTH; i++) {
             Tile tile = {
                 .x = i,
-                .y = j
+                .y = j,
+                .isCollidable = false
             };
             tiles[i] =  tile;
+
+            // TODO: Create a collidable tile linked list
         }
         world[j] = tiles;
     }   

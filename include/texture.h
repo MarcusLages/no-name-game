@@ -61,8 +61,9 @@ typedef enum TextureFile {
 /**
  * Struct representing a tile (a standard easily reproduced sprite).
  * 
- * @param x     X coordinate of the tile on the map.
- * @param y     Y coordinate of the tile on the map.
+ * @param x             X coordinate of the tile on the map.
+ * @param y             Y coordinate of the tile on the map.
+ * @param isCollidable  Checks if a tile is collidable or not.
  * 
  * ? @note Standard size of the tile can vary when using functions, but a standard
  *         size is defined as TILE_WIDTH/TILE_HEIGHT
@@ -70,6 +71,7 @@ typedef enum TextureFile {
 typedef struct Tile {
     int x;
     int y;
+    bool isCollidable;
 } Tile;
 
 //* ------------------------------------------
