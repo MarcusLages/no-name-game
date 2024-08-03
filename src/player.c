@@ -37,6 +37,17 @@ static Animation attackPlayerAnimation;
  */
 static void RenderPlayerAttack();
 
+/**
+ * Handles player collision with the world tilemap(Tile**)
+ */
+static void PlayerWorldCollision();
+
+/**
+ * TODO: Implementation + checking how to pass the list or make it global
+ * Handles player collision with the enemies list by movement.
+ */
+static void PlayerEnemyCollision();
+
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
@@ -118,12 +129,37 @@ void PlayerMovement() {
     player.direction.x *= player.speed * deltaTime;
     player.direction.y *= player.speed * deltaTime;
 
-    // PlayerWorldCollision();
-    // PlayerEnemyCollision();
+    PlayerWorldCollision();
+    PlayerEnemyCollision();
     
     player.x += player.direction.x;
     player.y += player.direction.y;
 }
+
+static void PlayerWorldCollision() {
+    if(world == NULL) return;
+
+    RayCollision2D playerCollision;
+    Rectangle tileHitbox;
+
+    // TODO: Change this to a collidable tile linked list
+    for (int j = 0; j < WORLD_HEIGHT; j++) {
+        for (int i = 0; i < WORLD_WIDTH; i++) {
+            // TODO: collision
+            if(world[j][i].isCollidable == true) {
+                tileHitbox = (Rectangle) {
+                    .x = world[j][i].x,
+                    .y = world[j][i].y,
+                    .width = TILE_WIDTH,
+                    .height = TILE_HEIGHT
+                };
+                playerCollision = EntityRectCollision(player, tileHitbox);
+            }
+        }
+    }
+}
+
+static void PlayerEnemyCollision() {}
 
 void PlayerAttack() {
     if (IsKeyPressed(KEY_E)) {
