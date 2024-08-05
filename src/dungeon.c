@@ -19,6 +19,9 @@
 /** 2D array of type Tile for the world level (texture.h) */ 
 Tile** world;
 
+/** Linked list with indexes to all the possible collidable tiles. */
+CollisionNode * collidableTiles;
+
 /** A reference to the game's tilemap (texture.h) */
 Texture2D* textures;
 
@@ -35,6 +38,11 @@ static void StartCamera();
  */
 static void LoadTextures();
 
+/**
+ * Allocates all the tiles into the world array and the collidableTiles list.
+ */
+static void InitializeTiles();
+
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
@@ -48,24 +56,14 @@ void DungeonStartup() {
     // Allocate memory for the word as a 2D array of Tile
     world = (Tile**) malloc(WORLD_WIDTH * sizeof(Tile*));
 
+    // Assign initial null value value for the collidableTiles list
+    collidableTiles = NULL;
+
     // Populating textures array with the texture images
     LoadTextures();
 
     // Allocating tiles of type Tile into 2D array
-    for (int j = 0; j < WORLD_HEIGHT; j++) {
-        Tile *tiles = (Tile*) malloc(WORLD_HEIGHT * sizeof(Tile));
-        for (int i = 0; i < WORLD_WIDTH; i++) {
-            Tile tile = {
-                .x = i,
-                .y = j,
-                .isCollidable = (j != 3) ? false : true
-            };
-            tiles[i] =  tile;
-
-            // TODO: Create a collidable tile linked list
-        }
-        world[j] = tiles;
-    }   
+    InitializeTiles();   
 
     StartCamera();
     PlayerStartup();
@@ -109,6 +107,10 @@ void DungeonUnload() {
     free(world);
     world = NULL;
 
+    // Unloads collidableTiles list
+    FreeCollisionList(collidableTiles);
+    collidableTiles = NULL;
+
     // Unloads texture array
     for(int i = 0; i < MAX_TEXTURES; i++) {
         UnloadTexture(textures[i]);
@@ -146,6 +148,28 @@ static void LoadTextures() {
     // img = LoadImage("resources/enemy-tilemap.png");
     // textures[TILE_ENEMY] = LoadTextureFromImage(img);
     // UnloadImage(img);
+}
+
+static void InitializeTiles() {
+    for (int j = 0; j < WORLD_HEIGHT; j++) {
+        Tile *tiles = (Tile*) malloc(WORLD_HEIGHT * sizeof(Tile));
+        for (int i = 0; i < WORLD_WIDTH; i++) {
+            Tile tile = {
+                .x = i,
+                .y = j,
+                .isCollidable = (j != 3) ? false : true
+            };
+            tiles[i] =  tile;
+
+            if(tile.isCollidable == true) {
+                if(collidableTiles == NULL)
+                    collidableTiles = CreateCollisionList(tile.x, tile.y, 0);
+                else
+                    AddCollisionNode(collidableTiles, tile.x, tile.y, 0);
+            }
+        }
+        world[j] = tiles;
+    }
 }
 
 void DrawTile(int xPos, int yPos, int textureTileX, int textureTileY, TextureFile tileTexture) {

@@ -150,8 +150,12 @@ void PlayerMovement() {
 static void PlayerWorldCollision() {
     if(world == NULL) return;
 
-    CollisionNode * playerCollisionList;
+    CollisionNode* playerCollisionList;
     playerCollisionList = NULL;
+
+    // TODO: Create collidableTiles list and make it external
+    // CollisionNode* collidingTile;
+    // collidingTile = collidableTiles;
 
     // TODO: Change this to a collidable tile linked list
     for (int j = 0; j < WORLD_HEIGHT; j++) {
@@ -197,7 +201,11 @@ static void PlayerWorldCollision() {
             }
             resolvingNode = resolvingNode->next;
         }
+
+        FreeCollisionList(playerCollisionList);
+        playerCollisionList = NULL;
     }
+
 }
 
 static void PlayerEnemyCollision() {}
