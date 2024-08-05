@@ -15,16 +15,30 @@
 //* FUNCTION IMPLEMENTATIONS
 
 RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget) {
+    RayCollision2D collision;
+    collision.hit = false;
+
+    if(Vector2Equals(entity.direction, Vector2Zero()))
+        return collision;
+
     Rectangle entityHitbox = (Rectangle) {
         .x = entity.x,
         .y = entity.y + ENTITY_TILE_HEIGHT / 2,
         .width = ENTITY_TILE_WIDTH,
         .height = ENTITY_TILE_HEIGHT / 2
     };
-    return HitboxCollision(entityHitbox, entity.direction, hitboxTarget);
+    
+    collision = HitboxCollision(entityHitbox, entity.direction, hitboxTarget);
+    return collision;
 }
 
 RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget) {
+    RayCollision2D collision;
+    collision.hit = false;
+
+    if(Vector2Equals(entityIn.direction, Vector2Zero()))
+        return collision;
+
     Rectangle entityInHitbox = (Rectangle) {
         .x = entityIn.x,
         .y = entityIn.y,
@@ -37,7 +51,8 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget) {
         .width = ENTITY_TILE_WIDTH,
         .height = ENTITY_TILE_HEIGHT
     };
-    
-    return HitboxCollision(entityInHitbox, entityIn.direction, entityTargetHitbox);
+
+    collision = HitboxCollision(entityInHitbox, entityIn.direction, entityTargetHitbox);
+    return collision;
 }
 
