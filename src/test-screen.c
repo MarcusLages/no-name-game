@@ -30,7 +30,7 @@ typedef struct RectEntity {
 } RectEntity;
 
 RectEntity examples[10];
-Ray2D mouse;
+Ray2D playerTest;
 float deltaTime;
 // Linked list of the collisions that ocurred in this update
 CollisionNode* collisionList;
@@ -93,9 +93,9 @@ void TestScreenStartup() {
         .col = WHITE
     };
 
-    mouse = (Ray2D) {
+    playerTest = (Ray2D) {
         .origin = (Vector2) { 200, 200 },
-        .direction = GetMousePosition()
+        .direction = Vector2Zero()
     };
 }
 
@@ -104,18 +104,35 @@ void TestScreenUpdate() {
     deltaTime = GetFrameTime();
 
     // * Get direction Vector2 relative to the origin point of the Rectangle (middle)
-    mouse.direction = GetMousePosition();
-    mouse.direction.x -= examples[0].rec.x + examples[0].rec.width / 2;
-    mouse.direction.y -= examples[0].rec.y + examples[0].rec.height / 2;
+    // playerTest.direction = GetMousePosition();
+    // playerTest.direction.x -= examples[0].rec.x + examples[0].rec.width / 2;
+    // playerTest.direction.y -= examples[0].rec.y + examples[0].rec.height / 2;
+    playerTest.direction = Vector2Zero();
 
-    if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-        // * Normalize direction Vector2
-        mouse.direction = Vector2Normalize(mouse.direction);
-
-        // * Normalized vector * scale * deltaTime (modular)
-        examples[0].dir.x += mouse.direction.x * 100.0f * deltaTime;
-        examples[0].dir.y += mouse.direction.y * 100.0f * deltaTime;
+    if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
+        playerTest.direction.x++;
+    } else if(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
+        playerTest.direction.x--;
+    } 
+    
+    if(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
+        playerTest.direction.y++;
+    } else if(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
+        playerTest.direction.y--;
     }
+
+    // if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        // * Normalize direction Vector2
+        playerTest.direction = Vector2Normalize(playerTest.direction);
+
+        // * Normalized vector * scale
+        // ! NOTE: Dont add deltatime on acceleration/velocity/direction.
+        // !       add it on the speed or movement
+        playerTest.direction.x *= 300.0f;
+        playerTest.direction.y *= 300.0f;
+
+        examples[0].dir = playerTest.direction;
+    // }
 
     for(int i = 1; i < 5; i++) {
         RayCollision2D collision;
@@ -130,9 +147,9 @@ void TestScreenUpdate() {
             // If a collision appears, instead of instantly resolving the collision,
             // adds the collided hitbox index to a collision list.
             if(collisionList == NULL)
-                collisionList = CreateCollisionList(i, collision.timeHit);
+                collisionList = CreateCollisionList(i, 0, collision.timeHit);
             else
-                AddCollisionNode(collisionList, i, collision.timeHit);
+                AddCollisionNode(collisionList, i, 0, collision.timeHit);
         }
     }
 
@@ -143,7 +160,7 @@ void TestScreenUpdate() {
     CollisionNode* resolvingNode = collisionList;
     while(resolvingNode != NULL) {
         RayCollision2D collision;
-        collision = HitboxCollision(examples[0].rec, examples[0].dir, examples[resolvingNode->collidedHitbox.index].rec);
+        collision = HitboxCollision(examples[0].rec, examples[0].dir, examples[(int) resolvingNode->collidedHitbox.index.x].rec);
         if(collision.hit == true && collision.timeHit >= 0) {
             //* Formula to recalculate the direction vector according to the collision.
             // A force is added in the direction of contact normal vector of the collision proportional to:

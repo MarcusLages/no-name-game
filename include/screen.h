@@ -23,7 +23,7 @@
 /** Window rendering variables (size and refresh rate). */
 #define SCREEN_WIDTH    1280
 #define SCREEN_HEIGHT   720
-#define FRAME_RATE      144
+#define FRAME_RATE      60
 
 //* ------------------------------------------
 //* ENUMERATIONS
