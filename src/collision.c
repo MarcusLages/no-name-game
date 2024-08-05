@@ -159,17 +159,17 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
 
 }
 
-CollisionNode* CreateCollisionList(int index, float timeHit) {
+CollisionNode* CreateCollisionList(int indexX, int indexY, float timeHit) {
     CollisionNode* newList = (CollisionNode*) malloc(sizeof(CollisionNode));
     if (newList == NULL) {
         exit(EXIT_FAILURE);
     }
-    newList->collidedHitbox = (CollidedHitboxInfo) { index, timeHit };
+    newList->collidedHitbox = (CollidedHitboxInfo) { (Vector2) {indexX, indexY}, timeHit };
     newList->next = NULL;
     return newList;
 }
 
-void AddCollisionNode(CollisionNode* head, int index, float timeHit) {
+void AddCollisionNode(CollisionNode* head, int indexX, int indexY, float timeHit) {
     CollisionNode * currentNode;
     CollisionNode * newNode;
 
@@ -180,7 +180,7 @@ void AddCollisionNode(CollisionNode* head, int index, float timeHit) {
         exit(EXIT_FAILURE);
     }
 
-    newNode->collidedHitbox = (CollidedHitboxInfo) { index, timeHit };
+    newNode->collidedHitbox = (CollidedHitboxInfo) { (Vector2) {indexX, indexY}, timeHit };
     newNode->next = NULL;
 
     while(currentNode->next != NULL)
