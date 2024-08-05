@@ -70,14 +70,14 @@ typedef struct RayCollision2D {
  * Structure that contains information about a specific collided hitbox so it
  * can be sorted for better collision resolving.
  * 
- * @param index     Integer that represents the index of a collided hitbox in a specific array/list.
+ * @param index     Represents the index of a collided hitbox in the tilemap array or a list.
  * @param timeHit   Time of the collision
  * 
  * @note Check RayCollision2D for more in-depth information about timeHit.
  */
 typedef struct CollidedHitboxInfo {
     /** Index of the collided hitbox in the array of hitboxes. */
-    int index;
+    Vector2 index;
     /** Contact time of the collision. Used to sort the closest collision.*/
     float timeHit;
 } CollidedHitboxInfo;
@@ -95,6 +95,11 @@ struct CollisionNode {
     /** Pointer to the next node on the list. */
     CollisionNode* next;
 };
+
+//* ------------------------------------------
+//* GLOBAL VARIABLES
+
+extern CollisionNode * collidableTiles;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -135,7 +140,7 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
  * @param timeHit   Time of the collision (Check struct RayCollision2D)
  * @return          Pointer to the head node of the CollisionList
  */
-CollisionNode* CreateCollisionList(int index, float timeHit);
+CollisionNode* CreateCollisionList(int indexX, int indexY, float timeHit);
 
 /**
  * Adds a RayCollision2D to the end of the CollisionNode linked list.
@@ -144,7 +149,7 @@ CollisionNode* CreateCollisionList(int index, float timeHit);
  * @param index     Integer that represents the index of the collided hitbox in a specific array/list.
  * @param timeHit   Time of the collision (Check struct RayCollision2D)
  */
-void AddCollisionNode(CollisionNode* head, int index, float timeHit);
+void AddCollisionNode(CollisionNode* head, int indexX, int indexY, float timeHit);
 
 /**
  * Sorts a CollisionNode linked list based on the timeHit of the

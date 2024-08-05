@@ -18,16 +18,19 @@
 //* ------------------------------------------
 //* DEFINITIONS
 
-#define ENTITY_TILE_WIDTH 16
-#define ENTITY_TILE_HEIGHT 32
+/** Default entity tile size. */
+#define ENTITY_TILE_WIDTH   16
+#define ENTITY_TILE_HEIGHT  32
 
-#define DEFAULT_IDLE_FPS 2
-#define DEFAULT_MOVING_FPS 8
-#define DEFAULT_ATTACK_FPS 8
+/** Default animation refresh rate. */
+#define DEFAULT_IDLE_FPS    2
+#define DEFAULT_MOVING_FPS  8
+#define DEFAULT_ATTACK_FPS  8
 
+// Temporary attack rectangle size
 // ? OBS: Might be nuked later
-#define TEMP_ATTACK_WIDTH 32
-#define TEMP_ATTACK_HEIGHT 32
+#define TEMP_ATTACK_WIDTH   32
+#define TEMP_ATTACK_HEIGHT  32
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -142,10 +145,34 @@ extern Entity enemy;
 void EntityRender(Entity* entity, Animation* animation, int entityWidth, 
     int entityHeight, int xOffset, int yOffset, float rotation);
 
-//* ------------------------------------------
 //* General entity logic
 
+/**
+ * Function used to check if there was a collision between a moving entity and a Rectangle
+ * hitbox.
+ * 
+ * @param entity        Moving entity to test the collision
+ * @param hitboxTarget  Rectangle that the entity will check a collision with
+ * @return              Information about the collision.
+ * 
+ * ? @note - Important to check the timeHit (-n, -1, 0, +1 or +n) of the returned collision
+ *              even if the collision.hit is true.
+ * ? @note - Resolving the collision is still necessary. This function is only for detection.
+ */
 RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
+
+/**
+ * Function used to check if there was a collision between a moving entity and another
+ * entity's hitbox.
+ * 
+ * @param entityIn      Moving entity to test the collision
+ * @param entityTarget  Target entity that the entityIn will check a collision with
+ * @return              Information about the collision.
+ * 
+ * ? @note - Important to check the timeHit (-n, -1, 0, +1 or +n) of the returned collision
+ *              even if the collision.hit is true.
+ * ? @note - Resolving the collision is still necessary. This function is only for detection.
+ */
 RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
 
 #endif // !ENTITY_H

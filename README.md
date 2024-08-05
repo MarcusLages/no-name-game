@@ -1,5 +1,6 @@
 # no-name-game
-A simple 2D dungeon crawler game coded in C using the Raylib library.
+A simple 2D dungeon crawler game coded in C using the Raylib library (https://github.com/raysan5/raylib).
+Our focus is using to exercise our knowledge in C, data structures, game programming fundamentals, code design patterns, etc.
 
 # Programmers
 Marcus Lages (@MarcusLages)
@@ -13,4 +14,6 @@ Samarjit Bhogal (@SamarjitBhogal)
 - Setup launch.json and tasks.json accordingly. Ensure make command path points to w64devkit\\bin\\mingw32-make.exe.
 - Run with CTRL + F5, Debug with F5
 
-Credit goes to Andrew Hamel Codes for Raylib Environment setup in VSCode using C language. Follow video for setup guidance: https://youtu.be/xWWqhQ1JnvE?si=OLW6SsLwP9mPwHGp
+Credits to:
+- Raysan5 (@raysan5) for Raylib library (https://github.com/raysan5/raylib)
+- Andrew Hamel Codes for Raylib Environment setup in VSCode using C language. Follow video for setup guidance: https://youtu.be/xWWqhQ1JnvE?si=OLW6SsLwP9mPwHGp
