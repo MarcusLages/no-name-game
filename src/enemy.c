@@ -32,9 +32,9 @@ static Animation attackEnemyAnimation;
 //* FUNCTION IMPLEMENTATIONS
 
 void EnemyStartup() {
-    enemy.x = 10;
-    enemy.y = 10;
-    enemy.speed = 300;
+    enemy.x = 50;
+    enemy.y = 50;
+    enemy.speed = 10;
     enemy.health = 100;
     enemy.direction = Vector2Zero();
     enemy.faceValue = 1;
@@ -71,7 +71,40 @@ void EnemyStartup() {
 }
 
 void EnemyMovement() {
+    // Ensures the enemy cannot move while attacking   
+    if (enemy.state == ATTACKING) return; 
 
+    float deltaTime = GetFrameTime();
+    enemy.direction = Vector2Zero();
+
+    //enemy.direction.x = player.direction.x;
+    //enemy.direction.y = player.direction.y;
+   
+    // if (enemy.x < player.x) {
+    //     enemy.direction.x++;
+    // } else if (enemy.x > player.x) {
+    //     enemy.direction.x--;
+    // }
+
+    // if (enemy.y < player.y) {
+    //     enemy.direction.y++;
+    // } else if (enemy.y > player.y) {
+    //     enemy.direction.y--;
+    // }
+
+    // Set the enemy to MOVING if not ATTACKING.
+    enemy.state = enemy.state == ATTACKING ? ATTACKING : MOVING;
+    
+    // Set the enemy to IDLE if not ATTACKING or moving on any direction
+    if(enemy.direction.x == 0 && enemy.direction.y == 0 && enemy.state != ATTACKING) {
+        enemy.state = IDLE;
+        return;
+    }     
+
+    enemy.direction = Vector2Normalize(enemy.direction);
+
+    enemy.x += enemy.direction.x * enemy.speed * deltaTime;
+    enemy.y += enemy.direction.y * enemy.speed * deltaTime;
 }
 
 void EnemyAttack() {
