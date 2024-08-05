@@ -17,9 +17,9 @@
 RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget) {
     Rectangle entityHitbox = (Rectangle) {
         .x = entity.x,
-        .y = entity.y,
+        .y = entity.y + ENTITY_TILE_HEIGHT / 2,
         .width = ENTITY_TILE_WIDTH,
-        .height = ENTITY_TILE_HEIGHT
+        .height = ENTITY_TILE_HEIGHT / 2
     };
     return HitboxCollision(entityHitbox, entity.direction, hitboxTarget);
 }
