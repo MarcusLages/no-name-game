@@ -58,6 +58,9 @@ extern GameScreen currentScreen;
 /** Next screen the game will be displaying (used for transitions and loading new screens). */
 extern GameScreen nextScreen;
 
+/** Closes the game if true. */
+extern bool isRunning;
+
 //* FUNCTION PROTOTYPES
 
 //* Main menu functions

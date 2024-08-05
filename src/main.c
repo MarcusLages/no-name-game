@@ -25,6 +25,9 @@ GameScreen currentScreen;
 /** Next screen the game will be displaying (used for transitions and loading new screens). */
 GameScreen nextScreen;
 
+/** Closes the game if true. */
+bool isRunning;
+
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
@@ -48,7 +51,7 @@ int main() {
 
     // Main game loop.
     // Runs while player doesn't close the window or presses ESC.
-    while(!WindowShouldClose()) {
+    while(!WindowShouldClose() && isRunning) {
         GameUpdate();
         GameRender();
     }
@@ -59,6 +62,9 @@ int main() {
 }
 
 static void GameStartup() {
+    // Game running
+    isRunning = true;
+
     // Initialize window
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "No name game name");
     SetTargetFPS(FRAME_RATE);
