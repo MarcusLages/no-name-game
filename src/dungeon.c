@@ -66,15 +66,15 @@ void DungeonStartup() {
     }   
 
     StartCamera();
-    PlayerStartup();
     EnemyStartup();
+    PlayerStartup();
 }
 
 void DungeonUpdate() {
     PlayerMovement();
-    PlayerAttack();
     EnemyMovement();
     EnemyAttack();
+    PlayerAttack();
     
     // Update camera to follow the player
     camera.target = (Vector2) {player.x + 8, player.y + 16};
@@ -92,8 +92,8 @@ void DungeonRender() {
     }
 
     // Draw player on the screen  
-    PlayerRender();
     EnemyRender();
+    PlayerRender();
 }
 
 void DungeonUnload() {
