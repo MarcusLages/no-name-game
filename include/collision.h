@@ -97,6 +97,11 @@ struct CollisionNode {
 };
 
 //* ------------------------------------------
+//* GLOBAL VARIABLES
+
+extern CollisionNode * collidableTiles;
+
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**

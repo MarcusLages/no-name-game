@@ -153,32 +153,26 @@ static void PlayerWorldCollision() {
     CollisionNode* playerCollisionList;
     playerCollisionList = NULL;
 
-    // TODO: Create collidableTiles list and make it external
-    // CollisionNode* collidingTile;
-    // collidingTile = collidableTiles;
+    CollisionNode* collidingTile;
+    collidingTile = collidableTiles;
 
-    // TODO: Change this to a collidable tile linked list
-    for (int j = 0; j < WORLD_HEIGHT; j++) {
-        for (int i = 0; i < WORLD_WIDTH; i++) {
-            // TODO: collision
-            if(world[j][i].isCollidable == true) {
-                RayCollision2D playerCollision;
-                Rectangle tileHitbox = (Rectangle) {
-                    .x = world[j][i].x * TILE_WIDTH,
-                    .y = world[j][i].y * TILE_HEIGHT,
-                    .width = TILE_WIDTH,
-                    .height = TILE_HEIGHT
-                };
+    while(collidingTile != NULL) {
+        RayCollision2D playerCollision;
+        Rectangle tileHitbox = (Rectangle) {
+            .x = collidingTile->collidedHitbox.index.x * TILE_WIDTH,
+            .y = collidingTile->collidedHitbox.index.y * TILE_HEIGHT,
+            .width = TILE_WIDTH,
+            .height = TILE_HEIGHT
+        };
 
-                playerCollision = EntityRectCollision(player, tileHitbox);
-                if(playerCollision.hit == true && playerCollision.timeHit >= 0) {
-                    if(playerCollisionList == NULL)
-                        playerCollisionList = CreateCollisionList(i, j, playerCollision.timeHit);
-                    else
-                        AddCollisionNode(playerCollisionList, i, j, playerCollision.timeHit);
-                }
-            }
+        playerCollision = EntityRectCollision(player, tileHitbox);
+        if(playerCollision.hit == true && playerCollision.timeHit >= 0) {
+            if(playerCollisionList == NULL)
+                playerCollisionList = CreateCollisionList(collidingTile->collidedHitbox.index.x, collidingTile->collidedHitbox.index.y, playerCollision.timeHit);
+            else
+                AddCollisionNode(playerCollisionList, collidingTile->collidedHitbox.index.x, collidingTile->collidedHitbox.index.y, playerCollision.timeHit);
         }
+        collidingTile = collidingTile->next;
     }
     
     if(playerCollisionList != NULL) {
