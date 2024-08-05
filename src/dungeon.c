@@ -58,7 +58,7 @@ void DungeonStartup() {
             Tile tile = {
                 .x = i,
                 .y = j,
-                .isCollidable = false
+                .isCollidable = (j != 3) ? false : true
             };
             tiles[i] =  tile;
 
@@ -85,8 +85,11 @@ void DungeonRender() {
     // Rendering each tile by calling DrawTile
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         for (int i = 0; i < WORLD_WIDTH; i++) {
-            tile = world[i][j];
-            DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 7, 2, TILE_MAP);
+            tile = world[j][i];
+            if(j != 3)
+                DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 7, 2, TILE_MAP);
+            else
+                DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 2, TILE_MAP);
         }
     }
 

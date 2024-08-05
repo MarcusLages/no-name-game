@@ -13,6 +13,16 @@
 #include "../include/player.h"
 
 //* ------------------------------------------
+//* DEFINITIONS
+
+/**
+ * Macro function to get the absolute/module value of a number.
+ * 
+ * @param x Number
+ */
+#define ABS(x) (x > 0 ? x : x * (-1))
+
+//* ------------------------------------------
 //* GLOBAL VARIABLES
 
 Entity player;
@@ -95,7 +105,7 @@ void PlayerMovement() {
     if (player.state == ATTACKING) return; 
 
     float deltaTime = GetFrameTime();
-    player.direction = (Vector2) {0, 0};
+    player.direction = Vector2Zero();
 
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
         player.direction.x++;
@@ -126,35 +136,66 @@ void PlayerMovement() {
 
     player.direction = Vector2Normalize(player.direction);
 
-    player.direction.x *= player.speed * deltaTime;
-    player.direction.y *= player.speed * deltaTime;
+    // NOTE: Dont add deltatime on acceleration/velocity/direction, add it on the speed or movement.
+    player.direction.x *= player.speed;
+    player.direction.y *= player.speed;
 
     PlayerWorldCollision();
     PlayerEnemyCollision();
     
-    player.x += player.direction.x;
-    player.y += player.direction.y;
+    player.x += player.direction.x * deltaTime;
+    player.y += player.direction.y * deltaTime;
 }
 
 static void PlayerWorldCollision() {
     if(world == NULL) return;
 
-    RayCollision2D playerCollision;
-    Rectangle tileHitbox;
+    CollisionNode * playerCollisionList;
+    playerCollisionList = NULL;
 
     // TODO: Change this to a collidable tile linked list
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         for (int i = 0; i < WORLD_WIDTH; i++) {
             // TODO: collision
             if(world[j][i].isCollidable == true) {
-                tileHitbox = (Rectangle) {
-                    .x = world[j][i].x,
-                    .y = world[j][i].y,
+                RayCollision2D playerCollision;
+                Rectangle tileHitbox = (Rectangle) {
+                    .x = world[j][i].x * TILE_WIDTH,
+                    .y = world[j][i].y * TILE_HEIGHT,
                     .width = TILE_WIDTH,
                     .height = TILE_HEIGHT
                 };
+
                 playerCollision = EntityRectCollision(player, tileHitbox);
+                if(playerCollision.hit == true && playerCollision.timeHit >= 0) {
+                    if(playerCollisionList == NULL)
+                        playerCollisionList = CreateCollisionList(i, j, playerCollision.timeHit);
+                    else
+                        AddCollisionNode(playerCollisionList, i, j, playerCollision.timeHit);
+                }
             }
+        }
+    }
+    
+    if(playerCollisionList != NULL) {
+        SortCollisionList(playerCollisionList);
+
+        CollisionNode* resolvingNode = playerCollisionList;
+        while(resolvingNode != NULL) {
+            RayCollision2D playerCollision;
+            Rectangle tileHitbox = (Rectangle) {
+                .x = world[(int) resolvingNode->collidedHitbox.index.y][(int) resolvingNode->collidedHitbox.index.x].x * TILE_WIDTH,
+                .y = world[(int) resolvingNode->collidedHitbox.index.y][(int) resolvingNode->collidedHitbox.index.x].y * TILE_HEIGHT,
+                .width = TILE_WIDTH,
+                .height = TILE_HEIGHT
+            };
+
+            playerCollision = EntityRectCollision(player, tileHitbox);
+            if(playerCollision.hit == true && playerCollision.timeHit >= 0) {
+                player.direction.x += playerCollision.normalVector.x * ABS(player.direction.x) * (1 - playerCollision.timeHit);
+                player.direction.y += playerCollision.normalVector.y * ABS(player.direction.y) * (1 - playerCollision.timeHit);
+            }
+            resolvingNode = resolvingNode->next;
         }
     }
 }
