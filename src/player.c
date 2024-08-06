@@ -100,7 +100,6 @@ void PlayerStartup() {
     StartTimer(&movingPlayerAnimation.timer, -1.0f);
 }
 
-//TODO: Movement is buggy, Vector normalization is not working properly. Player cannot move diagonally ata lower speeds.
 void PlayerMovement() {
     // For debugging:
     DrawText(TextFormat("Player x: %f", player.x), 0, 0, 20, RED);
@@ -140,18 +139,17 @@ void PlayerMovement() {
         return;
     }
 
-    float speed = player.speed * deltaTime;
-
     player.direction = Vector2Normalize(player.direction);
 
-    player.direction.x *= speed;
-    player.direction.y *= speed;
+    //! NOTE: Do not add deltaTime before checking collisions only after.
+    player.direction.x *= player.speed;
+    player.direction.y *= player.speed;
   
     PlayerWorldCollision();
     PlayerEnemyCollision();
 
-    player.x += player.direction.x;
-    player.y += player.direction.y;
+    player.x += player.direction.x * deltaTime;
+    player.y += player.direction.y * deltaTime;
 }
 
 static void PlayerWorldCollision() {
