@@ -66,12 +66,16 @@ void EnemyMovement() {
     if(enemy.state == ATTACKING) return;
 
     // Sets the enemy to IDLE if not in agro range.
+    // TODO not working as expected
     if((abs(player.pos.x - enemy.pos.x) > AGRO_X && abs(player.pos.y - enemy.pos.y) > AGRO_Y)) {
         enemy.state = IDLE;
         return;
     }
 
+    // Delta time helps not let player speed depend on framerate.
+    // It helps to take account for time between frames too.
     float deltaTime = GetFrameTime();
+
     enemy.direction = (Vector2){ (int) player.pos.x - (int) enemy.pos.x,
                                  (int) player.pos.y - (int) enemy.pos.y };
 
@@ -87,13 +91,12 @@ void EnemyMovement() {
     enemy.direction = Vector2Normalize(enemy.direction);
 
     //! NOTE: Do not add deltaTime before checking collisions only after.
-    enemy.direction.x *= enemy.speed;
-    enemy.direction.y *= enemy.speed;
+    // Velocity:
+    enemy.direction = Vector2Scale(enemy.direction, enemy.speed);
 
     // TODO: enemy world collision
 
-    enemy.pos.x += enemy.direction.x * deltaTime;
-    enemy.pos.y += enemy.direction.y * deltaTime;
+    enemy.pos = Vector2Add(enemy.pos, Vector2Scale(enemy.direction, deltaTime));
 }
 
 void EnemyAttack() {}

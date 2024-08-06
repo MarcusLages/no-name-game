@@ -95,8 +95,10 @@ void PlayerMovement() {
     // Ensures the player cannot move while attacking
     if(player.state == ATTACKING) return;
 
-    // Delta time helps to not let player speed depend on framerate.
-    float deltaTime  = GetFrameTime();
+    // Delta time helps not let player speed depend on framerate.
+    // It helps to take account for time between frames too.
+    float deltaTime = GetFrameTime();
+
     player.direction = Vector2Zero();
 
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
@@ -129,14 +131,13 @@ void PlayerMovement() {
     player.direction = Vector2Normalize(player.direction);
 
     //! NOTE: Do not add deltaTime before checking collisions only after.
-    player.direction.x *= player.speed;
-    player.direction.y *= player.speed;
+    // Velocity:
+    player.direction = Vector2Scale(player.direction, player.speed);
 
     PlayerWorldCollision();
     PlayerEnemyCollision();
 
-    player.pos.x += player.direction.x * deltaTime;
-    player.pos.y += player.direction.y * deltaTime;
+    player.pos = Vector2Add(player.pos, Vector2Scale(player.direction, deltaTime));
 }
 
 static void PlayerWorldCollision() {
