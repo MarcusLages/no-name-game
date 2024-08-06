@@ -15,6 +15,12 @@
 #include "entity.h"
 
 //* ------------------------------------------
+//* DEFINITIONS
+
+#define AGRO_X 60
+#define AGRO_Y 60
+
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**
