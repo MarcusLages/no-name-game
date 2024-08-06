@@ -22,6 +22,14 @@
  */
 #define ABS(x) (x > 0 ? x : x * (-1))
 
+/**
+ * Macro to swap two number variables.
+ * 
+ * @param a Number
+ * @param b Number
+ */
+#define swap(a, b) ((a != b) ? (a += b, b = a - b, a -= b) : 0)
+
 //* ------------------------------------------
 //* GLOBAL VARIABLES
 
@@ -56,7 +64,7 @@ static void PlayerWorldCollision();
  * TODO: Implementation + checking how to pass the list or make it global
  * Handles player collision with the enemies list by movement.
  */
-static void PlayerEnemyCollision();
+static void PlayerEnemyCollision(Rectangle attackHitbox);
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
@@ -142,7 +150,7 @@ void PlayerMovement() {
     player.direction.y *= player.speed;
 
     PlayerWorldCollision();
-    PlayerEnemyCollision();
+    // PlayerEnemyCollision();
     
     player.x += player.direction.x * deltaTime;
     player.y += player.direction.y * deltaTime;
@@ -203,10 +211,15 @@ static void PlayerWorldCollision() {
 
 }
 
-static void PlayerEnemyCollision() {}
+static void PlayerEnemyCollision(Rectangle attackHitbox) {
+    // TODO:
+    // 1. Enemy list
+    // 2. Check collision of enemy hitbox with attack hitbox
+    // 3. Decrease life, etc.
+}
 
 void PlayerAttack() {
-    if (IsKeyPressed(KEY_E)) {
+    if (IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
         StartTimer(&attackPlayerAnimation.timer, 0.5f);
     }
@@ -238,28 +251,83 @@ static void RenderPlayerAttack() {
     // Rendering idle animation of player as the player should not move while attacking.
     EntityRender(&player, &idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
         ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+
+    // ? THIS SHOULD BE IN PLAYER ATTACK LATER
+    // ? -------------------------------------------
+    // TODO:
+    // 1. Create attack hitbox as a rectangle
+    Rectangle attackHitbox = (Rectangle) {
+        .x = player.x,
+        .y = player.y,
+        .width = TEMP_ATTACK_WIDTH,
+        .height = TEMP_ATTACK_HEIGHT
+    };
+    // 2. Offset it related to the player/attack
+
     switch (player.directionFace) {
+    case RIGHT:
+        // Attack hitbox offset
+        attackHitbox.x += 2;
+        attackHitbox.y += 10;
+        DrawRectangleRec(attackHitbox, RED);
+        break;
+    case DOWN:
+        // Attack hitbox offset
+        swap(attackHitbox.width, attackHitbox.height);
+        attackHitbox.x -= 3;
+        attackHitbox.y += 23;
+        DrawRectangleRec(attackHitbox, RED);
+        // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, 
+        //     -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 35, TEMP_ATTACK_HEIGHT + 34, -90.0f);
+        // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+        //     25, 48, 180.0f);
+        break;
+    case LEFT:
+        // Attack hitbox offset
+        attackHitbox.x -= TEMP_ATTACK_WIDTH / 2;
+        attackHitbox.y += 10;
+        DrawRectangleRec(attackHitbox, RED);
+        break;
+    case UP:
+        // Attack hitbox offset
+        swap(attackHitbox.width, attackHitbox.height);
+        attackHitbox.x -= 3;
+        attackHitbox.y -= 9;
+        DrawRectangleRec(attackHitbox, RED);
+        // EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, 
+        //     -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 35, TEMP_ATTACK_HEIGHT + 2, -90.0f);
+        //  EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
+        //     -10, 0, 0.0f);
+        break;
+    default:
+        break;
+    }
+    // ? -------------------------------------------
+
+
+    switch (player.directionFace) {
+        // ? NOTE: Hardcoded offsets for animations.
         case RIGHT:
             EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
-                TEMP_ATTACK_WIDTH + 2, TEMP_ATTACK_HEIGHT + 6, 180.0f);
+                TEMP_ATTACK_WIDTH + 2, TEMP_ATTACK_HEIGHT + 10, 180.0f);
             // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
             // 32, 0, 90.0f);
             break;
         case DOWN:
             EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, 
-                -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 40, TEMP_ATTACK_HEIGHT + 16, -90.0f);
+                -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 35, TEMP_ATTACK_HEIGHT + 34, -90.0f);
             // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
             //     25, 48, 180.0f);
             break;
         case LEFT:
             EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
-                TEMP_ATTACK_WIDTH - 48, TEMP_ATTACK_HEIGHT - 26, 0.0f);
+                TEMP_ATTACK_WIDTH - 48, TEMP_ATTACK_HEIGHT - 11, 0.0f);
             // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
             // 16, 0, 90.0f);
             break;
         case UP:
             EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, 
-                -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 40, TEMP_ATTACK_HEIGHT - 6, -90.0f);
+                -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 35, TEMP_ATTACK_HEIGHT + 2, -90.0f);
             //  EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
             //     -10, 0, 0.0f);
             break;

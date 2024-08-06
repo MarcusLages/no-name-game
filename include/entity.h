@@ -30,7 +30,7 @@
 // Temporary attack rectangle size
 // ? OBS: Might be nuked later
 #define TEMP_ATTACK_WIDTH   32
-#define TEMP_ATTACK_HEIGHT  32
+#define TEMP_ATTACK_HEIGHT  21
 
 //* ------------------------------------------
 //* ENUMERATIONS
