@@ -67,7 +67,11 @@ void EnemyMovement() {
 
     // Sets the enemy to IDLE if not in agro range.
     // TODO not working as expected
-    if((abs(player.pos.x - enemy.pos.x) > AGRO_X && abs(player.pos.y - enemy.pos.y) > AGRO_Y)) {
+    // if((abs(player.pos.x - enemy.pos.x) > AGRO_X && abs(player.pos.y - enemy.pos.y) > AGRO_Y)) {
+    //     enemy.state = IDLE;
+    //     return;
+    // }
+    if(Vector2Length(player.pos) - Vector2Length(enemy.pos) > AGRO_RANGE) {
         enemy.state = IDLE;
         return;
     }

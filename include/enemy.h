@@ -17,8 +17,7 @@
 //* ------------------------------------------
 //* DEFINITIONS
 
-#define AGRO_X 60
-#define AGRO_Y 60
+#define AGRO_RANGE 60
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
