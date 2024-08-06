@@ -102,8 +102,10 @@ void PlayerStartup() {
 
 //TODO: Movement is buggy, Vector normalization is not working properly. Player cannot move diagonally ata lower speeds.
 void PlayerMovement() {
+    // For debugging:
     DrawText(TextFormat("Player x: %f", player.x), 0, 0, 20, RED);
-    DrawText(TextFormat("Player y: %f", player.y), 0, 20, 20, RED);  
+    DrawText(TextFormat("Player y: %f", player.y), 0, 20, 20, RED); 
+    
     // Ensures the player cannot move while attacking   
     if (player.state == ATTACKING) return; 
 
@@ -140,27 +142,13 @@ void PlayerMovement() {
 
     float speed = player.speed * deltaTime;
 
-    // DrawText(TextFormat("Player speed: %d", player.speed), 0, 40, 20, RED);
-    // DrawText(TextFormat("Player before dir x: %f", player.direction.x), 0, 60, 20, RED); 
-    // DrawText(TextFormat("Player before dir y: %f", player.direction.y), 0, 80, 20, RED); 
-
     player.direction = Vector2Normalize(player.direction);
 
-    // DrawText(TextFormat("Player after norm dir x: %f", player.direction.x), 0, 100, 20, RED); 
-    // DrawText(TextFormat("Player after norm dir y: %f", player.direction.y), 0, 120, 20, RED); 
-
-    // NOTE: Dont add deltatime on acceleration/velocity/direction, add it on the speed or movement.
     player.direction.x *= speed;
     player.direction.y *= speed;
-
-    // DrawText(TextFormat("Player after dir * speed x: %f", player.direction.x), 0, 140, 20, RED); 
-    // DrawText(TextFormat("Player after dir * speed y: %f", player.direction.y), 0, 160, 20, RED);
   
     PlayerWorldCollision();
     PlayerEnemyCollision();
-
-    // DrawText(TextFormat("Enemy after dir * deltatime x: %f", player.direction.x * deltaTime), 0, 180, 20, RED);
-    // DrawText(TextFormat("Enemy after dir * deltatime y: %f", player.direction.y * deltaTime), 0, 200, 20, RED);
 
     player.x += player.direction.x;
     player.y += player.direction.y;
