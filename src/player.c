@@ -105,6 +105,7 @@ void PlayerMovement() {
     // Ensures the player cannot move while attacking   
     if (player.state == ATTACKING) return; 
 
+    // Delta time helps to not let player speed depend on framerate.
     float deltaTime = GetFrameTime();
     player.direction = Vector2Zero();
 
