@@ -93,9 +93,9 @@ typedef enum Direction {
  */
 typedef struct Entity {
     /** X-position of the entity. */
-    float x;
+    int x;
     /** Y-position of the entity. */
-    float y;
+    int y;
     /** Speed the entity moves at. */
     int speed;
     /** Health of the entity. */
