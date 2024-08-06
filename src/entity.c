@@ -19,7 +19,7 @@ void EntityRender(Entity* entity, Animation* animation, int entityWidth,
     if (entity == NULL || animation == NULL) return;
     DrawAnimation(
         animation, 
-        (Rectangle) {entity->x + xOffset, entity->y + yOffset, 
+        (Rectangle) {(int) (entity->x) + xOffset, (int) (entity->y) + yOffset, 
                      entityWidth < 0 ? -entityWidth : entityWidth, 
                      entityHeight < 0 ? -entityHeight : entityHeight}, 
         entityWidth, 

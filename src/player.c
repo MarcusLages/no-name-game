@@ -62,9 +62,9 @@ static void PlayerEnemyCollision();
 //* FUNCTION IMPLEMENTATIONS
 
 void PlayerStartup() {
-    player.x = 0;
-    player.y = 0;
-    player.speed = 300;
+    player.x = 0.0f;
+    player.y = 0.0f;
+    player.speed = 100;
     player.health = 1;
     player.direction = Vector2Zero();
     player.faceValue = 1;
@@ -102,6 +102,8 @@ void PlayerStartup() {
 
 //TODO: Movement is buggy, Vector normalization is not working properly. Player cannot move diagonally ata lower speeds.
 void PlayerMovement() {
+    DrawText(TextFormat("Player x: %f", player.x), 0, 0, 20, RED);
+    DrawText(TextFormat("Player y: %f", player.y), 0, 20, 20, RED);  
     // Ensures the player cannot move while attacking   
     if (player.state == ATTACKING) return; 
 
@@ -136,8 +138,8 @@ void PlayerMovement() {
         return;
     }
 
-    // DrawText(TextFormat("Player x: %d", player.x), 0, 0, 20, RED);
-    // DrawText(TextFormat("Player y: %d", player.y), 0, 20, 20, RED);  
+    float speed = player.speed * deltaTime;
+
     // DrawText(TextFormat("Player speed: %d", player.speed), 0, 40, 20, RED);
     // DrawText(TextFormat("Player before dir x: %f", player.direction.x), 0, 60, 20, RED); 
     // DrawText(TextFormat("Player before dir y: %f", player.direction.y), 0, 80, 20, RED); 
@@ -148,8 +150,8 @@ void PlayerMovement() {
     // DrawText(TextFormat("Player after norm dir y: %f", player.direction.y), 0, 120, 20, RED); 
 
     // NOTE: Dont add deltatime on acceleration/velocity/direction, add it on the speed or movement.
-    player.direction.x *= player.speed;
-    player.direction.y *= player.speed;
+    player.direction.x *= speed;
+    player.direction.y *= speed;
 
     // DrawText(TextFormat("Player after dir * speed x: %f", player.direction.x), 0, 140, 20, RED); 
     // DrawText(TextFormat("Player after dir * speed y: %f", player.direction.y), 0, 160, 20, RED);
@@ -160,8 +162,8 @@ void PlayerMovement() {
     // DrawText(TextFormat("Enemy after dir * deltatime x: %f", player.direction.x * deltaTime), 0, 180, 20, RED);
     // DrawText(TextFormat("Enemy after dir * deltatime y: %f", player.direction.y * deltaTime), 0, 200, 20, RED);
 
-    player.x += player.direction.x * deltaTime < 0 ? ceil(player.direction.x * deltaTime) : floor(player.direction.x * deltaTime);
-    player.y += player.direction.y * deltaTime < 0 ? ceil(player.direction.y * deltaTime) : floor(player.direction.y * deltaTime);
+    player.x += player.direction.x;
+    player.y += player.direction.y;
 }
 
 static void PlayerWorldCollision() {
@@ -233,8 +235,6 @@ void PlayerAttack() {
 }
 
 void PlayerRender() {
-    DrawText(TextFormat("Player x: %d", player.x), 0, 0, 20, RED);
-    DrawText(TextFormat("Player y: %d", player.y), 0, 20, 20, RED);
     switch (player.state) {
         case IDLE:
             EntityRender(&player, &idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
@@ -256,6 +256,8 @@ static void RenderPlayerAttack() {
     // Rendering idle animation of player as the player should not move while attacking.
     EntityRender(&player, &idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
         ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+
+    //? NOTE: commented out animations are kept for alternating animations 
     switch (player.directionFace) {
         case RIGHT:
             EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 
