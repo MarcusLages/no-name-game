@@ -32,8 +32,7 @@ static Animation attackEnemyAnimation;
 //* FUNCTION IMPLEMENTATIONS
 
 void EnemyStartup() {
-    enemy.x             = 50.0f;
-    enemy.y             = 50.0f;
+    enemy.pos           = (Vector2){ 50.0f, 50.0f };
     enemy.speed         = 100;
     enemy.health        = 100;
     enemy.direction     = Vector2Zero();
@@ -60,21 +59,21 @@ void EnemyStartup() {
 
 void EnemyMovement() {
     // For debugging:
-    DrawText(TextFormat("Enemy x: %f", enemy.x), 0, 40, 20, RED);
-    DrawText(TextFormat("Enemy y: %f", enemy.y), 0, 60, 20, RED);
+    DrawText(TextFormat("Enemy x: %f", enemy.pos.x), 0, 40, 20, RED);
+    DrawText(TextFormat("Enemy y: %f", enemy.pos.y), 0, 60, 20, RED);
 
     // Ensures the enemy cannot move while attacking
     if(enemy.state == ATTACKING) return;
 
     // Sets the enemy to IDLE if not in agro range.
-    if((abs(player.x - enemy.x) > AGRO_X && abs(player.y - enemy.y) > AGRO_Y)) {
+    if((abs(player.pos.x - enemy.pos.x) > AGRO_X && abs(player.pos.y - enemy.pos.y) > AGRO_Y)) {
         enemy.state = IDLE;
         return;
     }
 
     float deltaTime = GetFrameTime();
-    enemy.direction =
-        (Vector2){ (int) player.x - (int) enemy.x, (int) player.y - (int) enemy.y };
+    enemy.direction = (Vector2){ (int) player.pos.x - (int) enemy.pos.x,
+                                 (int) player.pos.y - (int) enemy.pos.y };
 
     // Set the enemy to MOVING if not ATTACKING.
     enemy.state = enemy.state == ATTACKING ? ATTACKING : MOVING;
@@ -93,8 +92,8 @@ void EnemyMovement() {
 
     // TODO: enemy world collision
 
-    enemy.x += enemy.direction.x * deltaTime;
-    enemy.y += enemy.direction.y * deltaTime;
+    enemy.pos.x += enemy.direction.x * deltaTime;
+    enemy.pos.y += enemy.direction.y * deltaTime;
 }
 
 void EnemyAttack() {}

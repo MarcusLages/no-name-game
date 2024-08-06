@@ -62,8 +62,7 @@ static void PlayerEnemyCollision();
 //* FUNCTION IMPLEMENTATIONS
 
 void PlayerStartup() {
-    player.x             = 0.0f;
-    player.y             = 0.0f;
+    player.pos           = Vector2Zero();
     player.speed         = 200;
     player.health        = 1;
     player.direction     = Vector2Zero();
@@ -90,8 +89,8 @@ void PlayerStartup() {
 
 void PlayerMovement() {
     // For debugging:
-    DrawText(TextFormat("Player x: %f", player.x), 0, 0, 20, RED);
-    DrawText(TextFormat("Player y: %f", player.y), 0, 20, 20, RED);
+    DrawText(TextFormat("Player x: %f", player.pos.x), 0, 0, 20, RED);
+    DrawText(TextFormat("Player y: %f", player.pos.y), 0, 20, 20, RED);
 
     // Ensures the player cannot move while attacking
     if(player.state == ATTACKING) return;
@@ -136,8 +135,8 @@ void PlayerMovement() {
     PlayerWorldCollision();
     PlayerEnemyCollision();
 
-    player.x += player.direction.x * deltaTime;
-    player.y += player.direction.y * deltaTime;
+    player.pos.x += player.direction.x * deltaTime;
+    player.pos.y += player.direction.y * deltaTime;
 }
 
 static void PlayerWorldCollision() {

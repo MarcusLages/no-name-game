@@ -20,7 +20,7 @@ void EntityRender(
     if(entity == NULL || animation == NULL) return;
     DrawAnimation(
         animation,
-        (Rectangle){ (int) (entity->x) + xOffset, (int) (entity->y) + yOffset,
+        (Rectangle){ (int) (entity->pos.x) + xOffset, (int) (entity->pos.y) + yOffset,
                      entityWidth < 0 ? -entityWidth : entityWidth,
                      entityHeight < 0 ? -entityHeight : entityHeight },
         entityWidth, entityHeight, rotation);
