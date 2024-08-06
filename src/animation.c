@@ -43,6 +43,7 @@ static int FindNumOfTiles(int tileWidth, TextureFile textureType);
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
+//TODO: remove texture parameter it is redunant
 Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType, Texture2D texture) {
     //! Returning a blank animation if an incorrect textureType is given.
     if (textureType < TILE_MAP || textureType > TILE_ENEMY_ATTACK) return (Animation) {};
