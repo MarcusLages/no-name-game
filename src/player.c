@@ -64,7 +64,7 @@ static void PlayerEnemyCollision();
 void PlayerStartup() {
     player.x = 0.0f;
     player.y = 0.0f;
-    player.speed = 100;
+    player.speed = 200;
     player.health = 1;
     player.direction = Vector2Zero();
     player.faceValue = 1;

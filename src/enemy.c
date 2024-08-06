@@ -32,8 +32,8 @@ static Animation attackEnemyAnimation;
 //* FUNCTION IMPLEMENTATIONS
 
 void EnemyStartup() {
-    enemy.x = 50;
-    enemy.y = 50;
+    enemy.x = 50.0f;
+    enemy.y = 50.0f;
     enemy.speed = 100;
     enemy.health = 100;
     enemy.direction = Vector2Zero();
@@ -71,17 +71,21 @@ void EnemyStartup() {
 }
 
 void EnemyMovement() {
+    // For debugging:
+    DrawText(TextFormat("Enemy x: %f", enemy.x), 0, 40, 20, RED);
+    DrawText(TextFormat("Enemy y: %f", enemy.y), 0, 60, 20, RED); 
+
     // Ensures the enemy cannot move while attacking
     if (enemy.state == ATTACKING) return;
 
     // Sets the enemy to IDLE if not in agro range.
-    // if ((abs(player.x - enemy.x) > AGRO_X && abs(player.y - enemy.y) > AGRO_Y)) {
-    //     enemy.state = IDLE;
-    //     return;
-    // } 
+    if ((abs(player.x - enemy.x) > AGRO_X && abs(player.y - enemy.y) > AGRO_Y)) {
+        enemy.state = IDLE;
+        return;
+    } 
 
     float deltaTime = GetFrameTime();
-    enemy.direction = (Vector2) {player.x - enemy.x, player.y - enemy.y};
+    enemy.direction = (Vector2) {(int) player.x - (int) enemy.x, (int) player.y - (int) enemy.y};
 
     // Set the enemy to MOVING if not ATTACKING.
     enemy.state = enemy.state == ATTACKING ? ATTACKING : MOVING;
@@ -90,38 +94,18 @@ void EnemyMovement() {
     if(enemy.direction.x == 0 && enemy.direction.y == 0 && enemy.state != ATTACKING) {
         enemy.state = IDLE;
         return;
-    }  
+    }   
 
-    // DrawText(TextFormat("Enemy x: %d", enemy.x), 0, 0, 20, RED);
-    // DrawText(TextFormat("Enemy y: %d", enemy.y), 0, 20, 20, RED);  
-    // DrawText(TextFormat("Enemy speed: %d", enemy.speed), 0, 40, 20, RED);
-    // DrawText(TextFormat("Enemy before dir x: %f", enemy.direction.x), 0, 60, 20, RED); 
-    // DrawText(TextFormat("Enemy before dir y: %f", enemy.direction.y), 0, 80, 20, RED); 
+    enemy.direction = Vector2Normalize(enemy.direction); 
 
-    float speed = enemy.speed * deltaTime;
-
-    enemy.direction = Vector2Normalize(enemy.direction);
-
-    // DrawText(TextFormat("Enemy after norm dir x: %f", enemy.direction.x), 0, 100, 20, RED); 
-    // DrawText(TextFormat("Enemy after norm dir y: %f", enemy.direction.y), 0, 120, 20, RED); 
-
-    // velocity
-    float velocityX = enemy.direction.x * speed;
-    float velocityY = enemy.direction.y * speed;
-
-    // DrawText(TextFormat("Enemy after dir * speed x: %f", enemy.direction.x), 0, 140, 20, RED); 
-    // DrawText(TextFormat("Enemy after dir * speed y: %f", enemy.direction.y), 0, 160, 20, RED);
+    //! NOTE: Do not add deltaTime before checking collisions only after.
+    enemy.direction.x *= enemy.speed;
+    enemy.direction.y *= enemy.speed;
 
     //TODO: enemy world collision
 
-    // DrawText(TextFormat("Enemy after dir * deltatime x: %f", enemy.direction.x * deltaTime), 0, 180, 20, RED);
-    // DrawText(TextFormat("Enemy after dir * deltatime y: %f", enemy.direction.y * deltaTime), 0, 200, 20, RED);
-
-    enemy.x += velocityX;
-    enemy.y += velocityY;
-
-    // DrawText(TextFormat("Enemy x: %d", enemy.x), 0, 220, 20, RED);
-    // DrawText(TextFormat("Enemy y: %d", enemy.y), 0, 240, 20, RED);
+    enemy.x += enemy.direction.x * deltaTime;
+    enemy.y += enemy.direction.y * deltaTime;
 }
 
 void EnemyAttack() {
