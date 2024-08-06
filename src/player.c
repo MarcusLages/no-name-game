@@ -141,19 +141,34 @@ void PlayerMovement() {
     if(player.direction.x == 0 && player.direction.y == 0 && player.state != ATTACKING) {
         player.state = IDLE;
         return;
-    }     
+    }
+
+    // DrawText(TextFormat("Player x: %d", player.x), 0, 0, 20, RED);
+    // DrawText(TextFormat("Player y: %d", player.y), 0, 20, 20, RED);  
+    // DrawText(TextFormat("Player speed: %d", player.speed), 0, 40, 20, RED);
+    // DrawText(TextFormat("Player before dir x: %f", player.direction.x), 0, 60, 20, RED); 
+    // DrawText(TextFormat("Player before dir y: %f", player.direction.y), 0, 80, 20, RED); 
 
     player.direction = Vector2Normalize(player.direction);
+
+    // DrawText(TextFormat("Player after norm dir x: %f", player.direction.x), 0, 100, 20, RED); 
+    // DrawText(TextFormat("Player after norm dir y: %f", player.direction.y), 0, 120, 20, RED); 
 
     // NOTE: Dont add deltatime on acceleration/velocity/direction, add it on the speed or movement.
     player.direction.x *= player.speed;
     player.direction.y *= player.speed;
 
+    // DrawText(TextFormat("Player after dir * speed x: %f", player.direction.x), 0, 140, 20, RED); 
+    // DrawText(TextFormat("Player after dir * speed y: %f", player.direction.y), 0, 160, 20, RED);
+  
     PlayerWorldCollision();
     // PlayerEnemyCollision();
-    
-    player.x += player.direction.x * deltaTime;
-    player.y += player.direction.y * deltaTime;
+
+    // DrawText(TextFormat("Enemy after dir * deltatime x: %f", player.direction.x * deltaTime), 0, 180, 20, RED);
+    // DrawText(TextFormat("Enemy after dir * deltatime y: %f", player.direction.y * deltaTime), 0, 200, 20, RED);
+
+    player.x += player.direction.x * deltaTime < 0 ? ceil(player.direction.x * deltaTime) : floor(player.direction.x * deltaTime);
+    player.y += player.direction.y * deltaTime < 0 ? ceil(player.direction.y * deltaTime) : floor(player.direction.y * deltaTime);
 }
 
 static void PlayerWorldCollision() {
@@ -266,6 +281,8 @@ void PlayerAttack() {
 }
 
 void PlayerRender() {
+    DrawText(TextFormat("Player x: %d", player.x), 0, 0, 20, RED);
+    DrawText(TextFormat("Player y: %d", player.y), 0, 20, 20, RED);
     switch (player.state) {
         case IDLE:
             EntityRender(&player, &idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue, 
