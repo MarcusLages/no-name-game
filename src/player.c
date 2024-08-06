@@ -222,6 +222,42 @@ void PlayerAttack() {
     if (IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
         StartTimer(&attackPlayerAnimation.timer, 0.5f);
+
+        Rectangle attackHitbox = (Rectangle) {
+            .x = player.x,
+            .y = player.y,
+            .width = TEMP_ATTACK_WIDTH,
+            .height = TEMP_ATTACK_HEIGHT
+        };
+
+        switch (player.directionFace) {
+        case RIGHT:
+            // Attack hitbox offset
+            attackHitbox.x += 2;
+            attackHitbox.y += 10;
+            break;
+        case DOWN:
+            // Attack hitbox offset
+            swap(attackHitbox.width, attackHitbox.height);
+            attackHitbox.x -= 3;
+            attackHitbox.y += 23;
+            break;
+        case LEFT:
+            // Attack hitbox offset
+            attackHitbox.x -= TEMP_ATTACK_WIDTH / 2;
+            attackHitbox.y += 10;
+            break;
+        case UP:
+            // Attack hitbox offset
+            swap(attackHitbox.width, attackHitbox.height);
+            attackHitbox.x -= 3;
+            attackHitbox.y -= 9;
+            break;
+        default:
+            break;
+        }
+
+        PlayerEnemyCollision(attackHitbox);
     }
 
     if (player.state == ATTACKING && TimerDone(&attackPlayerAnimation.timer)) {
