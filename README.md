@@ -19,6 +19,6 @@ Samarjit Bhogal ([@SamarjitBhogal](https://github.com/SamarjitBhogal))
 
 # Credits to:
 - Raysan5 ([@raysan5](https://github.com/raysan5)) for Raylib library (https://github.com/raysan5/raylib)
-- Andrew Hamel Codes (@AndrewHamel111) for Raylib Environment setup in VSCode using C language. Follow video for setup guidance: https://youtu.be/xWWqhQ1JnvE?si=OLW6SsLwP9mPwHGp
+- Andrew Hamel Codes ([@AndrewHamel111](https://github.com/AndrewHamel111)) for Raylib Environment setup in VSCode using C language. Follow video for setup guidance: https://youtu.be/xWWqhQ1JnvE?si=OLW6SsLwP9mPwHGp
 - [@OnACoffeeBreak](https://github.com/OnACoffeeBreak) for Raylib tile import example with tmx (https://github.com/OnACoffeeBreak/raylib_tiled_import_with_tmx)
 - Jon Bayle ([@baylej](https://github.com/baylej)) for C tmx map loader (https://github.com/baylej/tmx)
