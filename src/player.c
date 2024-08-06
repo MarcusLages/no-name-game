@@ -254,15 +254,12 @@ static void RenderPlayerAttack() {
 
     // ? THIS SHOULD BE IN PLAYER ATTACK LATER
     // ? -------------------------------------------
-    // TODO:
-    // 1. Create attack hitbox as a rectangle
     Rectangle attackHitbox = (Rectangle) {
         .x = player.x,
         .y = player.y,
         .width = TEMP_ATTACK_WIDTH,
         .height = TEMP_ATTACK_HEIGHT
     };
-    // 2. Offset it related to the player/attack
 
     switch (player.directionFace) {
     case RIGHT:
@@ -277,10 +274,6 @@ static void RenderPlayerAttack() {
         attackHitbox.x -= 3;
         attackHitbox.y += 23;
         DrawRectangleRec(attackHitbox, RED);
-        // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, 
-        //     -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 35, TEMP_ATTACK_HEIGHT + 34, -90.0f);
-        // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
-        //     25, 48, 180.0f);
         break;
     case LEFT:
         // Attack hitbox offset
@@ -294,10 +287,6 @@ static void RenderPlayerAttack() {
         attackHitbox.x -= 3;
         attackHitbox.y -= 9;
         DrawRectangleRec(attackHitbox, RED);
-        // EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, 
-        //     -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 35, TEMP_ATTACK_HEIGHT + 2, -90.0f);
-        //  EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 
-        //     -10, 0, 0.0f);
         break;
     default:
         break;
