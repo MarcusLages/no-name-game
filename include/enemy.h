@@ -20,6 +20,23 @@
 #define AGRO_RANGE 60
 
 //* ------------------------------------------
+//* STRUCTURES
+
+/**
+ * EnemyNode struct represents an enemy who has a reference to another enemy.
+ *
+ * @param enemy The enemy entity of this node.
+ * @param next  The next enemy node.
+ */
+typedef struct EnemyNode EnemyNode;
+struct EnemyNode {
+    /** The enemy entity. */
+    Entity enemy;
+    /** The next enemy entity. */
+    EnemyNode* next;
+};
+
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**

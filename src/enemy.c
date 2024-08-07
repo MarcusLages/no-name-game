@@ -28,18 +28,12 @@ static Animation movingEnemyAnimation;
 /** The animation for a enemy attack. */
 static Animation attackEnemyAnimation;
 
+static EnemyNode* enemies;
+
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
 void EnemyStartup() {
-    enemy.pos           = (Vector2){ 50.0f, 50.0f };
-    enemy.speed         = 100;
-    enemy.health        = 100;
-    enemy.direction     = Vector2Zero();
-    enemy.faceValue     = 1;
-    enemy.state         = IDLE;
-    enemy.directionFace = RIGHT;
-
     // Initializing the idle animation
     idleEnemyAnimation =
         CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_IDLE);
@@ -55,6 +49,54 @@ void EnemyStartup() {
     // Starting timers for both idle and moving animations
     StartTimer(&idleEnemyAnimation.timer, -1.0f);
     StartTimer(&movingEnemyAnimation.timer, -1.0f);
+
+    // Start populating enemies list
+
+    Entity en1 = (Entity){
+        .pos           = (Vector2){ 50.0f, 50.0f },
+        .speed         = 100,
+        .health        = 100,
+        .direction     = Vector2Zero(),
+        .faceValue     = 1,
+        .state         = IDLE,
+        .directionFace = RIGHT,
+    };
+
+    Entity en2 = (Entity){
+        .pos           = (Vector2){ 70.0f, 50.0f },
+        .speed         = 100,
+        .health        = 100,
+        .direction     = Vector2Zero(),
+        .faceValue     = 1,
+        .state         = IDLE,
+        .directionFace = RIGHT,
+    };
+
+    Entity en3 = (Entity){
+        .pos           = (Vector2){ 90.0f, 50.0f },
+        .speed         = 100,
+        .health        = 100,
+        .direction     = Vector2Zero(),
+        .faceValue     = 1,
+        .state         = IDLE,
+        .directionFace = RIGHT,
+    };
+
+    EnemyNode* nEn1 = (EnemyNode*) malloc(sizeof(EnemyNode));
+    if(nEn1 == NULL) exit(EXIT_FAILURE);
+    enemies = nEn1;
+
+    EnemyNode* nEn2 = (EnemyNode*) malloc(sizeof(EnemyNode));
+    EnemyNode* nEn3 = (EnemyNode*) malloc(sizeof(EnemyNode));
+
+    nEn1->enemy = en1;
+    nEn1->next  = nEn2;
+
+    nEn2->enemy = en2;
+    nEn2->next  = nEn3;
+
+    nEn3->enemy = en3;
+    nEn3->next  = NULL;
 }
 
 void EnemyMovement() {
@@ -87,6 +129,8 @@ void EnemyMovement() {
         return;
     }
 
+    enemy.faceValue = player.faceValue;
+
     enemy.direction = Vector2Normalize(enemy.direction);
 
     //! NOTE: Do not add deltaTime before checking collisions only after.
@@ -97,6 +141,8 @@ void EnemyMovement() {
 
     enemy.pos = Vector2Add(enemy.pos, Vector2Scale(enemy.direction, deltaTime));
 }
+
+//TODO need a enemyupdate funtion to only render, update movement and attack to enemies in view
 
 void EnemyAttack() {}
 
@@ -118,7 +164,18 @@ void EnemyRender() {
 }
 
 void EnemyUnload() {
+    UnloadEnemyList();
     AnimationUnload(&idleEnemyAnimation);
     AnimationUnload(&movingEnemyAnimation);
     AnimationUnload(&attackEnemyAnimation);
+}
+
+void UnloadEnemyList() {
+    while(enemies != NULL) {
+        EnemyNode* temp = enemies;
+        enemies = enemies->next;
+        temp->next = NULL;
+        free(temp);
+        temp = NULL;
+    }
 }
