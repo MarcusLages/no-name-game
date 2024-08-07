@@ -13,16 +13,6 @@
 #include "../include/player.h"
 
 //* ------------------------------------------
-//* DEFINITIONS
-
-/**
- * Macro function to get the absolute/module value of a number.
- *
- * @param x Number
- */
-#define ABS(x) (x > 0 ? x : x * (-1))
-
-//* ------------------------------------------
 //* GLOBAL VARIABLES
 
 Entity player;
@@ -46,11 +36,6 @@ static Animation attackPlayerAnimation;
  * Renders the player attack animation based off of it's Direction.
  */
 static void RenderPlayerAttack();
-
-/**
- * Handles player collision with the world tilemap(Tile**)
- */
-static void PlayerWorldCollision();
 
 /**
  * TODO: Implementation + checking how to pass the list or make it global
@@ -134,75 +119,10 @@ void PlayerMovement() {
     // Velocity:
     player.direction = Vector2Scale(player.direction, player.speed);
 
-    PlayerWorldCollision();
+    EntityWorldCollision(&player);
     PlayerEnemyCollision();
 
     player.pos = Vector2Add(player.pos, Vector2Scale(player.direction, deltaTime));
-}
-
-static void PlayerWorldCollision() {
-    if(world == NULL) return;
-
-    CollisionNode* playerCollisionList;
-    playerCollisionList = NULL;
-
-    CollisionNode* collidingTile;
-    collidingTile = collidableTiles;
-
-    while(collidingTile != NULL) {
-        RayCollision2D playerCollision;
-        Rectangle tileHitbox =
-            (Rectangle){ .x = collidingTile->collidedHitbox.index.x * TILE_WIDTH,
-                         .y = collidingTile->collidedHitbox.index.y * TILE_HEIGHT,
-                         .width  = TILE_WIDTH,
-                         .height = TILE_HEIGHT };
-
-        playerCollision = EntityRectCollision(player, tileHitbox);
-        if(playerCollision.hit == true && playerCollision.timeHit >= 0) {
-            if(playerCollisionList == NULL)
-                playerCollisionList = CreateCollisionList(
-                    collidingTile->collidedHitbox.index.x,
-                    collidingTile->collidedHitbox.index.y, playerCollision.timeHit);
-            else
-                AddCollisionNode(
-                    playerCollisionList, collidingTile->collidedHitbox.index.x,
-                    collidingTile->collidedHitbox.index.y, playerCollision.timeHit);
-        }
-        collidingTile = collidingTile->next;
-    }
-
-    if(playerCollisionList != NULL) {
-        SortCollisionList(playerCollisionList);
-
-        CollisionNode* resolvingNode = playerCollisionList;
-        while(resolvingNode != NULL) {
-            RayCollision2D playerCollision;
-            Rectangle tileHitbox = (Rectangle){
-                .x = world[(int) resolvingNode->collidedHitbox.index.y]
-                          [(int) resolvingNode->collidedHitbox.index.x]
-                              .x *
-                    TILE_WIDTH,
-                .y = world[(int) resolvingNode->collidedHitbox.index.y]
-                          [(int) resolvingNode->collidedHitbox.index.x]
-                              .y *
-                    TILE_HEIGHT,
-                .width  = TILE_WIDTH,
-                .height = TILE_HEIGHT
-            };
-
-            playerCollision = EntityRectCollision(player, tileHitbox);
-            if(playerCollision.hit == true && playerCollision.timeHit >= 0) {
-                player.direction.x += playerCollision.normalVector.x *
-                    ABS(player.direction.x) * (1 - playerCollision.timeHit);
-                player.direction.y += playerCollision.normalVector.y *
-                    ABS(player.direction.y) * (1 - playerCollision.timeHit);
-            }
-            resolvingNode = resolvingNode->next;
-        }
-
-        FreeCollisionList(playerCollisionList);
-        playerCollisionList = NULL;
-    }
 }
 
 static void PlayerEnemyCollision() {}
@@ -233,6 +153,12 @@ void PlayerRender() {
     case ATTACKING: RenderPlayerAttack(); break;
     default: break;
     }
+}
+
+void PlayerUnload() {
+    AnimationUnload(&idlePlayerAnimation);
+    AnimationUnload(&movingPlayerAnimation);
+    AnimationUnload(&attackPlayerAnimation);
 }
 
 static void RenderPlayerAttack() {
@@ -275,10 +201,4 @@ static void RenderPlayerAttack() {
         break;
     default: break;
     }
-}
-
-void PlayerUnload() {
-    AnimationUnload(&idlePlayerAnimation);
-    AnimationUnload(&movingPlayerAnimation);
-    AnimationUnload(&attackPlayerAnimation);
 }
