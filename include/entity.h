@@ -148,6 +148,8 @@ void EntityRender(
 /**
  * Function used to check if there was a collision between a moving entity and a Rectangle
  * hitbox.
+ * 
+ * ! @attention Use this only for general entities (16x32 with only the lower 16pxls collidable)
  *
  * @param entity        Moving entity to test the collision
  * @param hitboxTarget  Rectangle that the entity will check a collision with
@@ -162,6 +164,8 @@ RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
 /**
  * Function used to check if there was a collision between a moving entity and another
  * entity's hitbox.
+ * 
+ * ! @attention Use this only for general entities (16x32 with only the lower 16pxls collidable)
  *
  * @param entityIn      Moving entity to test the collision
  * @param entityTarget  Target entity that the entityIn will check a collision with
@@ -175,6 +179,8 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
 
 /**
  * Handles entity collision with the world tilemap(Tile**) through the collidableTiles list.
+ * 
+ * ! @attention Use this only for general entities (16x32 with only the lower 16pxls collidable)
  * 
  * @param entity Pointer to the entity that will check collision with all the collidable tiles on the map
  */
