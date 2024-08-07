@@ -104,6 +104,7 @@ void MainMenuUpdate() {
                     case OPTIONS_BUTTON:
                         break;
                     case EXIT_BUTTON:
+                        isRunning = false;
                         break;
                     default: break;
                 }
