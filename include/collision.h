@@ -99,6 +99,7 @@ struct CollisionNode {
 //* ------------------------------------------
 //* GLOBAL VARIABLES
 
+/** Linked list with indexes to all the possible collidable tiles. */
 extern CollisionNode * collidableTiles;
 
 //* ------------------------------------------

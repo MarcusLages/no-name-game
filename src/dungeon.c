@@ -67,18 +67,18 @@ void DungeonStartup() {
     InitializeTiles();   
 
     StartCamera();
-    //EnemyStartup();
+    EnemyStartup();
     PlayerStartup();
 }
 
 void DungeonUpdate() {
     PlayerMovement();
-    // EnemyMovement();
-    // EnemyAttack();
+    EnemyMovement();
+    EnemyAttack();
     PlayerAttack();
     
     // Update camera to follow the player
-    camera.target = (Vector2) {player.x + 8, player.y + 16};
+    camera.target = (Vector2) {(int) player.pos.x + 8, (int) player.pos.y + 16};
 }
 
 void DungeonRender() {
@@ -96,7 +96,7 @@ void DungeonRender() {
     }
 
     // Draw player on the screen  
-    //EnemyRender();
+    EnemyRender();
     PlayerRender();
 }
 
@@ -105,7 +105,7 @@ void DungeonUnload() {
     PlayerUnload();
 
     //Unloads the enemy sprites and animations.
-    //EnemyUnload();
+    EnemyUnload();
 
     // Unloads all tiles
     for (int j = 0; j < WORLD_HEIGHT; j++) {
@@ -128,7 +128,7 @@ void DungeonUnload() {
 }
 
 static void StartCamera() {
-    camera.target = (Vector2) {player.x + 8, player.y + 16};
+    camera.target = (Vector2) {player.pos.x + 8, player.pos.y + 16};
     camera.offset = (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
