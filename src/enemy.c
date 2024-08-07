@@ -31,6 +31,14 @@ static Animation attackEnemyAnimation;
 static EnemyNode* enemies;
 
 //* ------------------------------------------
+//* FUNCTION PROTOTYPES
+
+/**
+ * Unloads the list of enemies.
+ */
+static void UnloadEnemyList();
+
+//* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
 void EnemyStartup() {
@@ -99,6 +107,8 @@ void EnemyStartup() {
     nEn3->next  = NULL;
 }
 
+void EnemyUpdate() {}
+
 void EnemyMovement() {
     // For debugging:
     DrawText(TextFormat("Enemy x: %f", enemy.pos.x), 0, 40, 20, RED);
@@ -142,7 +152,7 @@ void EnemyMovement() {
     enemy.pos = Vector2Add(enemy.pos, Vector2Scale(enemy.direction, deltaTime));
 }
 
-//TODO need a enemyupdate funtion to only render, update movement and attack to enemies in view
+// TODO need a enemyupdate funtion to only render, update movement and attack to enemies in view
 
 void EnemyAttack() {}
 
@@ -170,11 +180,11 @@ void EnemyUnload() {
     AnimationUnload(&attackEnemyAnimation);
 }
 
-void UnloadEnemyList() {
+static void UnloadEnemyList() {
     while(enemies != NULL) {
         EnemyNode* temp = enemies;
-        enemies = enemies->next;
-        temp->next = NULL;
+        enemies         = enemies->next;
+        temp->next      = NULL;
         free(temp);
         temp = NULL;
     }

@@ -47,6 +47,12 @@ struct EnemyNode {
 void EnemyStartup();
 
 /**
+ * Manages enemies that are allowed to update their movement, update their
+ * attack, and render on screen.
+ */
+void EnemyUpdate();
+
+/**
  * Handles enemy movement and updates it's GameState and Direction.
  */
 void EnemyMovement();
@@ -65,7 +71,7 @@ void EnemyAttack();
 void EnemyRender();
 
 /**
- * Unloads all the animations associated with the enemy entity.
+ * Unloads all the enemies and animations associated with an enemy entity.
  */
 void EnemyUnload();
 
