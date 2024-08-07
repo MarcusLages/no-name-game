@@ -35,9 +35,9 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget) {
 
     if(Vector2Equals(entityIn.direction, Vector2Zero())) return collision;
 
-    Rectangle entityInHitbox     = (Rectangle){ .x      = entityIn.pos.x,
-                                                .y      = entityIn.pos.y,
-                                                .width  = ENTITY_TILE_WIDTH,
+    Rectangle entityInHitbox = (Rectangle){ .x = entityIn.pos.x,
+                                          .y = entityIn.pos.y + ENTITY_TILE_HEIGHT / 2,
+                                          .width  = ENTITY_TILE_WIDTH,
                                                 .height = ENTITY_TILE_HEIGHT };
     Rectangle entityTargetHitbox = (Rectangle){ .x      = entityTarget.pos.x,
                                                 .y      = entityTarget.pos.y,
