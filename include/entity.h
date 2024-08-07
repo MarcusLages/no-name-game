@@ -173,4 +173,11 @@ RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
  */
 RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
 
+/**
+ * Handles entity collision with the world tilemap(Tile**) through the collidableTiles list.
+ * 
+ * @param entity Pointer to the entity that will check collision with all the collidable tiles on the map
+ */
+void EntityWorldCollision(Entity* entity);
+
 #endif // !ENTITY_H
