@@ -33,6 +33,10 @@ static Animation attackEnemyAnimation;
 
 void EnemyStartup() {
     enemy.pos           = (Vector2){ 50.0f, 50.0f };
+    enemy.hitbox        = (Rectangle){ .x      = enemy.pos.x,
+                                       .y      = enemy.pos.y + ENTITY_TILE_HEIGHT / 2,
+                                       .width  = ENTITY_TILE_WIDTH,
+                                       .height = ENTITY_TILE_HEIGHT / 2 };
     enemy.speed         = 100;
     enemy.health        = 100;
     enemy.direction     = Vector2Zero();

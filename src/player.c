@@ -48,6 +48,10 @@ static void PlayerEnemyCollision();
 
 void PlayerStartup() {
     player.pos           = Vector2Zero();
+    player.hitbox        = (Rectangle){ .x     = player.pos.x,
+                                        .y     = player.pos.y + ENTITY_TILE_HEIGHT / 2,
+                                        .width = ENTITY_TILE_WIDTH,
+                                        .height = ENTITY_TILE_HEIGHT / 2 };
     player.speed         = 200;
     player.health        = 1;
     player.direction     = Vector2Zero();

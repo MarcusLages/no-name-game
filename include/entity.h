@@ -93,6 +93,10 @@ typedef enum Direction {
 typedef struct Entity {
     /** The position of the entity. */
     Vector2 pos;
+    /** The hitbox used for collision detection.
+     *  @note Position needs to be updated everytime we use it
+     */
+    Rectangle hitbox;
     /** Speed the entity moves at. */
     int speed;
     /** Health of the entity. */
@@ -129,7 +133,7 @@ extern Entity enemy;
  *
  * ! @attention returns if given either a NULL entity or animation.
  *
- * @param entity        Entity to render.
+ * @param entity        Pointer to the entity to render.
  * @param animation     Animation to apply to the entity.
  * @param entityWidth   Width of the entity.
  * @param entityHeight  Height of the entity.
@@ -146,9 +150,16 @@ void EntityRender(
 //* General entity logic
 
 /**
+ * Function that should be called to update the entity hitbox collision before a collision is called.
+ * 
+ * @param entity Pointer to the entity that will update its hitbox
+ */
+void UpdateEntityHitbox(Entity* entity);
+
+/**
  * Function used to check if there was a collision between a moving entity and a Rectangle
  * hitbox.
- * 
+ *
  * ! @attention Use this only for general entities (16x32 with only the lower 16pxls collidable)
  *
  * @param entity        Moving entity to test the collision
@@ -164,7 +175,7 @@ RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
 /**
  * Function used to check if there was a collision between a moving entity and another
  * entity's hitbox.
- * 
+ *
  * ! @attention Use this only for general entities (16x32 with only the lower 16pxls collidable)
  *
  * @param entityIn      Moving entity to test the collision
@@ -179,9 +190,9 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
 
 /**
  * Handles entity collision with the world tilemap(Tile**) through the collidableTiles list.
- * 
+ *
  * ! @attention Use this only for general entities (16x32 with only the lower 16pxls collidable)
- * 
+ *
  * @param entity Pointer to the entity that will check collision with all the collidable tiles on the map
  */
 void EntityWorldCollision(Entity* entity);

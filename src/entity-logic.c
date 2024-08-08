@@ -24,18 +24,20 @@
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
+void UpdateEntityHitbox(Entity* entity) {
+    entity->hitbox.x = entity->pos.x;
+    entity->hitbox.y = entity->pos.y + entity->hitbox.height;
+}
+
 RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget) {
     RayCollision2D collision;
     collision.hit = false;
 
     if(Vector2Equals(entity.direction, Vector2Zero())) return collision;
 
-    Rectangle entityHitbox = (Rectangle){ .x = entity.pos.x,
-                                          .y = entity.pos.y + ENTITY_TILE_HEIGHT / 2,
-                                          .width  = ENTITY_TILE_WIDTH,
-                                          .height = ENTITY_TILE_HEIGHT / 2 };
+    UpdateEntityHitbox(&entity);
 
-    collision = HitboxCollision(entityHitbox, entity.direction, hitboxTarget);
+    collision = HitboxCollision(entity.hitbox, entity.direction, hitboxTarget);
     return collision;
 }
 
@@ -45,16 +47,10 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget) {
 
     if(Vector2Equals(entityIn.direction, Vector2Zero())) return collision;
 
-    Rectangle entityInHitbox = (Rectangle){ .x = entityIn.pos.x,
-                                          .y = entityIn.pos.y + ENTITY_TILE_HEIGHT / 2,
-                                          .width  = ENTITY_TILE_WIDTH,
-                                          .height = ENTITY_TILE_HEIGHT / 2 };
-    Rectangle entityTargetHitbox = (Rectangle){ .x = entityTarget.pos.x,
-                                          .y = entityTarget.pos.y + ENTITY_TILE_HEIGHT / 2,
-                                          .width  = ENTITY_TILE_WIDTH,
-                                          .height = ENTITY_TILE_HEIGHT / 2 };
+    UpdateEntityHitbox(&entityIn);
+    UpdateEntityHitbox(&entityTarget);
 
-    collision = HitboxCollision(entityInHitbox, entityIn.direction, entityTargetHitbox);
+    collision = HitboxCollision(entityIn.hitbox, entityIn.direction, entityTarget.hitbox);
     return collision;
 }
 
