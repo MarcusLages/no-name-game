@@ -166,6 +166,17 @@ static void LoadTextures() {
 }
 
 static void InitializeTiles() {
+    //TODO: Add .tmx map
+    // OBJ: Function that renders tmx map to framebuffer
+    // 1. Create RenderTexture2D framebuffer
+    // 2. Load the tmx map using the function: tmx_map *tmx_load(".tmx")
+    // 2.5. Check for errors
+    // 3. Start a framebuffer with the mapTmx width and height
+    // 4. Begin/EndTextureMode(framebuffer)
+    // 5. while(mapTmx.layer) check if layer is visible
+    // 6. Check for the layer type (L_LAYER, etc.) and render it accordingly
+    // 7. DrawTmxLayer
+    // 8. tmx_map__free(mapTmx)
     for (int j = 0; j < WORLD_HEIGHT; j++) {
         Tile *tiles = (Tile*) malloc(WORLD_HEIGHT * sizeof(Tile));
         for (int i = 0; i < WORLD_WIDTH; i++) {
