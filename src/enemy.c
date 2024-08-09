@@ -63,14 +63,6 @@ void EnemyStartup() {
 
     // Start populating enemies list
 
-    /**
-     * Prediction: entities are on the stack. enemies is on the heap trying to
-     * access stack. we should only ever access from stack to heap not the other
-     * way around.
-     *
-     * Prediction 2: en1, en2, en3 are cleared from stack therefore
-     * any references are no longer pointing to them.
-     */
     Entity* en1        = (Entity*) malloc(sizeof(Entity));
     en1->pos           = (Vector2){ 50.0f, 50.0f };
     en1->speed         = 100;
