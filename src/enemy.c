@@ -101,61 +101,6 @@ void EnemyStartup() {
     SetupEnemies();
 }
 
-static void SetupEnemies() {
-    int* randNumsX = LoadRandomSequence(10, 0, WORLD_WIDTH * TILE_WIDTH);
-    int* randNumsY = LoadRandomSequence(10, 0, WORLD_HEIGHT * TILE_HEIGHT);
-    for(int i = 0; i < MAX_ENEMIES; i++) {
-        // TODO: Make a coordinate assigning system that places enemies at a correct x and y
-        //? NOTE: LoadRandomSequence is a temp solution
-        Entity* enemy = (Entity*) malloc(sizeof(Entity));
-
-        if(enemy == NULL) exit(EXIT_FAILURE);
-
-        enemy->pos           = (Vector2){ randNumsX[i], randNumsY[i] };
-        enemy->speed         = 100;
-        enemy->health        = 100;
-        enemy->direction     = Vector2Zero();
-        enemy->faceValue     = 1;
-        enemy->state         = IDLE;
-        enemy->directionFace = RIGHT;
-
-        if(enemies == NULL) {
-            enemies = CreateEnemyList(enemy);
-        } else {
-            AddEnemyNode(enemies, enemy);
-        }
-    }
-    UnloadRandomSequence(randNumsY);
-    UnloadRandomSequence(randNumsX);
-}
-
-static EnemyNode* CreateEnemyList(Entity* enemy) {
-    if(enemy == NULL) return NULL;
-
-    EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
-    if(enemyNode == NULL) exit(EXIT_FAILURE);
-
-    enemyNode->enemy = enemy;
-    enemyNode->next  = NULL;
-    return enemyNode;
-}
-
-static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy) {
-    if(enemy == NULL || enemiesHead == NULL) return;
-
-    EnemyNode* cursor    = enemiesHead;
-    EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
-    if(enemyNode == NULL) exit(EXIT_FAILURE);
-
-    enemyNode->enemy = enemy;
-    enemyNode->next  = NULL;
-
-    while(cursor->next != NULL)
-        cursor = cursor->next;
-
-    cursor->next = enemyNode;
-}
-
 /**
  * NOTES:
  *  - enemies should dictate their own face values
@@ -230,6 +175,7 @@ void EnemyRender() {
     }
 }
 
+// Commented out for now.
 // void RenderEnemyAttack() {}
 
 void EnemyUnload() {
@@ -239,11 +185,65 @@ void EnemyUnload() {
     AnimationUnload(&attackEnemyAnimation);
 }
 
+static void SetupEnemies() {
+    int* randNumsX = LoadRandomSequence(10, 0, WORLD_WIDTH * TILE_WIDTH);
+    int* randNumsY = LoadRandomSequence(10, 0, WORLD_HEIGHT * TILE_HEIGHT);
+    for(int i = 0; i < MAX_ENEMIES; i++) {
+        // TODO: Make a coordinate assigning system that places enemies at a correct x and y
+        //? NOTE: LoadRandomSequence is a temp solution
+        Entity* enemy = (Entity*) malloc(sizeof(Entity));
+
+        if(enemy == NULL) exit(EXIT_FAILURE);
+
+        enemy->pos           = (Vector2){ randNumsX[i], randNumsY[i] };
+        enemy->speed         = 100;
+        enemy->health        = 100;
+        enemy->direction     = Vector2Zero();
+        enemy->faceValue     = 1;
+        enemy->state         = IDLE;
+        enemy->directionFace = RIGHT;
+
+        if(enemies == NULL) {
+            enemies = CreateEnemyList(enemy);
+        } else {
+            AddEnemyNode(enemies, enemy);
+        }
+    }
+    UnloadRandomSequence(randNumsY);
+    UnloadRandomSequence(randNumsX);
+}
+
+static EnemyNode* CreateEnemyList(Entity* enemy) {
+    if(enemy == NULL) return NULL;
+
+    EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
+    if(enemyNode == NULL) exit(EXIT_FAILURE);
+
+    enemyNode->enemy = enemy;
+    enemyNode->next  = NULL;
+    return enemyNode;
+}
+
+static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy) {
+    if(enemy == NULL || enemiesHead == NULL) return;
+
+    EnemyNode* cursor    = enemiesHead;
+    EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
+    if(enemyNode == NULL) exit(EXIT_FAILURE);
+
+    enemyNode->enemy = enemy;
+    enemyNode->next  = NULL;
+
+    while(cursor->next != NULL)
+        cursor = cursor->next;
+
+    cursor->next = enemyNode;
+}
+
 static void UnloadEnemyList() {
     while(enemies != NULL) {
         EnemyNode* temp = enemies;
         enemies         = enemies->next;
-        temp->next      = NULL;
         free(temp->enemy);
         temp->enemy = NULL;
         free(temp);

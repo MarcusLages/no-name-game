@@ -43,7 +43,7 @@ struct EnemyNode {
 /**
  * All enemy entities.
  *
- * !@attention A global variable for now.
+ * ! @attention A global variable for now.
  */
 extern EnemyNode* enemies;
 
