@@ -35,14 +35,39 @@ static Animation attackEnemyAnimation;
  * Populates the enemies linked list by creates entities around the level and
  * assigning them to an EnityNode.
  *
- * ! @note Allocates memory for each Entity and EntityNode.
+ * ! @note Allocates memory for each Entity.
  */
 static void SetupEnemies();
 
 /**
+ * Creates the enemies linked list and returns a reference to the first EnemyNode in the list.
+ *
+ * ! @attention Returns NULL if given a NULL enemy.
+ *
+ * @param enemy The enemy to add as the first EnemyNode.
+ *
+ * @returns The reference to the first EnemyNode.
+ *
+ * ! @note Allocates memory for the first EnemyNode.
+ */
+static EnemyNode* CreateEnemyList(Entity* enemy);
+
+/**
+ * Creates an EnemyNode and adds it to the end of the enemies linked list.
+ *
+ * ! @attention Returns if given a NULL enemy or NULL head pointer.
+ *
+ * @param enemiesHead The head pointer to the linked list of enemies.
+ * @param enemy The enemy to add as an EnemyNode.
+ *
+ * ! @note Allocates memory for the EnemyNode.
+ */
+static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy);
+
+/**
  * Renders an enemy's attack animation based off of it's Direction.
  */
-static void RenderEnemyAttack();
+// static void RenderEnemyAttack();
 
 /**
  * Unloads the list of enemies.
@@ -67,59 +92,68 @@ void EnemyStartup() {
     attackEnemyAnimation =
         CreateAnimation(DEFAULT_ATTACK_FPS, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, TILE_ENEMY_ATTACK);
 
+    enemies = NULL;
+
     // Starting timers for both idle and moving animations
     StartTimer(&idleEnemyAnimation.timer, -1.0f);
     StartTimer(&movingEnemyAnimation.timer, -1.0f);
 
-    // Start populating enemies list
-
     SetupEnemies();
+}
 
-    Entity* en1        = (Entity*) malloc(sizeof(Entity));
-    en1->pos           = (Vector2){ 50.0f, 50.0f };
-    en1->speed         = 100;
-    en1->health        = 100;
-    en1->direction     = Vector2Zero();
-    en1->faceValue     = 1;
-    en1->state         = IDLE;
-    en1->directionFace = RIGHT;
+static void SetupEnemies() {
+    int* randNumsX = LoadRandomSequence(10, 0, WORLD_WIDTH * TILE_WIDTH);
+    int* randNumsY = LoadRandomSequence(10, 0, WORLD_HEIGHT * TILE_HEIGHT);
+    for(int i = 0; i < MAX_ENEMIES; i++) {
+        // TODO: Make a coordinate assigning system that places enemies at a correct x and y
+        //? NOTE: LoadRandomSequence is a temp solution
+        Entity* enemy = (Entity*) malloc(sizeof(Entity));
 
-    Entity* en2        = (Entity*) malloc(sizeof(Entity));
-    en2->pos           = (Vector2){ 70.0f, 50.0f };
-    en2->speed         = 100;
-    en2->health        = 100;
-    en2->direction     = Vector2Zero();
-    en2->faceValue     = 1;
-    en2->state         = IDLE;
-    en2->directionFace = RIGHT;
+        if(enemy == NULL) exit(EXIT_FAILURE);
 
-    Entity* en3        = (Entity*) malloc(sizeof(Entity));
-    en3->pos           = (Vector2){ 90.0f, 50.0f };
-    en3->speed         = 100;
-    en3->health        = 100;
-    en3->direction     = Vector2Zero();
-    en3->faceValue     = 1;
-    en3->state         = IDLE;
-    en3->directionFace = RIGHT;
+        enemy->pos           = (Vector2){ randNumsX[i], randNumsY[i] };
+        enemy->speed         = 100;
+        enemy->health        = 100;
+        enemy->direction     = Vector2Zero();
+        enemy->faceValue     = 1;
+        enemy->state         = IDLE;
+        enemy->directionFace = RIGHT;
 
-    enemies         = (EnemyNode*) malloc(sizeof(EnemyNode));
-    EnemyNode* nEn1 = (EnemyNode*) malloc(sizeof(EnemyNode));
+        if(enemies == NULL) {
+            enemies = CreateEnemyList(enemy);
+        } else {
+            AddEnemyNode(enemies, enemy);
+        }
+    }
+    UnloadRandomSequence(randNumsY);
+    UnloadRandomSequence(randNumsX);
+}
 
-    EnemyNode* nEn2 = (EnemyNode*) malloc(sizeof(EnemyNode));
-    EnemyNode* nEn3 = (EnemyNode*) malloc(sizeof(EnemyNode));
-    if(enemies == NULL || nEn1 == NULL || nEn2 == NULL || nEn3 == NULL)
-        exit(EXIT_FAILURE);
+static EnemyNode* CreateEnemyList(Entity* enemy) {
+    if(enemy == NULL) return NULL;
 
-    enemies = nEn1;
+    EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
+    if(enemyNode == NULL) exit(EXIT_FAILURE);
 
-    nEn1->enemy = en1;
-    nEn1->next  = nEn2;
+    enemyNode->enemy = enemy;
+    enemyNode->next  = NULL;
+    return enemyNode;
+}
 
-    nEn2->enemy = en2;
-    nEn2->next  = nEn3;
+static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy) {
+    if(enemy == NULL || enemiesHead == NULL) return;
 
-    nEn3->enemy = en3;
-    nEn3->next  = NULL;
+    EnemyNode* cursor    = enemiesHead;
+    EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
+    if(enemyNode == NULL) exit(EXIT_FAILURE);
+
+    enemyNode->enemy = enemy;
+    enemyNode->next  = NULL;
+
+    while(cursor->next != NULL)
+        cursor = cursor->next;
+
+    cursor->next = enemyNode;
 }
 
 /**
@@ -196,7 +230,7 @@ void EnemyRender() {
     }
 }
 
-void RenderEnemyAttack() {}
+// void RenderEnemyAttack() {}
 
 void EnemyUnload() {
     UnloadEnemyList();

@@ -17,7 +17,8 @@
 //* ------------------------------------------
 //* DEFINITIONS
 
-#define AGRO_RANGE 60
+#define AGRO_RANGE 100
+#define MAX_ENEMIES 10
 
 //* ------------------------------------------
 //* STRUCTURES
