@@ -31,9 +31,12 @@
 typedef struct EnemyNode EnemyNode;
 struct EnemyNode {
     /** The enemy entity. */
-    Entity enemy;
+    Entity* enemy;
+    /** The enemy's distnace to the player. */
+    float distance;
     /** The next enemy entity. */
     EnemyNode* next;
+    int name;
 };
 
 //* ------------------------------------------
@@ -47,8 +50,7 @@ struct EnemyNode {
 void EnemyStartup();
 
 /**
- * Manages enemies that are allowed to update their movement, update their
- * attack, and render on screen.
+ * Updates every enemy's distance from the player.
  */
 void EnemyUpdate();
 

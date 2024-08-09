@@ -73,8 +73,9 @@ void DungeonStartup() {
 
 void DungeonUpdate() {
     PlayerMovement();
+    EnemyUpdate();
     EnemyMovement();
-    EnemyAttack();
+    // EnemyAttack();
     PlayerAttack();
     
     // Update camera to follow the player
