@@ -52,12 +52,13 @@ typedef struct Animation {
  * Constructs an instance of an Animation in memory and returns a pointer.
  *
  * ! @attention returns an empty Animation if given an invalid textureType.
- * ! @note This function is responsible for creating animation.reactangles in the heap.
  *
  * @param fps               Rate at which the sprite frames are updated.
  * @param tileWidth         Width of a single tile.
  * @param tileHeight        Height of a single tile.
  * @param textureFileType   Type of texture as a TextureFile.
+ * 
+ * ! @note This function is responsible for creating animation.reactangles in the heap.
  *
  * @returns An Animation.
  */
@@ -85,9 +86,10 @@ void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int en
  * used to store the frames and the timer in an animation.
  *
  * ! @attention returns if given a NULL animation.
- * ! @note This function frees the memory of animation.frames.
  *
  * @param animation The animation to unallocate.
+ * 
+ * ! @note This function frees the memory of animation.frames.
  */
 void AnimationUnload(Animation* animation);
 

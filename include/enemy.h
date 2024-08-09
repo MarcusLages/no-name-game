@@ -25,16 +25,15 @@
 /**
  * EnemyNode struct represents an enemy who has a reference to another enemy.
  *
- * @param enemy The enemy entity of this node.
- * @param next  The next enemy node.
+ * @param enemy Enemy entity of this node.
+ * @param next  Next enemy node.
  */
 typedef struct EnemyNode EnemyNode;
 struct EnemyNode {
-    /** The enemy entity. */
+    /** The pointer to an enemy entity. */
     Entity* enemy;
-    /** The next enemy entity. */
+    /** The pointer to the next enemy entity. */
     EnemyNode* next;
-    int name;
 };
 
 //* ------------------------------------------
@@ -42,7 +41,7 @@ struct EnemyNode {
 
 /**
  * All enemy entities.
- * 
+ *
  * !@attention A global variable for now.
  */
 extern EnemyNode* enemies;

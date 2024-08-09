@@ -32,14 +32,24 @@ static Animation attackEnemyAnimation;
 //* FUNCTION PROTOTYPES
 
 /**
- * Unloads the list of enemies.
+ * Populates the enemies linked list by creates entities around the level and
+ * assigning them to an EnityNode.
+ *
+ * ! @note Allocates memory for each Entity and EntityNode.
  */
-static void UnloadEnemyList();
+static void SetupEnemies();
 
 /**
  * Renders an enemy's attack animation based off of it's Direction.
  */
 static void RenderEnemyAttack();
+
+/**
+ * Unloads the list of enemies.
+ *
+ * ! @note Unallocates memory for each Entity and EntityNode.
+ */
+static void UnloadEnemyList();
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
@@ -62,6 +72,8 @@ void EnemyStartup() {
     StartTimer(&movingEnemyAnimation.timer, -1.0f);
 
     // Start populating enemies list
+
+    SetupEnemies();
 
     Entity* en1        = (Entity*) malloc(sizeof(Entity));
     en1->pos           = (Vector2){ 50.0f, 50.0f };
@@ -101,18 +113,21 @@ void EnemyStartup() {
     enemies = nEn1;
 
     nEn1->enemy = en1;
-    nEn1->name  = 1;
     nEn1->next  = nEn2;
 
     nEn2->enemy = en2;
-    nEn2->name  = 2;
     nEn2->next  = nEn3;
 
     nEn3->enemy = en3;
-    nEn3->name  = 3;
     nEn3->next  = NULL;
 }
 
+/**
+ * NOTES:
+ *  - enemies should dictate their own face values
+ *  - own directions
+ */
+// TODO: enemy navigate around collision
 void EnemyMovement() {
     EnemyNode* currEnemy = enemies;
     Entity* enemy        = NULL;
@@ -135,29 +150,21 @@ void EnemyMovement() {
         // It helps to take account for time between frames too.
         float deltaTime = GetFrameTime();
 
-        enemy->direction = (Vector2){ (int) player.pos.x - (int) enemy->pos.x,
-                                      (int) player.pos.y - (int) enemy->pos.y };
+        enemy->direction = (Vector2){
+            (int) player.pos.x - (int) enemy->pos.x,
+            (int) player.pos.y - (int) enemy->pos.y,
+        };
 
         // Set the enemy to MOVING if not ATTACKING.
-        enemy->state = enemy->state == ATTACKING ? ATTACKING : MOVING;
-
-        // Set the enemy to IDLE if not ATTACKING or moving on any direction
-        // ! N/A to enemies. Leaving it here still to confirm:
-        // if(enemy->direction.x == 0 && enemy->direction.y == 0 &&
-        //    enemy->state != ATTACKING) {
-        //     enemy->state = IDLE;
-        //     continue;
-        // }
-
+        enemy->state     = enemy->state == ATTACKING ? ATTACKING : MOVING;
         enemy->faceValue = player.faceValue;
-
         enemy->direction = Vector2Normalize(enemy->direction);
 
         //! NOTE: Do not add deltaTime before checking collisions only after.
         // Velocity:
         enemy->direction = Vector2Scale(enemy->direction, enemy->speed);
 
-        // TODO: enemy world collision
+        EntityWorldCollision(enemy);
 
         enemy->pos = Vector2Add(enemy->pos, Vector2Scale(enemy->direction, deltaTime));
         currEnemy = currEnemy->next;
@@ -168,19 +175,18 @@ void EnemyAttack() {}
 
 void EnemyRender() {
     EnemyNode* currEnemy = enemies;
-
+    Entity* enemy        = NULL;
     while(currEnemy != NULL) {
-        switch(currEnemy->enemy->state) {
+        enemy = currEnemy->enemy;
+        switch(enemy->state) {
             case IDLE:
                 EntityRender(
-                    currEnemy->enemy, &idleEnemyAnimation,
-                    ENTITY_TILE_WIDTH * currEnemy->enemy->faceValue,
+                    enemy, &idleEnemyAnimation, ENTITY_TILE_WIDTH * enemy->faceValue,
                     ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
                 break;
             case MOVING:
                 EntityRender(
-                    currEnemy->enemy, &movingEnemyAnimation,
-                    ENTITY_TILE_WIDTH * currEnemy->enemy->faceValue,
+                    enemy, &movingEnemyAnimation, ENTITY_TILE_WIDTH * enemy->faceValue,
                     ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
                 break;
             case ATTACKING: break;
