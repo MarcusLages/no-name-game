@@ -111,15 +111,8 @@ typedef struct Entity {
 //* GLOBAL VARIABLES
 
 /** The player entity. */
+//TODO: move to player.h since enemies can't be here
 extern Entity player;
-
-/**
- * The enemy entity.
- *
- * ! NOTE: This is a temp global variable because there will be multiple enemies.
- * TODO: Remove once done.
- */
-extern Entity enemy;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES

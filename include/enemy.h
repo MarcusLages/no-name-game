@@ -40,6 +40,16 @@ struct EnemyNode {
 };
 
 //* ------------------------------------------
+//* GLOBAL VARIABLES
+
+/**
+ * All enemy entities.
+ * 
+ * !@attention A global variable for now.
+ */
+extern EnemyNode* enemies;
+
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**

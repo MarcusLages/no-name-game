@@ -14,7 +14,7 @@
 //* ------------------------------------------
 //* GLOBAL VARIABLES
 
-Entity enemy;
+EnemyNode* enemies;
 
 //* ------------------------------------------
 //* MODULAR VARIABLES
@@ -27,8 +27,6 @@ static Animation movingEnemyAnimation;
 
 /** The animation for a enemy attack. */
 static Animation attackEnemyAnimation;
-
-EnemyNode* enemies;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -65,11 +63,12 @@ void EnemyStartup() {
 
     // Start populating enemies list
 
-
     /**
      * Prediction: entities are on the stack. enemies is on the heap trying to
      * access stack. we should only ever access from stack to heap not the other
-     * way around. Prediction 2: en1, en2, en3 are cleared from stack therefore
+     * way around.
+     *
+     * Prediction 2: en1, en2, en3 are cleared from stack therefore
      * any references are no longer pointing to them.
      */
     Entity* en1        = (Entity*) malloc(sizeof(Entity));
@@ -122,11 +121,7 @@ void EnemyStartup() {
     nEn3->next  = NULL;
 }
 
-// TODO need a enemyupdate funtion to only render, update movement and attack to enemies in view
 void EnemyUpdate() {
-    // while loop does not work. Make different method of updating which enemies are close and
-    // have a different methods to manage movement, attack and render
-
     // Updates the distance to player for every enemy.
     EnemyNode* currEnemy = enemies;
     while(currEnemy != NULL) {
