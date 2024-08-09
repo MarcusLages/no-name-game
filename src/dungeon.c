@@ -73,7 +73,6 @@ void DungeonStartup() {
 
 void DungeonUpdate() {
     PlayerMovement();
-    EnemyUpdate();
     EnemyMovement();
     // EnemyAttack();
     PlayerAttack();

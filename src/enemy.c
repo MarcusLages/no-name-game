@@ -121,72 +121,53 @@ void EnemyStartup() {
     nEn3->next  = NULL;
 }
 
-void EnemyUpdate() {
-    // Updates the distance to player for every enemy.
-    EnemyNode* currEnemy = enemies;
-    while(currEnemy != NULL) {
-        currEnemy->distance =
-            Vector2Length(player.pos) - Vector2Length(currEnemy->enemy->pos);
-        currEnemy = currEnemy->next;
-    }
-}
-
 void EnemyMovement() {
-    int i                = 0;
     EnemyNode* currEnemy = enemies;
+    Entity* enemy        = NULL;
     while(currEnemy != NULL) {
-        // For debugging:
-
+        enemy = currEnemy->enemy;
         // Ensures the enemy cannot move while attacking
-        if(currEnemy->enemy->state == ATTACKING) {
+        if(enemy->state == ATTACKING) {
             currEnemy = currEnemy->next;
             continue;
         }
 
         // Sets the enemy to IDLE if not in agro range.
-        if(currEnemy->distance > AGRO_RANGE) {
-            currEnemy->enemy->state = IDLE;
-            currEnemy               = currEnemy->next;
+        if(Vector2Length(player.pos) - Vector2Length(enemy->pos) > AGRO_RANGE) {
+            enemy->state = IDLE;
+            currEnemy    = currEnemy->next;
             continue;
         }
-
-        DrawText(TextFormat("Enemy x: %f", currEnemy->enemy->pos.x), 0, 40, 20, RED);
-        DrawText(TextFormat("Enemy y: %f", currEnemy->enemy->pos.y), 0, 60, 20, RED);
 
         // Delta time helps not let player speed depend on framerate.
         // It helps to take account for time between frames too.
         float deltaTime = GetFrameTime();
 
-        currEnemy->enemy->direction =
-            (Vector2){ (int) player.pos.x - (int) currEnemy->enemy->pos.x,
-                       (int) player.pos.y - (int) currEnemy->enemy->pos.y };
+        enemy->direction = (Vector2){ (int) player.pos.x - (int) enemy->pos.x,
+                                      (int) player.pos.y - (int) enemy->pos.y };
 
         // Set the enemy to MOVING if not ATTACKING.
-        currEnemy->enemy->state = currEnemy->enemy->state == ATTACKING ? ATTACKING : MOVING;
+        enemy->state = enemy->state == ATTACKING ? ATTACKING : MOVING;
 
         // Set the enemy to IDLE if not ATTACKING or moving on any direction
-        if(currEnemy->enemy->direction.x == 0 && currEnemy->enemy->direction.y == 0 &&
-           currEnemy->enemy->state != ATTACKING) {
-            currEnemy->enemy->state = IDLE;
-            continue;
-        }
+        // ! N/A to enemies. Leaving it here still to confirm:
+        // if(enemy->direction.x == 0 && enemy->direction.y == 0 &&
+        //    enemy->state != ATTACKING) {
+        //     enemy->state = IDLE;
+        //     continue;
+        // }
 
-        currEnemy->enemy->faceValue = player.faceValue;
+        enemy->faceValue = player.faceValue;
 
-        currEnemy->enemy->direction = Vector2Normalize(currEnemy->enemy->direction);
+        enemy->direction = Vector2Normalize(enemy->direction);
 
         //! NOTE: Do not add deltaTime before checking collisions only after.
         // Velocity:
-        currEnemy->enemy->direction =
-            Vector2Scale(currEnemy->enemy->direction, currEnemy->enemy->speed);
+        enemy->direction = Vector2Scale(enemy->direction, enemy->speed);
 
         // TODO: enemy world collision
 
-        currEnemy->enemy->pos =
-            Vector2Add(currEnemy->enemy->pos, Vector2Scale(currEnemy->enemy->direction, deltaTime));
-        DrawText(TextFormat("Enemy x: %f", currEnemy->enemy->pos.x), 500 * i, 80, 20, RED);
-        DrawText(TextFormat("Enemy y: %f", currEnemy->enemy->pos.y), 500 * i, 100, 20, RED);
-        i++;
+        enemy->pos = Vector2Add(enemy->pos, Vector2Scale(enemy->direction, deltaTime));
         currEnemy = currEnemy->next;
     }
 }

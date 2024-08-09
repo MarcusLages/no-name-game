@@ -32,8 +32,6 @@ typedef struct EnemyNode EnemyNode;
 struct EnemyNode {
     /** The enemy entity. */
     Entity* enemy;
-    /** The enemy's distnace to the player. */
-    float distance;
     /** The next enemy entity. */
     EnemyNode* next;
     int name;
@@ -58,11 +56,6 @@ extern EnemyNode* enemies;
  * ? @note Timers started here are needed for the whole duration of the game.
  */
 void EnemyStartup();
-
-/**
- * Updates every enemy's distance from the player.
- */
-void EnemyUpdate();
 
 /**
  * Handles enemy movement and updates it's GameState and Direction.
