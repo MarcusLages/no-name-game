@@ -120,10 +120,6 @@ void EnemyMovement() {
             continue;
         }
 
-        // Delta time helps not let player speed depend on framerate.
-        // It helps to take account for time between frames too.
-        float deltaTime = GetFrameTime();
-
         if(player.pos.x > enemy->pos.x) {
             enemy->faceValue     = 1;
             enemy->directionFace = RIGHT;
@@ -149,11 +145,15 @@ void EnemyMovement() {
             continue;
         }
 
+        // Delta time helps not let player speed depend on framerate.
+        // It helps to take account for time between frames too.
+        //! NOTE: Do not add deltaTime before checking collisions only after.
+        float deltaTime = GetFrameTime();
+
         // Set the enemy to MOVING if not ATTACKING.
         enemy->state     = enemy->state == ATTACKING ? ATTACKING : MOVING;
         enemy->direction = Vector2Normalize(enemy->direction);
 
-        //! NOTE: Do not add deltaTime before checking collisions only after.
         // Velocity:
         enemy->direction = Vector2Scale(enemy->direction, enemy->speed);
 
