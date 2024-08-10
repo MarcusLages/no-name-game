@@ -101,11 +101,6 @@ void EnemyStartup() {
     SetupEnemies();
 }
 
-/**
- * NOTES:
- *  - enemies should dictate their own face values
- *  - own directions
- */
 // TODO: enemy navigate around collision
 void EnemyMovement() {
     EnemyNode* currEnemy = enemies;
@@ -129,14 +124,33 @@ void EnemyMovement() {
         // It helps to take account for time between frames too.
         float deltaTime = GetFrameTime();
 
+        if(player.pos.x > enemy->pos.x) {
+            enemy->faceValue     = 1;
+            enemy->directionFace = RIGHT;
+        } else if(player.pos.x < enemy->pos.x) {
+            enemy->faceValue     = -1;
+            enemy->directionFace = LEFT;
+        }
+
+        if(player.pos.y > enemy->pos.y) {
+            enemy->directionFace = DOWN;
+        } else if(player.pos.y < enemy->pos.y) {
+            enemy->directionFace = UP;
+        }
+
         enemy->direction = (Vector2){
             (int) player.pos.x - (int) enemy->pos.x,
             (int) player.pos.y - (int) enemy->pos.y,
         };
 
+        if(enemy->direction.x == 0 && enemy->direction.y == 0 && enemy->state != ATTACKING) {
+            enemy->state = IDLE;
+            currEnemy    = currEnemy->next;
+            continue;
+        }
+
         // Set the enemy to MOVING if not ATTACKING.
         enemy->state     = enemy->state == ATTACKING ? ATTACKING : MOVING;
-        enemy->faceValue = player.faceValue;
         enemy->direction = Vector2Normalize(enemy->direction);
 
         //! NOTE: Do not add deltaTime before checking collisions only after.
@@ -175,7 +189,7 @@ void EnemyRender() {
     }
 }
 
-// Commented out for now.
+//? Commented out for now.
 // void RenderEnemyAttack() {}
 
 void EnemyUnload() {
