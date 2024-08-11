@@ -1,6 +1,6 @@
 /**********************************************************************************************
 *
-**   texture.h is responsible for dealing with general texture, tile and tilemap information
+**   texture.h is responsible for dealing with general texture and tileset texture information
 **   and display.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
