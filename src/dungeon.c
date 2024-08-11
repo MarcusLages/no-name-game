@@ -318,7 +318,17 @@ void DrawTmxLayer(tmx_map* map, tmx_layer* layer) {
                 tile = map->tiles[tileGID];
 
                 if(tile != NULL) {
-                   DrawTmxTile(tile, col, row);
+                    tmx_property* collisionProp = tmx_get_property(tile->properties, "isCollidable");
+                    bool isCollidable = collisionProp->value.boolean;
+
+                    if(isCollidable) {
+                        if(collidableTiles == NULL)
+                            collidableTiles = CreateCollisionList(col, row, 0);
+                        else
+                            AddCollisionNode(collidableTiles, col, row, 0);
+                    }
+
+                    DrawTmxTile(tile, col, row);
                 }
             }
         }
