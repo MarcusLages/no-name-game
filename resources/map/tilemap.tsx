@@ -116,7 +116,7 @@
  </tile>
  <tile id="22">
   <properties>
-   <property name="isCollidable" type="bool" value="false"/>
+   <property name="isCollidable" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="23">

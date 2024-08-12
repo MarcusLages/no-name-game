@@ -6,7 +6,7 @@
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.1
  *
- *    @include screen.h, player.h
+ *    @include enemy.h, player.h, screen.h, tile.h
  *
  **********************************************************************************************/
 
@@ -19,10 +19,10 @@
 //* GLOBAL VARIABLES
 
 /** 2D array of type Tile for the world level (texture.h) */
-Tile** world;
+// Tile** world;
 
-/** Framebuffer (white canvas) for displaying the map. */
-RenderTexture2D worldCanvas;
+/** Pointer for the framebuffer (white canvas) for displaying the map. */
+RenderTexture2D* worldCanvas;
 
 /** Linked list with indexes to all the possible collidable tiles. */
 CollisionNode* collidableTiles;
@@ -58,8 +58,8 @@ void DungeonStartup() {
     // Allocate memory for the game's textures as Texture2D
     textures = (Texture2D*) malloc(MAX_TEXTURES * sizeof(Texture2D));
 
-    // Allocate memory for the word as a 2D array of Tile
-    world = (Tile**) malloc(WORLD_WIDTH * sizeof(Tile*));
+    // Allocate memory for the world framebuffer as RenderTexture2D
+    worldCanvas = (RenderTexture2D*) malloc(sizeof(RenderTexture2D));
 
     // Assign initial null value value for the collidableTiles list
     collidableTiles = NULL;
@@ -89,8 +89,8 @@ void DungeonRender() {
     // Render the world canvas
     // ? Note: height is negative because OpenGL orientation is inverted from Raylib
     DrawTextureRec(
-        worldCanvas.texture,
-        (Rectangle){ 0, 0, worldCanvas.texture.width, -worldCanvas.texture.height },
+        worldCanvas->texture,
+        (Rectangle){ 0, 0, worldCanvas->texture.width, -worldCanvas->texture.height },
         (Vector2){ 0.0f, 0.0f }, WHITE
     );
 
@@ -106,14 +106,6 @@ void DungeonUnload() {
     // Unloads the enemy sprites and animations.
     EnemyUnload();
 
-    // Unloads all tiles
-    for(int j = 0; j < WORLD_HEIGHT; j++) {
-        free(world[j]);
-        world[j] = NULL;
-    }
-    free(world);
-    world = NULL;
-
     // Unloads collidableTiles list
     FreeCollisionList(collidableTiles);
     collidableTiles = NULL;
@@ -125,7 +117,8 @@ void DungeonUnload() {
     free(textures);
     textures = NULL;
 
-    UnloadRenderTexture(worldCanvas);
+    // Unloads the worldCanvas framebuffer
+    UnloadRenderTexture(*worldCanvas);
 }
 
 static void StartCamera() {
@@ -169,32 +162,12 @@ static void LoadTextures() {
 
 static void InitializeTiles() {
     tmx_map* mapTmx;
-    mapTmx = TmxMapFrameBufStartup(&worldCanvas, "resources/map/map.tmx");
-    TmxMapFrameBufRender(&worldCanvas, mapTmx);
+    mapTmx = TmxMapFrameBufStartup(worldCanvas, "resources/map/map.tmx");
+    TmxMapFrameBufRender(worldCanvas, mapTmx);
 
     // Frees the map.tmx
     // ! ATTENTION: Pay attention if there will be any problem with the
     // ! UnloadMapTexture() from tile.c
     tmx_map_free(mapTmx);
     mapTmx = NULL;
-
-    // Delete tiles and world
-    for(int j = 0; j < WORLD_HEIGHT; j++) {
-        Tile* tiles = (Tile*) malloc(WORLD_HEIGHT * sizeof(Tile));
-        for(int i = 0; i < WORLD_WIDTH; i++) {
-            Tile tile = { .x = i, .y = j, .isCollidable = (j != 3) ? false : true };
-            tiles[i] = tile;
-        }
-        world[j] = tiles;
-    }
-}
-
-void DrawTile(int xPos, int yPos, int textureTileX, int textureTileY, TextureFile tileTexture) {
-    Rectangle source = { (float) (textureTileX * TILE_WIDTH),
-                         (float) (textureTileY * TILE_HEIGHT), (float) TILE_WIDTH,
-                         (float) (tileTexture > TILE_MAP ? ENTITY_TILE_HEIGHT : TILE_HEIGHT) };
-    Rectangle dest   = { (float) xPos, (float) yPos, (float) TILE_WIDTH,
-                         (float) (tileTexture > TILE_MAP ? ENTITY_TILE_HEIGHT : TILE_HEIGHT) };
-    Vector2 origin   = { 0, 0 };
-    DrawTexturePro(textures[tileTexture], source, dest, origin, 0.0f, WHITE);
 }
