@@ -94,6 +94,7 @@ void DungeonRender() {
                 DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 2, TILE_MAP);
         }
     }
+    // need to move this back
 EnemyMovement();
     // Draw player on the screen  
     EnemyRender();

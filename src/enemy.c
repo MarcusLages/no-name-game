@@ -68,6 +68,8 @@ static bool IsPlayerSeen(Entity* enemy);
 
 static bool IsCoordInBounds(Vector2* coord);
 
+static void MoveEnemyToLastPos(Entity* enemy, Vector2 lastPos);
+
 /**
  * Renders an enemy's attack animation based off of it's Direction.
  */
@@ -125,28 +127,36 @@ void EnemyMovement() {
 
         // Sets the enemy to IDLE if it is not 'seen'.
         if(!IsPlayerSeen(enemy)) {
+            // if enemy position does not equal lastPlayerPos, move it there
+            if(Vector2Equals(enemy->pos, player.pos) > 1.0f) {
+                // no loop inside this does position changing
+                // make a generlized function for position changing as it is used down here too.
+                MoveEnemyToLastPos(enemy, currEnemy->lastPlayerPos);
+            }
             enemy->state = IDLE;
             currEnemy    = currEnemy->next;
             continue;
         }
 
-        if(player.pos.x > enemy->pos.x) {
+        currEnemy->lastPlayerPos = player.pos;
+
+        if(currEnemy->lastPlayerPos.x > enemy->pos.x) {
             enemy->faceValue     = 1;
             enemy->directionFace = RIGHT;
-        } else if(player.pos.x < enemy->pos.x) {
+        } else if(currEnemy->lastPlayerPos.x < enemy->pos.x) {
             enemy->faceValue     = -1;
             enemy->directionFace = LEFT;
         }
 
-        if(player.pos.y > enemy->pos.y) {
+        if(currEnemy->lastPlayerPos.y > enemy->pos.y) {
             enemy->directionFace = DOWN;
-        } else if(player.pos.y < enemy->pos.y) {
+        } else if(currEnemy->lastPlayerPos.y < enemy->pos.y) {
             enemy->directionFace = UP;
         }
 
         enemy->direction = (Vector2){
-            (int) player.pos.x - (int) enemy->pos.x,
-            (int) player.pos.y - (int) enemy->pos.y,
+            (int) currEnemy->lastPlayerPos.x - (int) enemy->pos.x,
+            (int) currEnemy->lastPlayerPos.y - (int) enemy->pos.y,
         };
 
         if(enemy->direction.x == 0 && enemy->direction.y == 0 && enemy->state != ATTACKING) {
@@ -250,6 +260,9 @@ static bool IsCoordInBounds(Vector2* coord) {
         coord->x <= (float) (WORLD_WIDTH * TILE_WIDTH);
 }
 
+static void MoveEnemyToLastPos(Entity* enemy, Vector2 lastPos) {
+
+}
 
 static void SetupEnemies() {
     //! NOTE: LoadRandomSequence does negative values too! min and max are just magnitudes use abs if needed!

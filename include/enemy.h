@@ -33,6 +33,8 @@ typedef struct EnemyNode EnemyNode;
 struct EnemyNode {
     /** The pointer to an enemy entity. */
     Entity* enemy;
+    /** The last known location of player relative to this enemy. */
+    Vector2 lastPlayerPos;
     /** The pointer to the next enemy entity. */
     EnemyNode* next;
 };
