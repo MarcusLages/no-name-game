@@ -16,6 +16,21 @@
 //* FUNCTION PROTOTYPES
 
 /**
+ * Renders a tmx_map layer into a RenderTexture2D or to the screen.
+ *
+ * @note Uses Raylib's DrawTexturePro, so it's necessary to be done inside a Drawing/Texture mode.
+ */
+void DrawTmxLayer(tmx_map* map, tmx_layer* layer);
+
+/**
+ * Renders a tmx_tile into a RenderTexture2D or to the screen in a specific (x, y) coordinate.
+ *
+ * @note - The (x, y) coordinate is based on the tile, not on the pixels.
+ * @note - Uses Raylib's DrawTexturePro, so it's necessary to be done inside a Drawing/Texture mode.
+ */
+void DrawTmxTile(tmx_tile* tile, int tileX, int tileY);
+
+/**
  * Loads a Texture2D for a .tmx map when needed.
  * 
  * @param fileName Name of the tileset image
@@ -82,25 +97,25 @@ void TmxMapFrameBufRender(RenderTexture2D* framebuffer, tmx_map* map) {
 
     // Start drawing at the framebuffer
     BeginTextureMode(*framebuffer);
-    ClearBackground(BLACK);
+        ClearBackground(BLACK);
 
-    // Loop through the layer list to draw every layer
-    layer = map->ly_head;
-    while(layer) {
-        if(layer->visible) {
-            switch(layer->type) {
-            // Checks if layer is visible and it's a tilemap layer
-            case L_LAYER:
-                // TODO: Use tracelog with layer->name
-                //  Draws the layer
-                DrawTmxLayer(map, layer);
-                break;
-            // Ignores all other layers.
-            default: tmx_perror("Non tilemap layer or error found."); break;
+        // Loop through the layer list to draw every layer
+        layer = map->ly_head;
+        while(layer) {
+            if(layer->visible) {
+                switch(layer->type) {
+                // Checks if layer is visible and it's a tilemap layer
+                case L_LAYER:
+                    // TODO: Use tracelog with layer->name
+                    //  Draws the layer
+                    DrawTmxLayer(map, layer);
+                    break;
+                // Ignores all other layers.
+                default: tmx_perror("Non tilemap layer or error found."); break;
+                }
             }
+            layer = layer->next;
         }
-        layer = layer->next;
-    }
 
     EndTextureMode();
 }
@@ -120,8 +135,7 @@ void DrawTmxLayer(tmx_map* map, tmx_layer* layer) {
 
                 if(tile != NULL) {
                     // Gets the collision property from the tile properties
-                    tmx_property* collisionProp =
-                        tmx_get_property(tile->properties, "isCollidable");
+                    tmx_property* collisionProp = tmx_get_property(tile->properties, "isCollidable");
                     bool isCollidable = collisionProp->value.boolean;
 
                     // If the tile is collidable adds it to the collidable tiles collision list

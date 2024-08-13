@@ -18,9 +18,6 @@
 //* ------------------------------------------
 //* GLOBAL VARIABLES
 
-/** 2D array of type Tile for the world level (texture.h) */
-// Tile** world;
-
 /** Pointer for the framebuffer (white canvas) for displaying the map. */
 RenderTexture2D* worldCanvas;
 
@@ -119,6 +116,7 @@ void DungeonUnload() {
 
     // Unloads the worldCanvas framebuffer
     UnloadRenderTexture(*worldCanvas);
+    worldCanvas = NULL;
 }
 
 static void StartCamera() {

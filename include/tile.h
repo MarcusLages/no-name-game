@@ -40,19 +40,4 @@ tmx_map* TmxMapFrameBufStartup(RenderTexture2D* framebuffer, char* mapFileName);
  */
 void TmxMapFrameBufRender(RenderTexture2D* framebuffer, tmx_map* map);
 
-/**
- * Renders a tmx_map layer into a RenderTexture2D or to the screen.
- *
- * @note Uses Raylib's DrawTexturePro, so it's necessary to be done inside a Drawing/Texture mode.
- */
-void DrawTmxLayer(tmx_map* map, tmx_layer* layer);
-
-/**
- * Renders a tmx_tile into a RenderTexture2D or to the screen in a specific (x, y) coordinate.
- *
- * @note - The (x, y) coordinate is based on the tile, not on the pixels.
- * @note - Uses Raylib's DrawTexturePro, so it's necessary to be done inside a Drawing/Texture mode.
- */
-void DrawTmxTile(tmx_tile* tile, int tileX, int tileY);
-
 #endif // TILE_H_
