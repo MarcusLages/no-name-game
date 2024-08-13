@@ -66,6 +66,8 @@ static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy);
 
 static bool IsPlayerSeen(Entity* enemy);
 
+static bool IsCoordInBounds(Vector2* coord);
+
 /**
  * Renders an enemy's attack animation based off of it's Direction.
  */
@@ -109,27 +111,20 @@ void EnemyMovement() {
     Entity* enemy        = NULL;
     while(currEnemy != NULL) {
         enemy = currEnemy->enemy;
+
         // Ensures the enemy cannot move while attacking
         if(enemy->state == ATTACKING) {
             currEnemy = currEnemy->next;
             continue;
         }
 
-        // Sets the enemy to IDLE if not in agro range.
         /**
-         * TODO: check for a possible path to player.
+         * TODO: Move to last seen location of player
          * - check for obstructions and if a path is possible around them
-         * - if no possible path with in AGRO_RANGE set to IDLE and continue with next enemy.
          */
-        // from the current enemy position traveling to player by adjusting x and y check all tiles along the way
 
-        // if(!IsPlayerSeen(enemy)) {
-        //     enemy->state = IDLE;
-        //     currEnemy    = currEnemy->next;
-        //     continue;
-        // }
-
-        if(Vector2Distance(player.pos, enemy->pos) > AGRO_RANGE) {
+        // Sets the enemy to IDLE if it is not 'seen'.
+        if(!IsPlayerSeen(enemy)) {
             enemy->state = IDLE;
             currEnemy    = currEnemy->next;
             continue;
@@ -179,30 +174,6 @@ void EnemyMovement() {
     }
 }
 
-static bool IsPlayerSeen(Entity* enemy) {
-    // check if the enemy is in argo range
-    float distance = Vector2Distance(player.pos, enemy->pos);
-    if(distance > AGRO_RANGE) {
-        DrawText("NOT IN RANGE", 0, 40, 20, RED);
-        return false;
-    }
-
-    // check if the vector from enemy to player is clear of any collisions
-    float incrementAmount = 1 / distance;
-
-    for(float i = incrementAmount; i < 1.0f; i += incrementAmount) {
-        Vector2 resVec = Vector2Lerp(player.pos, enemy->pos, i);
-        if(world[(int) resVec.y][(int) resVec.x].isCollidable) {
-            DrawText("SOMETHING IN THE WAY", 0, 60, 20, RED);
-            return false;
-        }
-    }
-
-    DrawText("I SEE YOU", 0, 80, 20, RED);
-
-    return true;
-}
-
 void EnemyAttack() {}
 
 void EnemyRender() {
@@ -238,18 +209,60 @@ void EnemyUnload() {
     AnimationUnload(&attackEnemyAnimation);
 }
 
+static bool IsPlayerSeen(Entity* enemy) {
+    if(!IsCoordInBounds(&player.pos)) return false;
+    if(!IsCoordInBounds(&(enemy->pos))) return false;
+
+    // check if the enemy is in argo range
+    float distance = Vector2Distance(player.pos, enemy->pos);
+    if(distance > AGRO_RANGE) {
+        DrawText("NOT IN RANGE", 0, 40, 20, RED);
+        return false;
+    }
+
+    // check if the vector from enemy to player is clear of any collisions
+    float incrementAmount = 1 / distance;
+
+    for(float i = incrementAmount; i < 1.0f; i += incrementAmount) {
+        Vector2 playerCenter = { player.pos.x + ENTITY_TILE_WIDTH / 2,
+                                 player.pos.y + ENTITY_TILE_HEIGHT / 2 };
+        Vector2 enemyCenter  = { enemy->pos.x + ENTITY_TILE_WIDTH / 2,
+                                 enemy->pos.y + ENTITY_TILE_HEIGHT / 2 };
+        Vector2 resVec       = Vector2Lerp(playerCenter, enemyCenter, i);
+
+        DrawLineV(playerCenter, enemyCenter, RED);
+
+        if(world[(int) resVec.y / TILE_HEIGHT][(int) resVec.x / TILE_WIDTH].isCollidable) {
+            DrawText("SOMETHING IN THE WAY", 0, 60, 20, RED);
+            return false;
+        }
+    }
+
+    DrawText("I SEE YOU", 0, 80, 20, RED);
+    // save this location as last seen and go to it
+
+    return true;
+}
+
+static bool IsCoordInBounds(Vector2* coord) {
+    return coord->y >= 0.0f && coord->x >= 0.0f &&
+        coord->y <= (float) (WORLD_HEIGHT * TILE_HEIGHT) &&
+        coord->x <= (float) (WORLD_WIDTH * TILE_WIDTH);
+}
+
+
 static void SetupEnemies() {
     //! NOTE: LoadRandomSequence does negative values too! min and max are just magnitudes use abs if needed!
-    int* randNumsX = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_WIDTH * TILE_WIDTH);
-    int* randNumsY = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_HEIGHT * TILE_HEIGHT);
-    for(int i = 0; i < MAX_ENEMIES; i++) {
+    // int* randNumsX = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_WIDTH * TILE_WIDTH);
+    // int* randNumsY = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_HEIGHT * TILE_HEIGHT);
+    for(int i = 0; i < 1; i++) {
         // TODO: Make a coordinate assigning system that places enemies at a correct x and y
         //? NOTE: LoadRandomSequence is a temp solution
         Entity* enemy = (Entity*) malloc(sizeof(Entity));
 
         if(enemy == NULL) exit(EXIT_FAILURE);
 
-        enemy->pos           = (Vector2){ abs(randNumsX[i]), abs(randNumsY[i]) };
+        enemy->pos           = (Vector2){ 0, 0 };
         enemy->speed         = 100;
         enemy->health        = 100;
         enemy->direction     = Vector2Zero();
@@ -263,8 +276,8 @@ static void SetupEnemies() {
             AddEnemyNode(enemies, enemy);
         }
     }
-   UnloadRandomSequence(randNumsY);
-   UnloadRandomSequence(randNumsX);
+    // UnloadRandomSequence(randNumsY);
+    // UnloadRandomSequence(randNumsX);
 }
 
 static EnemyNode* CreateEnemyList(Entity* enemy) {

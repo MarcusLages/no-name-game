@@ -73,7 +73,7 @@ void DungeonStartup() {
 
 void DungeonUpdate() {
     PlayerMovement();
-    EnemyMovement();
+    
     // EnemyAttack();
     PlayerAttack();
     
@@ -94,7 +94,7 @@ void DungeonRender() {
                 DrawTile(tile.x * TILE_WIDTH, tile.y * TILE_HEIGHT, 4, 2, TILE_MAP);
         }
     }
-
+EnemyMovement();
     // Draw player on the screen  
     EnemyRender();
     PlayerRender();
