@@ -242,10 +242,25 @@ static bool IsPlayerSeen(Entity* enemy) {
 
         DrawLineV(playerCenter, enemyCenter, RED);
 
-        if(world[(int) resVec.y / TILE_HEIGHT][(int) resVec.x / TILE_WIDTH].isCollidable) {
-            DrawText("SOMETHING IN THE WAY", 0, 60, 20, RED);
-            return false;
+        CollisionNode* head = collidableTiles;
+
+        while(head != NULL) {
+            int x = (int) resVec.x / TILE_WIDTH;
+            int y = (int) resVec.y / TILE_HEIGHT;
+
+            if(x == head->collidedHitbox.index.x &&
+               y == head->collidedHitbox.index.y) {
+                DrawText("SOMETHING IN THE WAY", 0, 60, 20, RED);
+                return false;
+            }
+            head = head->next;
         }
+
+        // old way:
+        // if(world[(int) resVec.y / TILE_HEIGHT][(int) resVec.x / TILE_WIDTH].isCollidable) {
+        //     DrawText("SOMETHING IN THE WAY", 0, 60, 20, RED);
+        //     return false;
+        // }
     }
 
     DrawText("I SEE YOU", 0, 80, 20, RED);
@@ -254,15 +269,15 @@ static bool IsPlayerSeen(Entity* enemy) {
     return true;
 }
 
+// TODO: remove or change
 static bool IsCoordInBounds(Vector2* coord) {
-    return coord->y >= 0.0f && coord->x >= 0.0f &&
-        coord->y <= (float) (WORLD_HEIGHT * TILE_HEIGHT) &&
-        coord->x <= (float) (WORLD_WIDTH * TILE_WIDTH);
+    // return coord->y >= 0.0f && coord->x >= 0.0f &&
+    //     coord->y <= (float) (WORLD_HEIGHT * TILE_HEIGHT) &&
+    //     coord->x <= (float) (WORLD_WIDTH * TILE_WIDTH);
+    return true;
 }
 
-static void MoveEnemyToLastPos(Entity* enemy, Vector2 lastPos) {
-
-}
+static void MoveEnemyToLastPos(Entity* enemy, Vector2 lastPos) {}
 
 static void SetupEnemies() {
     //! NOTE: LoadRandomSequence does negative values too! min and max are just magnitudes use abs if needed!
@@ -275,7 +290,11 @@ static void SetupEnemies() {
 
         if(enemy == NULL) exit(EXIT_FAILURE);
 
-        enemy->pos           = (Vector2){ 0, 0 };
+        enemy->pos = (Vector2){ (float) 21 * TILE_WIDTH, (float) 4 * TILE_HEIGHT };
+        enemy->hitbox        = (Rectangle){ .x = enemy->pos.x,
+                                            .y = enemy->pos.y + ENTITY_TILE_HEIGHT / 2,
+                                            .width  = ENTITY_TILE_WIDTH,
+                                            .height = ENTITY_TILE_HEIGHT / 2 };
         enemy->speed         = 100;
         enemy->health        = 100;
         enemy->direction     = Vector2Zero();

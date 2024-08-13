@@ -47,7 +47,11 @@ static void PlayerEnemyCollision();
 //* FUNCTION IMPLEMENTATIONS
 
 void PlayerStartup() {
-    player.pos           = Vector2Zero();
+    player.pos           = (Vector2){ (float) 11 * TILE_WIDTH, (float) 4 * TILE_HEIGHT };
+    player.hitbox        = (Rectangle){ .x     = player.pos.x,
+                                        .y     = player.pos.y + ENTITY_TILE_HEIGHT / 2,
+                                        .width = ENTITY_TILE_WIDTH,
+                                        .height = ENTITY_TILE_HEIGHT / 2 };
     player.speed         = 200;
     player.health        = 1;
     player.direction     = Vector2Zero();
