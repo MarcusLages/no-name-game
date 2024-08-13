@@ -123,17 +123,17 @@ void EnemyMovement() {
          */
         // from the current enemy position traveling to player by adjusting x and y check all tiles along the way
 
-        if(!IsPlayerSeen(enemy)) {
-            enemy->state = IDLE;
-            currEnemy    = currEnemy->next;
-            continue;
-        }
-
-        // if(Vector2Distance(player.pos, enemy->pos) > AGRO_RANGE) {
+        // if(!IsPlayerSeen(enemy)) {
         //     enemy->state = IDLE;
         //     currEnemy    = currEnemy->next;
         //     continue;
         // }
+
+        if(Vector2Distance(player.pos, enemy->pos) > AGRO_RANGE) {
+            enemy->state = IDLE;
+            currEnemy    = currEnemy->next;
+            continue;
+        }
 
         if(player.pos.x > enemy->pos.x) {
             enemy->faceValue     = 1;
@@ -239,17 +239,17 @@ void EnemyUnload() {
 }
 
 static void SetupEnemies() {
-    //int* randNumsX = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_WIDTH);
-    //int* randNumsY = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_HEIGHT);
-    for(int i = 0; i < 1; i++) {
+    //! NOTE: LoadRandomSequence does negative values too! min and max are just magnitudes use abs if needed!
+    int* randNumsX = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_WIDTH * TILE_WIDTH);
+    int* randNumsY = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_HEIGHT * TILE_HEIGHT);
+    for(int i = 0; i < MAX_ENEMIES; i++) {
         // TODO: Make a coordinate assigning system that places enemies at a correct x and y
         //? NOTE: LoadRandomSequence is a temp solution
         Entity* enemy = (Entity*) malloc(sizeof(Entity));
 
         if(enemy == NULL) exit(EXIT_FAILURE);
 
-        //enemy->pos           = (Vector2){ randNumsX[i], randNumsY[i] };
-        enemy->pos           = (Vector2){ 10, 10 };
+        enemy->pos           = (Vector2){ abs(randNumsX[i]), abs(randNumsY[i]) };
         enemy->speed         = 100;
         enemy->health        = 100;
         enemy->direction     = Vector2Zero();
@@ -263,8 +263,8 @@ static void SetupEnemies() {
             AddEnemyNode(enemies, enemy);
         }
     }
-   //UnloadRandomSequence(randNumsY);
-   //UnloadRandomSequence(randNumsX);
+   UnloadRandomSequence(randNumsY);
+   UnloadRandomSequence(randNumsX);
 }
 
 static EnemyNode* CreateEnemyList(Entity* enemy) {
