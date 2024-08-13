@@ -64,6 +64,8 @@ static EnemyNode* CreateEnemyList(Entity* enemy);
  */
 static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy);
 
+static bool IsPlayerSeen(Entity* enemy);
+
 /**
  * Renders an enemy's attack animation based off of it's Direction.
  */
@@ -114,7 +116,20 @@ void EnemyMovement() {
         }
 
         // Sets the enemy to IDLE if not in agro range.
-        if(Vector2Length(player.pos) - Vector2Length(enemy->pos) > AGRO_RANGE) {
+        /**
+         * TODO: check for a possible path to player.
+         * - check for obstructions and if a path is possible around them
+         * - if no possible path with in AGRO_RANGE set to IDLE and continue with next enemy.
+         */
+        // from the current enemy position traveling to player by adjusting x and y check all tiles along the way
+
+        // if(!IsPlayerSeen(enemy)) {
+        //     enemy->state = IDLE;
+        //     currEnemy    = currEnemy->next;
+        //     continue;
+        // }
+
+        if(Vector2Distance(player.pos, enemy->pos) > AGRO_RANGE) {
             enemy->state = IDLE;
             currEnemy    = currEnemy->next;
             continue;
@@ -162,6 +177,16 @@ void EnemyMovement() {
         enemy->pos = Vector2Add(enemy->pos, Vector2Scale(enemy->direction, deltaTime));
         currEnemy = currEnemy->next;
     }
+}
+
+static bool IsPlayerSeen(Entity* enemy) {
+
+    
+
+    // check if the enemy is in argo range
+
+    // check if the vector from enemy to player is clear of any collisions
+
 }
 
 void EnemyAttack() {}
