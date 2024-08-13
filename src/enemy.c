@@ -123,17 +123,17 @@ void EnemyMovement() {
          */
         // from the current enemy position traveling to player by adjusting x and y check all tiles along the way
 
-        // if(!IsPlayerSeen(enemy)) {
-        //     enemy->state = IDLE;
-        //     currEnemy    = currEnemy->next;
-        //     continue;
-        // }
-
-        if(Vector2Distance(player.pos, enemy->pos) > AGRO_RANGE) {
+        if(!IsPlayerSeen(enemy)) {
             enemy->state = IDLE;
             currEnemy    = currEnemy->next;
             continue;
         }
+
+        // if(Vector2Distance(player.pos, enemy->pos) > AGRO_RANGE) {
+        //     enemy->state = IDLE;
+        //     currEnemy    = currEnemy->next;
+        //     continue;
+        // }
 
         if(player.pos.x > enemy->pos.x) {
             enemy->faceValue     = 1;
@@ -180,13 +180,27 @@ void EnemyMovement() {
 }
 
 static bool IsPlayerSeen(Entity* enemy) {
-
-    
-
     // check if the enemy is in argo range
+    float distance = Vector2Distance(player.pos, enemy->pos);
+    if(distance > AGRO_RANGE) {
+        DrawText("NOT IN RANGE", 0, 40, 20, RED);
+        return false;
+    }
 
     // check if the vector from enemy to player is clear of any collisions
+    float incrementAmount = 1 / distance;
 
+    for(float i = incrementAmount; i < 1.0f; i += incrementAmount) {
+        Vector2 resVec = Vector2Lerp(player.pos, enemy->pos, i);
+        if(world[(int) resVec.y][(int) resVec.x].isCollidable) {
+            DrawText("SOMETHING IN THE WAY", 0, 60, 20, RED);
+            return false;
+        }
+    }
+
+    DrawText("I SEE YOU", 0, 80, 20, RED);
+
+    return true;
 }
 
 void EnemyAttack() {}
@@ -225,16 +239,17 @@ void EnemyUnload() {
 }
 
 static void SetupEnemies() {
-    int* randNumsX = LoadRandomSequence(10, 0, WORLD_WIDTH * TILE_WIDTH);
-    int* randNumsY = LoadRandomSequence(10, 0, WORLD_HEIGHT * TILE_HEIGHT);
-    for(int i = 0; i < MAX_ENEMIES; i++) {
+    //int* randNumsX = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_WIDTH);
+    //int* randNumsY = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_HEIGHT);
+    for(int i = 0; i < 1; i++) {
         // TODO: Make a coordinate assigning system that places enemies at a correct x and y
         //? NOTE: LoadRandomSequence is a temp solution
         Entity* enemy = (Entity*) malloc(sizeof(Entity));
 
         if(enemy == NULL) exit(EXIT_FAILURE);
 
-        enemy->pos           = (Vector2){ randNumsX[i], randNumsY[i] };
+        //enemy->pos           = (Vector2){ randNumsX[i], randNumsY[i] };
+        enemy->pos           = (Vector2){ 10, 10 };
         enemy->speed         = 100;
         enemy->health        = 100;
         enemy->direction     = Vector2Zero();
@@ -248,8 +263,8 @@ static void SetupEnemies() {
             AddEnemyNode(enemies, enemy);
         }
     }
-    UnloadRandomSequence(randNumsY);
-    UnloadRandomSequence(randNumsX);
+   //UnloadRandomSequence(randNumsY);
+   //UnloadRandomSequence(randNumsX);
 }
 
 static EnemyNode* CreateEnemyList(Entity* enemy) {
