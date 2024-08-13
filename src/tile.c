@@ -106,7 +106,6 @@ void TmxMapFrameBufRender(RenderTexture2D* framebuffer, tmx_map* map) {
                 switch(layer->type) {
                 // Checks if layer is visible and it's a tilemap layer
                 case L_LAYER:
-                    // TODO: Use tracelog with layer->name
                     //  Draws the layer
                     DrawTmxLayer(map, layer);
                     break;

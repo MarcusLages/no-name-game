@@ -45,7 +45,7 @@ static int FindNumOfTiles(int tileWidth, TextureFile textureType);
 
 Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType) {
     //! Returning a blank animation if an incorrect textureType is given.
-    if(textureType < TILE_MAP || textureType > TILE_ENEMY_ATTACK)
+    if(textureType < 0 || textureType > MAX_TEXTURES)
         return (Animation){};
 
     int numOfTiles    = FindNumOfTiles(tileWidth, textureType);
@@ -85,7 +85,10 @@ static Rectangle* GetSpriteRectangles(int numOfFrames, int tileWidth, int tileHe
     Rectangle* frames = (Rectangle*) malloc(sizeof(Rectangle) * numOfFrames);
 
     //! If allocation fails program exits.
-    if(frames == NULL) exit(EXIT_FAILURE);
+    if(frames == NULL){
+        TraceLog(LOG_FATAL, "animation.c: Memory allocation for animation failure.");
+        exit(EXIT_FAILURE);
+    }
 
     // Populating the array.
     for(int i = 0; i < numOfFrames; i++) {
@@ -97,6 +100,6 @@ static Rectangle* GetSpriteRectangles(int numOfFrames, int tileWidth, int tileHe
 }
 
 static int FindNumOfTiles(int tileWidth, TextureFile textureType) {
-    if(textureType < TILE_MAP || textureType > TILE_ENEMY_ATTACK) return -1;
+    if(textureType < 0 || textureType > MAX_TEXTURES) return -1;
     return textures[textureType].width / tileWidth;
 }

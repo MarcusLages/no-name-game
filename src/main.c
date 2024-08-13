@@ -72,13 +72,9 @@ static void GameStartup() {
     // Sets up initial screen to Main Menu
     currentScreen = MAIN_MENU;
     nextScreen = MAIN_MENU;
-    // currentScreen = TEST_SCREEN;
-    // nextScreen = TEST_SCREEN;
-
 
     // Starts up Main Menu
     MainMenuStartup();
-    // TestScreenStartup();
 }
 
 static void GameUpdate() {

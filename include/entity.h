@@ -115,7 +115,6 @@ typedef struct Entity {
 //* GLOBAL VARIABLES
 
 /** The player entity. */
-//TODO: move to player.h since enemies can't be here
 extern Entity player;
 
 //* ------------------------------------------

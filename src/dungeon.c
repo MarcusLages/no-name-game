@@ -129,12 +129,8 @@ static void StartCamera() {
 }
 
 static void LoadTextures() {
-    // TODO: Take out the tilemap image from textures array
-    Image img          = LoadImage("resources/tilemap.png");
-    textures[TILE_MAP] = LoadTextureFromImage(img);
-    UnloadImage(img);
 
-    img                        = LoadImage("resources/player-idle.png");
+    Image img                  = LoadImage("resources/player-idle.png");
     textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
