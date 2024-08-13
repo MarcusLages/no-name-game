@@ -32,7 +32,7 @@ static Animation attackEnemyAnimation;
 //* FUNCTION IMPLEMENTATIONS
 
 void EnemyStartup() {
-    enemy.pos           = (Vector2){ 50.0f, 50.0f };
+    enemy.pos           = (Vector2){ (float) 21 * TILE_WIDTH, (float) 4 * TILE_HEIGHT };
     enemy.hitbox        = (Rectangle){ .x      = enemy.pos.x,
                                        .y      = enemy.pos.y + ENTITY_TILE_HEIGHT / 2,
                                        .width  = ENTITY_TILE_WIDTH,

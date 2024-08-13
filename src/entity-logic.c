@@ -92,14 +92,8 @@ void EntityWorldCollision(Entity* entity) {
         while(resolvingNode != NULL) {
             RayCollision2D entityCollision;
             Rectangle tileHitbox = (Rectangle){
-                .x = world[(int) resolvingNode->collidedHitbox.index.y]
-                          [(int) resolvingNode->collidedHitbox.index.x]
-                              .x *
-                    TILE_WIDTH,
-                .y = world[(int) resolvingNode->collidedHitbox.index.y]
-                          [(int) resolvingNode->collidedHitbox.index.x]
-                              .y *
-                    TILE_HEIGHT,
+                .x = resolvingNode->collidedHitbox.index.x * TILE_WIDTH,
+                .y = resolvingNode->collidedHitbox.index.y * TILE_HEIGHT,
                 .width  = TILE_WIDTH,
                 .height = TILE_HEIGHT
             };

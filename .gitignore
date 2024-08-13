@@ -18,7 +18,7 @@
 
 # Libraries
 *.lib
-*.a
+# *.a
 *.la
 *.lo
 
@@ -61,6 +61,6 @@ MakeFile.Andriod
 # clang-format
 *.clang-format
 
-# Tiled tilemap files (except .tmx and .tsx)
+# Tiled tilemap project files (besides .tmx)
 *.tiled-project
 *.tiled-session
