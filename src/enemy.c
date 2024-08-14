@@ -8,7 +8,6 @@
  *
  *    TODO: Fix bug
  *    TODO: Implements spawn point generation
- *    TODO: Rearrange functions into seprate files where needed. Move enemies variable to entity.h.
  *    TODO: Handle enemy attacks
  *    TODO: Handle player to enemy collisions
  *    TODO: make entitymovement function and generalize player movement too
@@ -29,7 +28,7 @@
 //* FUNCTION PROTOTYPES
 
 /**
- * 
+ * Sets the animations for the enemy based upon the given EnemyType.
  */
 static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
 
@@ -238,6 +237,8 @@ static void MoveEnemyTowardsPos(Entity* enemy, Vector2 position, Vector2* lastPl
 }
 
 static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
+    if(enemy == NULL) return;
+
     Animation idleEnemyAnimation;
     Animation movingEnemyAnimation;
     Animation attackEnemyAnimation;
@@ -264,6 +265,7 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
         case WAFFLE_FRIES:
             // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
             break;
+        default: return;
     }
 
     enemy->animations.animationArr[IDLE_ANIMATION]   = idleEnemyAnimation;
