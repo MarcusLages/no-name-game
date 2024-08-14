@@ -1,11 +1,19 @@
 /***********************************************************************************************
  *
- **   ...
+ **   Provide functionality for setting enemy spawn points, managing movement, attack,
+ **   and rendering of enemies and their animations.
+ *
+ *?   @note Spawn points are not yet implemented with new tmx level.
+ *?   @note Slight bug with the enemy moving to last known player position.
+ *
+ *    TODO: Fix bug
+ *    TODO: Implements spawn point generation
+ *    TODO: Rearrange functions into seprate files where needed. Move enemies variable to entity.h.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
- *    @version 0.1.0
+ *    @version 0.2
  *
- *    @include enemy.h
+ *    @include enemy.h and utils.h
  *
  ***********************************************************************************************/
 
@@ -212,10 +220,9 @@ static bool IsPlayerSeen(Entity* enemy) {
         Vector2 enemyCenter  = { enemy->pos.x + ENTITY_TILE_WIDTH / 2,
                                  enemy->pos.y + ENTITY_TILE_HEIGHT / 2 };
         Vector2 resVec       = Vector2Lerp(playerCenter, enemyCenter, i);
+        CollisionNode* head  = collidableTiles;
 
-        DrawLineV(playerCenter, enemyCenter, RED);
-
-        CollisionNode* head = collidableTiles;
+        // DrawLineV(playerCenter, enemyCenter, RED);
 
         while(head != NULL) {
             int x = (int) resVec.x / TILE_WIDTH;

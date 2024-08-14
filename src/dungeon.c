@@ -74,7 +74,8 @@ void DungeonStartup() {
 
 void DungeonUpdate() {
     PlayerMovement();
-    
+    // need to move this back
+    EnemyMovement();
     // EnemyAttack();
     PlayerAttack();
 
@@ -91,8 +92,6 @@ void DungeonRender() {
         (Vector2){ 0.0f, 0.0f }, WHITE
     );
 
-    // need to move this back
-    EnemyMovement();
     // Draw player on the screen
     EnemyRender();
     PlayerRender();
