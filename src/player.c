@@ -52,7 +52,7 @@ void PlayerStartup() {
                                         .y     = player.pos.y + ENTITY_TILE_HEIGHT / 2,
                                         .width = ENTITY_TILE_WIDTH,
                                         .height = ENTITY_TILE_HEIGHT / 2 };
-    player.speed         = 200;
+    player.speed         = 100;
     player.health        = 1;
     player.direction     = Vector2Zero();
     player.faceValue     = 1;

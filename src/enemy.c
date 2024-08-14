@@ -11,6 +11,7 @@
  *    TODO: Rearrange functions into seprate files where needed. Move enemies variable to entity.h.
  *    TODO: Handle enemy attacks
  *    TODO: Handle player to enemy collisions
+ *    TODO: make entitymovement function and generalize player movement too
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
@@ -313,7 +314,7 @@ static void SetupEnemies() {
                                             .y = enemy->pos.y + ENTITY_TILE_HEIGHT / 2,
                                             .width  = ENTITY_TILE_WIDTH,
                                             .height = ENTITY_TILE_HEIGHT / 2 };
-        enemy->speed         = 100;
+        enemy->speed         = 35;
         enemy->health        = 100;
         enemy->direction     = Vector2Zero();
         enemy->faceValue     = 1;
