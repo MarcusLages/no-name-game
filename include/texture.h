@@ -39,6 +39,7 @@
  * @param TILE_ENEMY_MOVE       4
  * @param TILE_ENEMY_ATTACK     5
  */
+//TODO: Make enums for PABLO, DIEGO, WAFFLES. WARNING MANY THINGS WILL NEED TO CHANGE
 typedef enum TextureFile {
     TILE_PLAYER_IDLE = 0,
     TILE_PLAYER_MOVE,

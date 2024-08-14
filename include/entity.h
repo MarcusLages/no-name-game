@@ -109,6 +109,7 @@ typedef struct Entity {
     GameState state;
     /** Direction the entity is facing. (right, down, left, up) */
     Direction directionFace;
+    AnimationArray animations;
 } Entity;
 
 //* ------------------------------------------

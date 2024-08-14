@@ -14,40 +14,14 @@
 
 #include "entity.h"
 
+#define MAX_ENEMY_ANIMATIONS 3
+
 //* ------------------------------------------
 //* DEFINITIONS
 
-#define AGRO_RANGE  100
-#define MAX_ENEMIES 10
+#define AGRO_RANGE 100
 
-//* ------------------------------------------
-//* STRUCTURES
-
-/**
- * EnemyNode struct represents an enemy who has a reference to another enemy.
- *
- * @param enemy Enemy entity of this node.
- * @param next  Next enemy node.
- */
-typedef struct EnemyNode EnemyNode;
-struct EnemyNode {
-    /** The pointer to an enemy entity. */
-    Entity* enemy;
-    /** The last known location of player relative to this enemy. */
-    Vector2 lastPlayerPos;
-    /** The pointer to the next enemy entity. */
-    EnemyNode* next;
-};
-
-//* ------------------------------------------
-//* GLOBAL VARIABLES
-
-/**
- * All enemy entities.
- *
- * ! @attention Will be moved to entity.h.
- */
-extern EnemyNode* enemies;
+typedef enum EnemyType { DEMON_PABLO = 0, DEMON_DIEGO, WAFFLE_FRIES } EnemyType;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -57,12 +31,14 @@ extern EnemyNode* enemies;
  *
  * ? @note Timers started here are needed for the whole duration of the game.
  */
-void EnemyStartup();
+Entity EnemyStartup(Vector2 position, EnemyType type);
+
+void SetupEnemyAnimation(Entity* enemy, EnemyType type);
 
 /**
  * Handles enemy movement and updates it's GameState and Direction.
  */
-void EnemyMovement();
+void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos);
 
 /**
  * Handles the enemy's attack.
@@ -75,11 +51,11 @@ void EnemyAttack();
 /**
  * Renders the enemy animation based off of it's GameState.
  */
-void EnemyRender();
+void EnemyRender(Entity* enemy);
 
 /**
  * Unloads all the enemies and animations associated with an enemy entity.
  */
-void EnemyUnload();
+void EnemyUnload(Entity* enemy);
 
 #endif // ENEMY_H_

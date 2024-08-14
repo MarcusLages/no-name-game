@@ -15,6 +15,8 @@
 #include "texture.h"
 #include "timer.h"
 
+enum AnimationType { IDLE_ANIMATION = 0, MOVE_ANIMATION, ATTACK_ANIMATION };
+
 //* ------------------------------------------
 //* STRUCTURES
 
@@ -45,6 +47,11 @@ typedef struct Animation {
     Timer timer;
 } Animation;
 
+typedef struct AnimationArray {
+    int size;
+    Animation* animationArr;
+} AnimationArray;
+
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
@@ -57,7 +64,7 @@ typedef struct Animation {
  * @param tileWidth         Width of a single tile.
  * @param tileHeight        Height of a single tile.
  * @param textureFileType   Type of texture as a TextureFile.
- * 
+ *
  * ! @note This function is responsible for creating animation.reactangles in the heap.
  *
  * @returns An Animation.
@@ -81,6 +88,8 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
  */
 void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, float rotation);
 
+void UnloadAnimations(AnimationArray* animationArry);
+
 /**
  * Responsible for unloading an animation by unallocating the memory
  * used to store the frames and the timer in an animation.
@@ -88,7 +97,7 @@ void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int en
  * ! @attention returns if given a NULL animation.
  *
  * @param animation The animation to unallocate.
- * 
+ *
  * ! @note This function frees the memory of animation.frames.
  */
 void AnimationUnload(Animation* animation);

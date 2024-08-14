@@ -12,22 +12,12 @@
 
 #include "../include/player.h"
 
+#define playerAnimArray player.animations.animationArr
+
 //* ------------------------------------------
 //* GLOBAL VARIABLES
 
 Entity player;
-
-//* ------------------------------------------
-//* MODULAR VARIABLES
-
-/** The animation for an idle player. */
-static Animation idlePlayerAnimation;
-
-/** The animation for the player moving. */
-static Animation movingPlayerAnimation;
-
-/** The animation for a player attack. */
-static Animation attackPlayerAnimation;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -47,7 +37,7 @@ static void PlayerEnemyCollision();
 //* FUNCTION IMPLEMENTATIONS
 
 void PlayerStartup() {
-    player.pos           = (Vector2){ (float) 11 * TILE_WIDTH, (float) 4 * TILE_HEIGHT };
+    player.pos = (Vector2){ (float) 11 * TILE_WIDTH, (float) 4 * TILE_HEIGHT };
     player.hitbox        = (Rectangle){ .x     = player.pos.x,
                                         .y     = player.pos.y + ENTITY_TILE_HEIGHT / 2,
                                         .width = ENTITY_TILE_WIDTH,
@@ -59,21 +49,29 @@ void PlayerStartup() {
     player.state         = IDLE;
     player.directionFace = RIGHT;
 
+    player.animations.size = MAX_PLAYER_ANIMATIONS;
+    player.animations.animationArr =
+        (Animation*) malloc(sizeof(Animation) * player.animations.size);
+
     // Initializing the idle animation
-    idlePlayerAnimation =
+    Animation idlePlayerAnimation =
         CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE);
 
     // Initializing the moving animation
-    movingPlayerAnimation =
+    Animation movingPlayerAnimation =
         CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_MOVE);
 
     // Initializing the attacking animation
-    attackPlayerAnimation =
+    Animation attackPlayerAnimation =
         CreateAnimation(DEFAULT_ATTACK_FPS, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, TILE_PLAYER_ATTACK);
 
+    player.animations.animationArr[IDLE_ANIMATION]   = idlePlayerAnimation;
+    player.animations.animationArr[MOVE_ANIMATION]   = movingPlayerAnimation;
+    player.animations.animationArr[ATTACK_ANIMATION] = attackPlayerAnimation;
+
     // Starting timers for both idle and moving animations
-    StartTimer(&idlePlayerAnimation.timer, -1.0f);
-    StartTimer(&movingPlayerAnimation.timer, -1.0f);
+    StartTimer(&playerAnimArray[IDLE_ANIMATION].timer, -1.0f);
+    StartTimer(&playerAnimArray[MOVE_ANIMATION].timer, -1.0f);
 }
 
 void PlayerMovement() {
@@ -134,10 +132,10 @@ static void PlayerEnemyCollision() {}
 void PlayerAttack() {
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
-        StartTimer(&attackPlayerAnimation.timer, 0.5f);
+        StartTimer(&playerAnimArray[ATTACK_ANIMATION].timer, 0.5f);
     }
 
-    if(player.state == ATTACKING && TimerDone(&attackPlayerAnimation.timer)) {
+    if(player.state == ATTACKING && TimerDone(&playerAnimArray[ATTACK_ANIMATION].timer)) {
         player.state = IDLE;
     }
 }
@@ -146,61 +144,57 @@ void PlayerRender() {
     switch(player.state) {
         case IDLE:
             EntityRender(
-                &player, &idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue,
-                ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+                &player, &playerAnimArray[IDLE_ANIMATION],
+                ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case MOVING:
             EntityRender(
-                &player, &movingPlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue,
-                ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+                &player, &playerAnimArray[MOVE_ANIMATION],
+                ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case ATTACKING: RenderPlayerAttack(); break;
         default: break;
     }
 }
 
-void PlayerUnload() {
-    AnimationUnload(&idlePlayerAnimation);
-    AnimationUnload(&movingPlayerAnimation);
-    AnimationUnload(&attackPlayerAnimation);
-}
+void PlayerUnload() { UnloadAnimations(&player.animations); }
 
 static void RenderPlayerAttack() {
     // Rendering idle animation of player as the player should not move while attacking.
     EntityRender(
-        &player, &idlePlayerAnimation, ENTITY_TILE_WIDTH * player.faceValue,
-        ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+        &player, &playerAnimArray[IDLE_ANIMATION],
+        ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
 
     //? NOTE: commented out animations are kept for alternating animations
     switch(player.directionFace) {
         case RIGHT:
             EntityRender(
-                &player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT,
-                TEMP_ATTACK_WIDTH + 2, TEMP_ATTACK_HEIGHT + 6, 180.0f);
-            // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH,
-            // TEMP_ATTACK_HEIGHT, 32, 0, 90.0f);
+                &player, &playerAnimArray[ATTACK_ANIMATION], TEMP_ATTACK_WIDTH,
+                -TEMP_ATTACK_HEIGHT, TEMP_ATTACK_WIDTH + 2, TEMP_ATTACK_HEIGHT + 6, 180.0f);
+            // EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION],
+            // TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, 32, 0, 90.0f);
             break;
         case DOWN:
             EntityRender(
-                &player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH,
+                &player, &playerAnimArray[ATTACK_ANIMATION], TEMP_ATTACK_WIDTH,
                 -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 40,
                 TEMP_ATTACK_HEIGHT + 16, -90.0f);
-            // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT,
+            // EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION], TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT,
             //     25, 48, 180.0f);
             break;
         case LEFT:
             EntityRender(
-                &player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT,
-                TEMP_ATTACK_WIDTH - 48, TEMP_ATTACK_HEIGHT - 26, 0.0f);
-            // EntityRender(&player, &attackPlayerAnimation, TEMP_ATTACK_WIDTH,
-            // -TEMP_ATTACK_HEIGHT, 16, 0, 90.0f);
+                &player, &playerAnimArray[ATTACK_ANIMATION], TEMP_ATTACK_WIDTH,
+                TEMP_ATTACK_HEIGHT, TEMP_ATTACK_WIDTH - 48, TEMP_ATTACK_HEIGHT - 26, 0.0f);
+            // EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION],
+            // TEMP_ATTACK_WIDTH, -TEMP_ATTACK_HEIGHT, 16, 0, 90.0f);
             break;
         case UP:
             EntityRender(
-                &player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH,
+                &player, &playerAnimArray[ATTACK_ANIMATION], -TEMP_ATTACK_WIDTH,
                 -TEMP_ATTACK_HEIGHT * player.faceValue, TEMP_ATTACK_WIDTH - 40,
                 TEMP_ATTACK_HEIGHT - 6, -90.0f);
-            //  EntityRender(&player, &attackPlayerAnimation, -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT,
+            //  EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION], -TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT,
             //     -10, 0, 0.0f);
             break;
         default: break;

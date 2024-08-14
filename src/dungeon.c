@@ -10,7 +10,7 @@
  *
  **********************************************************************************************/
 
-#include "../include/enemy.h"
+#include "../include/enemy-list.h"
 #include "../include/player.h"
 #include "../include/screen.h"
 #include "../include/tile.h"
@@ -68,15 +68,14 @@ void DungeonStartup() {
     InitializeTiles();
 
     StartCamera();
-    EnemyStartup();
+    SetupEnemies();
     PlayerStartup();
 }
 
 void DungeonUpdate() {
     PlayerMovement();
     // need to move this back
-    EnemyMovement();
-    // EnemyAttack();
+    MoveEnemies();
     PlayerAttack();
 
     // Update camera to follow the player
@@ -93,7 +92,7 @@ void DungeonRender() {
     );
 
     // Draw player on the screen
-    EnemyRender();
+    RenderEnemies();
     PlayerRender();
 }
 
@@ -102,7 +101,7 @@ void DungeonUnload() {
     PlayerUnload();
 
     // Unloads the enemy sprites and animations.
-    EnemyUnload();
+    UnloadEnemies();
 
     // Unloads collidableTiles list
     FreeCollisionList(collidableTiles);

@@ -15,6 +15,8 @@
 
 #include "entity.h"
 
+#define MAX_PLAYER_ANIMATIONS 3
+
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
