@@ -1,13 +1,13 @@
 /***********************************************************************************************
-*
-**   entity.h is responsible for defining properties needed for entities.
-*   
-*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
-*
-*    @include animation.h, collision.h
-*
-***********************************************************************************************/
+ *
+ **   entity.h is responsible for defining properties needed for entities.
+ *
+ *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+ *    @version 0.2
+ *
+ *    @include animation.h, collision.h
+ *
+ ***********************************************************************************************/
 
 #ifndef ENTITY_H
 #define ENTITY_H
@@ -19,13 +19,13 @@
 //* DEFINITIONS
 
 /** Default entity tile size. */
-#define ENTITY_TILE_WIDTH   16
-#define ENTITY_TILE_HEIGHT  32
+#define ENTITY_TILE_WIDTH  16
+#define ENTITY_TILE_HEIGHT 32
 
 /** Default animation refresh rate. */
-#define DEFAULT_IDLE_FPS    2
-#define DEFAULT_MOVING_FPS  8
-#define DEFAULT_ATTACK_FPS  8
+#define DEFAULT_IDLE_FPS   2
+#define DEFAULT_MOVING_FPS 8
+#define DEFAULT_ATTACK_FPS 8
 
 // Temporary attack rectangle size
 // ? OBS: Might be nuked later
@@ -37,7 +37,7 @@
 
 /**
  * Enum for the action state of entities.
- * 
+ *
  * @param IDLE      0
  * @param MOVING    1
  * @param ATTACKING 2
@@ -53,7 +53,7 @@ typedef enum GameState {
 
 /**
  * Enum for the direction the entity is facing.
- * 
+ *
  * @param RIGHT 0
  * @param DOWN  1
  * @param LEFT  2
@@ -75,27 +75,28 @@ typedef enum Direction {
 
 /**
  * Structure to represent an entity (player / enemy).
- * 
- * @param x              X coordinate on the screen
- * @param y              Y coordinate on the screen
+ *
+ * @param pos            The x and y position of the entity as a vector.
  * @param speed          Scalar speed
  * @param health         Health points
  * @param faceValue      Entity is turned to right or left
  * @param direction      Direction vector of the movement/velocity
  * @param state          Action state
  * @param directionFace  Direction entity is facing to (R, D, L, U)
- * 
+ *
  * @note Face must be either 1 or -1 where:
- * 
+ *
  *  - -1 indicates the character is facing WEST (LEFT) and
- * 
+ *
  *  - 1 indicates the character is facing EAST (RIGHT) (DEFAULT CASE)
  */
 typedef struct Entity {
-    /** X-position of the entity. */
-    int x;
-    /** Y-position of the entity. */
-    int y;
+    /** The position of the entity. */
+    Vector2 pos;
+    /** The hitbox used for collision detection.
+     *  @note Position needs to be updated everytime we use it
+     */
+    Rectangle hitbox;
     /** Speed the entity moves at. */
     int speed;
     /** Health of the entity. */
@@ -116,45 +117,47 @@ typedef struct Entity {
 /** The player entity. */
 extern Entity player;
 
-/** 
- * The enemy entity. 
- * 
- * ! NOTE: This is a temp global variable because there will be multiple enemies.
- * TODO: Remove once done.
- */
-extern Entity enemy;
-
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**
  * Responsible for rendering the entity with the specified animation.
- * 
+ *
  * ! @attention returns if given either a NULL entity or animation.
- * 
- * @param entity        Entity to render.
+ *
+ * @param entity        Pointer to the entity to render.
  * @param animation     Animation to apply to the entity.
  * @param entityWidth   Width of the entity.
  * @param entityHeight  Height of the entity.
  * @param xOffset       X-direction pixel offset from the current x of the entity.
  * @param yOffset       Y-direction pixel offset from the current y of the entity.
  * @param rotation      Rotation amount as a float.
- * 
+ *
  * ? @note rotation rotates the animation relative to the (entity.x + xOffset), (entity.y + yOffset)
  */
-void EntityRender(Entity* entity, Animation* animation, int entityWidth, 
-    int entityHeight, int xOffset, int yOffset, float rotation);
+void EntityRender(
+    Entity* entity, Animation* animation, int entityWidth, int entityHeight,
+    int xOffset, int yOffset, float rotation);
 
 //* General entity logic
 
 /**
+ * Function that should be called to update the entity hitbox collision before a collision is called.
+ * 
+ * @param entity Pointer to the entity that will update its hitbox
+ */
+void UpdateEntityHitbox(Entity* entity);
+
+/**
  * Function used to check if there was a collision between a moving entity and a Rectangle
  * hitbox.
- * 
+ *
+ * ! @attention Use this only for general entities (16x32 with only the lower 16pxls collidable)
+ *
  * @param entity        Moving entity to test the collision
  * @param hitboxTarget  Rectangle that the entity will check a collision with
  * @return              Information about the collision.
- * 
+ *
  * ? @note - Important to check the timeHit (-n, -1, 0, +1 or +n) of the returned collision
  *              even if the collision.hit is true.
  * ? @note - Resolving the collision is still necessary. This function is only for detection.
@@ -164,15 +167,26 @@ RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget);
 /**
  * Function used to check if there was a collision between a moving entity and another
  * entity's hitbox.
- * 
+ *
+ * ! @attention Use this only for general entities (16x32 with only the lower 16pxls collidable)
+ *
  * @param entityIn      Moving entity to test the collision
  * @param entityTarget  Target entity that the entityIn will check a collision with
  * @return              Information about the collision.
- * 
+ *
  * ? @note - Important to check the timeHit (-n, -1, 0, +1 or +n) of the returned collision
  *              even if the collision.hit is true.
  * ? @note - Resolving the collision is still necessary. This function is only for detection.
  */
 RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
+
+/**
+ * Handles entity collision with the world tilemap(Tile**) through the collidableTiles list.
+ *
+ * ! @attention Use this only for general entities (16x32 with only the lower 16pxls collidable)
+ *
+ * @param entity Pointer to the entity that will check collision with all the collidable tiles on the map
+ */
+void EntityWorldCollision(Entity* entity);
 
 #endif // !ENTITY_H

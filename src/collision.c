@@ -4,7 +4,7 @@
 **   information for 2D rays and rectangles.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
+*    @version 0.2
 *
 *    @include collision.h
 *
@@ -162,6 +162,7 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
 CollisionNode* CreateCollisionList(int indexX, int indexY, float timeHit) {
     CollisionNode* newList = (CollisionNode*) malloc(sizeof(CollisionNode));
     if (newList == NULL) {
+        TraceLog(LOG_FATAL, "collision.c: Memory allocation failure.");
         exit(EXIT_FAILURE);
     }
     newList->collidedHitbox = (CollidedHitboxInfo) { (Vector2) {indexX, indexY}, timeHit };
@@ -177,6 +178,7 @@ void AddCollisionNode(CollisionNode* head, int indexX, int indexY, float timeHit
 
     newNode = (CollisionNode*) malloc(sizeof(CollisionNode));
     if (newNode == NULL) {
+        TraceLog(LOG_FATAL, "collision.c: Memory allocation failure.");
         exit(EXIT_FAILURE);
     }
 

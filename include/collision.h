@@ -4,7 +4,7 @@
 **   for 2D rays and rectangles.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
+*    @version 0.2
 *
 *    @include raymath.h, raylib.h, stdlib.h
 *    @cite raylib
@@ -99,6 +99,7 @@ struct CollisionNode {
 //* ------------------------------------------
 //* GLOBAL VARIABLES
 
+/** Linked list with indexes to all the possible collidable tiles. */
 extern CollisionNode * collidableTiles;
 
 //* ------------------------------------------

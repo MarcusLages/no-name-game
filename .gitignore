@@ -18,7 +18,7 @@
 
 # Libraries
 *.lib
-*.a
+# *.a
 *.la
 *.lo
 
@@ -57,3 +57,10 @@ dkms.conf
 # MakeFile compiler settings
 MakeFile
 MakeFile.Andriod
+
+# clang-format
+*.clang-format
+
+# Tiled tilemap project files (besides .tmx)
+*.tiled-project
+*.tiled-session
