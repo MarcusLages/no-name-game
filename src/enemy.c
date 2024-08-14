@@ -67,14 +67,24 @@ static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy);
 
 /**
  * Determines if the player is seen by a given enemy.
- * 
+ *
+ * ! @attention Returns -1 if given a NULL enemy.
+ *
  * @param enemy The enemy to check agaist.
- * 
+ *
  * @returns True if the player is seen and false otherwise.
  */
 static bool IsPlayerSeen(Entity* enemy);
 
-static void MoveEnemyTowardsPos(EnemyNode* enemyNode, Vector2 lastPos);
+/**
+ * Handles the enemy movement towards a given position.
+ *
+ * ! @attention Returns if given a NULL enemyNode or zero Vector.
+ *
+ * @param enemyNode The current enemy to move as a EnemyNode.
+ * @param position The position to move the enemy towards.
+ */
+static void MoveEnemyTowardsPos(EnemyNode* enemyNode, Vector2 position);
 
 /**
  * Renders an enemy's attack animation based off of it's Direction.
@@ -127,7 +137,7 @@ void EnemyMovement() {
         }
 
         if(!IsPlayerSeen(enemy)) {
-            DrawText("Player not seen", player.pos.x + 16, player.pos.y + 32, 10, RED);
+            // DrawText("Player not seen", player.pos.x + 16, player.pos.y + 32, 10, RED);
 
             // Does not set to idle if precision is off.
             // TODO Needs to be fixed
@@ -137,11 +147,9 @@ void EnemyMovement() {
             } else {
                 MoveEnemyTowardsPos(currEnemy, currEnemy->lastPlayerPos);
             }
-
-            DrawText(
-                TextFormat("State: %d", enemy->state), player.pos.x - 55,
-                player.pos.y + 52, 10, RED);
-
+            // DrawText(
+            //     TextFormat("State: %d", enemy->state), player.pos.x - 55,
+            //     player.pos.y + 52, 10, RED);
             currEnemy = currEnemy->next;
             continue;
         } else {
@@ -189,6 +197,8 @@ void EnemyUnload() {
 }
 
 static bool IsPlayerSeen(Entity* enemy) {
+    if(enemy == NULL) return -1;
+
     // check if the enemy is in argo range
     float distance = Vector2Distance(player.pos, enemy->pos);
     if(distance > AGRO_RANGE) return false;
@@ -222,25 +232,27 @@ static bool IsPlayerSeen(Entity* enemy) {
     return true;
 }
 
-static void MoveEnemyTowardsPos(EnemyNode* enemyNode, Vector2 lastPos) {
+static void MoveEnemyTowardsPos(EnemyNode* enemyNode, Vector2 position) {
+    if(enemyNode == NULL || Vector2Equals(position, Vector2Zero())) return;
+
     Entity* enemy = enemyNode->enemy;
-    if(lastPos.x > enemy->pos.x) {
+    if(position.x > enemy->pos.x) {
         enemy->faceValue     = 1;
         enemy->directionFace = RIGHT;
-    } else if(lastPos.x < enemy->pos.x) {
+    } else if(position.x < enemy->pos.x) {
         enemy->faceValue     = -1;
         enemy->directionFace = LEFT;
     }
 
-    if(lastPos.y > enemy->pos.y) {
+    if(position.y > enemy->pos.y) {
         enemy->directionFace = DOWN;
-    } else if(lastPos.y < enemy->pos.y) {
+    } else if(position.y < enemy->pos.y) {
         enemy->directionFace = UP;
     }
 
     enemy->direction = (Vector2){
-        (int) lastPos.x - (int) enemy->pos.x,
-        (int) lastPos.y - (int) enemy->pos.y,
+        (int) position.x - (int) enemy->pos.x,
+        (int) position.y - (int) enemy->pos.y,
     };
 
     if(Vector2Equals(enemy->direction, Vector2Zero()) && enemy->state != ATTACKING) {
