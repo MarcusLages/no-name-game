@@ -129,15 +129,15 @@ static void StartCamera() {
 
 static void LoadTextures() {
 
-    Image img                  = LoadImage("resources/player-idle.png");
+    Image img                  = LoadImage("resources/player-idle2.png");
     textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                        = LoadImage("resources/player-movement.png");
+    img                        = LoadImage("resources/player-movement2.png");
     textures[TILE_PLAYER_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                          = LoadImage("resources/player-attack.png");
+    img                          = LoadImage("resources/player-attack2.png");
     textures[TILE_PLAYER_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
