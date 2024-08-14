@@ -36,7 +36,6 @@ typedef enum MainMenuOptions {
 //* ------------------------------------------
 //* MODULAR VARIABLES
 
-// TODO: Change variables to not be global.
 /** Array with all button text options for the main menu. */
 static char mainMenuOptionsText[MAX_MENU_BUTTONS][8] = {"Start", "Options", "Exit"};
 
