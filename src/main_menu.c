@@ -1,9 +1,11 @@
 /***********************************************************************************************
 *
-**   main-menu.c is responsible for managing and displaying the main menu screen. 
+**   main-menu.c is responsible for managing and displaying the main menu screen.
+*
+*    TODO: Restructure menu with common raygui algorithms.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
+*    @version 0.2
 *
 *    @include screen.h
 *

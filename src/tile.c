@@ -3,7 +3,7 @@
 **   tile.c is responsible for dealing with tile and tilemap rendering.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
+*    @version 0.2
 *
 *    @include tile.h, texture.h, collision.h
 *

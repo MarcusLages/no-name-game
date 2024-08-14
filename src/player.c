@@ -4,7 +4,7 @@
  **   and attacks. Animations are created on setup and managed based on player movements and attack.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
- *    @version 0.1
+ *    @version 0.2
  *
  *    @include player.h
  *

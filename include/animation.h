@@ -3,7 +3,7 @@
  **   animation.h is responsible for classifying, creating, and drawing sprite animations.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.1
+ *    @version 0.2
  *
  *    @include timer.h, texture.h
  *

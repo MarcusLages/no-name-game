@@ -3,7 +3,7 @@
  **   entity.h is responsible for defining properties needed for entities.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.1
+ *    @version 0.2
  *
  *    @include animation.h, collision.h
  *

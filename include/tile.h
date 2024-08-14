@@ -3,7 +3,7 @@
 **   tile.h is responsible for dealing with external tile and tilemap rendering.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
+*    @version 0.2
 *
 *    @include raylib.h, tmx.h
 *    @cite raylib, tmx

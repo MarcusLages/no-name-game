@@ -5,7 +5,7 @@
 **   screens to load, update, render, unload and transition to.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
+*    @version 0.2
 *
 *    @include screen.h
 *

@@ -4,7 +4,7 @@
  **   dungeon game screen.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.1
+ *    @version 0.2
  *
  *    @include enemy.h, player.h, screen.h, tile.h
  *

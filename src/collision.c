@@ -4,7 +4,7 @@
 **   information for 2D rays and rectangles.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
+*    @version 0.2
 *
 *    @include collision.h
 *
