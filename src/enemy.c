@@ -29,6 +29,11 @@
 //* FUNCTION PROTOTYPES
 
 /**
+ * 
+ */
+static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
+
+/**
  * Determines if the player is seen by a given enemy.
  *
  * ! @attention Returns -1 if given a NULL enemy.
@@ -91,44 +96,6 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
 
     SetupEnemyAnimation(&enemy, type);
     return enemy;
-}
-
-void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
-    Animation idleEnemyAnimation;
-    Animation movingEnemyAnimation;
-    Animation attackEnemyAnimation;
-
-    enemy->animations.size = MAX_ENEMY_ANIMATIONS;
-    enemy->animations.animationArr =
-        (Animation*) malloc(sizeof(Animation) * enemy->animations.size);
-
-    switch(type) {
-        case DEMON_PABLO:
-            idleEnemyAnimation =
-                CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_IDLE);
-
-            movingEnemyAnimation =
-                CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_MOVE);
-
-            attackEnemyAnimation =
-                CreateAnimation(DEFAULT_ATTACK_FPS, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, TILE_ENEMY_ATTACK);
-            break;
-        case DEMON_DIEGO:
-            // TODO: IMPLEMENT FOR WHEN DEMON DIEGO IS READY TO PLAY
-            break;
-
-        case WAFFLE_FRIES:
-            // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
-            break;
-    }
-
-    enemy->animations.animationArr[IDLE_ANIMATION]   = idleEnemyAnimation;
-    enemy->animations.animationArr[MOVE_ANIMATION]   = movingEnemyAnimation;
-    enemy->animations.animationArr[ATTACK_ANIMATION] = attackEnemyAnimation;
-
-    // Starting timers for both idle and moving animations
-    StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0f);
-    StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0f);
 }
 
 void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
@@ -268,4 +235,42 @@ static void MoveEnemyTowardsPos(Entity* enemy, Vector2 position, Vector2* lastPl
     }
 
     enemy->pos = Vector2Add(enemy->pos, Vector2Scale(enemy->direction, deltaTime));
+}
+
+static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
+    Animation idleEnemyAnimation;
+    Animation movingEnemyAnimation;
+    Animation attackEnemyAnimation;
+
+    enemy->animations.size = MAX_ENEMY_ANIMATIONS;
+    enemy->animations.animationArr =
+        (Animation*) malloc(sizeof(Animation) * enemy->animations.size);
+
+    switch(type) {
+        case DEMON_PABLO:
+            idleEnemyAnimation =
+                CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_IDLE);
+
+            movingEnemyAnimation =
+                CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_MOVE);
+
+            attackEnemyAnimation =
+                CreateAnimation(DEFAULT_ATTACK_FPS, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, TILE_ENEMY_ATTACK);
+            break;
+        case DEMON_DIEGO:
+            // TODO: IMPLEMENT FOR WHEN DEMON DIEGO IS READY TO PLAY
+            break;
+
+        case WAFFLE_FRIES:
+            // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
+            break;
+    }
+
+    enemy->animations.animationArr[IDLE_ANIMATION]   = idleEnemyAnimation;
+    enemy->animations.animationArr[MOVE_ANIMATION]   = movingEnemyAnimation;
+    enemy->animations.animationArr[ATTACK_ANIMATION] = attackEnemyAnimation;
+
+    // Starting timers for both idle and moving animations
+    StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0f);
+    StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0f);
 }

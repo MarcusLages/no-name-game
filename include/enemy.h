@@ -33,8 +33,6 @@ typedef enum EnemyType { DEMON_PABLO = 0, DEMON_DIEGO, WAFFLE_FRIES } EnemyType;
  */
 Entity EnemyStartup(Vector2 position, EnemyType type);
 
-void SetupEnemyAnimation(Entity* enemy, EnemyType type);
-
 /**
  * Handles enemy movement and updates it's GameState and Direction.
  */

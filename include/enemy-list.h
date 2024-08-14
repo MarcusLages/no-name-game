@@ -15,12 +15,13 @@
  * EnemyNode struct represents an enemy who has a reference to another enemy.
  *
  * @param enemy Enemy entity of this node.
+ * @param lastPlayerPos Last known location of player to this enemy.
  * @param next  Next enemy node.
  */
 typedef struct EnemyNode EnemyNode;
 struct EnemyNode {
-    /** The pointer to an enemy entity. */
-    Entity* enemy;
+    /** The enemy entity. */
+    Entity enemy;
     /** The last known location of player relative to this enemy. */
     Vector2 lastPlayerPos;
     /** The pointer to the next enemy entity. */
@@ -46,24 +47,23 @@ extern EnemyNode* enemies;
  *
  * ! @note Allocates memory for the first EnemyNode.
  */
-EnemyNode* CreateEnemyList(Entity* enemy);
+EnemyNode* CreateEnemyList(Entity enemy);
 
 /**
  * Creates an EnemyNode and adds it to the end of the enemies linked list.
  *
  * ! @attention Returns if given a NULL enemy or NULL head pointer.
  *
- * @param enemiesHead The head pointer to the linked list of enemies.
  * @param enemy The enemy to add as an EnemyNode.
  *
- * ! @note Allocates memory for the EnemyNode.
+ * ! @note Allocates memory for an EnemyNode.
  */
-void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy);
+void AddEnemyNode(Entity enemy);
 
 /**
  * Unloads the list of enemies.
  *
- * ! @note Unallocates memory for each Entity and EntityNode.
+ * ! @note Unallocates memory for each EntityNode.
  */
 void UnloadEnemies();
 
@@ -71,12 +71,22 @@ void UnloadEnemies();
  * Populates the enemies linked list by creates entities around the level and
  * assigning them to an EnityNode.
  *
- * ! @note Allocates memory for each Entity.
+ * ! @note Calls CreateEnemyList and AddEnemyNode.
  */
 void SetupEnemies();
 
+/**
+ * Handles the movement of of each enemy in the list of enemies.
+ * 
+ * ? @note Calls EnemyMovement on each enemy (see enemy.c).
+ */
 void MoveEnemies();
 
+/**
+ * Handles rendering each enemt in the list of enemies.
+ * 
+ * ? @note Calls EnemyRender on each enemy (see enemy.c).
+ */
 void RenderEnemies();
 
 #endif // ENEMY_LIST_H_
