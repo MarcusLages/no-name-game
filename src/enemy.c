@@ -9,6 +9,8 @@
  *    TODO: Fix bug
  *    TODO: Implements spawn point generation
  *    TODO: Rearrange functions into seprate files where needed. Move enemies variable to entity.h.
+ *    TODO: Handle enemy attacks
+ *    TODO: Handle player to enemy collisions
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
@@ -96,8 +98,10 @@ static void MoveEnemyTowardsPos(EnemyNode* enemyNode, Vector2 position);
 
 /**
  * Renders an enemy's attack animation based off of it's Direction.
+ * 
+ * TODO: Implement
  */
-// static void RenderEnemyAttack();
+static void RenderEnemyAttack();
 
 /**
  * Unloads the list of enemies.
@@ -131,7 +135,6 @@ void EnemyStartup() {
     SetupEnemies();
 }
 
-// TODO: enemy navigate around collision
 void EnemyMovement() {
     EnemyNode* currEnemy = enemies;
     Entity* enemy        = NULL;
@@ -169,6 +172,7 @@ void EnemyMovement() {
     }
 }
 
+//TODO: Implement
 void EnemyAttack() {}
 
 void EnemyRender() {
@@ -194,8 +198,8 @@ void EnemyRender() {
     }
 }
 
-//? Commented out for now.
-// void RenderEnemyAttack() {}
+// TODO: Implement
+void RenderEnemyAttack() {}
 
 void EnemyUnload() {
     UnloadEnemyList();
