@@ -132,7 +132,7 @@ void PlayerMovement() {
 static void PlayerEnemyCollision() {}
 
 void PlayerAttack() {
-    if(IsKeyPressed(KEY_E)) {
+    if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
         StartTimer(&attackPlayerAnimation.timer, 0.5f);
     }
