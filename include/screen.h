@@ -41,8 +41,7 @@ enum GameScreen {
     MAIN_MENU = 0,
     DUNGEON = 1,
     SETTINGS = 2,
-    PAUSE = 3,
-    TEST_SCREEN = 99
+    PAUSE = 3
 };
 typedef enum GameScreen GameScreen;
 
@@ -84,16 +83,5 @@ void DungeonUpdate();
 void DungeonRender();
 /** Unloads (frees memory of) all dungeon screen resources. */
 void DungeonUnload();
-
-//* TestScreen functions
-
-/** Starts and loads all test screen resources. */
-void TestScreenStartup();
-/** Updates test screen state. */
-void TestScreenUpdate();
-/** Renders test screen current state on the screen. */
-void TestScreenRender();
-/** Unloads (frees memory of) all test screen resources. */
-void TestScreenUnload();
 
 #endif // !SCREEN_H

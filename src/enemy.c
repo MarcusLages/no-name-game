@@ -303,7 +303,10 @@ static void SetupEnemies() {
         //? NOTE: LoadRandomSequence is a temp solution
         Entity* enemy = (Entity*) malloc(sizeof(Entity));
 
-        if(enemy == NULL) exit(EXIT_FAILURE);
+        if(enemy == NULL) {
+            TraceLog(LOG_FATAL, "enemy.c: Memory allocation failure.");
+            exit(EXIT_FAILURE);
+        }
 
         enemy->pos = (Vector2){ (float) 21 * TILE_WIDTH, (float) 4 * TILE_HEIGHT };
         enemy->hitbox        = (Rectangle){ .x = enemy->pos.x,
@@ -331,7 +334,10 @@ static EnemyNode* CreateEnemyList(Entity* enemy) {
     if(enemy == NULL) return NULL;
 
     EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
-    if(enemyNode == NULL) exit(EXIT_FAILURE);
+    if(enemyNode == NULL) {
+        TraceLog(LOG_FATAL, "enemy.c: Memory allocation failure.");
+        exit(EXIT_FAILURE);
+    }
 
     enemyNode->enemy         = enemy;
     enemyNode->lastPlayerPos = enemy->pos;
@@ -344,7 +350,10 @@ static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy) {
 
     EnemyNode* cursor    = enemiesHead;
     EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
-    if(enemyNode == NULL) exit(EXIT_FAILURE);
+    if(enemyNode == NULL) {
+        TraceLog(LOG_FATAL, "enemy.c: Memory allocation failure.");
+        exit(EXIT_FAILURE);
+    }
 
     enemyNode->enemy         = enemy;
     enemyNode->lastPlayerPos = enemy->pos;

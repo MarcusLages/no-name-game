@@ -23,7 +23,7 @@
 #define TILE_HEIGHT     16
 
 /** How many textures are loaded in the game.  */
-#define MAX_TEXTURES    7
+#define MAX_TEXTURES    6
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -32,17 +32,15 @@
  * Enum for accessing the textures loaded in the game through
  * the textures.
  * 
- * @param TILE_MAP              0
- * @param TILE_PLAYER_IDLE      1
- * @param TILE_PLAYER_MOVE      2
- * @param TILE_PLAYER_ATTACK    3
- * @param TILE_ENEMY_IDLE       4
- * @param TILE_ENEMY_MOVE       5
- * @param TILE_ENEMY_ATTACK     6
+ * @param TILE_PLAYER_IDLE      0
+ * @param TILE_PLAYER_MOVE      1
+ * @param TILE_PLAYER_ATTACK    2
+ * @param TILE_ENEMY_IDLE       3
+ * @param TILE_ENEMY_MOVE       4
+ * @param TILE_ENEMY_ATTACK     5
  */
 typedef enum TextureFile {
-    TILE_MAP = 0,
-    TILE_PLAYER_IDLE,
+    TILE_PLAYER_IDLE = 0,
     TILE_PLAYER_MOVE,
     TILE_PLAYER_ATTACK,
     TILE_ENEMY_IDLE,
