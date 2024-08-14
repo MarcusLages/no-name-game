@@ -10,6 +10,7 @@
  ***********************************************************************************************/
 
 #include "../include/enemy.h"
+#include "../include/utils.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -64,11 +65,16 @@ static EnemyNode* CreateEnemyList(Entity* enemy);
  */
 static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy);
 
+/**
+ * Determines if the player is seen by a given enemy.
+ * 
+ * @param enemy The enemy to check agaist.
+ * 
+ * @returns True if the player is seen and false otherwise.
+ */
 static bool IsPlayerSeen(Entity* enemy);
 
-static bool IsCoordInBounds(Vector2* coord);
-
-static void MoveEnemyToLastPos(Entity* enemy, Vector2 lastPos);
+static void MoveEnemyTowardsPos(EnemyNode* enemyNode, Vector2 lastPos);
 
 /**
  * Renders an enemy's attack animation based off of it's Direction.
@@ -120,66 +126,29 @@ void EnemyMovement() {
             continue;
         }
 
-        /**
-         * TODO: Move to last seen location of player
-         * - check for obstructions and if a path is possible around them
-         */
-
-        // Sets the enemy to IDLE if it is not 'seen'.
         if(!IsPlayerSeen(enemy)) {
-            // if enemy position does not equal lastPlayerPos, move it there
-            if(Vector2Equals(enemy->pos, player.pos) > 1.0f) {
-                // no loop inside this does position changing
-                // make a generlized function for position changing as it is used down here too.
-                MoveEnemyToLastPos(enemy, currEnemy->lastPlayerPos);
+            DrawText("Player not seen", player.pos.x + 16, player.pos.y + 32, 10, RED);
+
+            // Does not set to idle if precision is off.
+            // TODO Needs to be fixed
+            if(IsVectorEqual(enemy->pos, currEnemy->lastPlayerPos, 0.01f)) {
+                enemy->pos   = currEnemy->lastPlayerPos;
+                enemy->state = IDLE;
+            } else {
+                MoveEnemyTowardsPos(currEnemy, currEnemy->lastPlayerPos);
             }
-            enemy->state = IDLE;
-            currEnemy    = currEnemy->next;
+
+            DrawText(
+                TextFormat("State: %d", enemy->state), player.pos.x - 55,
+                player.pos.y + 52, 10, RED);
+
+            currEnemy = currEnemy->next;
             continue;
+        } else {
+            currEnemy->lastPlayerPos = player.pos;
         }
 
-        currEnemy->lastPlayerPos = player.pos;
-
-        if(currEnemy->lastPlayerPos.x > enemy->pos.x) {
-            enemy->faceValue     = 1;
-            enemy->directionFace = RIGHT;
-        } else if(currEnemy->lastPlayerPos.x < enemy->pos.x) {
-            enemy->faceValue     = -1;
-            enemy->directionFace = LEFT;
-        }
-
-        if(currEnemy->lastPlayerPos.y > enemy->pos.y) {
-            enemy->directionFace = DOWN;
-        } else if(currEnemy->lastPlayerPos.y < enemy->pos.y) {
-            enemy->directionFace = UP;
-        }
-
-        enemy->direction = (Vector2){
-            (int) currEnemy->lastPlayerPos.x - (int) enemy->pos.x,
-            (int) currEnemy->lastPlayerPos.y - (int) enemy->pos.y,
-        };
-
-        if(enemy->direction.x == 0 && enemy->direction.y == 0 && enemy->state != ATTACKING) {
-            enemy->state = IDLE;
-            currEnemy    = currEnemy->next;
-            continue;
-        }
-
-        // Delta time helps not let player speed depend on framerate.
-        // It helps to take account for time between frames too.
-        //! NOTE: Do not add deltaTime before checking collisions only after.
-        float deltaTime = GetFrameTime();
-
-        // Set the enemy to MOVING if not ATTACKING.
-        enemy->state     = enemy->state == ATTACKING ? ATTACKING : MOVING;
-        enemy->direction = Vector2Normalize(enemy->direction);
-
-        // Velocity:
-        enemy->direction = Vector2Scale(enemy->direction, enemy->speed);
-
-        EntityWorldCollision(enemy);
-
-        enemy->pos = Vector2Add(enemy->pos, Vector2Scale(enemy->direction, deltaTime));
+        MoveEnemyTowardsPos(currEnemy, player.pos);
         currEnemy = currEnemy->next;
     }
 }
@@ -220,15 +189,9 @@ void EnemyUnload() {
 }
 
 static bool IsPlayerSeen(Entity* enemy) {
-    if(!IsCoordInBounds(&player.pos)) return false;
-    if(!IsCoordInBounds(&(enemy->pos))) return false;
-
     // check if the enemy is in argo range
     float distance = Vector2Distance(player.pos, enemy->pos);
-    if(distance > AGRO_RANGE) {
-        DrawText("NOT IN RANGE", 0, 40, 20, RED);
-        return false;
-    }
+    if(distance > AGRO_RANGE) return false;
 
     // check if the vector from enemy to player is clear of any collisions
     float incrementAmount = 1 / distance;
@@ -250,34 +213,63 @@ static bool IsPlayerSeen(Entity* enemy) {
 
             if(x == head->collidedHitbox.index.x &&
                y == head->collidedHitbox.index.y) {
-                DrawText("SOMETHING IN THE WAY", 0, 60, 20, RED);
                 return false;
             }
             head = head->next;
         }
-
-        // old way:
-        // if(world[(int) resVec.y / TILE_HEIGHT][(int) resVec.x / TILE_WIDTH].isCollidable) {
-        //     DrawText("SOMETHING IN THE WAY", 0, 60, 20, RED);
-        //     return false;
-        // }
     }
 
-    DrawText("I SEE YOU", 0, 80, 20, RED);
-    // save this location as last seen and go to it
-
     return true;
 }
 
-// TODO: remove or change
-static bool IsCoordInBounds(Vector2* coord) {
-    // return coord->y >= 0.0f && coord->x >= 0.0f &&
-    //     coord->y <= (float) (WORLD_HEIGHT * TILE_HEIGHT) &&
-    //     coord->x <= (float) (WORLD_WIDTH * TILE_WIDTH);
-    return true;
-}
+static void MoveEnemyTowardsPos(EnemyNode* enemyNode, Vector2 lastPos) {
+    Entity* enemy = enemyNode->enemy;
+    if(lastPos.x > enemy->pos.x) {
+        enemy->faceValue     = 1;
+        enemy->directionFace = RIGHT;
+    } else if(lastPos.x < enemy->pos.x) {
+        enemy->faceValue     = -1;
+        enemy->directionFace = LEFT;
+    }
 
-static void MoveEnemyToLastPos(Entity* enemy, Vector2 lastPos) {}
+    if(lastPos.y > enemy->pos.y) {
+        enemy->directionFace = DOWN;
+    } else if(lastPos.y < enemy->pos.y) {
+        enemy->directionFace = UP;
+    }
+
+    enemy->direction = (Vector2){
+        (int) lastPos.x - (int) enemy->pos.x,
+        (int) lastPos.y - (int) enemy->pos.y,
+    };
+
+    if(Vector2Equals(enemy->direction, Vector2Zero()) && enemy->state != ATTACKING) {
+        enemy->state             = IDLE;
+        enemyNode->lastPlayerPos = enemy->pos;
+        return;
+    }
+
+    // Delta time helps not let player speed depend on framerate.
+    // It helps to take account for time between frames too.
+    //! NOTE: Do not add deltaTime before checking collisions only after.
+    float deltaTime = GetFrameTime();
+
+    // Set the enemy to MOVING if not ATTACKING.
+    enemy->state     = enemy->state == ATTACKING ? ATTACKING : MOVING;
+    enemy->direction = Vector2Normalize(enemy->direction);
+
+    // Velocity:
+    enemy->direction = Vector2Scale(enemy->direction, enemy->speed);
+
+    EntityWorldCollision(enemy);
+    if(Vector2Equals(enemy->direction, Vector2Zero())) {
+        enemy->state             = IDLE;
+        enemyNode->lastPlayerPos = enemy->pos;
+        return;
+    }
+
+    enemy->pos = Vector2Add(enemy->pos, Vector2Scale(enemy->direction, deltaTime));
+}
 
 static void SetupEnemies() {
     //! NOTE: LoadRandomSequence does negative values too! min and max are just magnitudes use abs if needed!
@@ -318,8 +310,9 @@ static EnemyNode* CreateEnemyList(Entity* enemy) {
     EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
     if(enemyNode == NULL) exit(EXIT_FAILURE);
 
-    enemyNode->enemy = enemy;
-    enemyNode->next  = NULL;
+    enemyNode->enemy         = enemy;
+    enemyNode->lastPlayerPos = enemy->pos;
+    enemyNode->next          = NULL;
     return enemyNode;
 }
 
@@ -330,8 +323,9 @@ static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy) {
     EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
     if(enemyNode == NULL) exit(EXIT_FAILURE);
 
-    enemyNode->enemy = enemy;
-    enemyNode->next  = NULL;
+    enemyNode->enemy         = enemy;
+    enemyNode->lastPlayerPos = enemy->pos;
+    enemyNode->next          = NULL;
 
     while(cursor->next != NULL)
         cursor = cursor->next;
