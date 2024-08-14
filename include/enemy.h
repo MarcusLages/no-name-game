@@ -1,9 +1,9 @@
 /***********************************************************************************************
  *
- **   ...
+ **   Provides definitions that are needed to manage an enemy.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.1.0
+ *    @version 0.2
  *
  *    @include entity.h
  *
@@ -17,7 +17,7 @@
 //* ------------------------------------------
 //* DEFINITIONS
 
-#define AGRO_RANGE 100
+#define AGRO_RANGE  100
 #define MAX_ENEMIES 10
 
 //* ------------------------------------------
@@ -45,7 +45,7 @@ struct EnemyNode {
 /**
  * All enemy entities.
  *
- * ! @attention A global variable for now.
+ * ! @attention Will be moved to entity.h.
  */
 extern EnemyNode* enemies;
 
