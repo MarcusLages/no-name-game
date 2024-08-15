@@ -27,6 +27,64 @@
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
+void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerPos) {
+    if(entity == NULL) {
+        TraceLog(LOG_WARNING, "entity.c-MoveEnemyTowardsPos: NULL entity was given.");
+        return;
+    }
+
+    // Ensures the entity cannot move while attacking
+    if(entity->state == ATTACKING) return;
+
+    if(lastPlayerPos != NULL) {
+        // handle enemy props
+        if(position.x > entity->pos.x) {
+            entity->faceValue     = 1;
+            entity->directionFace = RIGHT;
+        } else if(position.x < entity->pos.x) {
+            entity->faceValue     = -1;
+            entity->directionFace = LEFT;
+        }
+
+        if(position.y > entity->pos.y) {
+            entity->directionFace = DOWN;
+        } else if(position.y < entity->pos.y) {
+            entity->directionFace = UP;
+        }
+        entity->direction = (Vector2){
+            (int) position.x - (int) entity->pos.x,
+            (int) position.y - (int) entity->pos.y,
+        };
+    } 
+
+    if(Vector2Equals(entity->direction, Vector2Zero()) && entity->state != ATTACKING) {
+        entity->state = IDLE;
+        if(lastPlayerPos != NULL) *lastPlayerPos = entity->pos;
+        return;
+    }
+
+    // Delta time helps not let entity speed depend on framerate.
+    // It helps to take account for time between frames too.
+    //! NOTE: Do not add deltaTime before checking collisions only after.
+    float deltaTime = GetFrameTime();
+
+    // Set the enemy to MOVING if not ATTACKING.
+    entity->state     = entity->state == ATTACKING ? ATTACKING : MOVING;
+    entity->direction = Vector2Normalize(entity->direction);
+
+    // Velocity:
+    entity->direction = Vector2Scale(entity->direction, entity->speed);
+
+    EntityWorldCollision(entity);
+    if(Vector2Equals(entity->direction, Vector2Zero())) {
+        entity->state = IDLE;
+        if(lastPlayerPos != NULL) *lastPlayerPos = entity->pos;
+        return;
+    }
+
+    entity->pos = Vector2Add(entity->pos, Vector2Scale(entity->direction, deltaTime));
+}
+
 void EntityRender(
     Entity* entity, Animation* animation, int entityWidth, int entityHeight,
     int xOffset, int yOffset, float rotation) {

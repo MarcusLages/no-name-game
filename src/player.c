@@ -77,13 +77,6 @@ void PlayerStartup() {
 }
 
 void PlayerMovement() {
-    // For debugging:
-    DrawText(TextFormat("Player x: %f", player.pos.x), 0, 0, 20, RED);
-    DrawText(TextFormat("Player y: %f", player.pos.y), 0, 20, 20, RED);
-
-    // Ensures the player cannot move while attacking
-    if(player.state == ATTACKING) return;
-
     player.direction = Vector2Zero();
 
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
@@ -104,29 +97,12 @@ void PlayerMovement() {
         player.directionFace = UP;
     }
 
-    // Set the player to MOVING if not ATTACKING.
-    player.state = player.state == ATTACKING ? ATTACKING : MOVING;
-
-    // Set the player to IDLE if not ATTACKING or moving on any direction
-    if(player.direction.x == 0 && player.direction.y == 0 && player.state != ATTACKING) {
-        player.state = IDLE;
-        return;
-    }
-
-    // Delta time helps not let player speed depend on framerate.
-    // It helps to take account for time between frames too.
-    //! NOTE: Do not add deltaTime before checking collisions only after.
-    float deltaTime = GetFrameTime();
-
-    player.direction = Vector2Normalize(player.direction);
-
-    // Velocity:
-    player.direction = Vector2Scale(player.direction, player.speed);
-
-    EntityWorldCollision(&player);
+    MoveEntityTowardsPos(&player, player.direction, NULL);
+    
+    //* Ensure if this needs to happen before position assignment of player. If so we 
+    //* should make a general entity-entity in entity.c collsion relationship as other enemies
+    //* can collide with other enemies.
     PlayerEnemyCollision();
-
-    player.pos = Vector2Add(player.pos, Vector2Scale(player.direction, deltaTime));
 }
 
 static void PlayerEnemyCollision() {}

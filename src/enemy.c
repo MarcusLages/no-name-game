@@ -49,17 +49,6 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
 static bool IsPlayerSeen(Entity* enemy);
 
 /**
- * Handles the enemy movement towards a given position.
- *
- * ! @attention Returns if given a NULL enemyNode or lastPlayerPos.
- *
- * @param enemy The reference to the enemy to move.
- * @param position The position to move the enemy towards.
- * @param lastPlayerPos The last known position of the player relative to this enemy.
- */
-static void MoveEnemyTowardsPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos);
-
-/**
  * Renders an enemy's attack animation based off of it's Direction.
  *
  * TODO: Implement
@@ -107,11 +96,6 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
         return;
     }
 
-    // Ensures the enemy cannot move while attacking
-    if(enemy->state == ATTACKING) {
-        return;
-    }
-
     if(!IsPlayerSeen(enemy)) {
         // DrawText("Player not seen", player.pos.x + 16, player.pos.y + 32, 10, RED);
 
@@ -121,7 +105,7 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
             enemy->pos   = *lastPlayerPos;
             enemy->state = IDLE;
         } else {
-            MoveEnemyTowardsPos(enemy, *lastPlayerPos, lastPlayerPos);
+            MoveEntityTowardsPos(enemy, *lastPlayerPos, lastPlayerPos);
         }
         // DrawText(
         //     TextFormat("State: %d", enemy->state), player.pos.x - 55,
@@ -131,7 +115,7 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
         *lastPlayerPos = player.pos;
     }
 
-    MoveEnemyTowardsPos(enemy, player.pos, lastPlayerPos);
+    MoveEntityTowardsPos(enemy, player.pos, lastPlayerPos);
 }
 
 // TODO: Implement
@@ -208,63 +192,6 @@ static bool IsPlayerSeen(Entity* enemy) {
     }
 
     return true;
-}
-
-static void MoveEnemyTowardsPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos) {
-    if(enemy == NULL) {
-        TraceLog(LOG_WARNING, "enemy.c-MoveEnemyTowardsPos: NULL enemy was found.");
-        return;
-    }
-    if(lastPlayerPos == NULL) {
-        TraceLog(LOG_WARNING, "enemy.c-MoveEnemyTowardsPos: NULL lastPlayerPos was given.");
-        return;
-    }
-
-    if(position.x > enemy->pos.x) {
-        enemy->faceValue     = 1;
-        enemy->directionFace = RIGHT;
-    } else if(position.x < enemy->pos.x) {
-        enemy->faceValue     = -1;
-        enemy->directionFace = LEFT;
-    }
-
-    if(position.y > enemy->pos.y) {
-        enemy->directionFace = DOWN;
-    } else if(position.y < enemy->pos.y) {
-        enemy->directionFace = UP;
-    }
-
-    enemy->direction = (Vector2){
-        (int) position.x - (int) enemy->pos.x,
-        (int) position.y - (int) enemy->pos.y,
-    };
-
-    if(Vector2Equals(enemy->direction, Vector2Zero()) && enemy->state != ATTACKING) {
-        enemy->state   = IDLE;
-        *lastPlayerPos = enemy->pos;
-        return;
-    }
-
-    // Delta time helps not let player speed depend on framerate.
-    // It helps to take account for time between frames too.
-    //! NOTE: Do not add deltaTime before checking collisions only after.
-    float deltaTime = GetFrameTime();
-
-    // Set the enemy to MOVING if not ATTACKING.
-    enemy->state     = enemy->state == ATTACKING ? ATTACKING : MOVING;
-    enemy->direction = Vector2Normalize(enemy->direction);
-
-    // Velocity:
-    enemy->direction = Vector2Scale(enemy->direction, enemy->speed);
-
-    EntityWorldCollision(enemy);
-    if(Vector2Equals(enemy->direction, Vector2Zero())) {
-        enemy->state   = IDLE;
-        *lastPlayerPos = enemy->pos;
-        return;
-    }
-
-    enemy->pos = Vector2Add(enemy->pos, Vector2Scale(enemy->direction, deltaTime));
 }
 
 static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
