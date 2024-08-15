@@ -10,7 +10,7 @@
  *    TODO: Implements spawn point generation
  *    TODO: Handle enemy attacks
  *    TODO: Handle player to enemy collisions
- *    TODO: make entitymovement function and generalize player movement too
+ *    TODO: make entity movement function and generalize player movement too
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
@@ -29,13 +29,14 @@
 
 /**
  * Sets the animations for the enemy based upon the given EnemyType.
+ *
+ * ! @attention returns if given an invlaid type or a NULL enemy.
+ * ! @note Allocates memory for the array in enemy.animations.
  */
 static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
 
 /**
  * Determines if the player is seen by a given enemy.
- *
- * ! @attention Returns -1 if given a NULL enemy.
  *
  * @param enemy The enemy to check agaist.
  *
@@ -46,10 +47,11 @@ static bool IsPlayerSeen(Entity* enemy);
 /**
  * Handles the enemy movement towards a given position.
  *
- * ! @attention Returns if given a NULL enemyNode or zero Vector.
+ * ! @attention Returns if given a NULL enemyNode or lastPlayerPos.
  *
- * @param enemyNode The current enemy to move as a EnemyNode.
+ * @param enemy The reference to the enemy to move.
  * @param position The position to move the enemy towards.
+ * @param lastPlayerPos The last known position of the player relative to this enemy.
  */
 static void MoveEnemyTowardsPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos);
 
@@ -64,7 +66,6 @@ static void RenderEnemyAttack();
 //* FUNCTION IMPLEMENTATIONS
 
 Entity EnemyStartup(Vector2 position, EnemyType type) {
-
     Entity enemy;
 
     enemy.pos           = position;
@@ -86,11 +87,10 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
 
         case WAFFLE_FRIES:
             // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
-            // enemy->hitbox = (Rectangle){ .x      = enemy->pos.x,
-            //                         .y      = enemy->pos.y + ENTITY_TILE_HEIGHT / 2,
-            //                         .width  = ENTITY_TILE_WIDTH,
-            //                         .height = ENTITY_TILE_HEIGHT / 2 };
             break;
+        default:
+            TraceLog(LOG_WARNING, "enemy.c-EnemyStartup: Invalid EnemyType was given.");
+            return (Entity){};
     }
 
     SetupEnemyAnimation(&enemy, type);
@@ -98,6 +98,11 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
 }
 
 void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "enemy.c-EnemyMovement: NULL enemy was found.");
+        return;
+    }
+
     // Ensures the enemy cannot move while attacking
     if(enemy->state == ATTACKING) {
         return;
@@ -129,6 +134,11 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
 void EnemyAttack() {}
 
 void EnemyRender(Entity* enemy) {
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "enemy.c-EnemyRender: NULL enemy was found.");
+        return;
+    }
+
     switch(enemy->state) {
         case IDLE:
             EntityRender(
@@ -141,17 +151,28 @@ void EnemyRender(Entity* enemy) {
                 ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
         case ATTACKING: break;
-        default: break;
+        default:
+            TraceLog(LOG_WARNING, "enemy.c-EnemyRender: Invalid enemy state given.");
+            break;
     }
 }
 
 // TODO: Implement
 void RenderEnemyAttack() {}
 
-void EnemyUnload(Entity* enemy) { UnloadAnimationArray(&enemy->animations); }
+void EnemyUnload(Entity* enemy) {
+    if(enemy == NULL) {
+        TraceLog(LOG_FATAL, "enemy-list.c-EnemyUnload: NULL enemy was given.");
+        exit(EXIT_FAILURE);
+    }
+    UnloadAnimations(&enemy->animations);
+}
 
 static bool IsPlayerSeen(Entity* enemy) {
-    if(enemy == NULL) return -1;
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "enemy.c-IsPlayerSeen: NULL enemy was found.");
+        return false;
+    }
 
     // check if the enemy is in argo range
     float distance = Vector2Distance(player.pos, enemy->pos);
@@ -186,8 +207,14 @@ static bool IsPlayerSeen(Entity* enemy) {
 }
 
 static void MoveEnemyTowardsPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos) {
-    if(enemy == NULL || Vector2Equals(position, Vector2Zero()) || lastPlayerPos == NULL)
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "enemy.c-MoveEnemyTowardsPos: NULL enemy was found.");
         return;
+    }
+    if(lastPlayerPos == NULL) {
+        TraceLog(LOG_WARNING, "enemy.c-MoveEnemyTowardsPos: NULL lastPlayerPos was given.");
+        return;
+    }
 
     if(position.x > enemy->pos.x) {
         enemy->faceValue     = 1;
@@ -237,7 +264,10 @@ static void MoveEnemyTowardsPos(Entity* enemy, Vector2 position, Vector2* lastPl
 }
 
 static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
-    if(enemy == NULL) return;
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "enemy.c-SetupEnemyAnimation: NULL enemy was given.");
+        return;
+    }
 
     Animation idleEnemyAnimation;
     Animation movingEnemyAnimation;
@@ -246,6 +276,11 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     enemy->animations.size = MAX_ENEMY_ANIMATIONS;
     enemy->animations.animationArr =
         (Animation*) malloc(sizeof(Animation) * enemy->animations.size);
+
+    if(enemy->animations.animationArr == NULL) {
+        TraceLog(LOG_FATAL, "enemy.c-SetupEnemyAnimation: Memory allocation failure.");
+        exit(EXIT_FAILURE);
+    }
 
     switch(type) {
         case DEMON_PABLO:
@@ -261,11 +296,12 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
         case DEMON_DIEGO:
             // TODO: IMPLEMENT FOR WHEN DEMON DIEGO IS READY TO PLAY
             break;
-
         case WAFFLE_FRIES:
             // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
             break;
-        default: return;
+        default:
+            TraceLog(LOG_WARNING, "enemy.c-SetupEnemyAnimation: Invalid EnemyType was given.");
+            break;
     }
 
     enemy->animations.animationArr[IDLE_ANIMATION]   = idleEnemyAnimation;

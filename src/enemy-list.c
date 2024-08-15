@@ -1,3 +1,14 @@
+/***********************************************************************************************
+ *
+ **   Provides functionality for handling multiple enemies.
+ *
+ *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
+ *    @version 0.2
+ *
+ *    @include enemy-list.h
+ *
+ ***********************************************************************************************/
+
 #include "../include/enemy-list.h"
 
 //* ------------------------------------------
@@ -9,10 +20,9 @@ EnemyNode* enemies;
 //* FUNCTION IMPLEMENTATIONS
 
 EnemyNode* CreateEnemyList(Entity enemy) {
-
     EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
     if(enemyNode == NULL) {
-        TraceLog(LOG_FATAL, "enemy-list.c: Memory allocation failure.");
+        TraceLog(LOG_FATAL, "enemy-list.c-CreateEnemyList: Memory allocation failure.");
         exit(EXIT_FAILURE);
     }
 
@@ -28,7 +38,7 @@ void AddEnemyNode(Entity enemy) {
     EnemyNode* cursor    = enemies;
     EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
     if(enemyNode == NULL) {
-        TraceLog(LOG_FATAL, "enemy-list.c: Memory allocation failure.");
+        TraceLog(LOG_FATAL, "enemy-list.c-AddEnemyNode: Memory allocation failure.");
         exit(EXIT_FAILURE);
     }
 
@@ -43,14 +53,17 @@ void AddEnemyNode(Entity enemy) {
 }
 
 void UnloadEnemies() {
+    if(enemies == NULL) {
+        TraceLog(LOG_FATAL, "enemy-list.c-UnloadEnemies: Enemies list could not be found.");
+        exit(EXIT_FAILURE);
+    }
+
     while(enemies != NULL) {
         EnemyNode* temp = enemies;
         enemies         = enemies->next;
 
-        // Freeing information in an enemy entity
         EnemyUnload(&temp->enemy);
 
-        // Freeing EnemyNode
         free(temp);
         temp = NULL;
     }
