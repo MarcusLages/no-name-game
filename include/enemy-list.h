@@ -63,6 +63,7 @@ void AddEnemyNode(Entity enemy);
 /**
  * Unloads the list of enemies.
  *
+ * ! @attention Exits the program if the list of enemies is not found.
  * ! @note Unallocates memory for each EntityNode.
  */
 void UnloadEnemies();
