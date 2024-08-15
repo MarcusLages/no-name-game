@@ -148,7 +148,7 @@ void EnemyRender(Entity* enemy) {
 // TODO: Implement
 void RenderEnemyAttack() {}
 
-void EnemyUnload(Entity* enemy) { UnloadAnimations(&enemy->animations); }
+void EnemyUnload(Entity* enemy) { UnloadAnimationArray(&enemy->animations); }
 
 static bool IsPlayerSeen(Entity* enemy) {
     if(enemy == NULL) return -1;

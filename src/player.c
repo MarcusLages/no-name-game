@@ -12,6 +12,10 @@
 
 #include "../include/player.h"
 
+//* ------------------------------------------
+//* MACROS
+
+/** Shortcut macro to access the player's animation array. */
 #define playerAnimArray player.animations.animationArr
 
 //* ------------------------------------------
@@ -49,19 +53,17 @@ void PlayerStartup() {
     player.state         = IDLE;
     player.directionFace = RIGHT;
 
+    // Create and initialize animations in the player's animation array
     player.animations.size = MAX_PLAYER_ANIMATIONS;
     player.animations.animationArr =
         (Animation*) malloc(sizeof(Animation) * player.animations.size);
 
-    // Initializing the idle animation
     Animation idlePlayerAnimation =
         CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE);
 
-    // Initializing the moving animation
     Animation movingPlayerAnimation =
         CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_MOVE);
 
-    // Initializing the attacking animation
     Animation attackPlayerAnimation =
         CreateAnimation(DEFAULT_ATTACK_FPS, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, TILE_PLAYER_ATTACK);
 
@@ -157,7 +159,7 @@ void PlayerRender() {
     }
 }
 
-void PlayerUnload() { UnloadAnimations(&player.animations); }
+void PlayerUnload() { UnloadAnimationArray(&player.animations); }
 
 static void RenderPlayerAttack() {
     // Rendering idle animation of player as the player should not move while attacking.

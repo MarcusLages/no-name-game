@@ -28,7 +28,7 @@
 #define DEFAULT_ATTACK_FPS 8
 
 // Temporary attack rectangle size
-// ? OBS: Might be nuked later
+// TODO: Change name to ATTACK_SPRITE_WIDTH/HEIGHT
 #define TEMP_ATTACK_WIDTH  32
 #define TEMP_ATTACK_HEIGHT 32
 
@@ -83,6 +83,7 @@ typedef enum Direction {
  * @param direction      Direction vector of the movement/velocity
  * @param state          Action state
  * @param directionFace  Direction entity is facing to (R, D, L, U)
+ * @param animations     Animations array. Access it through AnimationType enum.
  *
  * @note Face must be either 1 or -1 where:
  *
@@ -109,6 +110,9 @@ typedef struct Entity {
     GameState state;
     /** Direction the entity is facing. (right, down, left, up) */
     Direction directionFace;
+    /** Array struct with all the animations this entity has.
+     * @note Use AnimationType enum to access a specific animation in the array
+     */
     AnimationArray animations;
 } Entity;
 
@@ -140,11 +144,11 @@ void EntityRender(
     Entity* entity, Animation* animation, int entityWidth, int entityHeight,
     int xOffset, int yOffset, float rotation);
 
-//* General entity logic
+//* Entity collision logic
 
 /**
  * Function that should be called to update the entity hitbox collision before a collision is called.
- * 
+ *
  * @param entity Pointer to the entity that will update its hitbox
  */
 void UpdateEntityHitbox(Entity* entity);

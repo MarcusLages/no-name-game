@@ -72,13 +72,13 @@ void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int en
     DrawTexturePro(animation->texture, source, dest, (Vector2){ 0, 0 }, rotation, WHITE);
 }
 
-void UnloadAnimations(AnimationArray* animationArry) {
-    for(int i = 0; i < animationArry->size; i++) {
-        AnimationUnload(&(animationArry->animationArr[i]));
+void UnloadAnimationArray(AnimationArray* animationArray) {
+    for(int i = 0; i < animationArray->size; i++) {
+        AnimationUnload(&(animationArray->animationArr[i]));
     }
-    free(animationArry->animationArr);
-    animationArry->animationArr = NULL;
-    animationArry->size = 0;
+    free(animationArray->animationArr);
+    animationArray->animationArr = NULL;
+    animationArray->size = 0;
 }
 
 void AnimationUnload(Animation* animation) {

@@ -19,6 +19,8 @@
  * Macro function to get the absolute/module value of a number.
  *
  * @param x Number
+ *
+ * TODO: Move to utils.h
  */
 #define ABS(x) (x > 0 ? x : x * (-1))
 
@@ -63,7 +65,8 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget) {
     UpdateEntityHitbox(&entityIn);
     UpdateEntityHitbox(&entityTarget);
 
-    collision = HitboxCollision(entityIn.hitbox, entityIn.direction, entityTarget.hitbox);
+    collision =
+        HitboxCollision(entityIn.hitbox, entityIn.direction, entityTarget.hitbox);
     return collision;
 }
 
@@ -104,12 +107,11 @@ void EntityWorldCollision(Entity* entity) {
         CollisionNode* resolvingNode = entityCollisionList;
         while(resolvingNode != NULL) {
             RayCollision2D entityCollision;
-            Rectangle tileHitbox = (Rectangle){
-                .x = resolvingNode->collidedHitbox.index.x * TILE_WIDTH,
-                .y = resolvingNode->collidedHitbox.index.y * TILE_HEIGHT,
-                .width  = TILE_WIDTH,
-                .height = TILE_HEIGHT
-            };
+            Rectangle tileHitbox =
+                (Rectangle){ .x = resolvingNode->collidedHitbox.index.x * TILE_WIDTH,
+                             .y = resolvingNode->collidedHitbox.index.y * TILE_HEIGHT,
+                             .width  = TILE_WIDTH,
+                             .height = TILE_HEIGHT };
 
             entityCollision = EntityRectCollision(*entity, tileHitbox);
             if(entityCollision.hit == true && entityCollision.timeHit >= 0) {
