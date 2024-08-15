@@ -55,6 +55,17 @@ static bool IsPlayerSeen(Entity* enemy);
  */
 static void RenderEnemyAttack();
 
+/**
+ * Handles the enemy movement towards a given position.
+ *
+ * @param enemy The reference to the enemy to move.
+ * @param position The position to move the entity towards.
+ * @param lastPlayerPos The last known position of the player relative to the given enemy.
+ *
+ * ? @note Calls MoveEntityTowardsPos()
+ */
+static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos);
+
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
@@ -105,7 +116,7 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
             enemy->pos   = *lastPlayerPos;
             enemy->state = IDLE;
         } else {
-            MoveEntityTowardsPos(enemy, *lastPlayerPos, lastPlayerPos);
+            MoveEnemyToPos(enemy, *lastPlayerPos, lastPlayerPos);
         }
         // DrawText(
         //     TextFormat("State: %d", enemy->state), player.pos.x - 55,
@@ -115,7 +126,7 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
         *lastPlayerPos = player.pos;
     }
 
-    MoveEntityTowardsPos(enemy, player.pos, lastPlayerPos);
+    MoveEnemyToPos(enemy, player.pos, lastPlayerPos);
 }
 
 // TODO: Implement
@@ -242,4 +253,8 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     // Starting timers for both idle and moving animations
     StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0f);
     StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0f);
+}
+
+static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos) {
+    MoveEntityTowardsPos(enemy, position, lastPlayerPos);
 }

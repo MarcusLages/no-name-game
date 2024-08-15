@@ -126,14 +126,14 @@ extern Entity player;
 //* FUNCTION PROTOTYPES
 
 /**
- * Handles the entity movement towards a given position.
+ * Handles the entity (Enemy or Player) movement towards a given position.
  *
  * ! @attention Returns if given a NULL entity.
  *
  * @param entity The reference to the entity to move.
  * @param position The position to move the entity towards.
  * @param lastPlayerPos The last known position of the player relative to an enemy entity.
- * 
+ *
  * ? @note pass NULL to lastPlayerPos if the entity is not an enemy.
  */
 void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerPos);

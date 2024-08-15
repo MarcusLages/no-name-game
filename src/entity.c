@@ -90,6 +90,7 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
     entity->pos = Vector2Add(entity->pos, Vector2Scale(entity->direction, deltaTime));
 }
 
+// there are extra computations with this method
 static void SetEntityStatebyDir(Entity* entity, Vector2* lastPlayerPos) {
     if(entity == NULL) {
         TraceLog(LOG_WARNING, "entity.c-SetEntityStatebyDir: NULL entity was given.");

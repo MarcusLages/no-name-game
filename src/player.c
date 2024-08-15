@@ -37,6 +37,15 @@ static void RenderPlayerAttack();
  */
 static void PlayerEnemyCollision();
 
+/**
+ * Handles the player movement towards a given position.
+ *
+ * @param position The position to move the player to.
+ *
+ * ? @note Calls MoveEntityTowardsPos()
+ */
+static void MovePlayerToPos(Vector2 position);
+
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
@@ -97,15 +106,13 @@ void PlayerMovement() {
         player.directionFace = UP;
     }
 
-    MoveEntityTowardsPos(&player, player.direction, NULL);
-    
-    //* Ensure if this needs to happen before position assignment of player. If so we 
+    MovePlayerToPos(player.direction);
+
+    //* Ensure if this needs to happen before position assignment of player. If so we
     //* should make a general entity-entity in entity.c collsion relationship as other enemies
     //* can collide with other enemies.
     PlayerEnemyCollision();
 }
-
-static void PlayerEnemyCollision() {}
 
 // TODO: Fix player attack so that the animation cant display in a different direction while triggered in one direction already
 void PlayerAttack() {
@@ -137,6 +144,8 @@ void PlayerRender() {
 }
 
 void PlayerUnload() { UnloadAnimationArray(&player.animations); }
+
+static void PlayerEnemyCollision() {}
 
 static void RenderPlayerAttack() {
     // Rendering idle animation of player as the player should not move while attacking.
@@ -178,4 +187,8 @@ static void RenderPlayerAttack() {
             break;
         default: break;
     }
+}
+
+static void MovePlayerToPos(Vector2 position) {
+    MoveEntityTowardsPos(&player, position, NULL);
 }
