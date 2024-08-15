@@ -1,3 +1,14 @@
+/***********************************************************************************************
+ *
+ **   Provides functionality for handling multiple enemies.
+ *
+ *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
+ *    @version 0.2
+ *
+ *    @include enemy-list.h
+ *
+ ***********************************************************************************************/
+
 #include "../include/enemy-list.h"
 
 //* ------------------------------------------

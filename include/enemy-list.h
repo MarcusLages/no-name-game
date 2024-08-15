@@ -1,3 +1,14 @@
+/***********************************************************************************************
+ *
+ **   Provides definitions for handling multiple enemies.
+ *
+ *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
+ *    @version 0.2
+ *
+ *    @include enemy.h
+ *
+ ***********************************************************************************************/
+
 #ifndef ENEMY_LIST_H_
 #define ENEMY_LIST_H_
 
@@ -78,14 +89,14 @@ void SetupEnemies();
 
 /**
  * Handles the movement of of each enemy in the list of enemies.
- * 
+ *
  * ? @note Calls EnemyMovement on each enemy (see enemy.c).
  */
 void MoveEnemies();
 
 /**
  * Handles rendering each enemt in the list of enemies.
- * 
+ *
  * ? @note Calls EnemyRender on each enemy (see enemy.c).
  */
 void RenderEnemies();
