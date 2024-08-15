@@ -25,6 +25,21 @@
 #define ABS(x) (x > 0 ? x : x * (-1))
 
 //* ------------------------------------------
+//* FUNCTION PROTOTYPES
+
+/**
+ * Sets the given entity's state to either IDLE or MOVING based upon its current direction.
+ *
+ * ! @attention Returns if given a NULL entity.
+ *
+ * @param entiy The reference to the entity.
+ * @param lastPlayerPos The reference to the last known player position relative to an enemy entity.
+ *
+ * ? @note pass NULL to lastPlayerPos if the entity is not an enemy.
+ */
+static void SetEntityStatebyDir(Entity* entity, Vector2* lastPlayerPos);
+
+//* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
 void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerPos) {
@@ -55,34 +70,39 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
             (int) position.x - (int) entity->pos.x,
             (int) position.y - (int) entity->pos.y,
         };
-    } 
-
-    if(Vector2Equals(entity->direction, Vector2Zero()) && entity->state != ATTACKING) {
-        entity->state = IDLE;
-        if(lastPlayerPos != NULL) *lastPlayerPos = entity->pos;
-        return;
     }
 
-    // Delta time helps not let entity speed depend on framerate.
-    // It helps to take account for time between frames too.
+    SetEntityStatebyDir(entity, lastPlayerPos);
+
+    //? Delta time helps not let entity speed depend on framerate.
+    //? Iat helps to take account for time between frames too.
     //! NOTE: Do not add deltaTime before checking collisions only after.
     float deltaTime = GetFrameTime();
 
-    // Set the enemy to MOVING if not ATTACKING.
-    entity->state     = entity->state == ATTACKING ? ATTACKING : MOVING;
     entity->direction = Vector2Normalize(entity->direction);
 
     // Velocity:
     entity->direction = Vector2Scale(entity->direction, entity->speed);
 
     EntityWorldCollision(entity);
-    if(Vector2Equals(entity->direction, Vector2Zero())) {
-        entity->state = IDLE;
-        if(lastPlayerPos != NULL) *lastPlayerPos = entity->pos;
+    SetEntityStatebyDir(entity, lastPlayerPos);
+
+    entity->pos = Vector2Add(entity->pos, Vector2Scale(entity->direction, deltaTime));
+}
+
+static void SetEntityStatebyDir(Entity* entity, Vector2* lastPlayerPos) {
+    if(entity == NULL) {
+        TraceLog(LOG_WARNING, "entity.c-SetEntityStatebyDir: NULL entity was given.");
         return;
     }
 
-    entity->pos = Vector2Add(entity->pos, Vector2Scale(entity->direction, deltaTime));
+    if((Vector2Equals(entity->direction, Vector2Zero()) && entity->state != ATTACKING) ||
+       Vector2Equals(entity->direction, Vector2Zero())) {
+        entity->state = IDLE;
+        if(lastPlayerPos != NULL) *lastPlayerPos = entity->pos;
+    } else {
+        entity->state = entity->state == ATTACKING ? ATTACKING : MOVING;
+    }
 }
 
 void EntityRender(

@@ -107,6 +107,7 @@ void PlayerMovement() {
 
 static void PlayerEnemyCollision() {}
 
+// TODO: Fix player attack so that the animation cant display in a different direction while triggered in one direction already
 void PlayerAttack() {
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
