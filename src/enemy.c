@@ -22,6 +22,10 @@
 #include "../include/enemy.h"
 #include "../include/utils.h"
 
+//* ------------------------------------------
+//* MACROS
+
+/** Shortcut macro to access an enemy's animation array. */
 #define enemyAnimArray enemy->animations.animationArr
 
 //* ------------------------------------------
@@ -165,7 +169,7 @@ void EnemyUnload(Entity* enemy) {
         TraceLog(LOG_FATAL, "enemy-list.c-EnemyUnload: NULL enemy was given.");
         exit(EXIT_FAILURE);
     }
-    UnloadAnimations(&enemy->animations);
+    UnloadAnimationArray(&enemy->animations);
 }
 
 static bool IsPlayerSeen(Entity* enemy) {

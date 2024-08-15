@@ -23,7 +23,18 @@
 //* ------------------------------------------
 //* ENUMERATIONS
 
-typedef enum EnemyType { DEMON_PABLO = 0, DEMON_DIEGO, WAFFLE_FRIES } EnemyType;
+/**
+ * Enum to treat different enemies based on their type.
+ * 
+ * @param DEMON_PABLO   0
+ * @param DEMON_DIEGO   1
+ * @param WAFFLE_FRIES  2
+ */
+typedef enum EnemyType { 
+    DEMON_PABLO = 0,
+    DEMON_DIEGO,
+    WAFFLE_FRIES
+} EnemyType;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
