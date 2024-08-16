@@ -247,36 +247,57 @@
  <tile id="48">
   <properties>
    <property name="isCollidable" type="bool" value="false"/>
+   <property name="roomNumber" type="int" value="1"/>
+   <property name="roomSize" type="int" propertytype="RoomSize" value="0"/>
+   <property name="roomType" type="int" propertytype="RoomType" value="1"/>
   </properties>
  </tile>
  <tile id="49">
   <properties>
    <property name="isCollidable" type="bool" value="false"/>
+   <property name="roomNumber" type="int" value="2"/>
+   <property name="roomSize" type="int" propertytype="RoomSize" value="0"/>
+   <property name="roomType" type="int" propertytype="RoomType" value="1"/>
   </properties>
  </tile>
  <tile id="50">
   <properties>
    <property name="isCollidable" type="bool" value="false"/>
+   <property name="roomNumber" type="int" value="3"/>
+   <property name="roomSize" type="int" propertytype="RoomSize" value="1"/>
+   <property name="roomType" type="int" propertytype="RoomType" value="1"/>
   </properties>
  </tile>
  <tile id="51">
   <properties>
    <property name="isCollidable" type="bool" value="false"/>
+   <property name="roomNumber" type="int" value="4"/>
+   <property name="roomSize" type="int" propertytype="RoomSize" value="1"/>
+   <property name="roomType" type="int" propertytype="RoomType" value="1"/>
   </properties>
  </tile>
  <tile id="52">
   <properties>
    <property name="isCollidable" type="bool" value="false"/>
+   <property name="roomNumber" type="int" value="5"/>
+   <property name="roomSize" type="int" propertytype="RoomSize" value="1"/>
+   <property name="roomType" type="int" propertytype="RoomType" value="1"/>
   </properties>
  </tile>
  <tile id="53">
   <properties>
    <property name="isCollidable" type="bool" value="false"/>
+   <property name="roomNumber" type="int" value="6"/>
+   <property name="roomSize" type="int" propertytype="RoomSize" value="2"/>
+   <property name="roomType" type="int" propertytype="RoomType" value="1"/>
   </properties>
  </tile>
  <tile id="54">
   <properties>
    <property name="isCollidable" type="bool" value="false"/>
+   <property name="roomNumber" type="int" value="0"/>
+   <property name="roomSize" type="int" propertytype="RoomSize" value="0"/>
+   <property name="roomType" type="int" propertytype="RoomType" value="0"/>
   </properties>
  </tile>
  <tile id="55">

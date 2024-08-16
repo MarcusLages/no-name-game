@@ -35,27 +35,20 @@ EnemyNode* CreateEnemyList(Entity enemy) {
 void AddEnemyNode(Entity enemy) {
     if(enemies == NULL) return;
 
-    EnemyNode* cursor    = enemies;
-    EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
-    if(enemyNode == NULL) {
-        TraceLog(LOG_FATAL, "enemy-list.c-AddEnemyNode: Memory allocation failure.");
-        exit(EXIT_FAILURE);
-    }
+    EnemyNode* enemyNode = CreateEnemyList(enemy);
 
-    enemyNode->enemy         = enemy;
-    enemyNode->lastPlayerPos = enemy.pos;
-    enemyNode->next          = NULL;
-
-    while(cursor->next != NULL)
+    EnemyNode* cursor = enemies;
+    while(cursor->next != NULL) {
         cursor = cursor->next;
+    }
 
     cursor->next = enemyNode;
 }
 
 void UnloadEnemies() {
     if(enemies == NULL) {
-        TraceLog(LOG_FATAL, "enemy-list.c-UnloadEnemies: Enemies list could not be found.");
-        exit(EXIT_FAILURE);
+        TraceLog(LOG_INFO, "enemy-list.c-UnloadEnemies: There are no enemies.");
+        return;
     }
 
     while(enemies != NULL) {
