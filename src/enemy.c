@@ -78,7 +78,7 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
                                         .height = ENTITY_TILE_HEIGHT / 2 };
             break;
 
-        case WAFFLE_FRIES:
+        case DEMON_WAFFLES:
             // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
             break;
         default:
@@ -216,18 +216,18 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     switch(type) {
         case DEMON_PABLO:
             idleEnemyAnimation =
-                CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_IDLE);
+                CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_PABLO_IDLE);
 
             movingEnemyAnimation =
-                CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_MOVE);
+                CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_PABLO_MOVE);
 
             attackEnemyAnimation =
-                CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_ENEMY_ATTACK);
+                CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_ENEMY_PABLO_ATTACK);
             break;
         case DEMON_DIEGO:
             // TODO: IMPLEMENT FOR WHEN DEMON DIEGO IS READY TO PLAY
             break;
-        case WAFFLE_FRIES:
+        case DEMON_WAFFLES:
             // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
             break;
         default:

@@ -141,16 +141,16 @@ static void LoadTextures() {
     UnloadImage(img);
 
     img                       = LoadImage("resources/enemy-1-idle.png");
-    textures[TILE_ENEMY_IDLE] = LoadTextureFromImage(img);
+    textures[TILE_ENEMY_PABLO_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
     img                       = LoadImage("resources/enemy-1-movement.png");
-    textures[TILE_ENEMY_MOVE] = LoadTextureFromImage(img);
+    textures[TILE_ENEMY_PABLO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
     //! NOTE: player attack is used here temporailly. New asset must be found.
     img                         = LoadImage("resources/player-attack.png");
-    textures[TILE_ENEMY_ATTACK] = LoadTextureFromImage(img);
+    textures[TILE_ENEMY_PABLO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 }
 

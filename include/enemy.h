@@ -28,12 +28,12 @@
  * 
  * @param DEMON_PABLO   0
  * @param DEMON_DIEGO   1
- * @param WAFFLE_FRIES  2
+ * @param DEMON_WAFFLES  2
  */
 typedef enum EnemyType { 
     DEMON_PABLO = 0,
     DEMON_DIEGO,
-    WAFFLE_FRIES
+    DEMON_WAFFLES
 } EnemyType;
 
 //* ------------------------------------------

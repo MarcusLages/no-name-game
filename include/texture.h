@@ -32,21 +32,34 @@
  * Enum for accessing the textures loaded in the game through
  * the textures.
  * 
- * @param TILE_PLAYER_IDLE      0
- * @param TILE_PLAYER_MOVE      1
- * @param TILE_PLAYER_ATTACK    2
- * @param TILE_ENEMY_IDLE       3
- * @param TILE_ENEMY_MOVE       4
- * @param TILE_ENEMY_ATTACK     5
+ * ? @note Waffles and Diego have not been added yet. Once
+ *         you add them, don't forget to increase the MAX_TEXTURES def
+ * 
+ * @param TILE_PLAYER_IDLE              0
+ * @param TILE_PLAYER_MOVE              1
+ * @param TILE_PLAYER_ATTACK            2
+ * @param TILE_ENEMY_PABLO_IDLE         3
+ * @param TILE_ENEMY_PABLO_MOVE         4
+ * @param TILE_ENEMY_PABLO_ATTACK       5
+ * @param TILE_ENEMY_WAFFLES_IDLE       6
+ * @param TILE_ENEMY_WAFFLES_MOVE       7
+ * @param TILE_ENEMY_WAFFLES_ATTACK     8
  */
 //TODO: Make enums for PABLO, DIEGO, WAFFLES. WARNING MANY THINGS WILL NEED TO CHANGE
 typedef enum TextureFile {
     TILE_PLAYER_IDLE = 0,
     TILE_PLAYER_MOVE,
     TILE_PLAYER_ATTACK,
-    TILE_ENEMY_IDLE,
-    TILE_ENEMY_MOVE,
-    TILE_ENEMY_ATTACK
+    TILE_ENEMY_PABLO_IDLE,
+    TILE_ENEMY_PABLO_MOVE,
+    TILE_ENEMY_PABLO_ATTACK,
+    // ? Not yet added
+    TILE_ENEMY_DIEGO_IDLE,
+    TILE_ENEMY_DIEGO_MOVE,
+    TILE_ENEMY_DIEGO_ATTACK,
+    TILE_ENEMY_WAFFLES_IDLE,
+    TILE_ENEMY_WAFFLES_MOVE,
+    TILE_ENEMY_WAFFLES_ATTACK,
 } TextureFile;
 
 //* ------------------------------------------
