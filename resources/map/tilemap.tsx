@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.0" name="tilemap" tilewidth="16" tileheight="16" tilecount="48" columns="8">
- <image source="../tilemap.png" width="128" height="96"/>
+<tileset version="1.10" tiledversion="1.11.0" name="tilemap" tilewidth="16" tileheight="16" tilecount="56" columns="8">
+ <image source="../tilemap.png" width="128" height="112"/>
  <tile id="0">
   <properties>
    <property name="isCollidable" type="bool" value="true"/>
@@ -242,6 +242,46 @@
  <tile id="47">
   <properties>
    <property name="isCollidable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="48">
+  <properties>
+   <property name="isCollidable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="49">
+  <properties>
+   <property name="isCollidable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="50">
+  <properties>
+   <property name="isCollidable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="51">
+  <properties>
+   <property name="isCollidable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="52">
+  <properties>
+   <property name="isCollidable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="53">
+  <properties>
+   <property name="isCollidable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="54">
+  <properties>
+   <property name="isCollidable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="55">
+  <properties>
+   <property name="isCollidable" type="bool" value="false"/>
   </properties>
  </tile>
 </tileset>
