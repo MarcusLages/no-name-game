@@ -84,6 +84,7 @@ void UnloadEnemies();
  * assigning them to an EnityNode.
  *
  * ! @note Calls CreateEnemyList and AddEnemyNode.
+ * ? @note Calls EnemyStartup on each enemy (see enemy.c).
  */
 void SetupEnemies();
 
