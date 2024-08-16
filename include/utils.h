@@ -15,6 +15,28 @@
 #include "raylib.h"
 #include "raymath.h"
 
+//* ------------------------------------------
+//* DEFINITIONS
+/**
+ * Macro function to get the absolute/module value of a number.
+ *
+ * @param x Number
+ *
+ * TODO: Move to utils.h
+ */
+#define ABS(x) (x > 0 ? x : x * (-1))
+
+
+/**
+ * Macro to swap two number variables.
+ * 
+ * @param a Number
+ * @param b Number
+ */
+#define SWAP(a, b) ((a != b) ? (a += b, b = a - b, a -= b) : 0)
+
+//* ------------------------------------------
+//* FUNCTION PROTOTYPES
 /**
  * Determines if the given vectors are equal with a given precision.
  *
