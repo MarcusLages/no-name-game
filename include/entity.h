@@ -29,8 +29,8 @@
 
 // Temporary attack rectangle size
 // TODO: Change name to ATTACK_SPRITE_WIDTH/HEIGHT
-#define TEMP_ATTACK_WIDTH  32
-#define TEMP_ATTACK_HEIGHT 32
+#define PLAYER_ATTACK_WIDTH  32
+#define PLAYER_ATTACK_HEIGHT 32
 
 //* ------------------------------------------
 //* ENUMERATIONS

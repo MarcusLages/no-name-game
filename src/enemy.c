@@ -222,7 +222,7 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
                 CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_MOVE);
 
             attackEnemyAnimation =
-                CreateAnimation(DEFAULT_ATTACK_FPS, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, TILE_ENEMY_ATTACK);
+                CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_ENEMY_ATTACK);
             break;
         case DEMON_DIEGO:
             // TODO: IMPLEMENT FOR WHEN DEMON DIEGO IS READY TO PLAY
