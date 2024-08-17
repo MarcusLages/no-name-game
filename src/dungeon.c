@@ -10,7 +10,7 @@
  *
  **********************************************************************************************/
 
-#include "../include/enemy.h"
+#include "../include/enemy-list.h"
 #include "../include/player.h"
 #include "../include/screen.h"
 #include "../include/tile.h"
@@ -68,15 +68,14 @@ void DungeonStartup() {
     InitializeTiles();
 
     StartCamera();
-    EnemyStartup();
+    SetupEnemies();
     PlayerStartup();
 }
 
 void DungeonUpdate() {
     PlayerMovement();
     // need to move this back
-    EnemyMovement();
-    // EnemyAttack();
+    MoveEnemies();
     PlayerAttack();
 
     // Update camera to follow the player
@@ -93,7 +92,7 @@ void DungeonRender() {
     );
 
     // Draw player on the screen
-    EnemyRender();
+    RenderEnemies();
     PlayerRender();
 }
 
@@ -102,7 +101,7 @@ void DungeonUnload() {
     PlayerUnload();
 
     // Unloads the enemy sprites and animations.
-    EnemyUnload();
+    UnloadEnemies();
 
     // Unloads collidableTiles list
     FreeCollisionList(collidableTiles);
@@ -142,16 +141,16 @@ static void LoadTextures() {
     UnloadImage(img);
 
     img                       = LoadImage("resources/enemy-1-idle.png");
-    textures[TILE_ENEMY_IDLE] = LoadTextureFromImage(img);
+    textures[TILE_ENEMY_PABLO_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
     img                       = LoadImage("resources/enemy-1-movement.png");
-    textures[TILE_ENEMY_MOVE] = LoadTextureFromImage(img);
+    textures[TILE_ENEMY_PABLO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
     //! NOTE: player attack is used here temporailly. New asset must be found.
     img                         = LoadImage("resources/player-attack.png");
-    textures[TILE_ENEMY_ATTACK] = LoadTextureFromImage(img);
+    textures[TILE_ENEMY_PABLO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 }
 

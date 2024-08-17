@@ -28,9 +28,8 @@
 #define DEFAULT_ATTACK_FPS 8
 
 // Temporary attack rectangle size
-// ? OBS: Might be nuked later
-#define TEMP_ATTACK_WIDTH   32
-#define TEMP_ATTACK_HEIGHT  21
+#define PLAYER_ATTACK_WIDTH  32
+#define PLAYER_ATTACK_HEIGHT 21
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -83,6 +82,7 @@ typedef enum Direction {
  * @param direction      Direction vector of the movement/velocity
  * @param state          Action state
  * @param directionFace  Direction entity is facing to (R, D, L, U)
+ * @param animations     Animations array. Access it through AnimationType enum.
  *
  * @note Face must be either 1 or -1 where:
  *
@@ -109,6 +109,10 @@ typedef struct Entity {
     GameState state;
     /** Direction the entity is facing. (right, down, left, up) */
     Direction directionFace;
+    /** Array struct with all the animations this entity has.
+     * @note Use AnimationType enum to access a specific animation in the array
+     */
+    AnimationArray animations;
 } Entity;
 
 //* ------------------------------------------
@@ -119,6 +123,19 @@ extern Entity player;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
+
+/**
+ * Handles the entity movement towards a given position.
+ *
+ * ! @attention Returns if given a NULL entity.
+ *
+ * @param entity The reference to the entity to move.
+ * @param position The position to move the entity towards.
+ * @param lastPlayerPos The last known position of the player relative to an enemy entity.
+ * 
+ * ? @note pass NULL to lastPlayerPos if the entity is not an enemy.
+ */
+void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerPos);
 
 /**
  * Responsible for rendering the entity with the specified animation.
@@ -139,11 +156,11 @@ void EntityRender(
     Entity* entity, Animation* animation, int entityWidth, int entityHeight,
     int xOffset, int yOffset, float rotation);
 
-//* General entity logic
+//* Entity collision logic
 
 /**
  * Function that should be called to update the entity hitbox collision before a collision is called.
- * 
+ *
  * @param entity Pointer to the entity that will update its hitbox
  */
 void UpdateEntityHitbox(Entity* entity);

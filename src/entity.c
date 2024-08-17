@@ -11,19 +11,88 @@
  ***********************************************************************************************/
 
 #include "../include/entity.h"
+#include "../include/utils.h"
 
 //* ------------------------------------------
-//* DEFINITIONS
+//* FUNCTION PROTOTYPES
 
 /**
- * Macro function to get the absolute/module value of a number.
+ * Sets the given entity's state to either IDLE or MOVING based upon its current direction.
  *
- * @param x Number
+ * ! @attention Returns if given a NULL entity.
+ *
+ * @param entiy The reference to the entity.
+ * @param lastPlayerPos The reference to the last known player position relative to an enemy entity.
+ *
+ * ? @note pass NULL to lastPlayerPos if the entity is not an enemy.
  */
-#define ABS(x) (x > 0 ? x : x * (-1))
+static void SetEntityStatebyDir(Entity* entity, Vector2* lastPlayerPos);
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
+
+void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerPos) {
+    if(entity == NULL) {
+        TraceLog(LOG_WARNING, "entity.c-MoveEnemyTowardsPos: NULL entity was given.");
+        return;
+    }
+
+    // Ensures the entity cannot move while attacking
+    if(entity->state == ATTACKING) return;
+
+    if(lastPlayerPos != NULL) {
+        // handle enemy props
+        if(position.x > entity->pos.x) {
+            entity->faceValue     = 1;
+            entity->directionFace = RIGHT;
+        } else if(position.x < entity->pos.x) {
+            entity->faceValue     = -1;
+            entity->directionFace = LEFT;
+        }
+
+        if(position.y > entity->pos.y) {
+            entity->directionFace = DOWN;
+        } else if(position.y < entity->pos.y) {
+            entity->directionFace = UP;
+        }
+        entity->direction = (Vector2){
+            (int) position.x - (int) entity->pos.x,
+            (int) position.y - (int) entity->pos.y,
+        };
+    }
+
+    SetEntityStatebyDir(entity, lastPlayerPos);
+
+    //? Delta time helps not let entity speed depend on framerate.
+    //? Iat helps to take account for time between frames too.
+    //! NOTE: Do not add deltaTime before checking collisions only after.
+    float deltaTime = GetFrameTime();
+
+    entity->direction = Vector2Normalize(entity->direction);
+
+    // Velocity:
+    entity->direction = Vector2Scale(entity->direction, entity->speed);
+
+    EntityWorldCollision(entity);
+    SetEntityStatebyDir(entity, lastPlayerPos);
+
+    entity->pos = Vector2Add(entity->pos, Vector2Scale(entity->direction, deltaTime));
+}
+
+static void SetEntityStatebyDir(Entity* entity, Vector2* lastPlayerPos) {
+    if(entity == NULL) {
+        TraceLog(LOG_WARNING, "entity.c-SetEntityStatebyDir: NULL entity was given.");
+        return;
+    }
+
+    if((Vector2Equals(entity->direction, Vector2Zero()) && entity->state != ATTACKING) ||
+       Vector2Equals(entity->direction, Vector2Zero())) {
+        entity->state = IDLE;
+        if(lastPlayerPos != NULL) *lastPlayerPos = entity->pos;
+    } else {
+        entity->state = entity->state == ATTACKING ? ATTACKING : MOVING;
+    }
+}
 
 void EntityRender(
     Entity* entity, Animation* animation, int entityWidth, int entityHeight,
@@ -63,7 +132,8 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget) {
     UpdateEntityHitbox(&entityIn);
     UpdateEntityHitbox(&entityTarget);
 
-    collision = HitboxCollision(entityIn.hitbox, entityIn.direction, entityTarget.hitbox);
+    collision =
+        HitboxCollision(entityIn.hitbox, entityIn.direction, entityTarget.hitbox);
     return collision;
 }
 
@@ -104,12 +174,11 @@ void EntityWorldCollision(Entity* entity) {
         CollisionNode* resolvingNode = entityCollisionList;
         while(resolvingNode != NULL) {
             RayCollision2D entityCollision;
-            Rectangle tileHitbox = (Rectangle){
-                .x = resolvingNode->collidedHitbox.index.x * TILE_WIDTH,
-                .y = resolvingNode->collidedHitbox.index.y * TILE_HEIGHT,
-                .width  = TILE_WIDTH,
-                .height = TILE_HEIGHT
-            };
+            Rectangle tileHitbox =
+                (Rectangle){ .x = resolvingNode->collidedHitbox.index.x * TILE_WIDTH,
+                             .y = resolvingNode->collidedHitbox.index.y * TILE_HEIGHT,
+                             .width  = TILE_WIDTH,
+                             .height = TILE_HEIGHT };
 
             entityCollision = EntityRectCollision(*entity, tileHitbox);
             if(entityCollision.hit == true && entityCollision.timeHit >= 0) {

@@ -8,9 +8,9 @@
  *
  *    TODO: Fix bug
  *    TODO: Implements spawn point generation
- *    TODO: Rearrange functions into seprate files where needed. Move enemies variable to entity.h.
  *    TODO: Handle enemy attacks
  *    TODO: Handle player to enemy collisions
+ *    TODO: make entity movement function and generalize player movement too
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
@@ -23,62 +23,24 @@
 #include "../include/utils.h"
 
 //* ------------------------------------------
-//* GLOBAL VARIABLES
+//* MACROS
 
-EnemyNode* enemies;
-
-//* ------------------------------------------
-//* MODULAR VARIABLES
-
-/** The animation for an idle enemy. */
-static Animation idleEnemyAnimation;
-
-/** The animation for the enemy moving. */
-static Animation movingEnemyAnimation;
-
-/** The animation for a enemy attack. */
-static Animation attackEnemyAnimation;
+/** Shortcut macro to access an enemy's animation array. */
+#define enemyAnimArray enemy->animations.animationArr
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**
- * Populates the enemies linked list by creates entities around the level and
- * assigning them to an EnityNode.
+ * Sets the animations for the enemy based upon the given EnemyType.
  *
- * ! @note Allocates memory for each Entity.
+ * ! @attention returns if given an invlaid type or a NULL enemy.
+ * ! @note Allocates memory for the array in enemy.animations.
  */
-static void SetupEnemies();
-
-/**
- * Creates the enemies linked list and returns a reference to the first EnemyNode in the list.
- *
- * ! @attention Returns NULL if given a NULL enemy.
- *
- * @param enemy The enemy to add as the first EnemyNode.
- *
- * @returns The reference to the first EnemyNode.
- *
- * ! @note Allocates memory for the first EnemyNode.
- */
-static EnemyNode* CreateEnemyList(Entity* enemy);
-
-/**
- * Creates an EnemyNode and adds it to the end of the enemies linked list.
- *
- * ! @attention Returns if given a NULL enemy or NULL head pointer.
- *
- * @param enemiesHead The head pointer to the linked list of enemies.
- * @param enemy The enemy to add as an EnemyNode.
- *
- * ! @note Allocates memory for the EnemyNode.
- */
-static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy);
+static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
 
 /**
  * Determines if the player is seen by a given enemy.
- *
- * ! @attention Returns -1 if given a NULL enemy.
  *
  * @param enemy The enemy to check agaist.
  *
@@ -87,129 +49,118 @@ static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy);
 static bool IsPlayerSeen(Entity* enemy);
 
 /**
- * Handles the enemy movement towards a given position.
- *
- * ! @attention Returns if given a NULL enemyNode or zero Vector.
- *
- * @param enemyNode The current enemy to move as a EnemyNode.
- * @param position The position to move the enemy towards.
- */
-static void MoveEnemyTowardsPos(EnemyNode* enemyNode, Vector2 position);
-
-/**
  * Renders an enemy's attack animation based off of it's Direction.
- * 
+ *
  * TODO: Implement
  */
 static void RenderEnemyAttack();
 
-/**
- * Unloads the list of enemies.
- *
- * ! @note Unallocates memory for each Entity and EntityNode.
- */
-static void UnloadEnemyList();
-
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
-void EnemyStartup() {
-    // Initializing the idle animation
-    idleEnemyAnimation =
-        CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_IDLE);
+Entity EnemyStartup(Vector2 position, EnemyType type) {
+    Entity enemy;
 
-    // Initializing the moving animation
-    movingEnemyAnimation =
-        CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_MOVE);
+    enemy.pos           = position;
+    enemy.speed         = 35;
+    enemy.health        = 100;
+    enemy.direction     = Vector2Zero();
+    enemy.faceValue     = 1;
+    enemy.state         = IDLE;
+    enemy.directionFace = RIGHT;
 
-    // Initializing the attacking animation
-    attackEnemyAnimation =
-        CreateAnimation(DEFAULT_ATTACK_FPS, TEMP_ATTACK_WIDTH, TEMP_ATTACK_HEIGHT, TILE_ENEMY_ATTACK);
+    switch(type) {
+        case DEMON_PABLO:
+        case DEMON_DIEGO:
+            enemy.hitbox = (Rectangle){ .x = enemy.pos.x,
+                                        .y = enemy.pos.y + ENTITY_TILE_HEIGHT / 2,
+                                        .width  = ENTITY_TILE_WIDTH,
+                                        .height = ENTITY_TILE_HEIGHT / 2 };
+            break;
 
-    enemies = NULL;
-
-    // Starting timers for both idle and moving animations
-    StartTimer(&idleEnemyAnimation.timer, -1.0f);
-    StartTimer(&movingEnemyAnimation.timer, -1.0f);
-
-    SetupEnemies();
-}
-
-void EnemyMovement() {
-    EnemyNode* currEnemy = enemies;
-    Entity* enemy        = NULL;
-    while(currEnemy != NULL) {
-        enemy = currEnemy->enemy;
-
-        // Ensures the enemy cannot move while attacking
-        if(enemy->state == ATTACKING) {
-            currEnemy = currEnemy->next;
-            continue;
-        }
-
-        if(!IsPlayerSeen(enemy)) {
-            // DrawText("Player not seen", player.pos.x + 16, player.pos.y + 32, 10, RED);
-
-            // Does not set to idle if precision is off.
-            // TODO Needs to be fixed
-            if(IsVectorEqual(enemy->pos, currEnemy->lastPlayerPos, 0.01f)) {
-                enemy->pos   = currEnemy->lastPlayerPos;
-                enemy->state = IDLE;
-            } else {
-                MoveEnemyTowardsPos(currEnemy, currEnemy->lastPlayerPos);
-            }
-            // DrawText(
-            //     TextFormat("State: %d", enemy->state), player.pos.x - 55,
-            //     player.pos.y + 52, 10, RED);
-            currEnemy = currEnemy->next;
-            continue;
-        } else {
-            currEnemy->lastPlayerPos = player.pos;
-        }
-
-        MoveEnemyTowardsPos(currEnemy, player.pos);
-        currEnemy = currEnemy->next;
+        case DEMON_WAFFLES:
+            // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
+            break;
+        default:
+            TraceLog(LOG_WARNING, "enemy.c-EnemyStartup: Invalid EnemyType was given.");
+            return (Entity){};
     }
+
+    SetupEnemyAnimation(&enemy, type);
+    return enemy;
 }
 
-//TODO: Implement
+void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "enemy.c-EnemyMovement: NULL enemy was found.");
+        return;
+    }
+
+    if(!IsPlayerSeen(enemy)) {
+        // DrawText("Player not seen", player.pos.x + 16, player.pos.y + 32, 10, RED);
+
+        // Does not set to idle if precision is off.
+        // TODO Needs to be fixed
+        if(IsVectorEqual(enemy->pos, *lastPlayerPos, 0.01f)) {
+            enemy->pos   = *lastPlayerPos;
+            enemy->state = IDLE;
+        } else {
+            MoveEntityTowardsPos(enemy, *lastPlayerPos, lastPlayerPos);
+        }
+        // DrawText(
+        //     TextFormat("State: %d", enemy->state), player.pos.x - 55,
+        //     player.pos.y + 52, 10, RED);
+        return;
+    } else {
+        *lastPlayerPos = player.pos;
+    }
+
+    MoveEntityTowardsPos(enemy, player.pos, lastPlayerPos);
+}
+
+// TODO: Implement
 void EnemyAttack() {}
 
-void EnemyRender() {
-    EnemyNode* currEnemy = enemies;
-    Entity* enemy        = NULL;
-    while(currEnemy != NULL) {
-        enemy = currEnemy->enemy;
-        switch(enemy->state) {
-            case IDLE:
-                EntityRender(
-                    enemy, &idleEnemyAnimation, ENTITY_TILE_WIDTH * enemy->faceValue,
-                    ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
-                break;
-            case MOVING:
-                EntityRender(
-                    enemy, &movingEnemyAnimation, ENTITY_TILE_WIDTH * enemy->faceValue,
-                    ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
-                break;
-            case ATTACKING: break;
-            default: break;
-        }
-        currEnemy = currEnemy->next;
+void EnemyRender(Entity* enemy) {
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "enemy.c-EnemyRender: NULL enemy was found.");
+        return;
+    }
+
+    switch(enemy->state) {
+        case IDLE:
+            EntityRender(
+                enemy, &enemyAnimArray[IDLE_ANIMATION],
+                ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+            break;
+        case MOVING:
+            EntityRender(
+                enemy, &enemyAnimArray[MOVE_ANIMATION],
+                ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+            break;
+        case ATTACKING: break;
+        default:
+            TraceLog(LOG_WARNING, "enemy.c-EnemyRender: Invalid enemy state given.");
+            break;
     }
 }
 
 // TODO: Implement
 void RenderEnemyAttack() {}
 
-void EnemyUnload() {
-    UnloadEnemyList();
-    AnimationUnload(&idleEnemyAnimation);
-    AnimationUnload(&movingEnemyAnimation);
-    AnimationUnload(&attackEnemyAnimation);
+void EnemyUnload(Entity* enemy) {
+    if(enemy == NULL) {
+        TraceLog(LOG_FATAL, "enemy-list.c-EnemyUnload: NULL enemy was given.");
+        exit(EXIT_FAILURE);
+    }
+    UnloadAnimationArray(&enemy->animations);
 }
 
 static bool IsPlayerSeen(Entity* enemy) {
-    if(enemy == NULL) return -1;
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "enemy.c-IsPlayerSeen: NULL enemy was found.");
+        return false;
+    }
 
     // check if the enemy is in argo range
     float distance = Vector2Distance(player.pos, enemy->pos);
@@ -243,135 +194,52 @@ static bool IsPlayerSeen(Entity* enemy) {
     return true;
 }
 
-static void MoveEnemyTowardsPos(EnemyNode* enemyNode, Vector2 position) {
-    if(enemyNode == NULL || Vector2Equals(position, Vector2Zero())) return;
-
-    Entity* enemy = enemyNode->enemy;
-    if(position.x > enemy->pos.x) {
-        enemy->faceValue     = 1;
-        enemy->directionFace = RIGHT;
-    } else if(position.x < enemy->pos.x) {
-        enemy->faceValue     = -1;
-        enemy->directionFace = LEFT;
-    }
-
-    if(position.y > enemy->pos.y) {
-        enemy->directionFace = DOWN;
-    } else if(position.y < enemy->pos.y) {
-        enemy->directionFace = UP;
-    }
-
-    enemy->direction = (Vector2){
-        (int) position.x - (int) enemy->pos.x,
-        (int) position.y - (int) enemy->pos.y,
-    };
-
-    if(Vector2Equals(enemy->direction, Vector2Zero()) && enemy->state != ATTACKING) {
-        enemy->state             = IDLE;
-        enemyNode->lastPlayerPos = enemy->pos;
+static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "enemy.c-SetupEnemyAnimation: NULL enemy was given.");
         return;
     }
 
-    // Delta time helps not let player speed depend on framerate.
-    // It helps to take account for time between frames too.
-    //! NOTE: Do not add deltaTime before checking collisions only after.
-    float deltaTime = GetFrameTime();
+    Animation idleEnemyAnimation;
+    Animation movingEnemyAnimation;
+    Animation attackEnemyAnimation;
 
-    // Set the enemy to MOVING if not ATTACKING.
-    enemy->state     = enemy->state == ATTACKING ? ATTACKING : MOVING;
-    enemy->direction = Vector2Normalize(enemy->direction);
+    enemy->animations.size = MAX_ENEMY_ANIMATIONS;
+    enemy->animations.animationArr =
+        (Animation*) malloc(sizeof(Animation) * enemy->animations.size);
 
-    // Velocity:
-    enemy->direction = Vector2Scale(enemy->direction, enemy->speed);
-
-    EntityWorldCollision(enemy);
-    if(Vector2Equals(enemy->direction, Vector2Zero())) {
-        enemy->state             = IDLE;
-        enemyNode->lastPlayerPos = enemy->pos;
-        return;
-    }
-
-    enemy->pos = Vector2Add(enemy->pos, Vector2Scale(enemy->direction, deltaTime));
-}
-
-static void SetupEnemies() {
-    //! NOTE: LoadRandomSequence does negative values too! min and max are just magnitudes use abs if needed!
-    // int* randNumsX = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_WIDTH * TILE_WIDTH);
-    // int* randNumsY = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_HEIGHT * TILE_HEIGHT);
-    for(int i = 0; i < 1; i++) {
-        // TODO: Make a coordinate assigning system that places enemies at a correct x and y
-        //? NOTE: LoadRandomSequence is a temp solution
-        Entity* enemy = (Entity*) malloc(sizeof(Entity));
-
-        if(enemy == NULL) {
-            TraceLog(LOG_FATAL, "enemy.c: Memory allocation failure.");
-            exit(EXIT_FAILURE);
-        }
-
-        enemy->pos = (Vector2){ (float) 21 * TILE_WIDTH, (float) 4 * TILE_HEIGHT };
-        enemy->hitbox        = (Rectangle){ .x = enemy->pos.x,
-                                            .y = enemy->pos.y + ENTITY_TILE_HEIGHT / 2,
-                                            .width  = ENTITY_TILE_WIDTH,
-                                            .height = ENTITY_TILE_HEIGHT / 2 };
-        enemy->speed         = 100;
-        enemy->health        = 100;
-        enemy->direction     = Vector2Zero();
-        enemy->faceValue     = 1;
-        enemy->state         = IDLE;
-        enemy->directionFace = RIGHT;
-
-        if(enemies == NULL) {
-            enemies = CreateEnemyList(enemy);
-        } else {
-            AddEnemyNode(enemies, enemy);
-        }
-    }
-    // UnloadRandomSequence(randNumsY);
-    // UnloadRandomSequence(randNumsX);
-}
-
-static EnemyNode* CreateEnemyList(Entity* enemy) {
-    if(enemy == NULL) return NULL;
-
-    EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
-    if(enemyNode == NULL) {
-        TraceLog(LOG_FATAL, "enemy.c: Memory allocation failure.");
+    if(enemy->animations.animationArr == NULL) {
+        TraceLog(LOG_FATAL, "enemy.c-SetupEnemyAnimation: Memory allocation failure.");
         exit(EXIT_FAILURE);
     }
 
-    enemyNode->enemy         = enemy;
-    enemyNode->lastPlayerPos = enemy->pos;
-    enemyNode->next          = NULL;
-    return enemyNode;
-}
+    switch(type) {
+        case DEMON_PABLO:
+            idleEnemyAnimation =
+                CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_PABLO_IDLE);
 
-static void AddEnemyNode(EnemyNode* enemiesHead, Entity* enemy) {
-    if(enemy == NULL || enemiesHead == NULL) return;
+            movingEnemyAnimation =
+                CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_PABLO_MOVE);
 
-    EnemyNode* cursor    = enemiesHead;
-    EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
-    if(enemyNode == NULL) {
-        TraceLog(LOG_FATAL, "enemy.c: Memory allocation failure.");
-        exit(EXIT_FAILURE);
+            attackEnemyAnimation =
+                CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_ENEMY_PABLO_ATTACK);
+            break;
+        case DEMON_DIEGO:
+            // TODO: IMPLEMENT FOR WHEN DEMON DIEGO IS READY TO PLAY
+            break;
+        case DEMON_WAFFLES:
+            // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
+            break;
+        default:
+            TraceLog(LOG_WARNING, "enemy.c-SetupEnemyAnimation: Invalid EnemyType was given.");
+            break;
     }
 
-    enemyNode->enemy         = enemy;
-    enemyNode->lastPlayerPos = enemy->pos;
-    enemyNode->next          = NULL;
+    enemy->animations.animationArr[IDLE_ANIMATION]   = idleEnemyAnimation;
+    enemy->animations.animationArr[MOVE_ANIMATION]   = movingEnemyAnimation;
+    enemy->animations.animationArr[ATTACK_ANIMATION] = attackEnemyAnimation;
 
-    while(cursor->next != NULL)
-        cursor = cursor->next;
-
-    cursor->next = enemyNode;
-}
-
-static void UnloadEnemyList() {
-    while(enemies != NULL) {
-        EnemyNode* temp = enemies;
-        enemies         = enemies->next;
-        free(temp->enemy);
-        temp->enemy = NULL;
-        free(temp);
-        temp = NULL;
-    }
+    // Starting timers for both idle and moving animations
+    StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0f);
+    StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0f);
 }

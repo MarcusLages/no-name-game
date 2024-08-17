@@ -16,6 +16,12 @@
 #include "entity.h"
 
 //* ------------------------------------------
+//* DEFINITIONS
+
+/** How many different animations the player has. */
+#define MAX_PLAYER_ANIMATIONS 3
+
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**
