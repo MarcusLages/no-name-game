@@ -50,9 +50,9 @@ void AddPosition(PositionArray* positionArray, Vector2 position) {
         return;
     }
 
+    positionArray->currSize++;
     int idx                       = positionArray->currSize - 1;
     positionArray->positions[idx] = position;
-    positionArray->currSize++;
 }
 
 void UnloadPositionArray(PositionArray* positionArray) {
