@@ -113,6 +113,8 @@ typedef struct Entity {
      * @note Use AnimationType enum to access a specific animation in the array
      */
     AnimationArray animations;
+    /** Struct that represents the attack hitbox of this entity. */
+    Rectangle attack;
 } Entity;
 
 //* ------------------------------------------

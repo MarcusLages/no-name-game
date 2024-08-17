@@ -102,7 +102,9 @@ void MoveEnemies() {
 void RenderEnemies() {
     EnemyNode* currEnemy = enemies;
     while(currEnemy != NULL) {
-        EnemyRender(&currEnemy->enemy);
+        // TODO: Change this to actually removing enemy from the enemy list
+        if(currEnemy->enemy.health > 0)
+            EnemyRender(&currEnemy->enemy);
         currEnemy = currEnemy->next;
     }
 }

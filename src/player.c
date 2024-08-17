@@ -11,6 +11,7 @@
  ***********************************************************************************************/
 
 #include "../include/player.h"
+#include "../include/enemy-list.h"
 #include "../include/utils.h"
 
 //* ------------------------------------------
@@ -36,7 +37,15 @@ static void RenderPlayerAttack();
  * TODO: Implementation + checking how to pass the list or make it global
  * Handles player collision with the enemies list by movement.
  */
-static void PlayerEnemyCollision(Rectangle attackHitbox);
+// static void PlayerEnemyCollision();
+
+/**
+ * Checks if the player has hit an enemy.
+ *
+ * @param attackHitbox Hitbox of the attack that will check the detection with
+ *                     all the enemies
+ */
+static void PlayerAttackHit();
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
@@ -47,6 +56,10 @@ void PlayerStartup() {
                                         .y     = player.pos.y + ENTITY_TILE_HEIGHT / 2,
                                         .width = ENTITY_TILE_WIDTH,
                                         .height = ENTITY_TILE_HEIGHT / 2 };
+    player.attack        = (Rectangle){ .x      = player.pos.x,
+                                        .y      = player.pos.y,
+                                        .width  = PLAYER_ATTACK_WIDTH,
+                                        .height = PLAYER_ATTACK_HEIGHT };
     player.speed         = 100;
     player.health        = 1;
     player.direction     = Vector2Zero();
@@ -99,18 +112,30 @@ void PlayerMovement() {
     }
 
     MoveEntityTowardsPos(&player, player.direction, NULL);
-    
-    //* Ensure if this needs to happen before position assignment of player. If so we 
+
+    //* Ensure if this needs to happen before position assignment of player. If so we
     //* should make a general entity-entity in entity.c collsion relationship as other enemies
     //* can collide with other enemies.
     // PlayerEnemyCollision();
 }
 
-static void PlayerEnemyCollision(Rectangle attackHitbox) {
-    // TODO:
-    // 1. Enemy list
-    // 2. Check collision of enemy hitbox with attack hitbox
-    // 3. Decrease life, etc.
+static void PlayerAttackHit() {
+    EnemyNode* currEnemy = enemies;
+
+    while(currEnemy != NULL) {
+        Entity* enemy = &currEnemy->enemy;
+        UpdateEntityHitbox(enemy);
+        bool playerHit = CheckCollisionRecs(player.attack, enemy->hitbox);
+
+        if(playerHit) {
+            enemy->health--;
+
+            if(enemy->health <= 0) {
+                // TODO: Delete enemy from enemy list instead of just making him invisible.
+            }
+        }
+        currEnemy = currEnemy->next;
+    }
 }
 
 // TODO: Fix player attack so that the animation cant display in a different direction while triggered in one direction already
@@ -119,41 +144,36 @@ void PlayerAttack() {
         player.state = ATTACKING;
         StartTimer(&playerAnimArray[ATTACK_ANIMATION].timer, 0.5f);
 
-        Rectangle attackHitbox = (Rectangle) {
-            .x = player.pos.x,
-            .y = player.pos.y,
-            .width = PLAYER_ATTACK_WIDTH,
-            .height = PLAYER_ATTACK_HEIGHT
-        };
+        player.attack.x = player.pos.x;
+        player.attack.y = player.pos.y;
 
-        switch (player.directionFace) {
-        case RIGHT:
-            // Attack hitbox offset
-            attackHitbox.x += 2;
-            attackHitbox.y += 10;
-            break;
-        case DOWN:
-            // Attack hitbox offset
-            SWAP(attackHitbox.width, attackHitbox.height);
-            attackHitbox.x -= 3;
-            attackHitbox.y += 23;
-            break;
-        case LEFT:
-            // Attack hitbox offset
-            attackHitbox.x -= PLAYER_ATTACK_WIDTH / 2;
-            attackHitbox.y += 10;
-            break;
-        case UP:
-            // Attack hitbox offset
-            SWAP(attackHitbox.width, attackHitbox.height);
-            attackHitbox.x -= 3;
-            attackHitbox.y -= 9;
-            break;
-        default:
-            break;
+        switch(player.directionFace) {
+            case RIGHT:
+                // Attack hitbox offset
+                player.attack.x += 3;
+                player.attack.y += 10;
+                break;
+            case DOWN:
+                // Attack hitbox offset
+                SWAP(player.attack.width, player.attack.height);
+                player.attack.x -= 3;
+                player.attack.y += 18;
+                break;
+            case LEFT:
+                // Attack hitbox offset
+                player.attack.x -= PLAYER_ATTACK_WIDTH / 2 + 3;
+                player.attack.y += 10;
+                break;
+            case UP:
+                // Attack hitbox offset
+                SWAP(player.attack.width, player.attack.height);
+                player.attack.x -= 3;
+                player.attack.y -= 4;
+                break;
+            default: break;
         }
 
-        PlayerEnemyCollision(attackHitbox);
+        PlayerAttackHit();
     }
 
     if(player.state == ATTACKING && TimerDone(&playerAnimArray[ATTACK_ANIMATION].timer)) {
@@ -186,71 +206,37 @@ static void RenderPlayerAttack() {
         &player, &playerAnimArray[IDLE_ANIMATION],
         ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
 
-    // Rectangle attackHitbox = (Rectangle) {
-    //     .x = player.pos.x,
-    //     .y = player.pos.y,
-    //     .width = PLAYER_ATTACK_WIDTH,
-    //     .height = PLAYER_ATTACK_HEIGHT
-    // };
-
-    // switch (player.directionFace) {
-    // case RIGHT:
-    //     // Attack hitbox offset
-    //     attackHitbox.x += 3;
-    //     attackHitbox.y += 10;
-    //     break;
-    // case DOWN:
-    //     // Attack hitbox offset
-    //     SWAP(attackHitbox.width, attackHitbox.height);
-    //     attackHitbox.x -= 3;
-    //     attackHitbox.y += 23;
-    //     break;
-    // case LEFT:
-    //     // Attack hitbox offset
-    //     attackHitbox.x -= PLAYER_ATTACK_WIDTH / 2;
-    //     attackHitbox.y += 10;
-    //     break;
-    // case UP:
-    //     // Attack hitbox offset
-    //     SWAP(attackHitbox.width, attackHitbox.height);
-    //     attackHitbox.x -= 3;
-    //     attackHitbox.y -= 9;
-    //     break;
-    // default:
-    //     break;
-    // }
-
-    // DrawRectangleRec(attackHitbox, RED);
-
     //? NOTE: commented out animations are kept for alternating animations
     switch(player.directionFace) {
         case RIGHT:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION], PLAYER_ATTACK_WIDTH,
-                -PLAYER_ATTACK_HEIGHT, PLAYER_ATTACK_WIDTH + 12, PLAYER_ATTACK_HEIGHT + 10, 180.0f);
+                &player, &playerAnimArray[ATTACK_ANIMATION],
+                PLAYER_ATTACK_WIDTH, -PLAYER_ATTACK_HEIGHT,
+                PLAYER_ATTACK_WIDTH + 3, PLAYER_ATTACK_HEIGHT + 10, 180.0f);
             // EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION],
             // PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, 32, 0, 90.0f);
             break;
         case DOWN:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION], PLAYER_ATTACK_WIDTH,
-                -PLAYER_ATTACK_HEIGHT * player.faceValue, PLAYER_ATTACK_WIDTH - 35,
-                PLAYER_ATTACK_HEIGHT + 38, -90.0f);
+                &player, &playerAnimArray[ATTACK_ANIMATION],
+                PLAYER_ATTACK_WIDTH, -PLAYER_ATTACK_HEIGHT * player.faceValue,
+                PLAYER_ATTACK_WIDTH - 35, PLAYER_ATTACK_HEIGHT + 30, -90.0f);
             // EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION], PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT,
             //     25, 48, 180.0f);
             break;
         case LEFT:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION], PLAYER_ATTACK_WIDTH,
-                PLAYER_ATTACK_HEIGHT, PLAYER_ATTACK_WIDTH - 59, PLAYER_ATTACK_HEIGHT - 11, 0.0f);
+                &player, &playerAnimArray[ATTACK_ANIMATION],
+                PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT,
+                PLAYER_ATTACK_WIDTH - 51, PLAYER_ATTACK_HEIGHT - 11, 0.0f);
             // EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION],
             // PLAYER_ATTACK_WIDTH, -PLAYER_ATTACK_HEIGHT, 16, 0, 90.0f);
             break;
         case UP:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION], -PLAYER_ATTACK_WIDTH,
-                -PLAYER_ATTACK_HEIGHT * player.faceValue, PLAYER_ATTACK_WIDTH - 35,
-                PLAYER_ATTACK_HEIGHT - 1, -90.0f);
+                &player, &playerAnimArray[ATTACK_ANIMATION],
+                -PLAYER_ATTACK_WIDTH, -PLAYER_ATTACK_HEIGHT * player.faceValue,
+                PLAYER_ATTACK_WIDTH - 35, PLAYER_ATTACK_HEIGHT + 7, -90.0f);
             //  EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION], -PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT,
             //     -10, 0, 0.0f);
             break;

@@ -136,7 +136,7 @@ static void LoadTextures() {
     textures[TILE_PLAYER_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                          = LoadImage("resources/player-attack.png");
+    img                          = LoadImage("resources/player-attack2.png");
     textures[TILE_PLAYER_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 

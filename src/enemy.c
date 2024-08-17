@@ -63,7 +63,7 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
 
     enemy.pos           = position;
     enemy.speed         = 35;
-    enemy.health        = 100;
+    enemy.health        = 1;
     enemy.direction     = Vector2Zero();
     enemy.faceValue     = 1;
     enemy.state         = IDLE;
