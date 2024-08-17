@@ -1,16 +1,18 @@
 /**********************************************************************************************
-*
-**   tile.c is responsible for dealing with tile and tilemap rendering.
-*   
-*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.2
-*
-*    @include tile.h, texture.h, collision.h
-*
-**********************************************************************************************/
+ *
+ **   tile.c is responsible for dealing with tile and tilemap rendering.
+ *
+ *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+ *    @version 0.2
+ *
+ *    @include tile.h, texture.h, collision.h
+ *
+ **********************************************************************************************/
 #include "../include/tile.h"
-#include "../include/texture.h"
 #include "../include/collision.h"
+#include "../include/spawner.h"
+#include "../include/texture.h"
+#include <stdio.h>
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -32,19 +34,19 @@ void DrawTmxTile(tmx_tile* tile, int tileX, int tileY);
 
 /**
  * Loads a Texture2D for a .tmx map when needed.
- * 
+ *
  * @param fileName Name of the tileset image
  * @return Pointer to the loaded texture
- * 
+ *
  * @note Used by the tmx_load() function when loading textures.
  */
 Texture2D* LoadMapTexture(const char* fileName);
 
 /**
  * Unloads a Texture2D for a .tmx map when needed.
- * 
+ *
  * @param texture Pointer to the texture
- * 
+ *
  * @note Used by the tmx_load() function when loading textures.
  */
 void UnloadMapTexture(Texture2D* texture);
@@ -52,7 +54,7 @@ void UnloadMapTexture(Texture2D* texture);
 /**
  * Function to return the GID of the tile that needs to displayed at a specific
  * coordinate of a tmx_layer.
- * 
+ *
  * @param layer Pointer to the tmx_layer
  * @param mapWidth Width of the map which the layer comes from
  * @param x Horizontal (x) coordinate
@@ -65,6 +67,8 @@ static unsigned int GetTileGID(tmx_layer* layer, unsigned int mapWidth, int x, i
 //* FUNCTION IMPLEMENTATIONS
 
 tmx_map* TmxMapFrameBufStartup(RenderTexture2D* framebuffer, char* mapFileName) {
+    rooms = NULL;
+
     // Unload function pointers
     tmx_img_load_func = (void* (*) (const char*) ) LoadMapTexture;
     tmx_img_free_func = (void (*)(void*)) UnloadMapTexture;
@@ -97,13 +101,13 @@ void TmxMapFrameBufRender(RenderTexture2D* framebuffer, tmx_map* map) {
 
     // Start drawing at the framebuffer
     BeginTextureMode(*framebuffer);
-        ClearBackground(BLACK);
+    ClearBackground(BLACK);
 
-        // Loop through the layer list to draw every layer
-        layer = map->ly_head;
-        while(layer) {
-            if(layer->visible) {
-                switch(layer->type) {
+    // Loop through the layer list to draw every layer
+    layer = map->ly_head;
+    while(layer) {
+        if(layer->visible) {
+            switch(layer->type) {
                 // Checks if layer is visible and it's a tilemap layer
                 case L_LAYER:
                     //  Draws the layer
@@ -111,10 +115,10 @@ void TmxMapFrameBufRender(RenderTexture2D* framebuffer, tmx_map* map) {
                     break;
                 // Ignores all other layers.
                 default: tmx_perror("Non tilemap layer or error found."); break;
-                }
             }
-            layer = layer->next;
         }
+        layer = layer->next;
+    }
 
     EndTextureMode();
 }
@@ -134,15 +138,44 @@ void DrawTmxLayer(tmx_map* map, tmx_layer* layer) {
 
                 if(tile != NULL) {
                     // Gets the collision property from the tile properties
-                    tmx_property* collisionProp = tmx_get_property(tile->properties, "isCollidable");
-                    bool isCollidable = collisionProp->value.boolean;
+                    tmx_property* collisionProp =
+                        tmx_get_property(tile->properties, "isCollidable");
 
-                    // If the tile is collidable adds it to the collidable tiles collision list
-                    if(isCollidable) {
-                        if(collidableTiles == NULL)
-                            collidableTiles = CreateCollisionList(col, row, 0);
-                        else
-                            AddCollisionNode(collidableTiles, col, row, 0);
+                    if(collisionProp != NULL) {
+                        bool isCollidable = collisionProp->value.boolean;
+
+                        // If the tile is collidable adds it to the collidable tiles collision list
+                        if(isCollidable) {
+                            if(collidableTiles == NULL)
+                                collidableTiles = CreateCollisionList(col, row, 0);
+                            else
+                                AddCollisionNode(collidableTiles, col, row, 0);
+                        }
+                    }
+
+                    tmx_property* roomNumberProp =
+                        tmx_get_property(tile->properties, "roomNumber");
+                    tmx_property* roomSizeProp =
+                        tmx_get_property(tile->properties, "roomSize");
+                    tmx_property* roomTypeProp =
+                        tmx_get_property(tile->properties, "roomType");
+
+                    if(roomNumberProp != NULL && roomSizeProp != NULL && roomTypeProp != NULL) {
+                        int roomNumber    = roomNumberProp->value.integer;
+                        RoomSize roomSize = roomSizeProp->value.integer;
+                        RoomType roomType = roomTypeProp->value.integer;
+
+                        if(rooms == NULL) {
+                            // printf("here");
+                            rooms = CreateRoomList((Vector2){ col, row }, roomNumber, roomSize, roomType);
+                            // printf("here");
+
+                        } 
+                        // else {
+                        //     // printf("here");
+                        //     AddRoomNode((Vector2){ col, row }, roomNumber, roomSize, roomType);
+                        //     // printf("here");
+                        // }
                     }
 
                     // Draws the tile on the specific column and row
@@ -194,12 +227,12 @@ void DrawTmxTile(tmx_tile* tile, int tileX, int tileY) {
         tileTexture = (Texture2D*) tile->tileset->image->resource_image;
 
     // Creates source and destination rectangles
-    sourceRect.x = tile->ul_x;
-    sourceRect.y = tile->ul_y;
+    sourceRect.x     = tile->ul_x;
+    sourceRect.y     = tile->ul_y;
     sourceRect.width = destRect.width = TILE_WIDTH;
     sourceRect.height = destRect.height = TILE_HEIGHT;
-    destRect.x = tileX * TILE_WIDTH;
-    destRect.y = tileY * TILE_HEIGHT;
+    destRect.x                          = tileX * TILE_WIDTH;
+    destRect.y                          = tileY * TILE_HEIGHT;
 
     // Draws on the screen or on the framebuffer
     DrawTexturePro(*tileTexture, sourceRect, destRect, origin, rotation, WHITE);

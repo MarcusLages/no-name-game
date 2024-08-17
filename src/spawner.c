@@ -21,7 +21,7 @@ RoomNode* rooms;
 
 PositionArray CreatePositionArray(int arraySize) {
     PositionArray newPosArr;
-    newPosArr.positions = (Vector2*) malloc(sizeof(Vector2) * arraySize);
+    newPosArr.positions = (Vector2*) calloc(arraySize, sizeof(Vector2));
 
     if(newPosArr.positions == NULL) {
         TraceLog(LOG_FATAL, "spawner.c-CreatePositionArray: Memory allocation failure.");
