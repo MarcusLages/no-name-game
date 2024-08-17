@@ -21,8 +21,6 @@
  * Macro function to get the absolute/module value of a number.
  *
  * @param x Number
- *
- * TODO: Move to utils.h
  */
 #define ABS(x) (x > 0 ? x : x * (-1))
 
