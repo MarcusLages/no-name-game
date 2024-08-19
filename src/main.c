@@ -12,6 +12,7 @@
 ***********************************************************************************************/
 
 #include "../include/screen.h"
+#include "../include/trace-log.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -62,6 +63,9 @@ int main() {
 }
 
 static void GameStartup() {
+    // Set custom tracelog function to TraceLog()
+    SetTraceLogCallback(CustomLog);
+
     // Game running
     isRunning = true;
 
