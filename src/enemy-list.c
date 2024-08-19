@@ -62,7 +62,7 @@ void CleanUpEnemies() {
                 cursor = prev->next;
             }
         } else {
-            prev = cursor;
+            prev   = cursor;
             cursor = cursor->next;
         }
     }
@@ -140,10 +140,9 @@ void AddEnemies(int numOfEnemies, Vector2* positions, int* randNums) {
         int randomNum    = abs(randNums[i]);
         Vector2 position = positions[randomNum];
 
-        // TODO randomize enemy types.
-        Entity enemy = EnemyStartup(
-            (Vector2){ (float) position.x * TILE_WIDTH, (float) position.y * TILE_HEIGHT },
-            DEMON_DIEGO);
+        EnemyType type = GetRandomEnemyType();
+        Entity enemy   = EnemyStartup(
+            (Vector2){ (float) position.x * TILE_WIDTH, (float) position.y * TILE_HEIGHT }, type);
 
         if(enemies == NULL) {
             enemies = CreateEnemyList(enemy);
@@ -151,6 +150,20 @@ void AddEnemies(int numOfEnemies, Vector2* positions, int* randNums) {
             AddEnemyNode(enemy);
         }
     }
+}
+
+EnemyType GetRandomEnemyType() {
+    int value      = abs(GetRandomValue(0, 100));
+    EnemyType type = DEMON_PABLO;
+
+    if(value > 50 && value <= 80) {
+        type = DEMON_DIEGO;
+    } else if(value > 80 && value <= 100) {
+        // TODO: Change to WAFFLES once ready.
+        type = DEMON_DIEGO;
+    }
+
+    return type;
 }
 
 void MoveEnemies() {

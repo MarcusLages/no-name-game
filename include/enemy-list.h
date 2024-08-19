@@ -100,6 +100,11 @@ int GetNumOfEnemies(RoomSize roomSize);
 void AddEnemies(int numOfEnemies, Vector2* positions, int* randNums);
 
 /**
+ * TODOL comment
+ */
+EnemyType GetRandomEnemyType();
+
+/**
  * Handles the movement of of each enemy in the list of enemies.
  *
  * ? @note Calls EnemyMovement on each enemy (see enemy.c).
