@@ -138,14 +138,16 @@ static void PlayerAttackHit() {
     }
 }
 
-// TODO: Fix player attack so that the animation cant display in a different direction while triggered in one direction already
+// TODO FIXME: Make a better way to get the attack hitbox (on EntityRender too)
 void PlayerAttack() {
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
         StartTimer(&playerAnimArray[ATTACK_ANIMATION].timer, 0.5f);
 
-        player.attack.x = player.pos.x;
-        player.attack.y = player.pos.y;
+        player.attack = (Rectangle){ .x      = player.pos.x,
+                                     .y      = player.pos.y,
+                                     .width  = PLAYER_ATTACK_WIDTH,
+                                     .height = PLAYER_ATTACK_HEIGHT };
 
         switch(player.directionFace) {
             case RIGHT:
@@ -157,7 +159,7 @@ void PlayerAttack() {
                 // Attack hitbox offset
                 SWAP(player.attack.width, player.attack.height);
                 player.attack.x -= 3;
-                player.attack.y += 18;
+                player.attack.y += 19;
                 break;
             case LEFT:
                 // Attack hitbox offset
@@ -173,6 +175,9 @@ void PlayerAttack() {
             default: break;
         }
 
+        player.attack.x = floor(player.attack.x);
+        player.attack.y = floor(player.attack.y);
+        
         PlayerAttackHit();
     }
 
@@ -205,6 +210,8 @@ static void RenderPlayerAttack() {
     EntityRender(
         &player, &playerAnimArray[IDLE_ANIMATION],
         ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+
+    DrawRectangleRec(player.attack, GREEN);
 
     //? NOTE: commented out animations are kept for alternating animations
     switch(player.directionFace) {
