@@ -119,23 +119,6 @@ void PlayerMovement() {
     // PlayerEnemyCollision();
 }
 
-static void PlayerAttackHit() {
-    EnemyNode* currEnemy = enemies;
-
-    while(currEnemy != NULL) {
-        Entity* enemy = &currEnemy->enemy;
-        UpdateEntityHitbox(enemy);
-        bool playerHit = CheckCollisionRecs(player.attack, enemy->hitbox);
-
-        if(playerHit) {
-            enemy->health--;
-        }
-        currEnemy = currEnemy->next;
-    }
-
-    CleanUpEnemies();
-}
-
 // TODO FIXME: Make a better way to get the attack hitbox (on EntityRender too)
 void PlayerAttack() {
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
@@ -182,6 +165,18 @@ void PlayerAttack() {
     if(player.state == ATTACKING && TimerDone(&playerAnimArray[ATTACK_ANIMATION].timer)) {
         player.state = IDLE;
     }
+}
+
+static void PlayerAttackHit() {
+    EnemyNode* currEnemy = enemies;
+
+    while(currEnemy != NULL) {
+        Entity* enemy = &currEnemy->enemy;
+        EntityAttack(&player, enemy, 1);
+        currEnemy = currEnemy->next;
+    }
+
+    CleanUpEnemies();
 }
 
 void PlayerRender() {

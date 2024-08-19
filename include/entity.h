@@ -134,7 +134,7 @@ extern Entity player;
  * @param entity The reference to the entity to move.
  * @param position The position to move the entity towards.
  * @param lastPlayerPos The last known position of the player relative to an enemy entity.
- * 
+ *
  * ? @note pass NULL to lastPlayerPos if the entity is not an enemy.
  */
 void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerPos);
@@ -159,6 +159,23 @@ void EntityRender(
     int xOffset, int yOffset, float rotation);
 
 //* Entity collision logic
+
+/**
+ * Function used to check if the attack of an entity hit another entity's hitbox.
+ * 
+ * TODO: Might change to a callback instead of using attack points
+ * TODO: Change state of victim to HIT
+ * TODO FIXME: Check size for Waffles
+ * 
+ * @attention It's necessary to update the attacker's attack hitbox before calling the function.
+ * 
+ * @param attacker      Pointer to the attacker entity
+ * @param victim        Pointer to the entity that is getting hit
+ * @param attackPoints  How much life will the victim lose
+ * @return If the attack happened or not.
+ *         (OBS: Might be used or not or changed to a callback function)
+ */
+bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints);
 
 /**
  * Function that should be called to update the entity hitbox collision before a collision is called.

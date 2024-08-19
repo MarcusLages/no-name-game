@@ -106,6 +106,17 @@ void EntityRender(
         entityWidth, entityHeight, rotation);
 }
 
+bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints) {
+    UpdateEntityHitbox(victim);
+    bool attackHit = CheckCollisionRecs(attacker->attack, victim->hitbox);
+
+    if(attackHit) {
+        victim->health -= attackPoints;
+    }
+
+    return attackHit;
+}
+
 void UpdateEntityHitbox(Entity* entity) {
     entity->hitbox.x = entity->pos.x;
     entity->hitbox.y = entity->pos.y + entity->hitbox.height;
