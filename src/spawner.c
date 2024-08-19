@@ -105,7 +105,7 @@ RoomNode* CreateRoomList(Vector2 initPos, int roomNumber, RoomSize roomSize, Roo
         case MEDIUM: arraySize = MD_ROOM_POS; break;
         case LARGE: arraySize = LG_ROOM_POS; break;
         default:
-            TraceLog(LOG_FATAL, "spawner.c-CreateRoomList: Invlaid roomSize given. Could not allocate memory in positionArray.");
+            TraceLog(LOG_FATAL, "spawner.c-CreateRoomList: Invalid roomSize given. Could not allocate memory in positionArray.");
             exit(EXIT_FAILURE);
             break;
     }

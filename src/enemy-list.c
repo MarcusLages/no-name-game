@@ -62,17 +62,65 @@ void UnloadEnemies() {
     }
 }
 
+//! NOTE: LoadRandomSequence does negative values too! min and max are just magnitudes use abs if needed!
 void SetupEnemies() {
-    //! NOTE: LoadRandomSequence does negative values too! min and max are just magnitudes use abs if needed!
-    // int* randNumsX = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_WIDTH * TILE_WIDTH);
-    // int* randNumsY = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_HEIGHT * TILE_HEIGHT);
-    for(int i = 0; i < 1; i++) {
-        // TODO: Make a coordinate assigning system that places enemies at a correct x and y
-        //? NOTE: LoadRandomSequence is a temp solution
+    RoomNode* cursor = rooms;
+    while(cursor != NULL) {
+        if(cursor->roomNumber != 0) {
+            int numOfEnemies = GetNumOfEnemies(cursor->roomSize);
+
+            // Got random idxs based upon room size
+            int* randNums =
+                LoadRandomSequence(numOfEnemies, 0, cursor->positionArray.size - 1);
+
+            AddEnemies(numOfEnemies, cursor->positionArray.positions, randNums);
+            UnloadRandomSequence(randNums);
+        }
+        cursor = cursor->next;
+    }
+    AdjustEnemies();
+}
+
+void AdjustEnemies() {
+    EnemyNode* cursor = enemies;
+    while(cursor != NULL) {
+        Vector2 diff = cursor->enemy.pos;
+        int hitbox_X = cursor->enemy.hitbox.x;
+        int hitbox_Y = cursor->enemy.hitbox.y;
+
+        diff.x = diff.x - hitbox_X;
+        diff.y = diff.y - hitbox_Y;
+
+        cursor->enemy.pos = Vector2Add(cursor->enemy.pos, diff);
+
+        cursor = cursor->next;
+    }
+}
+
+int GetNumOfEnemies(RoomSize roomSize) {
+    int numOfEnemies = 0;
+    switch(roomSize) {
+        case SMALL: numOfEnemies = SM_ROOM_MAX_ENEMIES; break;
+        case MEDIUM: numOfEnemies = MD_ROOM_MAX_ENEMIES; break;
+        case LARGE: numOfEnemies = LG_ROOM_MAX_ENEMIES; break;
+
+        default:
+            TraceLog(LOG_ERROR, "enemy-list.c-GetMaxEnemies: Invalid roomSize given. Defaulting to small size.");
+            numOfEnemies = SM_ROOM_MAX_ENEMIES;
+            break;
+    }
+    return numOfEnemies;
+}
+
+void AddEnemies(int numOfEnemies, Vector2* positions, int* randNums) {
+    for(int i = 0; i < numOfEnemies; i++) {
+        int randomNum    = abs(randNums[i]);
+        Vector2 position = positions[randomNum];
 
         // TODO randomize enemy types.
-        Entity enemy =
-            EnemyStartup((Vector2){ (float) 21 * TILE_WIDTH, (float) 4 * TILE_HEIGHT }, DEMON_PABLO);
+        Entity enemy = EnemyStartup(
+            (Vector2){ (float) position.x * TILE_WIDTH, (float) position.y * TILE_HEIGHT },
+            DEMON_PABLO);
 
         if(enemies == NULL) {
             enemies = CreateEnemyList(enemy);
@@ -80,8 +128,6 @@ void SetupEnemies() {
             AddEnemyNode(enemy);
         }
     }
-    // UnloadRandomSequence(randNumsY);
-    // UnloadRandomSequence(randNumsX);
 }
 
 void MoveEnemies() {

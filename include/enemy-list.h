@@ -12,6 +12,7 @@
 #ifndef ENEMY_LIST_H_
 #define ENEMY_LIST_H_
 
+#include "../include/spawner.h"
 #include "enemy.h"
 
 //* ------------------------------------------
@@ -87,6 +88,21 @@ void UnloadEnemies();
  * ? @note Calls EnemyStartup on each enemy (see enemy.c).
  */
 void SetupEnemies();
+
+/**
+ * TODO: comment
+ */
+void AdjustEnemies();
+
+/**
+ * TODO: comment
+ */
+int GetNumOfEnemies(RoomSize roomSize);
+
+/**
+ * TODOL comment
+ */
+void AddEnemies(int numOfEnemies, Vector2* positions, int* randNums);
 
 /**
  * Handles the movement of of each enemy in the list of enemies.
