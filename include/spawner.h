@@ -62,7 +62,11 @@ typedef struct RoomNode RoomNode;
 struct RoomNode {
     /** Array of possible positions. */
     PositionArray positionArray;
-    /** The room number. */
+    /** 
+     * The room number.
+     * 
+     * ! @attention Room number must be unique.
+     */
     int roomNumber;
     /** The size of the room. */
     RoomSize roomSize;
@@ -81,12 +85,9 @@ extern RoomNode* rooms;
 //* FUNCTION PROTOTYPES
 
 /** */
-PositionArray CreatePositionArray(int arraySize);
-
-/** */
 void AddPosition(PositionArray* positionArray, Vector2 position);
 
-void UnloadPositionArray(PositionArray* positionArray);
+void AddPositionToRoom(int roomNumber, Vector2 position);
 
 /**
  *
@@ -100,5 +101,7 @@ void AddRoomNode(Vector2 position, int roomNumber, RoomSize roomSize, RoomType r
  * 
  */
 void UnloadRooms();
+
+bool CheckRoomExists(int roomNumber);
 
 #endif // SPAWNER_H_

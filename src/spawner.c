@@ -17,9 +17,18 @@
 RoomNode* rooms;
 
 //* ------------------------------------------
+//* FUNCTION PROTOTYPES
+
+/** */
+static PositionArray CreatePositionArray(int arraySize);
+
+/** */
+static void UnloadPositionArray(PositionArray* positionArray);
+
+//* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
-PositionArray CreatePositionArray(int arraySize) {
+static PositionArray CreatePositionArray(int arraySize) {
     PositionArray newPosArr;
     newPosArr.positions = (Vector2*) calloc(arraySize, sizeof(Vector2));
 
@@ -55,7 +64,18 @@ void AddPosition(PositionArray* positionArray, Vector2 position) {
     positionArray->positions[idx] = position;
 }
 
-void UnloadPositionArray(PositionArray* positionArray) {
+void AddPositionToRoom(int roomNumber, Vector2 position) {
+    RoomNode* cursor = rooms;
+    while(cursor != NULL) {
+        if(cursor->roomNumber == roomNumber) {
+            AddPosition(&cursor->positionArray, position);
+            break;
+        }
+        cursor = cursor->next;
+    }
+}
+
+static void UnloadPositionArray(PositionArray* positionArray) {
     if(positionArray == NULL) {
         TraceLog(LOG_WARNING, "spawner.c-UnloadPositionArray: NULL positionArray was given.");
         return;
@@ -126,4 +146,15 @@ void UnloadRooms() {
         free(temp);
         temp = NULL;
     }
+}
+
+bool CheckRoomExists(int roomNumber) {
+    RoomNode* cursor = rooms;
+    while(cursor != NULL) {
+        if(cursor->roomNumber == roomNumber) {
+            return true;
+        }
+        cursor = cursor->next;
+    }
+    return false;
 }
