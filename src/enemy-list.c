@@ -143,7 +143,7 @@ void AddEnemies(int numOfEnemies, Vector2* positions, int* randNums) {
         // TODO randomize enemy types.
         Entity enemy = EnemyStartup(
             (Vector2){ (float) position.x * TILE_WIDTH, (float) position.y * TILE_HEIGHT },
-            DEMON_PABLO);
+            DEMON_DIEGO);
 
         if(enemies == NULL) {
             enemies = CreateEnemyList(enemy);

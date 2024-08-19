@@ -88,8 +88,7 @@ void DungeonRender() {
     DrawTextureRec(
         worldCanvas->texture,
         (Rectangle){ 0, 0, worldCanvas->texture.width, -worldCanvas->texture.height },
-        (Vector2){ 0.0f, 0.0f }, WHITE
-    );
+        (Vector2){ 0.0f, 0.0f }, WHITE);
 
     // Draw player on the screen
     RenderEnemies();
@@ -140,17 +139,30 @@ static void LoadTextures() {
     textures[TILE_PLAYER_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                       = LoadImage("resources/enemy-1-idle.png");
+    img                             = LoadImage("resources/enemy-1-idle.png");
     textures[TILE_ENEMY_PABLO_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                       = LoadImage("resources/enemy-1-movement.png");
+    img = LoadImage("resources/enemy-1-movement.png");
     textures[TILE_ENEMY_PABLO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
     //! NOTE: player attack is used here temporailly. New asset must be found.
-    img                         = LoadImage("resources/player-attack.png");
+    img = LoadImage("resources/player-attack.png");
     textures[TILE_ENEMY_PABLO_ATTACK] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    img                             = LoadImage("resources/enemy-2-idle.png");
+    textures[TILE_ENEMY_DIEGO_IDLE] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    img = LoadImage("resources/enemy-2-movement.png");
+    textures[TILE_ENEMY_DIEGO_MOVE] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    //! NOTE: player attack is used here temporailly. New asset must be found.
+    img = LoadImage("resources/player-attack.png");
+    textures[TILE_ENEMY_DIEGO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 }
 

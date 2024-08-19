@@ -216,10 +216,9 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     Animation attackEnemyAnimation;
 
     enemy->animations.size = MAX_ENEMY_ANIMATIONS;
-    enemy->animations.animationArr =
-        (Animation*) malloc(sizeof(Animation) * enemy->animations.size);
+    enemyAnimArray = (Animation*) malloc(sizeof(Animation) * enemy->animations.size);
 
-    if(enemy->animations.animationArr == NULL) {
+    if(enemyAnimArray == NULL) {
         TraceLog(LOG_FATAL, "enemy.c-SetupEnemyAnimation: Memory allocation failure.");
         exit(EXIT_FAILURE);
     }
@@ -236,7 +235,14 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
                 CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_ENEMY_PABLO_ATTACK);
             break;
         case DEMON_DIEGO:
-            // TODO: IMPLEMENT FOR WHEN DEMON DIEGO IS READY TO PLAY
+            idleEnemyAnimation =
+                CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_DIEGO_IDLE);
+
+            movingEnemyAnimation =
+                CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_DIEGO_MOVE);
+
+            attackEnemyAnimation =
+                CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_ENEMY_DIEGO_ATTACK);
             break;
         case DEMON_WAFFLES:
             // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
@@ -246,9 +252,9 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
             break;
     }
 
-    enemy->animations.animationArr[IDLE_ANIMATION]   = idleEnemyAnimation;
-    enemy->animations.animationArr[MOVE_ANIMATION]   = movingEnemyAnimation;
-    enemy->animations.animationArr[ATTACK_ANIMATION] = attackEnemyAnimation;
+    enemyAnimArray[IDLE_ANIMATION]   = idleEnemyAnimation;
+    enemyAnimArray[MOVE_ANIMATION]   = movingEnemyAnimation;
+    enemyAnimArray[ATTACK_ANIMATION] = attackEnemyAnimation;
 
     // Starting timers for both idle and moving animations
     StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0f);
