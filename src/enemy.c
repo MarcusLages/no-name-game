@@ -108,8 +108,6 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
     }
 
     if(!IsPlayerSeen(enemy)) {
-        // DrawText("Player not seen", player.pos.x + 16, player.pos.y + 32, 10, RED);
-
         // Does not set to idle if precision is off.
         // TODO Needs to be fixed
         if(IsVectorEqual(enemy->pos, *lastPlayerPos, 0.01f)) {
@@ -118,9 +116,6 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
         } else {
             MoveEnemyToPos(enemy, *lastPlayerPos, lastPlayerPos);
         }
-        // DrawText(
-        //     TextFormat("State: %d", enemy->state), player.pos.x - 55,
-        //     player.pos.y + 52, 10, RED);
         return;
     } else {
         *lastPlayerPos = player.pos;
@@ -187,8 +182,6 @@ static bool IsPlayerSeen(Entity* enemy) {
                                  enemy->pos.y + ENTITY_TILE_HEIGHT / 2 };
         Vector2 resVec       = Vector2Lerp(playerCenter, enemyCenter, i);
         CollisionNode* head  = collidableTiles;
-
-        // DrawLineV(playerCenter, enemyCenter, RED);
 
         while(head != NULL) {
             int x = (int) resVec.x / TILE_WIDTH;
