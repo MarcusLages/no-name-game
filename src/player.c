@@ -129,13 +129,11 @@ static void PlayerAttackHit() {
 
         if(playerHit) {
             enemy->health--;
-
-            if(enemy->health <= 0) {
-                // TODO: Delete enemy from enemy list instead of just making him invisible.
-            }
         }
         currEnemy = currEnemy->next;
     }
+
+    CleanUpEnemies();
 }
 
 // TODO FIXME: Make a better way to get the attack hitbox (on EntityRender too)
@@ -210,8 +208,6 @@ static void RenderPlayerAttack() {
     EntityRender(
         &player, &playerAnimArray[IDLE_ANIMATION],
         ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
-
-    DrawRectangleRec(player.attack, GREEN);
 
     //? NOTE: commented out animations are kept for alternating animations
     switch(player.directionFace) {

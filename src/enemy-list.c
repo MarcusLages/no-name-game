@@ -52,6 +52,29 @@ void AddEnemyNode(Entity enemy) {
     cursor->next = enemyNode;
 }
 
+void CleanUpEnemies() {
+    EnemyNode* cursor = enemies;
+    EnemyNode* prev   = NULL;
+    while(cursor != NULL) {
+        if(cursor->enemy.health <= 0) {
+            if(prev == NULL) {
+                enemies = cursor->next;
+                EnemyUnload(&cursor->enemy);
+                free(cursor);
+                cursor = enemies;
+            } else {
+                EnemyUnload(&cursor->enemy);
+                prev->next = cursor->next;
+                free(cursor);
+                cursor = prev->next;
+            }
+        } else {
+            prev = cursor;
+            cursor = cursor->next;
+        }
+    }
+}
+
 void UnloadEnemies() {
     if(enemies == NULL) {
         TraceLog(LOG_FATAL, "enemy-list.c-UnloadEnemies: Enemies list could not be found.");
@@ -73,7 +96,7 @@ void SetupEnemies() {
     //! NOTE: LoadRandomSequence does negative values too! min and max are just magnitudes use abs if needed!
     // int* randNumsX = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_WIDTH * TILE_WIDTH);
     // int* randNumsY = LoadRandomSequence(MAX_ENEMIES, 0, WORLD_HEIGHT * TILE_HEIGHT);
-    for(int i = 0; i < 1; i++) {
+    for(int i = 0; i < MAX_ENEMIES; i++) {
         // TODO: Make a coordinate assigning system that places enemies at a correct x and y
         //? NOTE: LoadRandomSequence is a temp solution
 
@@ -102,9 +125,7 @@ void MoveEnemies() {
 void RenderEnemies() {
     EnemyNode* currEnemy = enemies;
     while(currEnemy != NULL) {
-        // TODO: Change this to actually removing enemy from the enemy list
-        if(currEnemy->enemy.health > 0)
-            EnemyRender(&currEnemy->enemy);
+        EnemyRender(&currEnemy->enemy);
         currEnemy = currEnemy->next;
     }
 }

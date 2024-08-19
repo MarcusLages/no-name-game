@@ -17,7 +17,7 @@
 //* ------------------------------------------
 //* DEFINITIONS
 
-#define MAX_ENEMIES 10
+#define MAX_ENEMIES 1
 
 //* ------------------------------------------
 //* STRUCTURES
@@ -100,5 +100,12 @@ void MoveEnemies();
  * ? @note Calls EnemyRender on each enemy (see enemy.c).
  */
 void RenderEnemies();
+
+/**
+ * Deletes all enemies on the list that have less than or zero (0) health points.
+ * 
+ * ? @note May change enemies list to NULL (empty)
+ */
+void CleanUpEnemies();
 
 #endif // ENEMY_LIST_H_
