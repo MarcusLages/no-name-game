@@ -11,18 +11,7 @@
  ***********************************************************************************************/
 
 #include "../include/entity.h"
-
-//* ------------------------------------------
-//* DEFINITIONS
-
-/**
- * Macro function to get the absolute/module value of a number.
- *
- * @param x Number
- *
- * TODO: Move to utils.h
- */
-#define ABS(x) (x > 0 ? x : x * (-1))
+#include "../include/utils.h"
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -116,6 +105,17 @@ void EntityRender(
                      entityWidth < 0 ? -entityWidth : entityWidth,
                      entityHeight < 0 ? -entityHeight : entityHeight },
         entityWidth, entityHeight, rotation);
+}
+
+bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints) {
+    UpdateEntityHitbox(victim);
+    bool attackHit = CheckCollisionRecs(attacker->attack, victim->hitbox);
+
+    if(attackHit) {
+        victim->health -= attackPoints;
+    }
+
+    return attackHit;
 }
 
 void UpdateEntityHitbox(Entity* entity) {

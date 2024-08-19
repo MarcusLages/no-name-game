@@ -45,6 +45,29 @@ void AddEnemyNode(Entity enemy) {
     cursor->next = enemyNode;
 }
 
+void CleanUpEnemies() {
+    EnemyNode* cursor = enemies;
+    EnemyNode* prev   = NULL;
+    while(cursor != NULL) {
+        if(cursor->enemy.health <= 0) {
+            if(prev == NULL) {
+                enemies = cursor->next;
+                EnemyUnload(&cursor->enemy);
+                free(cursor);
+                cursor = enemies;
+            } else {
+                EnemyUnload(&cursor->enemy);
+                prev->next = cursor->next;
+                free(cursor);
+                cursor = prev->next;
+            }
+        } else {
+            prev = cursor;
+            cursor = cursor->next;
+        }
+    }
+}
+
 void UnloadEnemies() {
     if(enemies == NULL) {
         TraceLog(LOG_INFO, "enemy-list.c-UnloadEnemies: There are no enemies.");

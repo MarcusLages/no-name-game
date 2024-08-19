@@ -11,17 +11,7 @@
 **********************************************************************************************/
 
 #include "../include/collision.h"
-
-//* ------------------------------------------
-//* DEFINITIONS
-
-/**
- * Macro to swap two number variables.
- * 
- * @param a Number
- * @param b Number
- */
-#define swap(a, b) ((a != b) ? (a += b, b = a - b, a -= b) : 0)
+#include "../include/utils.h"
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -70,8 +60,8 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
     
     // Sort the collision point in case they are in different quadrants
     // instead of the origin quadrant (0,0)
-    if (nearColTime.x > farColTime.x) swap(nearColTime.x, farColTime.x);
-    if (nearColTime.y > farColTime.y) swap(nearColTime.y, farColTime.y);
+    if (nearColTime.x > farColTime.x) SWAP(nearColTime.x, farColTime.x);
+    if (nearColTime.y > farColTime.y) SWAP(nearColTime.y, farColTime.y);
 
     // Checks for collision rules, if they are not met,
     // returns RayCollision2D structure with no hit

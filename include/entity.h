@@ -28,9 +28,8 @@
 #define DEFAULT_ATTACK_FPS 8
 
 // Temporary attack rectangle size
-// TODO: Change name to ATTACK_SPRITE_WIDTH/HEIGHT
-#define TEMP_ATTACK_WIDTH  32
-#define TEMP_ATTACK_HEIGHT 32
+#define PLAYER_ATTACK_WIDTH  32
+#define PLAYER_ATTACK_HEIGHT 21
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -114,6 +113,8 @@ typedef struct Entity {
      * @note Use AnimationType enum to access a specific animation in the array
      */
     AnimationArray animations;
+    /** Struct that represents the attack hitbox of this entity. */
+    Rectangle attack;
 } Entity;
 
 //* ------------------------------------------
@@ -158,6 +159,23 @@ void EntityRender(
     int xOffset, int yOffset, float rotation);
 
 //* Entity collision logic
+
+/**
+ * Function used to check if the attack of an entity hit another entity's hitbox.
+ * 
+ * TODO: Might change to a callback instead of using attack points
+ * TODO: Change state of victim to HIT
+ * TODO FIXME: Check size for Waffles
+ * 
+ * @attention It's necessary to update the attacker's attack hitbox before calling the function.
+ * 
+ * @param attacker      Pointer to the attacker entity
+ * @param victim        Pointer to the entity that is getting hit
+ * @param attackPoints  How much life will the victim lose
+ * @return If the attack happened or not.
+ *         (OBS: Might be used or not or changed to a callback function)
+ */
+bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints);
 
 /**
  * Function that should be called to update the entity hitbox collision before a collision is called.
