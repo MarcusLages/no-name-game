@@ -1,3 +1,14 @@
+/**********************************************************************************************
+ *
+ **   trace-log.h is responsible for defining a custom trace log function.
+ *
+ *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+ *    @version 0.2
+ *
+ *    @include raylib.h
+ *
+ **********************************************************************************************/
+
 #ifndef TRACE_LOG_H_
 #define TRACE_LOG_H_
 
