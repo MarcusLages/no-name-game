@@ -12,7 +12,6 @@
 #include "../include/collision.h"
 #include "../include/spawner.h"
 #include "../include/texture.h"
-#include <stdio.h>
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -85,6 +84,9 @@ tmx_map* TmxMapFrameBufStartup(RenderTexture2D* framebuffer, char* mapFileName) 
     *framebuffer = LoadRenderTexture(
         mapTmx->width * mapTmx->tile_width, mapTmx->height * mapTmx->tile_height);
 
+
+    TraceLog(LOG_INFO, "TILE.C (TmxMapFrameBufStartup): Tmx map loaded.");
+
     return mapTmx;
 }
 
@@ -121,6 +123,8 @@ void TmxMapFrameBufRender(RenderTexture2D* framebuffer, tmx_map* map) {
     }
 
     EndTextureMode();
+
+    TraceLog(LOG_INFO, "TILE.C (TmxMapFrameBufRender): Texture rendered from tmx map.");
 }
 
 void DrawTmxLayer(tmx_map* map, tmx_layer* layer) {
@@ -185,6 +189,11 @@ void DrawTmxLayer(tmx_map* map, tmx_layer* layer) {
             }
         }
     }
+
+    TraceLog(LOG_INFO, "TILE.C (DrawTmxLayer): Collidable tiles list created successfully.");
+    TraceLog(
+        LOG_INFO, "TILE.C (DrawTmxLayer): Layer (%s) rendered successfully.",
+        layer->name);
 }
 
 static unsigned int GetTileGID(tmx_layer* layer, unsigned int mapWidth, int x, int y) {
@@ -199,7 +208,7 @@ Texture2D* LoadMapTexture(const char* fileName) {
     Texture2D* texture = (Texture2D*) malloc(sizeof(Texture2D));
     if(texture != NULL) {
         *texture = LoadTexture(fileName);
-        TraceLog(LOG_INFO, "TMX texture loaded from %s", fileName);
+        TraceLog(LOG_INFO, "TILE.C (LoadMapTexture): TMX texture loaded from %s", fileName);
         return texture;
     }
     return NULL;
@@ -210,6 +219,10 @@ void UnloadMapTexture(Texture2D* texture) {
         UnloadTexture(*texture);
         free(texture);
     }
+
+    TraceLog(
+        LOG_INFO, "TILE.C (UnloadMapTexture): TMX texture unloaded. [ID: %d]",
+        texture->id);
 }
 
 void DrawTmxTile(tmx_tile* tile, int tileX, int tileY) {

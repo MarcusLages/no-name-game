@@ -97,6 +97,8 @@ void PlayerStartup() {
     // Starting timers for both idle and moving animations
     StartTimer(&playerAnimArray[IDLE_ANIMATION].timer, -1.0f);
     StartTimer(&playerAnimArray[MOVE_ANIMATION].timer, -1.0f);
+
+    TraceLog(LOG_INFO, "PLAYER.C (PlayerStartup): Player set successfully.");
 }
 
 void PlayerMovement() {
@@ -206,7 +208,10 @@ void PlayerRender() {
     }
 }
 
-void PlayerUnload() { UnloadAnimationArray(&player.animations); }
+void PlayerUnload() { 
+    UnloadAnimationArray(&player.animations); 
+    TraceLog(LOG_INFO, "PLAYER.C (PlayerUnload): Player animations unloaded successfully.");    
+}
 
 static void PlayerEnemyCollision() {}
 

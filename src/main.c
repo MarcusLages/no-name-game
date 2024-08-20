@@ -12,6 +12,7 @@
 ***********************************************************************************************/
 
 #include "../include/screen.h"
+#include "../include/trace-log.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -62,6 +63,9 @@ int main() {
 }
 
 static void GameStartup() {
+    // Set custom tracelog function to TraceLog()
+    SetTraceLogCallback(CustomLog);
+
     // Game running
     isRunning = true;
 
@@ -75,6 +79,9 @@ static void GameStartup() {
 
     // Starts up Main Menu
     MainMenuStartup();
+
+    TraceLog(LOG_INFO, "MAIN.C (GameStartup): Game initialized at screen : %d successfully.", currentScreen);
+
 }
 
 static void GameUpdate() {
@@ -147,6 +154,8 @@ static void GameClosing() {
                 break;
             default: break;
     }
+
+    TraceLog(LOG_INFO, "MAIN.C (GameClosing): Game unloaded and closed successfully.");
 
     CloseWindow();
 }

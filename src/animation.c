@@ -93,9 +93,8 @@ static Rectangle* GetSpriteRectangles(int numOfFrames, int tileWidth, int tileHe
     Rectangle* frames = (Rectangle*) malloc(sizeof(Rectangle) * numOfFrames);
 
     //! If allocation fails program exits.
-    if(frames == NULL) {
-        TraceLog(LOG_FATAL, "animation.c: Memory allocation for animation failure.");
-        exit(EXIT_FAILURE);
+    if(frames == NULL){
+        TraceLog(LOG_FATAL, "ANIMATION.C (GetSpriteRectangles, line: %d): Memory allocation for animation failure.", __LINE__);
     }
 
     // Populating the array.

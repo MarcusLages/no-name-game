@@ -60,8 +60,7 @@ static void AdjustEnemies();
 EnemyNode* CreateEnemyList(Entity enemy) {
     EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
     if(enemyNode == NULL) {
-        TraceLog(LOG_FATAL, "enemy-list.c-CreateEnemyList: Memory allocation failure.");
-        exit(EXIT_FAILURE);
+        TraceLog(LOG_FATAL, "ENEMY-LIST.C (CreateEnemyList, line: %d): Memory allocation failure.", __LINE__);
     }
 
     enemyNode->enemy         = enemy;
@@ -74,6 +73,9 @@ void AddEnemyNode(Entity enemy) {
     if(enemies == NULL) return;
 
     EnemyNode* enemyNode = CreateEnemyList(enemy);
+    if(enemyNode == NULL) {
+        TraceLog(LOG_FATAL, "ENEMY-LIST.C (AddEnemyNode, line: %d): Memory allocation failure.", __LINE__);
+    }
 
     EnemyNode* cursor = enemies;
     while(cursor->next != NULL) {
@@ -108,8 +110,7 @@ void CleanUpEnemies() {
 
 void UnloadEnemies() {
     if(enemies == NULL) {
-        TraceLog(LOG_INFO, "enemy-list.c-UnloadEnemies: There are no enemies.");
-        return;
+        TraceLog(LOG_WARNING, "ENEMY-LIST.C (UnloadEnemies, line: %d): Enemies list is empty or could not be found.",__LINE__);
     }
 
     while(enemies != NULL) {
@@ -121,6 +122,8 @@ void UnloadEnemies() {
         free(temp);
         temp = NULL;
     }
+
+    TraceLog(LOG_INFO, "ENEMY-LIST.C (UnloadEnemies): Enemies list unloaded successfully.");
 }
 
 void SetupEnemies() {
@@ -133,6 +136,7 @@ void SetupEnemies() {
         cursor = cursor->next;
     }
     AdjustEnemies();
+    TraceLog(LOG_INFO, "ENEMY-LIST.C (SetupEnemies): Enemies set successfully.");
 }
 
 static void AddEnemies(int numOfEnemies, PositionArray positionArray) {
