@@ -33,7 +33,7 @@ static void SetEntityStatebyDir(Entity* entity, Vector2* lastPlayerPos);
 
 void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerPos) {
     if(entity == NULL) {
-        TraceLog(LOG_WARNING, "entity.c-MoveEnemyTowardsPos: NULL entity was given.");
+        TraceLog(LOG_WARNING, "ENTITY-C (MoveEnemyTowardsPos, line: %d): NULL entity was given.", __LINE__);
         return;
     }
 
@@ -81,7 +81,7 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
 
 static void SetEntityStatebyDir(Entity* entity, Vector2* lastPlayerPos) {
     if(entity == NULL) {
-        TraceLog(LOG_WARNING, "entity.c-SetEntityStatebyDir: NULL entity was given.");
+        TraceLog(LOG_WARNING, "ENTITY-C (SetEntityStatebyDir, line: %d): NULL entity was given.", __LINE__);
         return;
     }
 

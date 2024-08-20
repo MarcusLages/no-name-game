@@ -152,11 +152,11 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
 CollisionNode* CreateCollisionList(int indexX, int indexY, float timeHit) {
     CollisionNode* newList = (CollisionNode*) malloc(sizeof(CollisionNode));
     if (newList == NULL) {
-        TraceLog(LOG_FATAL, "collision.c: Memory allocation failure.");
-        exit(EXIT_FAILURE);
+        TraceLog(LOG_FATAL, "COLLISION.C (CreateCollisionList, line: %d): Memory allocation failure.", __LINE__);
     }
     newList->collidedHitbox = (CollidedHitboxInfo) { (Vector2) {indexX, indexY}, timeHit };
     newList->next = NULL;
+
     return newList;
 }
 
@@ -168,8 +168,7 @@ void AddCollisionNode(CollisionNode* head, int indexX, int indexY, float timeHit
 
     newNode = (CollisionNode*) malloc(sizeof(CollisionNode));
     if (newNode == NULL) {
-        TraceLog(LOG_FATAL, "collision.c: Memory allocation failure.");
-        exit(EXIT_FAILURE);
+        TraceLog(LOG_FATAL, "COLLISION.C (AddCollisionNode, line: %d): Memory allocation failure.", __LINE__);
     }
 
     newNode->collidedHitbox = (CollidedHitboxInfo) { (Vector2) {indexX, indexY}, timeHit };
@@ -213,6 +212,7 @@ void FreeCollisionList(CollisionNode* head) {
         free(currentNode);
         currentNode = NULL;
     }
+
 }
 
 static void SwapCollisionNode(CollisionNode* nodeA, CollisionNode* nodeB) {

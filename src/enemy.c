@@ -82,17 +82,20 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
             // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
             break;
         default:
-            TraceLog(LOG_WARNING, "enemy.c-EnemyStartup: Invalid EnemyType was given.");
+            TraceLog(LOG_WARNING, "ENEMY.C (EnemyStartup, line: %d): Invalid EnemyType was given.", __LINE__);
             return (Entity){};
     }
 
     SetupEnemyAnimation(&enemy, type);
+
+    TraceLog(LOG_INFO, "ENEMY.C (EnemyStartup): Enemy set successfully.");
+
     return enemy;
 }
 
 void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
     if(enemy == NULL) {
-        TraceLog(LOG_WARNING, "enemy.c-EnemyMovement: NULL enemy was found.");
+        TraceLog(LOG_WARNING, "ENEMY.C (EnemyMovement, line: %d): NULL enemy was found.", __LINE__);
         return;
     }
 
@@ -123,7 +126,7 @@ void EnemyAttack() {}
 
 void EnemyRender(Entity* enemy) {
     if(enemy == NULL) {
-        TraceLog(LOG_WARNING, "enemy.c-EnemyRender: NULL enemy was found.");
+        TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): NULL enemy was found.", __LINE__);
         return;
     }
 
@@ -140,7 +143,7 @@ void EnemyRender(Entity* enemy) {
             break;
         case ATTACKING: break;
         default:
-            TraceLog(LOG_WARNING, "enemy.c-EnemyRender: Invalid enemy state given.");
+            TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): Invalid enemy state given.", __LINE__);
             break;
     }
 }
@@ -150,15 +153,17 @@ void RenderEnemyAttack() {}
 
 void EnemyUnload(Entity* enemy) {
     if(enemy == NULL) {
-        TraceLog(LOG_FATAL, "enemy-list.c-EnemyUnload: NULL enemy was given.");
-        exit(EXIT_FAILURE);
+        TraceLog(LOG_FATAL, "ENEMY.C (EnemyUnload, line: %d): NULL enemy was given.", __LINE__);
     }
     UnloadAnimationArray(&enemy->animations);
+    
+    TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy animations unloaded successfully.");
+    TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy unloaded successfully.");
 }
 
 static bool IsPlayerSeen(Entity* enemy) {
     if(enemy == NULL) {
-        TraceLog(LOG_WARNING, "enemy.c-IsPlayerSeen: NULL enemy was found.");
+        TraceLog(LOG_WARNING, "ENEMY.C (IsPlayerSeen, line: %d): NULL enemy was found.", __LINE__);
         return false;
     }
 
@@ -196,7 +201,7 @@ static bool IsPlayerSeen(Entity* enemy) {
 
 static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     if(enemy == NULL) {
-        TraceLog(LOG_WARNING, "enemy.c-SetupEnemyAnimation: NULL enemy was given.");
+        TraceLog(LOG_WARNING, "ENEMY.C (SetupEnemyAnimation, line: %d): NULL enemy was given.", __LINE__);
         return;
     }
 
@@ -209,8 +214,7 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
         (Animation*) malloc(sizeof(Animation) * enemy->animations.size);
 
     if(enemy->animations.animationArr == NULL) {
-        TraceLog(LOG_FATAL, "enemy.c-SetupEnemyAnimation: Memory allocation failure.");
-        exit(EXIT_FAILURE);
+        TraceLog(LOG_FATAL, "ENEMY.C (SetupEnemyAnimation, line: %d): Memory allocation failure.", __LINE__);
     }
 
     switch(type) {
@@ -231,7 +235,7 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
             // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
             break;
         default:
-            TraceLog(LOG_WARNING, "enemy.c-SetupEnemyAnimation: Invalid EnemyType was given.");
+            TraceLog(LOG_WARNING, "ENEMY.C (SetupEnemyAnimation, line: %d): Invalid EnemyType was given.", __LINE__);
             break;
     }
 

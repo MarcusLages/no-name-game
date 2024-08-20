@@ -79,6 +79,9 @@ static void GameStartup() {
 
     // Starts up Main Menu
     MainMenuStartup();
+
+    TraceLog(LOG_INFO, "MAIN.C (GameStartup): Game initialized at screen : %d successfully.", currentScreen);
+
 }
 
 static void GameUpdate() {
@@ -151,6 +154,8 @@ static void GameClosing() {
                 break;
             default: break;
     }
+
+    TraceLog(LOG_INFO, "MAIN.C (GameClosing): Game unloaded and closed successfully.");
 
     CloseWindow();
 }

@@ -70,6 +70,8 @@ void DungeonStartup() {
     StartCamera();
     SetupEnemies();
     PlayerStartup();
+
+    TraceLog(LOG_INFO, "DUNGEON.C (DungeonStartup): Dungeon loaded successfully.");
 }
 
 void DungeonUpdate() {
@@ -106,6 +108,8 @@ void DungeonUnload() {
     // Unloads collidableTiles list
     FreeCollisionList(collidableTiles);
     collidableTiles = NULL;
+    
+    TraceLog(LOG_INFO, "DUNGEON.C (DungeonUnload): Collidable tiles list unloaded successfully.");
 
     // Unloads texture array
     for(int i = 0; i < MAX_TEXTURES; i++) {
@@ -114,9 +118,15 @@ void DungeonUnload() {
     free(textures);
     textures = NULL;
 
+    TraceLog(LOG_INFO, "DUNGEON.C (DungeonUnload): Dungeon textures unloaded successfully.");
+
     // Unloads the worldCanvas framebuffer
     UnloadRenderTexture(*worldCanvas);
     worldCanvas = NULL;
+
+    TraceLog(LOG_INFO, "DUNGEON.C (DungeonUnload): World dungeon tilemap framebuffer unloaded successfully.");
+
+    TraceLog(LOG_INFO, "DUNGEON.C (DungeonUnload): Dungeon unloaded successfully.");
 }
 
 static void StartCamera() {
@@ -152,6 +162,8 @@ static void LoadTextures() {
     img                         = LoadImage("resources/player-attack.png");
     textures[TILE_ENEMY_PABLO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
+
+    TraceLog(LOG_INFO, "DUNGEON.C (LoadTextures): All dungeon textures loaded.");
 }
 
 static void InitializeTiles() {
@@ -164,4 +176,6 @@ static void InitializeTiles() {
     // ! UnloadMapTexture() from tile.c
     tmx_map_free(mapTmx);
     mapTmx = NULL;
+
+    TraceLog(LOG_INFO, "DUNGEON.C (InitializeTiles): Tmx map unloaded.");
 }
