@@ -1,6 +1,6 @@
 /***********************************************************************************************
  *
- **   Provides definitions for ...
+ **   Provides definitions for forming rooms to handle enemy spawning.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
