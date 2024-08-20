@@ -69,6 +69,7 @@ static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerP
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
+// TODO: Generalize entity info
 Entity EnemyStartup(Vector2 position, EnemyType type) {
     Entity enemy;
 
