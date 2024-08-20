@@ -65,10 +65,6 @@ void PlayerStartup() {
                                         .y     = player.pos.y + ENTITY_TILE_HEIGHT / 2,
                                         .width = ENTITY_TILE_WIDTH,
                                         .height = ENTITY_TILE_HEIGHT / 2 };
-    player.attack        = (Rectangle){ .x      = player.pos.x,
-                                        .y      = player.pos.y,
-                                        .width  = PLAYER_ATTACK_WIDTH,
-                                        .height = PLAYER_ATTACK_HEIGHT };
     player.speed         = 100;
     player.health        = 1;
     player.direction     = Vector2Zero();
@@ -101,8 +97,32 @@ void PlayerStartup() {
     TraceLog(LOG_INFO, "PLAYER.C (PlayerStartup): Player set successfully.");
 }
 
+void PlayerRender() {
+    switch(player.state) {
+        case IDLE:
+            EntityRender(
+                &player, &playerAnimArray[IDLE_ANIMATION],
+                ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+            break;
+        case MOVING:
+            EntityRender(
+                &player, &playerAnimArray[MOVE_ANIMATION],
+                ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+            break;
+        case ATTACKING: RenderPlayerAttack(); break;
+        default: break;
+    }
+}
+
+void PlayerUnload() { 
+    UnloadAnimationArray(&player.animations); 
+    TraceLog(LOG_INFO, "PLAYER.C (PlayerUnload): Player animations unloaded successfully.");    
+}
+
 void PlayerMovement() {
     player.direction = Vector2Zero();
+
+    if(player.state == ATTACKING) return;
 
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
         player.direction.x++;
@@ -122,6 +142,8 @@ void PlayerMovement() {
         player.directionFace = UP;
     }
 
+    // TODO: Check player's speed and if it's already zero, don't even need to check
+
     MovePlayerToPos(player.direction);
 
     //* Ensure if this needs to happen before position assignment of player. If so we
@@ -139,31 +161,31 @@ void PlayerAttack() {
 
         player.attack = (Rectangle){ .x      = player.pos.x,
                                      .y      = player.pos.y,
-                                     .width  = PLAYER_ATTACK_WIDTH,
-                                     .height = PLAYER_ATTACK_HEIGHT };
+                                     .width  = PLAYER_ATTACK_WIDTH - 4,
+                                     .height = PLAYER_ATTACK_HEIGHT - 8 };
 
         switch(player.directionFace) {
             case RIGHT:
                 // Attack hitbox offset
                 player.attack.x += 3;
-                player.attack.y += 10;
+                player.attack.y += 13;
                 break;
             case DOWN:
                 // Attack hitbox offset
                 SWAP(player.attack.width, player.attack.height);
-                player.attack.x -= 3;
+                player.attack.x += 1;
                 player.attack.y += 19;
                 break;
             case LEFT:
                 // Attack hitbox offset
-                player.attack.x -= PLAYER_ATTACK_WIDTH / 2 + 3;
-                player.attack.y += 10;
+                player.attack.x -= 15;
+                player.attack.y += 13;
                 break;
             case UP:
                 // Attack hitbox offset
                 SWAP(player.attack.width, player.attack.height);
-                player.attack.x -= 3;
-                player.attack.y -= 4;
+                player.attack.x += 1;
+                player.attack.y -= 0;
                 break;
             default: break;
         }
@@ -190,30 +212,6 @@ static void PlayerAttackHit() {
 
     CleanUpEnemies();
 }
-
-void PlayerRender() {
-    switch(player.state) {
-        case IDLE:
-            EntityRender(
-                &player, &playerAnimArray[IDLE_ANIMATION],
-                ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
-            break;
-        case MOVING:
-            EntityRender(
-                &player, &playerAnimArray[MOVE_ANIMATION],
-                ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
-            break;
-        case ATTACKING: RenderPlayerAttack(); break;
-        default: break;
-    }
-}
-
-void PlayerUnload() { 
-    UnloadAnimationArray(&player.animations); 
-    TraceLog(LOG_INFO, "PLAYER.C (PlayerUnload): Player animations unloaded successfully.");    
-}
-
-static void PlayerEnemyCollision() {}
 
 static void RenderPlayerAttack() {
     // Rendering idle animation of player as the player should not move while attacking.
@@ -262,3 +260,5 @@ static void RenderPlayerAttack() {
 static void MovePlayerToPos(Vector2 position) {
     MoveEntityTowardsPos(&player, position, NULL);
 }
+
+static void PlayerEnemyCollision() {}

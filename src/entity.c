@@ -37,6 +37,12 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
         return;
     }
 
+    // Set state to idle if position is zero
+    if(Vector2Equals(position, Vector2Zero())) {
+        SetEntityStatebyDir(entity, NULL);
+        return;
+    }
+
     // Ensures the entity cannot move while attacking
     if(entity->state == ATTACKING) return;
 
