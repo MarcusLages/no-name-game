@@ -38,6 +38,7 @@ struct EnemyNode {
 //* ------------------------------------------
 //* GLOBAL VARIABLES
 
+/** The list of all enemies. */
 extern EnemyNode* enemies;
 
 //* ------------------------------------------
@@ -45,8 +46,6 @@ extern EnemyNode* enemies;
 
 /**
  * Creates the enemies linked list and returns a reference to the first EnemyNode in the list.
- *
- * ! @attention Returns NULL if given a NULL enemy.
  *
  * @param enemy The enemy to add as the first EnemyNode.
  *
@@ -59,7 +58,7 @@ EnemyNode* CreateEnemyList(Entity enemy);
 /**
  * Creates an EnemyNode and adds it to the end of the enemies linked list.
  *
- * ! @attention Returns if given a NULL enemy or NULL head pointer.
+ * ! @attention Returns if given a NULL head pointer.
  *
  * @param enemy The enemy to add as an EnemyNode.
  *
@@ -78,31 +77,8 @@ void UnloadEnemies();
 /**
  * Populates the enemies linked list by creates entities around the level and
  * assigning them to an EnityNode.
- *
- * ! @note Calls CreateEnemyList and AddEnemyNode.
- * ? @note Calls EnemyStartup on each enemy (see enemy.c).
  */
 void SetupEnemies();
-
-/**
- * TODO: comment
- */
-void AdjustEnemies();
-
-/**
- * TODO: comment
- */
-int GetNumOfEnemies(RoomSize roomSize);
-
-/**
- * TODOL comment
- */
-void AddEnemies(int numOfEnemies, Vector2* positions, int* randNums);
-
-/**
- * TODOL comment
- */
-EnemyType GetRandomEnemyType();
 
 /**
  * Handles the movement of of each enemy in the list of enemies.

@@ -19,10 +19,18 @@ RoomNode* rooms;
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
-/** */
+/**
+ * Creates a PositionArray object with a positions array size specified.
+ *
+ * ! @note Allocates memory for the positions array inside the PositionArray structure.
+ */
 static PositionArray CreatePositionArray(int arraySize);
 
-/** */
+/**
+ * Unallocates the memory used be the positions array in the given PositionArray structure.
+ *
+ * ! @note Unallocates memory for the positions array inside the PositionArray structure.
+ */
 static void UnloadPositionArray(PositionArray* positionArray);
 
 //* ------------------------------------------
