@@ -110,7 +110,7 @@ void CleanUpEnemies() {
 
 void UnloadEnemies() {
     if(enemies == NULL) {
-        TraceLog(LOG_WARNING, "ENEMY-LIST.C (UnloadEnemies, line: %d): Enemies list is empty or could not be found.",__LINE__);
+        TraceLog(LOG_WARNING, "ENEMY-LIST.C (UnloadEnemies, line: %d): Enemies list is empty or could not be found.", __LINE__);
     }
 
     while(enemies != NULL) {
@@ -200,7 +200,6 @@ static void AdjustEnemies() {
         diff.y = diff.y - hitbox_Y;
 
         cursor->enemy.pos = Vector2Add(cursor->enemy.pos, diff);
-
         cursor = cursor->next;
     }
 }
@@ -209,6 +208,14 @@ void MoveEnemies() {
     EnemyNode* currEnemy = enemies;
     while(currEnemy != NULL) {
         EnemyMovement(&currEnemy->enemy, &(currEnemy->lastPlayerPos));
+        currEnemy = currEnemy->next;
+    }
+}
+
+void HandleEnemiesAttack() {
+    EnemyNode* currEnemy = enemies;
+    while(currEnemy != NULL) {
+        EnemyAttack(&currEnemy->enemy);
         currEnemy = currEnemy->next;
     }
 }

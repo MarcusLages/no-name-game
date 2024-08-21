@@ -31,6 +31,10 @@
 #define ENEMY_DIEGO_SPEED   35
 #define ENEMY_WAFFLES_SPEED 25
 
+/** Attack dimensions. */
+#define ENEMY_ATTACK_WIDTH  32
+#define ENEMY_ATTACK_HEIGHT 21
+
 //* ------------------------------------------
 //* ENUMERATIONS
 
@@ -77,13 +81,12 @@ Entity EnemyStartup(Vector2 position, EnemyType type);
 void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos);
 
 /**
- * Handles the enemy's attack.
+ * Handles the given enemy's attack.
  *
  * ? @note Manages the timer for the enemy attack animation.
  * TODO: collisions, enemy health, etc..
- * NOTE: Will be called by enemy-lists.c
  */
-void EnemyAttack();
+void EnemyAttack(Entity* enemy);
 
 /**
  * Renders the enemy animation based off of it's GameState.

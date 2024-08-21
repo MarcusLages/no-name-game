@@ -49,11 +49,16 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
 static bool IsPlayerSeen(Entity* enemy);
 
 /**
+ * TODO: Comments
+ */
+static void UpdateEnemyAttackHitbox(Entity* enemy);
+
+/**
  * Renders an enemy's attack animation based off of it's Direction.
  *
- * TODO: Implement
+ * TODO: Comments
  */
-static void RenderEnemyAttack();
+static void RenderEnemyAttack(Entity* enemy);
 
 /**
  * Handles the enemy movement towards a given position.
@@ -133,9 +138,67 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
     MoveEnemyToPos(enemy, player.pos, lastPlayerPos);
 }
 
-// TODO: Implement
-void EnemyAttack() {}
+// TODO: EnemyType is not considered yet for different attack widths.
+void EnemyAttack(Entity* enemy) {
+    if(enemy->state == ATTACKING && TimerDone(&enemyAnimArray[ATTACK_ANIMATION].timer)) {
+        enemy->state = IDLE;
+        return;
+    }
 
+    UpdateEnemyAttackHitbox(enemy);
+
+    if(EntityAttack(enemy, &player, 1) && enemy->state != ATTACKING) {
+        enemy->state = ATTACKING;
+        StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 0.5f);
+
+        TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack, line: %d): Player was hit by enemy.", __LINE__);
+
+        // check player death and then remove them
+    }
+}
+
+static void UpdateEnemyAttackHitbox(Entity* enemy) {
+    enemy->attack = (Rectangle){ .x      = enemy->pos.x,
+                                 .y      = enemy->pos.y,
+                                 .width  = ENEMY_ATTACK_WIDTH - 4,
+                                 .height = ENEMY_ATTACK_HEIGHT - 8 };
+
+    // handles setting the attack hitbox based upon the direction enemy is facing
+    switch(enemy->directionFace) {
+        case RIGHT:
+            // Attack hitbox offset
+            enemy->attack.x += 3;
+            enemy->attack.y += 13;
+            break;
+        case DOWN:
+            // Attack hitbox offset
+            SWAP(enemy->attack.width, enemy->attack.height);
+            enemy->attack.x += 1;
+            enemy->attack.y += 19;
+            break;
+        case LEFT:
+            // Attack hitbox offset
+            enemy->attack.x -= 15;
+            enemy->attack.y += 13;
+            break;
+        case UP:
+            // Attack hitbox offset
+            SWAP(enemy->attack.width, enemy->attack.height);
+            enemy->attack.x += 1;
+            enemy->attack.y -= 0;
+            break;
+        default:
+            TraceLog(LOG_WARNING, "ENEMY.C (EnemyAttack, line: %d): Invalid directionFace was found.", __LINE__);
+            break;
+    }
+
+    enemy->attack.x = floor(enemy->attack.x);
+    enemy->attack.y = floor(enemy->attack.y);
+}
+
+
+
+// TODO: EnemyType is not considered yet for different widths.
 void EnemyRender(Entity* enemy) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): NULL enemy was found.", __LINE__);
@@ -153,15 +216,49 @@ void EnemyRender(Entity* enemy) {
                 enemy, &enemyAnimArray[MOVE_ANIMATION],
                 ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
             break;
-        case ATTACKING: break;
+        case ATTACKING: RenderEnemyAttack(enemy); break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): Invalid enemy state given.", __LINE__);
             break;
     }
 }
 
-// TODO: Implement
-void RenderEnemyAttack() {}
+// TODO: EnemyType is not considered yet for different attack widths.
+static void RenderEnemyAttack(Entity* enemy) {
+    // Rendering idle animation of enemy as the enemy should not move while attacking.
+    EntityRender(
+        enemy, &enemyAnimArray[IDLE_ANIMATION],
+        ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+
+    //? NOTE: commented out animations are kept for alternating animations
+    switch(enemy->directionFace) {
+        case RIGHT:
+            EntityRender(
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], ENEMY_ATTACK_WIDTH, -ENEMY_ATTACK_HEIGHT,
+                ENEMY_ATTACK_WIDTH + 3, ENEMY_ATTACK_HEIGHT + 10, 180.0f);
+            break;
+        case DOWN:
+            EntityRender(
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], ENEMY_ATTACK_WIDTH,
+                -ENEMY_ATTACK_HEIGHT * enemy->faceValue,
+                ENEMY_ATTACK_WIDTH - 35, ENEMY_ATTACK_HEIGHT + 30, -90.0f);
+            break;
+        case LEFT:
+            EntityRender(
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], ENEMY_ATTACK_WIDTH, ENEMY_ATTACK_HEIGHT,
+                ENEMY_ATTACK_WIDTH - 51, ENEMY_ATTACK_HEIGHT - 11, 0.0f);
+            break;
+        case UP:
+            EntityRender(
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], -ENEMY_ATTACK_WIDTH,
+                -ENEMY_ATTACK_HEIGHT * enemy->faceValue,
+                ENEMY_ATTACK_WIDTH - 35, ENEMY_ATTACK_HEIGHT + 7, -90.0f);
+            break;
+        default:
+            TraceLog(LOG_WARNING, "ENEMY.C (RenderEnemyAttack, line: %d): Invalid enemy directionFace found.", __LINE__);
+            break;
+    }
+}
 
 void EnemyUnload(Entity* enemy) {
     if(enemy == NULL) {

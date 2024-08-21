@@ -88,6 +88,13 @@ void SetupEnemies();
 void MoveEnemies();
 
 /**
+ * Handles enemy attack of each enemy in the list of enemies.
+ * 
+ * ? @note Calls EnemyAttack on each enemy (see enemy.c).
+ */
+void HandleEnemiesAttack();
+
+/**
  * Handles rendering each enemt in the list of enemies.
  *
  * ? @note Calls EnemyRender on each enemy (see enemy.c).
