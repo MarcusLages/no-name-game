@@ -2,8 +2,6 @@
  *
  **   main-menu.c is responsible for managing and displaying the main menu screen.
  *
- *    TODO: Restructure menu with common raygui algorithms.
- *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.2
  *
@@ -12,6 +10,7 @@
  ***********************************************************************************************/
 
 #include "../include/screen.h"
+#include "../include/utils.h"
 
 //* ------------------------------------------
 //* DEFINITIONS
@@ -23,7 +22,7 @@
 //* ENUMERATIONS
 
 /**
- * Enumeration representing the possible menu mainMenuButtonBox.
+ * Enumeration representing the possible menu button options.
  *
  * @param START_BUTTON 0
  * @param OPTIONS_BUTTON 1
@@ -51,20 +50,7 @@ static Rectangle mainMenuButtonBox[MAX_MENU_BUTTONS];
 static int hoveredButton;
 
 //* ------------------------------------------
-//* FUNCTIONS PROTOTYPES
-
-/**
- * Used to return the x position that a component should have to be
- * centered on the screen based on its width.
- *
- * @param componentWidth
- * @return Centered x position the component should have
- *
- */
-static int CenterComponentX(int componentWidth);
-
-//* ------------------------------------------
-//* FUNCTION IMPLEMENTATIONS
+//* FUNCTIONS IMPLEMENTATIONS
 
 void MainMenuStartup() {
     // Sets up currentScreen
@@ -88,16 +74,16 @@ void MainMenuUpdate() {
     Vector2 mouse = GetMousePosition();
 
     // Checks mouse click or hover on a button on the main menu
-    for(int i = 0; i < MAX_MENU_BUTTONS; i++) {
-        if(CheckCollisionPointRec(mouse, mainMenuButtonBox[i])) {
+    for(int button = 0; button < MAX_MENU_BUTTONS; button++) {
+        if(CheckCollisionPointRec(mouse, mainMenuButtonBox[button])) {
             // If mouse hovered, changes the value of the hoveredButton var to the
             // index of the mouse button and breaks the collision checking loop.
             if(!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                hoveredButton = i;
+                hoveredButton = button;
                 break;
             } else {
                 // If mouse clicked, changes the current screen to the appropriate screen
-                switch(i) {
+                switch(button) {
                     case START_BUTTON: nextScreen = DUNGEON; break;
                     case OPTIONS_BUTTON: break;
                     case EXIT_BUTTON: isRunning = false; break;
@@ -129,7 +115,3 @@ void MainMenuRender() {
 }
 
 void MainMenuUnload() {}
-
-static int CenterComponentX(int componentWidth) {
-    return (SCREEN_WIDTH - componentWidth) / 2;
-}

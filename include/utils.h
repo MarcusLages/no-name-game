@@ -35,6 +35,7 @@
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
+
 /**
  * Determines if the given vectors are equal with a given precision.
  *
@@ -44,5 +45,15 @@
  * @returns True if the vectors are equal false otherwise.
  */
 bool IsVectorEqual(Vector2 v1, Vector2 v2, float precision);
+
+/**
+ * Used to return the x position that a component should have to be
+ * centered on the screen based on its width.
+ *
+ * @param componentWidth
+ * @return Centered x position the component should have
+ *
+ */
+int CenterComponentX(int componentWidth);
 
 #endif // UTILS_H_
