@@ -95,6 +95,9 @@ static void GameUpdate() {
             case DUNGEON:
                 DungeonUnload();
                 break;
+            case FINAL_SCREEN:
+                FinalScreenUnload();
+                break;
             default: break;
         }
 
@@ -105,6 +108,9 @@ static void GameUpdate() {
                 break;
             case DUNGEON:
                 DungeonStartup();
+                break;
+            case FINAL_SCREEN:
+                FinalScreenStartup();
                 break;
             default: break;
         }
@@ -117,6 +123,9 @@ static void GameUpdate() {
                 break;
             case DUNGEON:
                 DungeonUpdate();
+                break;
+            case FINAL_SCREEN:
+                FinalScreenUpdate();
                 break;
             default: break;
     }
@@ -137,6 +146,9 @@ static void GameRender() {
                 DungeonRender();
                 EndMode2D();
                 break;
+            case FINAL_SCREEN:
+                FinalScreenRender();
+                break;
             default: break;
         }
 
@@ -151,6 +163,9 @@ static void GameClosing() {
                 break;
             case DUNGEON:
                 DungeonUnload();
+                break;
+            case FINAL_SCREEN:
+                FinalScreenUnload();
                 break;
             default: break;
     }

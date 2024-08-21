@@ -1,16 +1,16 @@
 /**********************************************************************************************
-*
-**   screen.h is responsible for dealing with screen, game stages and window related actions
-**   and settings in the game, as well as connecting all game screens through the game life
-**   cycle functions.
-*   
-*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.2
-*
-*    @include raylib.h
-*    @cite raylib
-*
-**********************************************************************************************/
+ *
+ **   screen.h is responsible for dealing with screen, game stages and window related actions
+ **   and settings in the game, as well as connecting all game screens through the game life
+ **   cycle functions.
+ *
+ *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+ *    @version 0.2
+ *
+ *    @include raylib.h
+ *    @cite raylib
+ *
+ **********************************************************************************************/
 
 #ifndef SCREEN_H
 #define SCREEN_H
@@ -21,27 +21,28 @@
 //* DEFINITIONS
 
 /** Window rendering variables (size and refresh rate). */
-#define SCREEN_WIDTH    1280
-#define SCREEN_HEIGHT   720
-#define FRAME_RATE      60
+#define SCREEN_WIDTH  1280
+#define SCREEN_HEIGHT 720
+#define FRAME_RATE    60
 
 //* ------------------------------------------
 //* ENUMERATIONS
 
 /**
  * Enum for the possible screens/stages the game can display.
- * 
+ *
  * @param MAIN_MENU     0
  * @param DUNGEON       1
  * @param SETTINGS      2
  * @param PAUSE         3
- * @param TEST_SCREEN   99
+ * @param FINAL_SCREEN  4
  */
 enum GameScreen {
-    MAIN_MENU = 0,
-    DUNGEON = 1,
-    SETTINGS = 2,
-    PAUSE = 3
+    MAIN_MENU    = 0,
+    DUNGEON      = 1,
+    SETTINGS     = 2,
+    PAUSE        = 3,
+    FINAL_SCREEN = 4
 };
 typedef enum GameScreen GameScreen;
 
@@ -60,6 +61,7 @@ extern GameScreen nextScreen;
 /** Closes the game if true. */
 extern bool isRunning;
 
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 //* Main menu functions
@@ -83,5 +85,14 @@ void DungeonUpdate();
 void DungeonRender();
 /** Unloads (frees memory of) all dungeon screen resources. */
 void DungeonUnload();
+
+/** Starts and loads all final screen resources. */
+void FinalScreenStartup();
+/** Updates final screen state. */
+void FinalScreenUpdate();
+/** Renders final screen current state on the screen. */
+void FinalScreenRender();
+/** Unloads (frees memory of) all final screen resources. */
+void FinalScreenUnload();
 
 #endif // !SCREEN_H
