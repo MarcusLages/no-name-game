@@ -28,6 +28,7 @@
 #define DEFAULT_ATTACK_FPS 8
 
 // Temporary attack rectangle size
+//TODO: move to player.h as it is more related to that
 #define PLAYER_ATTACK_WIDTH  32
 #define PLAYER_ATTACK_HEIGHT 21
 

@@ -69,13 +69,9 @@ static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerP
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
-// TODO: Generalize entity info
 Entity EnemyStartup(Vector2 position, EnemyType type) {
     Entity enemy;
-
     enemy.pos           = position;
-    enemy.speed         = 35;
-    enemy.health        = 1;
     enemy.direction     = Vector2Zero();
     enemy.faceValue     = 1;
     enemy.state         = IDLE;
@@ -83,15 +79,24 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
 
     switch(type) {
         case DEMON_PABLO:
-        case DEMON_DIEGO:
+            enemy.speed  = ENEMY_PABLO_SPEED;
+            enemy.health = ENEMY_PABLO_HEALTH;
             enemy.hitbox = (Rectangle){ .x = enemy.pos.x,
                                         .y = enemy.pos.y + ENTITY_TILE_HEIGHT / 2,
                                         .width  = ENTITY_TILE_WIDTH,
                                         .height = ENTITY_TILE_HEIGHT / 2 };
             break;
-
+        case DEMON_DIEGO:
+            enemy.speed     = ENEMY_DIEGO_SPEED;
+            enemy.health    = ENEMY_DIEGO_HEALTH;
+            enemy.direction = Vector2Zero();
+            enemy.hitbox    = (Rectangle){ .x = enemy.pos.x,
+                                           .y = enemy.pos.y + ENTITY_TILE_HEIGHT / 2,
+                                           .width  = ENTITY_TILE_WIDTH,
+                                           .height = ENTITY_TILE_HEIGHT / 2 };
+            break;
         case DEMON_WAFFLES:
-            // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
+            // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE IS READY TO PLAY
             break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (EnemyStartup, line: %d): Invalid EnemyType was given.", __LINE__);
@@ -163,7 +168,7 @@ void EnemyUnload(Entity* enemy) {
         TraceLog(LOG_FATAL, "ENEMY.C (EnemyUnload, line: %d): NULL enemy was given.", __LINE__);
     }
     UnloadAnimationArray(&enemy->animations);
-    
+
     TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy animations unloaded successfully.");
     TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy unloaded successfully.");
 }
