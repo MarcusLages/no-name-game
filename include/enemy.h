@@ -31,9 +31,27 @@
 #define ENEMY_DIEGO_SPEED   35
 #define ENEMY_WAFFLES_SPEED 25
 
+/** Enemy dimensions. */
+#define ENEMY_PABLO_WIDTH  16
+#define ENEMY_PABLO_HEIGHT 32
+
+#define ENEMY_DEIGO_WIDTH  16
+#define ENEMY_DEIGO_HEIGHT 32
+
+#define ENEMY_WAFFLES_WIDTH  32
+#define ENEMY_WAFFLES_HEIGHT 32
+
 /** Attack dimensions. */
-#define ENEMY_ATTACK_WIDTH  32
-#define ENEMY_ATTACK_HEIGHT 21
+//? NOTE: Dimensions are the same for now as sprite is the same.
+//? Testing will be need once different dimensions and sprites are given.
+#define ENEMY_PABLO_ATTACK_WIDTH  32
+#define ENEMY_PABLO_ATTACK_HEIGHT 21
+
+#define ENEMY_DEIGO_ATTACK_WIDTH  32
+#define ENEMY_DEIGO_ATTACK_HEIGHT 21
+
+#define ENEMY_WAFFLES_ATTACK_WIDTH  32
+#define ENEMY_WAFFLES_ATTACK_HEIGHT 21
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -86,12 +104,14 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos);
  * ! @attention returns if the enemy is NULL, has an invalid state or if it is no longer attacking.
  *
  * @param enemy The reference to the enemy to handle the attack for.
+ * @param attackWidth Attack hitbox width.
+ * @param attackHeight Attack hitbox height.
  *
  * ? @note Manages the timer for the enemy attack animation.
  * ? @note Calls UpdateEnemyAttackHitbox to update the given enemy's attack hotbox.
  * ? @note Calls EntityAttack to handle enemy attack if the hitboxes intersect.
  */
-void EnemyAttack(Entity* enemy);
+void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight);
 
 /**
  * Renders the enemy animation based off of it's GameState.
@@ -99,8 +119,12 @@ void EnemyAttack(Entity* enemy);
  * ! @attention returns if the enemy is NULL or has an invalid state.
  *
  * @param enemy The reference to the enemy to render.
+ * @param width Enemy width.
+ * @param height Enemy height.
+ * @param attackWidth Attack hitbox width.
+ * @param attackHeight Attack hitbox height.
  */
-void EnemyRender(Entity* enemy);
+void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int attackHeight);
 
 /**
  * Unloads all the enemies and animations associated with an enemy entity.

@@ -50,17 +50,21 @@ static bool IsPlayerSeen(Entity* enemy);
 
 /**
  * Updates the given enemy's attack hitbox property.
- * 
+ *
  * @param enemy The enemy to update.
+ * @param attackWidth Attack hitbox width.
+ * @param attackHeight Attack hitbox height.
  */
-static void UpdateEnemyAttackHitbox(Entity* enemy);
+static void UpdateEnemyAttackHitbox(Entity* enemy, int attackWidth, int attackHeight);
 
 /**
  * Renders an enemy's attack animation based off of it's Direction.
  *
  * @param enemy The enemy to render an attack for.
+ * @param attackWidth Attack hitbox width.
+ * @param attackHeight Attack hitbox height.
  */
-static void RenderEnemyAttack(Entity* enemy);
+static void RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight);
 
 /**
  * Handles the enemy movement towards a given position.
@@ -138,8 +142,7 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
     MoveEnemyToPos(enemy, player.pos, lastPlayerPos);
 }
 
-// TODO: EnemyType is not considered yet for different attack widths.
-void EnemyAttack(Entity* enemy) {
+void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (EnemyAttack, line: %d): NULL enemy was found.", __LINE__);
         return;
@@ -150,9 +153,9 @@ void EnemyAttack(Entity* enemy) {
         return;
     }
 
-    UpdateEnemyAttackHitbox(enemy);
+    UpdateEnemyAttackHitbox(enemy, attackWidth, attackWidth);
 
-    if(EntityAttack(enemy, &player, player.health) && enemy->state != ATTACKING) {
+    if(EntityAttack(enemy, &player, 0) && enemy->state != ATTACKING) {
         enemy->state = ATTACKING;
         StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 0.5f);
 
@@ -160,12 +163,11 @@ void EnemyAttack(Entity* enemy) {
     }
 }
 
-// TODO: EnemyType is not considered yet for different attack widths.
-static void UpdateEnemyAttackHitbox(Entity* enemy) {
+static void UpdateEnemyAttackHitbox(Entity* enemy, int attackWidth, int attackHeight) {
     enemy->attack = (Rectangle){ .x      = enemy->pos.x,
                                  .y      = enemy->pos.y,
-                                 .width  = ENEMY_ATTACK_WIDTH - 4,
-                                 .height = ENEMY_ATTACK_HEIGHT - 8 };
+                                 .width  = attackWidth - 4,
+                                 .height = attackHeight - 8 };
 
     // handles setting the attack hitbox based upon the direction enemy is facing
     switch(enemy->directionFace) {
@@ -197,8 +199,7 @@ static void UpdateEnemyAttackHitbox(Entity* enemy) {
     enemy->attack.y = floor(enemy->attack.y);
 }
 
-// TODO: EnemyType is not considered yet for different widths.
-void EnemyRender(Entity* enemy) {
+void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int attackHeight) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): NULL enemy was found.", __LINE__);
         return;
@@ -208,22 +209,23 @@ void EnemyRender(Entity* enemy) {
         case IDLE:
             EntityRender(
                 enemy, &enemyAnimArray[IDLE_ANIMATION],
-                ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+                width * enemy->faceValue, height, 0, 0, 0.0f);
             break;
         case MOVING:
             EntityRender(
                 enemy, &enemyAnimArray[MOVE_ANIMATION],
-                ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+                width * enemy->faceValue, height, 0, 0, 0.0f);
             break;
-        case ATTACKING: RenderEnemyAttack(enemy); break;
+        case ATTACKING:
+            RenderEnemyAttack(enemy, attackWidth, attackHeight);
+            break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): Invalid enemy state given.", __LINE__);
             break;
     }
 }
 
-// TODO: EnemyType is not considered yet for different attack widths.
-static void RenderEnemyAttack(Entity* enemy) {
+static void RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
     // Rendering idle animation of enemy as the enemy should not move while attacking.
     EntityRender(
         enemy, &enemyAnimArray[IDLE_ANIMATION],
@@ -233,25 +235,25 @@ static void RenderEnemyAttack(Entity* enemy) {
     switch(enemy->directionFace) {
         case RIGHT:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], ENEMY_ATTACK_WIDTH, -ENEMY_ATTACK_HEIGHT,
-                ENEMY_ATTACK_WIDTH + 3, ENEMY_ATTACK_HEIGHT + 10, 180.0f);
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
+                -attackHeight, attackWidth + 3, attackHeight + 10, 180.0f);
             break;
         case DOWN:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], ENEMY_ATTACK_WIDTH,
-                -ENEMY_ATTACK_HEIGHT * enemy->faceValue,
-                ENEMY_ATTACK_WIDTH - 35, ENEMY_ATTACK_HEIGHT + 30, -90.0f);
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
+                -attackHeight * enemy->faceValue, attackWidth - 35,
+                attackHeight + 30, -90.0f);
             break;
         case LEFT:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], ENEMY_ATTACK_WIDTH, ENEMY_ATTACK_HEIGHT,
-                ENEMY_ATTACK_WIDTH - 51, ENEMY_ATTACK_HEIGHT - 11, 0.0f);
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
+                attackHeight, attackWidth - 51, attackHeight - 11, 0.0f);
             break;
         case UP:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], -ENEMY_ATTACK_WIDTH,
-                -ENEMY_ATTACK_HEIGHT * enemy->faceValue,
-                ENEMY_ATTACK_WIDTH - 35, ENEMY_ATTACK_HEIGHT + 7, -90.0f);
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
+                -attackHeight * enemy->faceValue, attackWidth - 35,
+                attackHeight + 7, -90.0f);
             break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (RenderEnemyAttack, line: %d): Invalid enemy directionFace found.", __LINE__);
