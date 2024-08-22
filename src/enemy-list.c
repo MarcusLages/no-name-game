@@ -54,6 +54,20 @@ static EnemyType GetRandomEnemyType();
  */
 static void AdjustEnemies();
 
+/**
+ * Handles the movement of of each enemy in the list of enemies.
+ *
+ * ? @note Calls EnemyMovement on each enemy (see enemy.c).
+ */
+static void MoveEnemies();
+
+/**
+ * Handles enemy attack of each enemy in the list of enemies.
+ * 
+ * ? @note Calls EnemyAttack on each enemy (see enemy.c).
+ */
+static void HandleEnemiesAttack();
+
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
@@ -204,7 +218,13 @@ static void AdjustEnemies() {
     }
 }
 
-void MoveEnemies() {
+void UpdateEnemies() {
+    // could call cleanup here for enemies....
+    MoveEnemies();
+    HandleEnemiesAttack();
+}
+
+static void MoveEnemies() {
     EnemyNode* currEnemy = enemies;
     while(currEnemy != NULL) {
         EnemyMovement(&currEnemy->enemy, &(currEnemy->lastPlayerPos));
@@ -212,7 +232,7 @@ void MoveEnemies() {
     }
 }
 
-void HandleEnemiesAttack() {
+static void HandleEnemiesAttack() {
     EnemyNode* currEnemy = enemies;
     while(currEnemy != NULL) {
         EnemyAttack(&currEnemy->enemy);

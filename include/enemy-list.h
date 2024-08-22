@@ -81,18 +81,11 @@ void UnloadEnemies();
 void SetupEnemies();
 
 /**
- * Handles the movement of of each enemy in the list of enemies.
- *
- * ? @note Calls EnemyMovement on each enemy (see enemy.c).
- */
-void MoveEnemies();
-
-/**
- * Handles enemy attack of each enemy in the list of enemies.
+ * Updates information required to move enemies and handle their attacks.
  * 
- * ? @note Calls EnemyAttack on each enemy (see enemy.c).
+ * ? @note Calls MoveEnemies and HandleEnemiesAttack
  */
-void HandleEnemiesAttack();
+void UpdateEnemies();
 
 /**
  * Handles rendering each enemt in the list of enemies.
