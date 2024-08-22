@@ -177,9 +177,6 @@ static void PlayerMovement() {
     // PlayerEnemyCollision();
 }
 
-// TODO: Fix player attack so that the animation cant display in a different
-// direction while triggered in one direction already
-// TODO FIXME: Make a better way to get the attack hitbox (on EntityRender too)
 static void PlayerAttack() {
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
