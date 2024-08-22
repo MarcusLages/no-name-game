@@ -113,6 +113,7 @@ void PlayerStartup() {
 void PlayerRender() {
     // TODO: Temp. Checking player death is handled in dungeon.c the way Marcus did it. remove this
     if(player.health <= 0) return;
+
     switch(player.state) {
         case IDLE:
             EntityRender(
@@ -184,37 +185,33 @@ static void PlayerAttack() {
         player.state = ATTACKING;
         StartTimer(&playerAnimArray[ATTACK_ANIMATION].timer, 0.5f);
 
-        player.attack = (Rectangle){ .x      = player.pos.x,
-                                     .y      = player.pos.y,
-                                     .width  = PLAYER_ATTACK_WIDTH - 4,
+        player.attack = (Rectangle){ .x = player.pos.x,
+                                     .y = player.pos.y,
+                                     .width = PLAYER_ATTACK_WIDTH - ENTITY_TILE_WIDTH / 2,
                                      .height = PLAYER_ATTACK_HEIGHT - 8 };
 
         switch(player.directionFace) {
+            // Attack hitbox offset
             case RIGHT:
-                // Attack hitbox offset
-                player.attack.x += 3;
-                player.attack.y += 13;
+                player.attack.x += ENTITY_TILE_WIDTH / 2;
+                player.attack.y += ENTITY_TILE_HEIGHT / 2;
                 break;
             case DOWN:
-                // Attack hitbox offset
                 SWAP(player.attack.width, player.attack.height);
-                player.attack.x += 1;
-                player.attack.y += 19;
+                player.attack.x += ENTITY_TILE_WIDTH / 8;
+                player.attack.y += ENTITY_TILE_HEIGHT / 2;
                 break;
             case LEFT:
-                // Attack hitbox offset
-                player.attack.x -= 15;
-                player.attack.y += 13;
+                player.attack.x -= ENTITY_TILE_WIDTH;
+                player.attack.y += ENTITY_TILE_HEIGHT / 2;
                 break;
             case UP:
-                // Attack hitbox offset
                 SWAP(player.attack.width, player.attack.height);
-                player.attack.x += 1;
+                player.attack.x -= 0;
                 player.attack.y -= 0;
                 break;
             default: break;
         }
-
         player.attack.x = floor(player.attack.x);
         player.attack.y = floor(player.attack.y);
 
@@ -242,39 +239,28 @@ static void RenderPlayerAttack() {
         &player, &playerAnimArray[IDLE_ANIMATION],
         ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
 
-    //? NOTE: commented out animations are kept for alternating animations
     switch(player.directionFace) {
         case RIGHT:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION],
-                PLAYER_ATTACK_WIDTH, -PLAYER_ATTACK_HEIGHT,
-                PLAYER_ATTACK_WIDTH + 3, PLAYER_ATTACK_HEIGHT + 10, 180.0f);
-            // EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION],
-            // PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, 32, 0, 90.0f);
+                &player, &playerAnimArray[ATTACK_ANIMATION], -PLAYER_ATTACK_WIDTH,
+                PLAYER_ATTACK_HEIGHT, 0, PLAYER_ATTACK_HEIGHT / 2, 0.0f);
             break;
         case DOWN:
             EntityRender(
                 &player, &playerAnimArray[ATTACK_ANIMATION],
-                PLAYER_ATTACK_WIDTH, -PLAYER_ATTACK_HEIGHT * player.faceValue,
-                PLAYER_ATTACK_WIDTH - 35, PLAYER_ATTACK_HEIGHT + 30, -90.0f);
-            // EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION], PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT,
-            //     25, 48, 180.0f);
+                -PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT * player.faceValue,
+                ENTITY_TILE_WIDTH + ENTITY_TILE_WIDTH / 8, PLAYER_ATTACK_HEIGHT / 2, 90.0f);
             break;
         case LEFT:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION],
-                PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT,
-                PLAYER_ATTACK_WIDTH - 51, PLAYER_ATTACK_HEIGHT - 11, 0.0f);
-            // EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION],
-            // PLAYER_ATTACK_WIDTH, -PLAYER_ATTACK_HEIGHT, 16, 0, 90.0f);
+                &player, &playerAnimArray[ATTACK_ANIMATION], PLAYER_ATTACK_WIDTH,
+                PLAYER_ATTACK_HEIGHT, -ENTITY_TILE_WIDTH, PLAYER_ATTACK_HEIGHT / 2, 0.0f);
             break;
         case UP:
             EntityRender(
                 &player, &playerAnimArray[ATTACK_ANIMATION],
                 -PLAYER_ATTACK_WIDTH, -PLAYER_ATTACK_HEIGHT * player.faceValue,
-                PLAYER_ATTACK_WIDTH - 35, PLAYER_ATTACK_HEIGHT + 7, -90.0f);
-            //  EntityRender(&player, &playerAnimArray[ATTACK_ANIMATION], -PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT,
-            //     -10, 0, 0.0f);
+                -ENTITY_TILE_WIDTH / 8, ENTITY_TILE_HEIGHT, -90.0f);
             break;
         default: break;
     }

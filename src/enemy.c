@@ -327,23 +327,25 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     switch(type) {
         case DEMON_PABLO:
             idleEnemyAnimation =
-                CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_PABLO_IDLE);
+                CreateAnimation(DEFAULT_IDLE_FPS, ENEMY_PABLO_WIDTH, ENEMY_PABLO_HEIGHT, TILE_ENEMY_PABLO_IDLE);
 
             movingEnemyAnimation =
-                CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_PABLO_MOVE);
+                CreateAnimation(DEFAULT_MOVING_FPS, ENEMY_PABLO_WIDTH, ENEMY_PABLO_HEIGHT, TILE_ENEMY_PABLO_MOVE);
 
-            attackEnemyAnimation =
-                CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_ENEMY_PABLO_ATTACK);
+            attackEnemyAnimation = CreateAnimation(
+                DEFAULT_ATTACK_FPS, ENEMY_PABLO_ATTACK_WIDTH,
+                ENEMY_PABLO_ATTACK_HEIGHT, TILE_ENEMY_PABLO_ATTACK);
             break;
         case DEMON_DIEGO:
             idleEnemyAnimation =
-                CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_DIEGO_IDLE);
+                CreateAnimation(DEFAULT_IDLE_FPS, ENEMY_DEIGO_WIDTH, ENEMY_DEIGO_HEIGHT, TILE_ENEMY_DIEGO_IDLE);
 
             movingEnemyAnimation =
-                CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_DIEGO_MOVE);
+                CreateAnimation(DEFAULT_MOVING_FPS, ENEMY_DEIGO_WIDTH, ENEMY_DEIGO_HEIGHT, TILE_ENEMY_DIEGO_MOVE);
 
-            attackEnemyAnimation =
-                CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_ENEMY_DIEGO_ATTACK);
+            attackEnemyAnimation = CreateAnimation(
+                DEFAULT_ATTACK_FPS, ENEMY_DEIGO_ATTACK_WIDTH,
+                ENEMY_DEIGO_ATTACK_HEIGHT, TILE_ENEMY_DIEGO_ATTACK);
             break;
         case DEMON_WAFFLES:
             // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
