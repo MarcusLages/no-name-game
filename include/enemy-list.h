@@ -22,6 +22,7 @@
  * EnemyNode struct represents an enemy who has a reference to another enemy.
  *
  * @param enemy Enemy entity of this node.
+ * @param type Enemy type of this node.
  * @param lastPlayerPos Last known location of player to this enemy.
  * @param next  Next enemy node.
  */
@@ -29,6 +30,8 @@ typedef struct EnemyNode EnemyNode;
 struct EnemyNode {
     /** The enemy entity. */
     Entity enemy;
+    /** The enemy type. */
+    EnemyType type;
     /** The last known location of player relative to this enemy. */
     Vector2 lastPlayerPos;
     /** The pointer to the next enemy entity. */
@@ -43,28 +46,6 @@ extern EnemyNode* enemies;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
-
-/**
- * Creates the enemies linked list and returns a reference to the first EnemyNode in the list.
- *
- * @param enemy The enemy to add as the first EnemyNode.
- *
- * @returns The reference to the first EnemyNode.
- *
- * ! @note Allocates memory for the first EnemyNode.
- */
-EnemyNode* CreateEnemyList(Entity enemy);
-
-/**
- * Creates an EnemyNode and adds it to the end of the enemies linked list.
- *
- * ! @attention Returns if given a NULL head pointer.
- *
- * @param enemy The enemy to add as an EnemyNode.
- *
- * ! @note Allocates memory for an EnemyNode.
- */
-void AddEnemyNode(Entity enemy);
 
 /**
  * Unloads the list of enemies.
