@@ -50,8 +50,8 @@ bool IsVectorEqual(Vector2 v1, Vector2 v2, float precision);
  * Used to return the x position that a component should have to be
  * centered on the screen based on its width.
  *
- * @param componentWidth
- * @return Centered x position the component should have
+ * @param componentWidth Width of the component
+ * @return X position the component should have to be centered on screen
  *
  */
 int CenterComponentX(int componentWidth);
