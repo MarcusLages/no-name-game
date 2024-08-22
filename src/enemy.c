@@ -111,9 +111,7 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
     }
 
     SetupEnemyAnimation(&enemy, type);
-
     TraceLog(LOG_INFO, "ENEMY.C (EnemyStartup): Enemy set successfully.");
-
     return enemy;
 }
 
@@ -154,13 +152,11 @@ void EnemyAttack(Entity* enemy) {
 
     UpdateEnemyAttackHitbox(enemy);
 
-    if(EntityAttack(enemy, &player, 1) && enemy->state != ATTACKING) {
+    if(EntityAttack(enemy, &player, player.health) && enemy->state != ATTACKING) {
         enemy->state = ATTACKING;
         StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 0.5f);
 
-        TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack, line: %d): Player was hit by enemy.", __LINE__);
-
-        //TODO: check player death and then remove them
+        TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack, line: %d): Player was hit by enemy.");
     }
 }
 

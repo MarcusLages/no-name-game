@@ -83,6 +83,8 @@ void SetupEnemies();
 /**
  * Updates information required to move enemies and handle their attacks.
  * 
+ * ! @attention Does not update enemies if the player has expired it's health points.
+ * 
  * ? @note Calls MoveEnemies and HandleEnemiesAttack.
  */
 void UpdateEnemies();

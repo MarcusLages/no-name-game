@@ -63,7 +63,7 @@ static void MoveEnemies();
 
 /**
  * Handles enemy attack of each enemy in the list of enemies.
- * 
+ *
  * ? @note Calls EnemyAttack on each enemy (see enemy.c).
  */
 static void HandleEnemiesAttack();
@@ -191,11 +191,13 @@ static void AdjustEnemies() {
         diff.y = diff.y - hitbox_Y;
 
         cursor->enemy.pos = Vector2Add(cursor->enemy.pos, diff);
-        cursor = cursor->next;
+        cursor            = cursor->next;
     }
 }
 
 void UpdateEnemies() {
+    // TODO: Temp. Checking player death is handled in dungeon.c the way Marcus did it. remove this.
+    if(player.health <= 0) return;
     CleanUpEnemies();
     MoveEnemies();
     HandleEnemiesAttack();

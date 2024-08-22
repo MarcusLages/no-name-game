@@ -29,13 +29,13 @@ Entity player;
 //* FUNCTION PROTOTYPES
 
 /**
- * Handles player movement and updates it's GameState and Direction. 
+ * Handles player movement and updates it's GameState and Direction.
  */
 static void PlayerMovement();
 
 /**
  * Handles the player's attack.
- * 
+ *
  * ? @note Manages the timer for the player attack animation.
  * TODO: collisions, enemy health, etc..
  */
@@ -111,6 +111,8 @@ void PlayerStartup() {
 }
 
 void PlayerRender() {
+    // TODO: Temp. Checking player death is handled in dungeon.c the way Marcus did it. remove this
+    if(player.health <= 0) return;
     switch(player.state) {
         case IDLE:
             EntityRender(
@@ -127,12 +129,16 @@ void PlayerRender() {
     }
 }
 
-void PlayerUnload() { 
-    UnloadAnimationArray(&player.animations); 
-    TraceLog(LOG_INFO, "PLAYER.C (PlayerUnload): Player animations unloaded successfully.");    
+void PlayerUnload() {
+    UnloadAnimationArray(&player.animations);
+    TraceLog(LOG_INFO, "PLAYER.C (PlayerUnload): Player animations unloaded successfully.");
 }
 
 void PlayerUpdate() {
+    if(player.health <= 0) {
+        // TODO: Temp. Checking player death is handled in dungeon.c the way Marcus did it. remove this
+        return;
+    }
     PlayerMovement();
     PlayerAttack();
 }
@@ -170,7 +176,8 @@ static void PlayerMovement() {
     // PlayerEnemyCollision();
 }
 
-// TODO: Fix player attack so that the animation cant display in a different direction while triggered in one direction already
+// TODO: Fix player attack so that the animation cant display in a different
+// direction while triggered in one direction already
 // TODO FIXME: Make a better way to get the attack hitbox (on EntityRender too)
 static void PlayerAttack() {
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
@@ -210,7 +217,7 @@ static void PlayerAttack() {
 
         player.attack.x = floor(player.attack.x);
         player.attack.y = floor(player.attack.y);
-        
+
         PlayerAttackHit();
     }
 
