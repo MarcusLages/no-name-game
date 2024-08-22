@@ -159,7 +159,7 @@ static int GetNumOfEnemies(RoomSize roomSize) {
         case LARGE: numOfEnemies = LG_ROOM_MAX_ENEMIES; break;
 
         default:
-            TraceLog(LOG_ERROR, "enemy-list.c-GetMaxEnemies: Invalid roomSize given. Defaulting to small size.");
+            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetNumOfEnemies, line: %d): Invalid roomSize given. Defaulting to small size.", __LINE__);
             numOfEnemies = SM_ROOM_MAX_ENEMIES;
             break;
     }

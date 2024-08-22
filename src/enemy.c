@@ -156,7 +156,7 @@ void EnemyAttack(Entity* enemy) {
         enemy->state = ATTACKING;
         StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 0.5f);
 
-        TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack, line: %d): Player was hit by enemy.");
+        TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
     }
 }
 
@@ -169,24 +169,21 @@ static void UpdateEnemyAttackHitbox(Entity* enemy) {
 
     // handles setting the attack hitbox based upon the direction enemy is facing
     switch(enemy->directionFace) {
-        case RIGHT:
             // Attack hitbox offset
+        case RIGHT:
             enemy->attack.x += 3;
             enemy->attack.y += 13;
             break;
         case DOWN:
-            // Attack hitbox offset
             SWAP(enemy->attack.width, enemy->attack.height);
             enemy->attack.x += 1;
             enemy->attack.y += 19;
             break;
         case LEFT:
-            // Attack hitbox offset
             enemy->attack.x -= 15;
             enemy->attack.y += 13;
             break;
         case UP:
-            // Attack hitbox offset
             SWAP(enemy->attack.width, enemy->attack.height);
             enemy->attack.x += 1;
             enemy->attack.y -= 0;
