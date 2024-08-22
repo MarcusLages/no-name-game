@@ -34,12 +34,6 @@ Entity player;
 static void RenderPlayerAttack();
 
 /**
- * TODO: Implementation + checking how to pass the list or make it global
- * Handles player collision with the enemies list by movement.
- */
-// static void PlayerEnemyCollision();
-
-/**
  * Checks if the player has hit an enemy.
  *
  * @param attackHitbox Hitbox of the attack that will check the detection with
@@ -114,9 +108,9 @@ void PlayerRender() {
     }
 }
 
-void PlayerUnload() { 
-    UnloadAnimationArray(&player.animations); 
-    TraceLog(LOG_INFO, "PLAYER.C (PlayerUnload): Player animations unloaded successfully.");    
+void PlayerUnload() {
+    UnloadAnimationArray(&player.animations);
+    TraceLog(LOG_INFO, "PLAYER.C (PlayerUnload): Player animations unloaded successfully.");
 }
 
 void PlayerMovement() {
@@ -152,7 +146,6 @@ void PlayerMovement() {
     // PlayerEnemyCollision();
 }
 
-// TODO: Fix player attack so that the animation cant display in a different direction while triggered in one direction already
 // TODO FIXME: Make a better way to get the attack hitbox (on EntityRender too)
 void PlayerAttack() {
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
@@ -192,12 +185,30 @@ void PlayerAttack() {
 
         player.attack.x = floor(player.attack.x);
         player.attack.y = floor(player.attack.y);
-        
+
         PlayerAttackHit();
     }
 
     if(player.state == ATTACKING && TimerDone(&playerAnimArray[ATTACK_ANIMATION].timer)) {
         player.state = IDLE;
+    }
+}
+
+void PlayerEnemyCollision() {
+    if(player.health > 0) {
+        EnemyNode* currEnemy = enemies;
+
+        while(currEnemy != NULL && player.health > 0) {
+            Entity* enemy = &currEnemy->enemy;
+
+            UpdateEntityHitbox(&player);
+            UpdateEntityHitbox(enemy);
+            bool attackHit = CheckCollisionRecs(enemy->hitbox, player.hitbox);
+            if(attackHit)
+                player.health--;
+
+            currEnemy = currEnemy->next;
+        }
     }
 }
 
@@ -260,5 +271,3 @@ static void RenderPlayerAttack() {
 static void MovePlayerToPos(Vector2 position) {
     MoveEntityTowardsPos(&player, position, NULL);
 }
-
-static void PlayerEnemyCollision() {}
