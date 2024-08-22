@@ -49,14 +49,16 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
 static bool IsPlayerSeen(Entity* enemy);
 
 /**
- * TODO: Comments
+ * Updates the given enemy's attack hitbox property.
+ * 
+ * @param enemy The enemy to update.
  */
 static void UpdateEnemyAttackHitbox(Entity* enemy);
 
 /**
  * Renders an enemy's attack animation based off of it's Direction.
  *
- * TODO: Comments
+ * @param enemy The enemy to render an attack for.
  */
 static void RenderEnemyAttack(Entity* enemy);
 
@@ -140,6 +142,11 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
 
 // TODO: EnemyType is not considered yet for different attack widths.
 void EnemyAttack(Entity* enemy) {
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "ENEMY.C (EnemyAttack, line: %d): NULL enemy was found.", __LINE__);
+        return;
+    }
+
     if(enemy->state == ATTACKING && TimerDone(&enemyAnimArray[ATTACK_ANIMATION].timer)) {
         enemy->state = IDLE;
         return;
@@ -153,10 +160,11 @@ void EnemyAttack(Entity* enemy) {
 
         TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack, line: %d): Player was hit by enemy.", __LINE__);
 
-        // check player death and then remove them
+        //TODO: check player death and then remove them
     }
 }
 
+// TODO: EnemyType is not considered yet for different attack widths.
 static void UpdateEnemyAttackHitbox(Entity* enemy) {
     enemy->attack = (Rectangle){ .x      = enemy->pos.x,
                                  .y      = enemy->pos.y,
@@ -195,8 +203,6 @@ static void UpdateEnemyAttackHitbox(Entity* enemy) {
     enemy->attack.x = floor(enemy->attack.x);
     enemy->attack.y = floor(enemy->attack.y);
 }
-
-
 
 // TODO: EnemyType is not considered yet for different widths.
 void EnemyRender(Entity* enemy) {
