@@ -83,7 +83,7 @@ void SetupEnemies();
 /**
  * Updates information required to move enemies and handle their attacks.
  * 
- * ? @note Calls MoveEnemies and HandleEnemiesAttack
+ * ? @note Calls MoveEnemies and HandleEnemiesAttack.
  */
 void UpdateEnemies();
 

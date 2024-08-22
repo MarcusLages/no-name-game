@@ -29,6 +29,19 @@ Entity player;
 //* FUNCTION PROTOTYPES
 
 /**
+ * Handles player movement and updates it's GameState and Direction. 
+ */
+static void PlayerMovement();
+
+/**
+ * Handles the player's attack.
+ * 
+ * ? @note Manages the timer for the player attack animation.
+ * TODO: collisions, enemy health, etc..
+ */
+static void PlayerAttack();
+
+/**
  * Renders the player attack animation based off of it's Direction.
  */
 static void RenderPlayerAttack();
@@ -119,7 +132,12 @@ void PlayerUnload() {
     TraceLog(LOG_INFO, "PLAYER.C (PlayerUnload): Player animations unloaded successfully.");    
 }
 
-void PlayerMovement() {
+void PlayerUpdate() {
+    PlayerMovement();
+    PlayerAttack();
+}
+
+static void PlayerMovement() {
     player.direction = Vector2Zero();
 
     if(player.state == ATTACKING) return;
@@ -154,7 +172,7 @@ void PlayerMovement() {
 
 // TODO: Fix player attack so that the animation cant display in a different direction while triggered in one direction already
 // TODO FIXME: Make a better way to get the attack hitbox (on EntityRender too)
-void PlayerAttack() {
+static void PlayerAttack() {
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
         StartTimer(&playerAnimArray[ATTACK_ANIMATION].timer, 0.5f);

@@ -75,8 +75,7 @@ void DungeonStartup() {
 }
 
 void DungeonUpdate() {
-    PlayerMovement();
-    PlayerAttack();
+    PlayerUpdate();
     UpdateEnemies();
 
     // Update camera to follow the player
@@ -106,7 +105,7 @@ void DungeonUnload() {
     // Unloads collidableTiles list
     FreeCollisionList(collidableTiles);
     collidableTiles = NULL;
-    
+
     TraceLog(LOG_INFO, "DUNGEON.C (DungeonUnload): Collidable tiles list unloaded successfully.");
 
     // Unloads texture array

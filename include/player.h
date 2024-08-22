@@ -32,17 +32,11 @@
 void PlayerStartup();
 
 /**
- * Handles player movement and updates it's GameState and Direction. 
- */
-void PlayerMovement();
-
-/**
- * Handles the player's attack.
+ * Updates information required to move the player and handle their attacks.
  * 
- * ? @note Manages the timer for the player attack animation.
- * TODO: collisions, enemy health, etc..
+ * ? @note Calls PlayerMovement and PlayerAttack.
  */
-void PlayerAttack();
+void PlayerUpdate();
 
 /**
  * Renders the player animation based off of it's GameState.
