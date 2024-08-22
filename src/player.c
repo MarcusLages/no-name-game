@@ -209,8 +209,6 @@ static void PlayerAttackHit() {
         EntityAttack(&player, enemy, 1);
         currEnemy = currEnemy->next;
     }
-
-    CleanUpEnemies();
 }
 
 static void RenderPlayerAttack() {

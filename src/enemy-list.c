@@ -99,29 +99,6 @@ void AddEnemyNode(Entity enemy) {
     cursor->next = enemyNode;
 }
 
-void CleanUpEnemies() {
-    EnemyNode* cursor = enemies;
-    EnemyNode* prev   = NULL;
-    while(cursor != NULL) {
-        if(cursor->enemy.health <= 0) {
-            if(prev == NULL) {
-                enemies = cursor->next;
-                EnemyUnload(&cursor->enemy);
-                free(cursor);
-                cursor = enemies;
-            } else {
-                EnemyUnload(&cursor->enemy);
-                prev->next = cursor->next;
-                free(cursor);
-                cursor = prev->next;
-            }
-        } else {
-            prev   = cursor;
-            cursor = cursor->next;
-        }
-    }
-}
-
 void UnloadEnemies() {
     if(enemies == NULL) {
         TraceLog(LOG_WARNING, "ENEMY-LIST.C (UnloadEnemies, line: %d): Enemies list is empty or could not be found.", __LINE__);
@@ -219,9 +196,32 @@ static void AdjustEnemies() {
 }
 
 void UpdateEnemies() {
-    // could call cleanup here for enemies....
+    CleanUpEnemies();
     MoveEnemies();
     HandleEnemiesAttack();
+}
+
+void CleanUpEnemies() {
+    EnemyNode* cursor = enemies;
+    EnemyNode* prev   = NULL;
+    while(cursor != NULL) {
+        if(cursor->enemy.health <= 0) {
+            if(prev == NULL) {
+                enemies = cursor->next;
+                EnemyUnload(&cursor->enemy);
+                free(cursor);
+                cursor = enemies;
+            } else {
+                EnemyUnload(&cursor->enemy);
+                prev->next = cursor->next;
+                free(cursor);
+                cursor = prev->next;
+            }
+        } else {
+            prev   = cursor;
+            cursor = cursor->next;
+        }
+    }
 }
 
 static void MoveEnemies() {
