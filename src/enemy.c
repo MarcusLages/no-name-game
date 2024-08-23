@@ -21,6 +21,7 @@
 
 #include "../include/enemy.h"
 #include "../include/utils.h"
+#include <stdio.h>
 
 //* ------------------------------------------
 //* MACROS
@@ -155,11 +156,16 @@ void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
 
     UpdateEnemyAttackHitbox(enemy, attackWidth, attackWidth);
 
-    if(EntityAttack(enemy, &player, 0) && enemy->state != ATTACKING) {
-        enemy->state = ATTACKING;
-        StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 0.5f);
+    if(CheckEntityCollision(enemy, &player) && enemy->state != ATTACKING) {
+        StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 5.0);
 
-        TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
+        // fix < it should be > check what values come from GetElapsedTime
+        if(GetElapsedTime(&enemyAnimArray[ATTACK_ANIMATION].timer) < 0.5) {
+            printf("here");
+            enemy->state = ATTACKING;
+            EntityAttack(enemy, &player, 0);
+            TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
+        }
     }
 }
 

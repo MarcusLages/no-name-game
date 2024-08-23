@@ -35,6 +35,7 @@
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
+
 /**
  * Determines if the given vectors are equal with a given precision.
  *
