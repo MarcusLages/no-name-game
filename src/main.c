@@ -7,12 +7,13 @@
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
 *    @version 0.2
 *
-*    @include screen.h
+*    @include trace-log.h, screen.h, audio.h 
 *
 ***********************************************************************************************/
 
 #include "../include/screen.h"
 #include "../include/trace-log.h"
+#include "../include/audio.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -72,6 +73,10 @@ static void GameStartup() {
     // Initialize window
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "No name game name");
     SetTargetFPS(FRAME_RATE);
+
+    // Setup audio devices
+    InitAudioDevice();
+    LoadAudio();
 
     // Sets up initial screen to Main Menu
     currentScreen = MAIN_MENU;
@@ -169,6 +174,10 @@ static void GameClosing() {
                 break;
             default: break;
     }
+
+    // Close audio and music
+    UnloadAudio();
+    CloseAudioDevice();
 
     TraceLog(LOG_INFO, "MAIN.C (GameClosing): Game unloaded and closed successfully.");
 
