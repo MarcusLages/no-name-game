@@ -1,11 +1,12 @@
 /***********************************************************************************************
  *
- **   audio.h is responsible for ...
+ **   audio.h is responsible for handling, storing, loading and unloading general audio
+ **   (sfx and music).
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
  *
- *    @include
+ *    @include raylib.h
  *
  ***********************************************************************************************/
 
@@ -18,10 +19,10 @@
 //* DEFINITIONS
 
 /** How many sound effects are loaded in the game.  */
-#define MAX_SFX     8
+#define MAX_SFX 8
 
 /** How many songs are loaded in the game. */
-#define MAX_SONGS   2
+#define MAX_SONGS 2
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -94,9 +95,9 @@ void InitializeAudio();
 void UnloadAudio();
 
 /**
- * Sets the volume for masterVolume, sfxVolumme and musicVolume and all its related
- * sounds/music.
- * 
+ * Sets the volume for masterVolume, sfxVolumme and musicVolume and all its
+ * related sounds/music.
+ *
  * @param master    New volume master volume value.
  * @param sfx       New volume sfx volume value.
  * @param music     New volume music volume value.

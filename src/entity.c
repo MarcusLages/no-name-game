@@ -6,7 +6,7 @@
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.2
  *
- *    @include entity.h
+ *    @include entity.h, utils.h
  *
  ***********************************************************************************************/
 

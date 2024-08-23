@@ -1,6 +1,6 @@
 /***********************************************************************************************
  *
- **   audio.c is responsible for ...
+ **   audio.c is responsible for implementing general audio handling functions (sfx and audio).
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2

@@ -7,13 +7,14 @@
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
 *    @version 0.2
 *
-*    @include trace-log.h, screen.h, audio.h 
+*    @include trace-log.h, screen.h, audio.h, pause.h
 *
 ***********************************************************************************************/
 
 #include "../include/screen.h"
 #include "../include/trace-log.h"
 #include "../include/audio.h"
+#include "../include/pause.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -69,6 +70,7 @@ static void GameStartup() {
 
     // Game running
     isRunning = true;
+    isPaused = false;
 
     // Initialize window
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "No name game name");
@@ -120,13 +122,21 @@ static void GameUpdate() {
         }
     }
 
+    // Checks if player paused the game
+    if(IsKeyPressed(KEY_SPACE))
+        isPaused = !isPaused;
+
     // Updates the current screen
+    
     switch(currentScreen) {
             case MAIN_MENU:
                 MainMenuUpdate();
                 break;
             case DUNGEON:
-                DungeonUpdate();
+                if(isPaused)
+                    PauseUpdate();
+                else
+                    DungeonUpdate();
                 break;
             case FINAL_SCREEN:
                 FinalScreenUpdate();
@@ -149,6 +159,8 @@ static void GameRender() {
                 BeginMode2D(camera);
                 DungeonRender();
                 EndMode2D();
+                if(isPaused)
+                    PauseRender();
                 break;
             case FINAL_SCREEN:
                 FinalScreenRender();
