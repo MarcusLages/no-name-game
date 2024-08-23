@@ -88,18 +88,28 @@ extern float musicVolume;
 
 /**
  * Loads all the necessary songs and sounds into the soundFX
- * and songs arrays.
+ * and songs arrays and starts all necessary parameters for audio.
  *
- * @attention Still necessary to use InitAudioDevice() before calling this function.
+ * @attention No need to use InitAudioDevice() before calling this function.
  */
-void LoadAudio();
+void InitializeAudio();
 
 /**
  * Unloads all the necessary songs and sounds from the soundFX
  * and songs arrays.
  *
- * @attention Still necessary to use CloseAudioDevice() before calling this function.
+ * @attention No need to use CloseAudioDevice() before calling this function.
  */
 void UnloadAudio();
+
+/**
+ * Sets the volume for masterVolume, sfxVolumme and musicVolume and all its related
+ * sounds/music.
+ * 
+ * @param master    New volume master volume value.
+ * @param sfx       New volume sfx volume value.
+ * @param music     New volume music volume value.
+ */
+void SetAudioVolume(float master, float sfx, float music);
 
 #endif // AUDIO_H_

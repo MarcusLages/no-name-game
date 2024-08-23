@@ -75,8 +75,7 @@ static void GameStartup() {
     SetTargetFPS(FRAME_RATE);
 
     // Setup audio devices
-    InitAudioDevice();
-    LoadAudio();
+    InitializeAudio();
 
     // Sets up initial screen to Main Menu
     currentScreen = MAIN_MENU;
@@ -177,7 +176,6 @@ static void GameClosing() {
 
     // Close audio and music
     UnloadAudio();
-    CloseAudioDevice();
 
     TraceLog(LOG_INFO, "MAIN.C (GameClosing): Game unloaded and closed successfully.");
 

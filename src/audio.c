@@ -10,7 +10,19 @@
  ***********************************************************************************************/
 
 #include "../include/audio.h"
+#include "raymath.h"
 #include <stdlib.h>
+
+//* ------------------------------------------
+//* ENUMERATIONS
+
+/**
+ * Enum to check which type of audio file is an input.
+ *
+ * @param SoundType 0
+ * @param MusicType 0
+ */
+typedef enum AudioType { SoundType = 0, MusicType } AudioType;
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -45,18 +57,42 @@ static void LoadSongs();
  */
 static void UnloadSongs();
 
+static void LoopThroughData();
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
-void LoadAudio() {
+void InitializeAudio() {
+    InitAudioDevice();
+
     LoadSFX();
     LoadSongs();
+
+    SetAudioVolume(0.5f, 0.5f, 0.5f);
 }
 
 void UnloadAudio() {
     UnloadSFX();
     UnloadSongs();
+    CloseAudioDevice();
+}
+
+void SetAudioVolume(float master, float sfx, float music) {
+    if(!FloatEquals(master, masterVolume)) SetMasterVolume(master);
+
+    if(!FloatEquals(sfx, sfxVolume)) {
+        sfxVolume = sfx;
+        for(int index = 0; index < MAX_SFX; index++) {
+            SetSoundVolume(soundFX[index], sfxVolume);
+        }
+    }
+
+    if(!FloatEquals(music, musicVolume)) {
+        musicVolume = music;
+        for(int index = 0; index < MAX_SONGS; index++) {
+            SetSoundVolume(soundFX[index], musicVolume);
+        }
+    }
 }
 
 static void LoadSFX() {
@@ -99,7 +135,7 @@ static void LoadSongs() {
     // songs[MENU_SONG]    = LoadMusicStream("resources/music/menu-song.mp3");
     // songs[DUNGEON_SONG] = LoadMusicStream("resources/music/dungeon-song.mp3");
 
-    TraceLog(LOG_INFO, "AUDIO.C (LoadSFX): All songs loaded successfully.");
+    TraceLog(LOG_INFO, "AUDIO.C (LoadSongs): All songs loaded successfully.");
 }
 
 // TODO: Add songs and uncomment
@@ -112,3 +148,17 @@ static void UnloadSongs() {
 
     TraceLog(LOG_INFO, "AUDIO.C (UnloadSongs): All songs unloaded successfully.");
 }
+
+// ? Ignore it, it's my try on using function pointers
+// static void LoopThroughArray(AudioType type, void* array, void (*callback)(void*)) {
+//     int max;
+
+//     switch(type) {
+//         case SoundType: max = MAX_SFX; break;
+//         case MusicType: max = MAX_SONGS; break;
+//     }
+
+//     for(int index; index < max; index++) {
+//         callback( (void*) array );
+//     }
+// }
