@@ -12,6 +12,7 @@
 
 #include "../include/player.h"
 #include "../include/enemy-list.h"
+#include "../include/audio.h"
 #include "../include/utils.h"
 
 //* ------------------------------------------
@@ -158,6 +159,7 @@ void PlayerAttack() {
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
         StartTimer(&playerAnimArray[ATTACK_ANIMATION].timer, 0.5f);
+        PlaySound(soundFX[PLAYER_SLASH_SFX]);
 
         player.attack = (Rectangle){ .x      = player.pos.x,
                                      .y      = player.pos.y,
@@ -203,10 +205,15 @@ void PlayerAttack() {
 
 static void PlayerAttackHit() {
     EnemyNode* currEnemy = enemies;
+    bool soundHit = false;
 
     while(currEnemy != NULL) {
         Entity* enemy = &currEnemy->enemy;
-        EntityAttack(&player, enemy, 1);
+        if(EntityAttack(&player, enemy, 1) && !soundHit) {
+            // TODO: Test SLASH_HIT_SFX, slash + enemy dying and just enemy dying
+            PlaySound(soundFX[ENEMY_DEAD_SFX]);
+            soundHit = false;
+        }
         currEnemy = currEnemy->next;
     }
 

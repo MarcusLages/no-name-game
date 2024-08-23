@@ -9,9 +9,10 @@
  *
  **********************************************************************************************/
 
-#include "screen.h"
-#include "utils.h"
-#include "player.h"
+#include "../include/screen.h"
+#include "../include/player.h"
+#include "../include/audio.h"
+#include "../include/utils.h"
 
 //* ------------------------------------------
 //* DEFINITIONS
@@ -80,9 +81,13 @@ void FinalScreenUpdate() {
             // If mouse hovered, changes the value of the hoveredButton var to the
             // index of the mouse button and breaks the collision checking loop.
             if(!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                // Sound keeps repeating on hover
+                // PlaySound(soundFX[HOVER_SFX]);
                 hoveredButton = button;
                 break;
             } else {
+                PlaySound(soundFX[CLICK_SFX]);
+                
                 // If mouse clicked, changes the current screen to the appropriate screen
                 switch(button) {
                     case RESTART_BUTTON: nextScreen = DUNGEON; break;
