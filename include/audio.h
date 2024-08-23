@@ -74,15 +74,6 @@ extern Sound* soundFX;
  */
 extern Music* songs;
 
-/** Variable that controls master volume. */
-extern float masterVolume;
-
-/** Variable that controls sound effects volume. */
-extern float sfxVolume;
-
-/** Variable that controls music volume. */
-extern float musicVolume;
-
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
 

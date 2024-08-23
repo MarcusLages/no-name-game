@@ -30,8 +30,16 @@ typedef enum AudioType { SoundType = 0, MusicType } AudioType;
 Sound* soundFX;
 Music* songs;
 
+//* ------------------------------------------
+//* MODULAR VARIABLES
+
+/** Variable that controls master volume. */
 float masterVolume;
+
+/** Variable that controls sound effects volume. */
 float sfxVolume;
+
+/** Variable that controls music volume. */
 float musicVolume;
 
 //* ------------------------------------------
@@ -57,7 +65,7 @@ static void LoadSongs();
  */
 static void UnloadSongs();
 
-static void LoopThroughData();
+// static void LoopThroughData();
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
