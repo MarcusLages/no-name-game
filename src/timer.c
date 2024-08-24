@@ -11,28 +11,43 @@
  ***********************************************************************************************/
 
 #include "../include/timer.h"
+#include "../include/utils.h"
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
 void StartTimer(Timer* timer, double lifetime) {
     if(timer == NULL) return;
+    if(IsDoubleEqual(lifetime, 0.0, 0.00001f)) return;
     timer->startTime = GetTime();
     timer->lifeTime  = lifetime;
 }
 
+void StartTimerWithDelay(Timer* timer, double lifetime, double delay) {
+    if(timer == NULL) return;
+    if(IsDoubleEqual(lifetime, 0.0, 0.00001f)) return;
+    timer->startTime = GetTime() + delay;
+    timer->lifeTime  = lifetime;
+}
+
 bool TimerDone(Timer* timer) {
-    if(timer->lifeTime == -1.0f || timer == NULL) return false;
-    return GetTime() - timer->startTime >= timer->lifeTime;
+    if(timer == NULL) return false;
+    if(timer->lifeTime == -1.0f) return false;
+    return GetTime() - (timer->lifeTime + timer->startTime) >= 0.0;
 }
 
 double GetElapsedTime(Timer* timer) {
-    if(timer == NULL) return -1.0f;
+    if(timer == NULL) return -1.0;
     return GetTime() - timer->startTime;
 }
 
 double TimeRemaining(Timer* timer) {
-    if(timer == NULL) return -1.0f;
-    if(timer->lifeTime == 0.0f) return INFINITY;
-    return timer->startTime + timer->lifeTime - GetTime();
+    if(timer == NULL) return -1.0;
+    if(IsDoubleEqual(timer->lifeTime, 0.0, 0.00001f)) return INFINITY;
+    double currTime = GetTime();
+    if(currTime < timer->startTime) {
+        return (timer->lifeTime + timer->startTime);
+    } else {
+        return (timer->lifeTime + timer->startTime) - GetTime();
+    }
 }

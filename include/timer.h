@@ -33,6 +33,8 @@ typedef struct Timer {
     double startTime;
     /** The amount of seconds this timer should last for. */
     double lifeTime;
+
+    bool on;
 } Timer;
 
 //* -----------------------------------------
@@ -41,7 +43,7 @@ typedef struct Timer {
 /**
  * Starts the specified Timer with the specified time.
  *
- * ! @attention returns if given a NULL pointer.
+ * ! @attention returns if given a NULL pointer or a 0 lifttime.
  *
  * @param timer     Timer to start.
  * @param lifetime  Life of the timer in seconds.
@@ -49,6 +51,19 @@ typedef struct Timer {
  * ? @note declaring a Timer with a lifeTime of -1 creates a timer that lasts for the lifetime of the game.
  */
 void StartTimer(Timer* timer, double lifetime);
+
+/**
+ * Starts the specified Timer with the specified time with a delay.
+ *
+ * ! @attention returns if given a NULL pointer or a 0 lifttime.
+ *
+ * @param timer     Timer to start.
+ * @param lifetime  Life of the timer in seconds.
+ * @param delay     Delay amount in seconds.
+ *
+ * ? @note Use StartTimer to declare a timer that lasts for the lifetime of the game.
+ */
+void StartTimerWithDelay(Timer* timer, double lifetime, double delay);
 
 /**
  * Determines if the specified timer is complete.

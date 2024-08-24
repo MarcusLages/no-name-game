@@ -53,7 +53,7 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
     Animation animation = (Animation){ .fps         = fps,
                                        .numOfFrames = numOfTiles,
                                        .frames      = frames,
-                                       .timer       = (Timer){},
+                                       .timer       = (Timer){ 0.0, 0.0, 0 },
                                        .texture     = textures[textureType] };
 
     return animation;
@@ -61,9 +61,11 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
 
 void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, float rotation) {
     if(TimerDone(&animation->timer) || animation == NULL) return;
+    // if there is a delay return
+    double elapsedTime = GetElapsedTime(&animation->timer);
+    if(elapsedTime < 0.0) return;
 
-    int idx = (int) (GetElapsedTime(&animation->timer) * animation->fps) %
-        animation->numOfFrames;
+    int idx = (int) (elapsedTime * animation->fps) % animation->numOfFrames;
     Rectangle source = animation->frames[idx];
 
     source.width  = entityWidth;
@@ -93,7 +95,7 @@ static Rectangle* GetSpriteRectangles(int numOfFrames, int tileWidth, int tileHe
     Rectangle* frames = (Rectangle*) malloc(sizeof(Rectangle) * numOfFrames);
 
     //! If allocation fails program exits.
-    if(frames == NULL){
+    if(frames == NULL) {
         TraceLog(LOG_FATAL, "ANIMATION.C (GetSpriteRectangles, line: %d): Memory allocation for animation failure.", __LINE__);
     }
 

@@ -46,4 +46,14 @@
  */
 bool IsVectorEqual(Vector2 v1, Vector2 v2, float precision);
 
+/**
+ * Determines if the given doubles are equal with a given precision.
+ *
+ * @param d1 First double to compare.
+ * @param d2 Second double to compare.
+ *
+ * @returns True if the doubles are equal false otherwise.
+ */
+bool IsDoubleEqual(double d1, double d2, float precision);
+
 #endif // UTILS_H_

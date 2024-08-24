@@ -157,15 +157,16 @@ void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
     UpdateEnemyAttackHitbox(enemy, attackWidth, attackWidth);
 
     if(CheckEntityCollision(enemy, &player) && enemy->state != ATTACKING) {
-        StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 5.0);
+        Timer timer = enemyAnimArray[ATTACK_ANIMATION].timer;
 
-        // fix < it should be > check what values come from GetElapsedTime
-        if(GetElapsedTime(&enemyAnimArray[ATTACK_ANIMATION].timer) < 0.5) {
-            printf("here");
-            enemy->state = ATTACKING;
-            EntityAttack(enemy, &player, 0);
-            TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
-        }
+        // need to find a way to start this when timer is done and a way so that it does not infinitely start.......
+        StartTimerWithDelay(&timer, 0.5, 0.5);
+
+        double elapsedTime = GetElapsedTime(&timer);
+        if(elapsedTime < 0.0) return;
+        enemy->state = ATTACKING;
+        EntityAttack(enemy, &player, 0);
+        TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
     }
 }
 
@@ -366,8 +367,9 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     enemyAnimArray[ATTACK_ANIMATION] = attackEnemyAnimation;
 
     // Starting timers for both idle and moving animations
-    StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0f);
-    StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0f);
+    StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0);
+    StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0);
+    enemyAnimArray[ATTACK_ANIMATION].timer.on = false;
 }
 
 static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos) {
