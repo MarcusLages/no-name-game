@@ -3,14 +3,9 @@
  **   Provide functionality for setting enemy spawn points, managing movement, attack,
  **   and rendering of enemies and their animations.
  *
- *?   @note Spawn points are not yet implemented with new tmx level.
- *?   @note Slight bug with the enemy moving to last known player position.
- *
- *    TODO: Fix bug
- *    TODO: Implements spawn point generation
- *    TODO: Handle enemy attacks
+ *    TODO: Fix bug where by chance the enemy thinks its moving in the same position (float point errors)
+ *    TODO: FIXME: Enemy Attacks right away when player evades and comes back (Timers should be reset)
  *    TODO: Handle player to enemy collisions
- *    TODO: make entity movement function and generalize player movement too
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
@@ -21,7 +16,6 @@
 
 #include "../include/enemy.h"
 #include "../include/utils.h"
-#include <stdio.h>
 
 //* ------------------------------------------
 //* MACROS
@@ -157,13 +151,14 @@ void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
     UpdateEnemyAttackHitbox(enemy, attackWidth, attackWidth);
 
     if(CheckEntityCollision(enemy, &player) && enemy->state != ATTACKING) {
-        Timer timer = enemyAnimArray[ATTACK_ANIMATION].timer;
+        Timer* timer = &enemyAnimArray[ATTACK_ANIMATION].timer;
 
-        // need to find a way to start this when timer is done and a way so that it does not infinitely start.......
-        StartTimerWithDelay(&timer, 0.5, 0.5);
-
-        double elapsedTime = GetElapsedTime(&timer);
-        if(elapsedTime < 0.0) return;
+        if(TimerDone(timer)) {
+            // Start a new timer.
+            StartTimerWithDelay(timer, 0.5, 0.5);
+        }
+        // Wait on delay
+        if(CheckIfDelayed(timer)) return;
         enemy->state = ATTACKING;
         EntityAttack(enemy, &player, 0);
         TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
@@ -369,7 +364,7 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     // Starting timers for both idle and moving animations
     StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0);
     StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0);
-    enemyAnimArray[ATTACK_ANIMATION].timer.on = false;
+    StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 1.0);
 }
 
 static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos) {

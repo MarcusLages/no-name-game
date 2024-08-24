@@ -53,19 +53,21 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
     Animation animation = (Animation){ .fps         = fps,
                                        .numOfFrames = numOfTiles,
                                        .frames      = frames,
-                                       .timer       = (Timer){ 0.0, 0.0, 0 },
+                                       .timer       = (Timer){ 0.0, 0.0 },
                                        .texture     = textures[textureType] };
 
     return animation;
 }
 
 void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, float rotation) {
-    if(TimerDone(&animation->timer) || animation == NULL) return;
-    // if there is a delay return
-    double elapsedTime = GetElapsedTime(&animation->timer);
-    if(elapsedTime < 0.0) return;
+    if(animation == NULL) return;
+    if(TimerDone(&animation->timer)) return;
 
-    int idx = (int) (elapsedTime * animation->fps) % animation->numOfFrames;
+    // if there is a delay return
+    if(CheckIfDelayed(&animation->timer)) return;
+
+    int idx = (int) (GetElapsedTime(&animation->timer) * animation->fps) %
+        animation->numOfFrames;
     Rectangle source = animation->frames[idx];
 
     source.width  = entityWidth;
