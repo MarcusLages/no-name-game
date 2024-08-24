@@ -27,6 +27,11 @@ extern bool isPaused;
 //* FUNCTION PROTOTYPES
 
 /**
+ * Initialize pause buttons and texts.
+ */
+void PauseStartup();
+
+/**
  * Handles event listening and processing on pause screen.
  */
 void PauseUpdate();
