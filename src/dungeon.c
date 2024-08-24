@@ -45,6 +45,11 @@ static void LoadTextures();
  */
 static void InitializeTiles();
 
+/**
+ * @return True if player is dead.
+ */
+static bool IsPlayerDead();
+
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
@@ -75,26 +80,36 @@ void DungeonStartup() {
 }
 
 void DungeonUpdate() {
-    PlayerMovement();
-    // need to move this back
-    MoveEnemies();
-    PlayerAttack();
+    PlayerEnemyCollision();
 
-    // Update camera to follow the player
-    camera.target = (Vector2){ (int) player.pos.x + 8, (int) player.pos.y + 16 };
+    // If player is dead, no need to check for anything
+    // Instead, sends him to the final screen
+    if(!IsPlayerDead()) {
+        PlayerMovement();
+        MoveEnemies();
+
+        PlayerAttack();
+
+        // Update camera to follow the player
+        camera.target = (Vector2){ (int) player.pos.x + 8, (int) player.pos.y + 16 };
+    } else
+        nextScreen = FINAL_SCREEN;
 }
 
 void DungeonRender() {
-    // Render the world canvas
-    // ? Note: height is negative because OpenGL orientation is inverted from Raylib
-    DrawTextureRec(
-        worldCanvas->texture,
-        (Rectangle){ 0, 0, worldCanvas->texture.width, -worldCanvas->texture.height },
-        (Vector2){ 0.0f, 0.0f }, WHITE);
+    // If player is dead, no need to check for anything
+    if(!IsPlayerDead()) {
+        // Render the world canvas
+        // ? Note: height is negative because OpenGL orientation is inverted from Raylib
+        DrawTextureRec(
+            worldCanvas->texture,
+            (Rectangle){ 0, 0, worldCanvas->texture.width, -worldCanvas->texture.height },
+            (Vector2){ 0.0f, 0.0f }, WHITE);
 
-    // Draw player on the screen
-    RenderEnemies();
-    PlayerRender();
+        // Draw player on the screen
+        RenderEnemies();
+        PlayerRender();
+    }
 }
 
 void DungeonUnload() {
@@ -107,7 +122,7 @@ void DungeonUnload() {
     // Unloads collidableTiles list
     FreeCollisionList(collidableTiles);
     collidableTiles = NULL;
-    
+
     TraceLog(LOG_INFO, "DUNGEON.C (DungeonUnload): Collidable tiles list unloaded successfully.");
 
     // Unloads texture array
@@ -189,4 +204,8 @@ static void InitializeTiles() {
     mapTmx = NULL;
 
     TraceLog(LOG_INFO, "DUNGEON.C (InitializeTiles): Tmx map unloaded.");
+}
+
+static bool IsPlayerDead() {
+    return player.health <= 0;
 }

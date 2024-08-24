@@ -32,6 +32,16 @@
 void PlayerStartup();
 
 /**
+ * Renders the player animation based off of it's GameState.
+ */
+void PlayerRender();
+
+/**
+ * Unloads all the animations associated with the player entity.
+ */
+void PlayerUnload();
+
+/**
  * Handles player movement and updates it's GameState and Direction. 
  */
 void PlayerMovement();
@@ -45,13 +55,8 @@ void PlayerMovement();
 void PlayerAttack();
 
 /**
- * Renders the player animation based off of it's GameState.
+ * Handles player collision with the enemies list by movement.
  */
-void PlayerRender();
-
-/**
- * Unloads all the animations associated with the player entity.
- */
-void PlayerUnload();
+void PlayerEnemyCollision();
 
 #endif //PLAYER_H_

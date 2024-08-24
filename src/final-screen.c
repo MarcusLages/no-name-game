@@ -62,7 +62,7 @@ void FinalScreenStartup() {
 
     int initialButtonY = SCREEN_HEIGHT / 2;
     for(int i = 0; i < MAX_FINAL_SCREEN_BUTTONS; i++) {
-        finalScreenButtonBox[i] = (Rectangle){ .x = (float) CenterComponentX(240),
+        finalScreenButtonBox[i] = (Rectangle){ .x = CenterComponentX(240),
                                                .y      = initialButtonY,
                                                .width  = 240,
                                                .height = 60 };
@@ -107,10 +107,10 @@ void FinalScreenRender() {
     // Draft clear background main menu
     ClearBackground(GRAY);
 
-    if(player.health >= 0)
-        DrawText("You won?!", CenterComponentX(MeasureText("You won?!", 50)), SCREEN_HEIGHT / 3, 50, BLACK);        
+    if(player.health > 0)
+        DrawText("You won?!", CenterComponentX(MeasureText("You won?!", 50)), SCREEN_HEIGHT / 3, 50, GREEN);        
     else
-        DrawText("YOU LOST!", CenterComponentX(MeasureText("YOU LOST!", 50)), SCREEN_HEIGHT / 3, 50, BLACK);        
+        DrawText("YOU LOST!", CenterComponentX(MeasureText("YOU LOST!", 50)), SCREEN_HEIGHT / 3, 50, RED);        
 
     // Draws all buttons
     for(int i = 0; i < MAX_FINAL_SCREEN_BUTTONS; i++) {
