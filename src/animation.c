@@ -10,6 +10,7 @@
  **********************************************************************************************/
 
 #include "../include/animation.h"
+#include "../include/pause.h"
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -53,6 +54,7 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
     Animation animation = (Animation){ .fps         = fps,
                                        .numOfFrames = numOfTiles,
                                        .frames      = frames,
+                                       .curFrame    = 0,
                                        .timer       = (Timer){},
                                        .texture     = textures[textureType] };
 
@@ -62,9 +64,11 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
 void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, float rotation) {
     if(TimerDone(&animation->timer) || animation == NULL) return;
 
-    int idx = (int) (GetElapsedTime(&animation->timer) * animation->fps) %
-        animation->numOfFrames;
-    Rectangle source = animation->frames[idx];
+    if(!isPaused)
+        animation->curFrame =
+            (int) (GetElapsedTime(&animation->timer) * animation->fps) %
+            animation->numOfFrames;
+    Rectangle source = animation->frames[animation->curFrame];
 
     source.width  = entityWidth;
     source.height = entityHeight;
@@ -93,7 +97,7 @@ static Rectangle* GetSpriteRectangles(int numOfFrames, int tileWidth, int tileHe
     Rectangle* frames = (Rectangle*) malloc(sizeof(Rectangle) * numOfFrames);
 
     //! If allocation fails program exits.
-    if(frames == NULL){
+    if(frames == NULL) {
         TraceLog(LOG_FATAL, "ANIMATION.C (GetSpriteRectangles, line: %d): Memory allocation for animation failure.", __LINE__);
     }
 

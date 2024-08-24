@@ -46,6 +46,7 @@ typedef enum AnimationType {
  * @param fps           Frames per second (speed) of this animation
  * @param numOfFrames   Number of frames that capture each tile in texture.
  * @param frames        List of frames the capture each tile's x, y, width and height in texture.
+ * @param curFrame      Current frame being rendered on the screen.
  * @param texture       Tile texture for this animation.
  * @param timer         Time for this animation.
  *
@@ -63,6 +64,10 @@ typedef struct Animation {
      * The list of frames the capture each tile's x, y, width and height in texture.
      */
     Rectangle* frames;
+    /**
+     * Current frame being rendered on the screen.
+     */
+    int curFrame;
     /** The tile texture for this animation. */
     Texture2D texture;
     /**

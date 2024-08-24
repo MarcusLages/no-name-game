@@ -80,7 +80,7 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
     entity->direction = Vector2Scale(entity->direction, entity->speed);
 
     EntityWorldCollision(entity);
-    SetEntityStatebyDir(entity, lastPlayerPos);
+    // SetEntityStatebyDir(entity, lastPlayerPos);
 
     entity->pos = Vector2Add(entity->pos, Vector2Scale(entity->direction, deltaTime));
 }
