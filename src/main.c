@@ -85,6 +85,7 @@ static void GameStartup() {
 
     // Starts up Main Menu
     MainMenuStartup();
+    PauseStartup();
 
     TraceLog(LOG_INFO, "MAIN.C (GameStartup): Game initialized at screen : %d successfully.", currentScreen);
 

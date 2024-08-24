@@ -95,12 +95,37 @@ void InitializeAudio();
 void UnloadAudio();
 
 /**
+ * Sets the volume for masterVolume, sfxVolumme and musicVolume and all its
+ * related sounds/music.
+ *
+ * @param master    New volume master volume value.
+ * @param sfx       New volume sfx volume value.
+ * @param music     New volume music volume value.
+ */
+void SetAudioVolume(float master, float sfx, float music);
+
+/**
  * Increment the value of the value of each kind of volume by each parameter.
  * 
  * @param masterIncrement Volume increment for master volume
  * @param sfxIncrement Volume increment for sfx volume
  * @param musicIncrement Volume increment for music volume
  */
-void IncrementVolume(float masterIncrement, float sfxIncrement, float musicIncrement);
+// void IncrementVolume(float masterIncrement, float sfxIncrement, float musicIncrement);
+
+
+/**
+ * Returns the value of the audio volume of all sound effects.
+ * 
+ * @return Sfx volume as float
+ */
+float GetSfxVolume();
+
+/**
+ * Returns the value of the audio volume of all songs.
+ * 
+ * @return Music/songs volume as float
+ */
+float GetMusicVolume();
 
 #endif // AUDIO_H_
