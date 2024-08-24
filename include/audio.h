@@ -95,13 +95,12 @@ void InitializeAudio();
 void UnloadAudio();
 
 /**
- * Sets the volume for masterVolume, sfxVolumme and musicVolume and all its
- * related sounds/music.
- *
- * @param master    New volume master volume value.
- * @param sfx       New volume sfx volume value.
- * @param music     New volume music volume value.
+ * Increment the value of the value of each kind of volume by each parameter.
+ * 
+ * @param masterIncrement Volume increment for master volume
+ * @param sfxIncrement Volume increment for sfx volume
+ * @param musicIncrement Volume increment for music volume
  */
-void SetAudioVolume(float master, float sfx, float music);
+void IncrementVolume(float masterIncrement, float sfxIncrement, float musicIncrement);
 
 #endif // AUDIO_H_

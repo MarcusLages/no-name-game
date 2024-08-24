@@ -65,6 +65,16 @@ static void LoadSongs();
  */
 static void UnloadSongs();
 
+/**
+ * Sets the volume for masterVolume, sfxVolumme and musicVolume and all its
+ * related sounds/music.
+ *
+ * @param master    New volume master volume value.
+ * @param sfx       New volume sfx volume value.
+ * @param music     New volume music volume value.
+ */
+static void SetAudioVolume(float master, float sfx, float music);
+
 // static void LoopThroughData();
 
 //* ------------------------------------------
@@ -85,22 +95,24 @@ void UnloadAudio() {
     CloseAudioDevice();
 }
 
-void SetAudioVolume(float master, float sfx, float music) {
-    if(!FloatEquals(master, masterVolume)) SetMasterVolume(master);
+void IncrementVolume(float masterIncrement, float sfxIncrement, float musicIncrement) {
+    if(masterIncrement == 0.0f && sfxIncrement == 0.0f && musicIncrement == 0.0f)
+        return;
 
-    if(!FloatEquals(sfx, sfxVolume)) {
-        sfxVolume = sfx;
-        for(int index = 0; index < MAX_SFX; index++) {
-            SetSoundVolume(soundFX[index], sfxVolume);
-        }
-    }
+    masterIncrement += masterVolume;
+    sfxIncrement += sfxVolume;
+    musicIncrement += musicVolume;
 
-    if(!FloatEquals(music, musicVolume)) {
-        musicVolume = music;
-        for(int index = 0; index < MAX_SONGS; index++) {
-            SetSoundVolume(soundFX[index], musicVolume);
-        }
-    }
+    if(masterIncrement > 1) masterIncrement = 1;
+    else if(masterIncrement < 0) masterIncrement = 0;
+
+    if(sfxIncrement > 1) sfxIncrement = 1;
+    else if(sfxIncrement < 0) sfxIncrement = 0;
+    
+    if(musicIncrement > 1) musicIncrement = 1;
+    else if(musicIncrement < 0) musicIncrement = 0;
+
+    SetAudioVolume(masterIncrement, sfxIncrement, musicIncrement);
 }
 
 static void LoadSFX() {
@@ -155,6 +167,27 @@ static void UnloadSongs() {
     songs = NULL;
 
     TraceLog(LOG_INFO, "AUDIO.C (UnloadSongs): All songs unloaded successfully.");
+}
+
+static void SetAudioVolume(float master, float sfx, float music) {
+    if(!FloatEquals(master, masterVolume)) {
+        masterVolume = master;
+        SetMasterVolume(masterVolume);
+    }
+
+    if(!FloatEquals(sfx, sfxVolume)) {
+        sfxVolume = sfx;
+        for(int index = 0; index < MAX_SFX; index++) {
+            SetSoundVolume(soundFX[index], sfxVolume);
+        }
+    }
+
+    if(!FloatEquals(music, musicVolume)) {
+        // musicVolume = music;
+        // for(int index = 0; index < MAX_SONGS; index++) {
+        //     SetMusicVolume(songs[index], musicVolume);
+        // }
+    }
 }
 
 // ? Ignore it, it's my try on using function pointers
