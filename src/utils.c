@@ -15,6 +15,10 @@ int CenterComponentX(int componentWidth) {
     return (GetScreenWidth() - componentWidth) / 2;
 }
 
+int CenterComponentY(int componentHeight) {
+    return (GetScreenHeight() - componentHeight) / 2;
+}
+
 bool IsVectorEqual(Vector2 v1, Vector2 v2, float precision) {
     int result = ((fabsf(v1.x - v2.x)) <=
                   (precision * fmaxf(1.0f, fmaxf(fabsf(v1.x), fabsf(v2.x))))) &&

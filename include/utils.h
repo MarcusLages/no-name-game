@@ -56,4 +56,14 @@ bool IsVectorEqual(Vector2 v1, Vector2 v2, float precision);
  */
 int CenterComponentX(int componentWidth);
 
+/**
+ * Used to return the y position that a component should have to be
+ * centered on the screen based on its height.
+ *
+ * @param componenteHeight
+ * @return Centered y position the component should have
+ *
+ */
+int CenterComponentY(int componenteHeight);
+
 #endif // UTILS_H_
