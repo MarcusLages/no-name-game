@@ -3,6 +3,8 @@
  **   timer.c implements functions to start a timer, check if it has completed, see time passed,
  **   and time remaining.
  *
+ *    TODO: Use TraceLogs.
+ *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
  *
