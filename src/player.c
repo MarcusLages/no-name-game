@@ -106,9 +106,6 @@ void PlayerStartup() {
 }
 
 void PlayerRender() {
-    // TODO: Temp. Checking player death is handled in dungeon.c the way Marcus did it. remove this
-    if(player.health <= 0) return;
-
     switch(player.state) {
         case IDLE:
             EntityRender(
@@ -131,10 +128,6 @@ void PlayerUnload() {
 }
 
 void PlayerUpdate() {
-    if(player.health <= 0) {
-        // TODO: Temp. Checking player death is handled in dungeon.c the way Marcus did it. remove this
-        return;
-    }
     PlayerMovement();
     PlayerAttack();
 }
@@ -165,11 +158,6 @@ static void PlayerMovement() {
     // TODO: Check player's speed and if it's already zero, don't even need to check
 
     MovePlayerToPos(player.direction);
-
-    //* Ensure if this needs to happen before position assignment of player. If so we
-    //* should make a general entity-entity in entity.c collsion relationship as other enemies
-    //* can collide with other enemies.
-    // PlayerEnemyCollision();
 }
 
 static void PlayerAttack() {
