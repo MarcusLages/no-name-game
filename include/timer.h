@@ -100,6 +100,8 @@ double TimeRemaining(Timer* timer);
 
 /**
  * Checks if the given timer is going through a delay.
+ * 
+ * ! @attention returns false if given a NULL pointer.
  *
  * @param timer Timer to check.
  *
