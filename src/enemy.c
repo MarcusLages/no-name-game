@@ -4,7 +4,6 @@
  **   and rendering of enemies and their animations.
  *
  *    TODO: Fix bug where by chance the enemy thinks its moving in the same position (float point errors)
- *    TODO: FIXME: Enemy Attacks right away when player evades and comes back (Timers should be reset)
  *    TODO: Handle player to enemy collisions
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
