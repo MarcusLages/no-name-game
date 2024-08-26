@@ -55,14 +55,18 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
                                        .numOfFrames = numOfTiles,
                                        .frames      = frames,
                                        .curFrame    = 0,
-                                       .timer       = (Timer){},
+                                       .timer       = (Timer){ 0.0, 0.0 },
                                        .texture     = textures[textureType] };
 
     return animation;
 }
 
 void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, float rotation) {
-    if(TimerDone(&animation->timer) || animation == NULL) return;
+    if(animation == NULL) return;
+    if(TimerDone(&animation->timer)) return;
+
+    // if there is a delay return
+    if(CheckIfDelayed(&animation->timer)) return;
 
     if(!isPaused)
         animation->curFrame =

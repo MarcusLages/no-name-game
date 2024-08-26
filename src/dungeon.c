@@ -80,15 +80,12 @@ void DungeonStartup() {
 }
 
 void DungeonUpdate() {
-    PlayerEnemyCollision();
-
     // If player is dead, no need to check for anything
     // Instead, sends him to the final screen
     if(!IsPlayerDead()) {
-        PlayerMovement();
-        MoveEnemies();
-
-        PlayerAttack();
+        PlayerUpdate();
+        UpdateEnemies();
+        PlayerEnemyCollision();
 
         // Update camera to follow the player
         camera.target = (Vector2){ (int) player.pos.x + 8, (int) player.pos.y + 16 };
@@ -206,6 +203,4 @@ static void InitializeTiles() {
     TraceLog(LOG_INFO, "DUNGEON.C (InitializeTiles): Tmx map unloaded.");
 }
 
-static bool IsPlayerDead() {
-    return player.health <= 0;
-}
+static bool IsPlayerDead() { return player.health <= 0; }

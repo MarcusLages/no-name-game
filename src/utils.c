@@ -27,3 +27,7 @@ bool IsVectorEqual(Vector2 v1, Vector2 v2, float precision) {
 
     return result;
 }
+
+bool IsDoubleEqual(double d1, double d2, float precision) {
+    return fabs(d1 - d2) < precision;
+}

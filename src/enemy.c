@@ -3,14 +3,8 @@
  **   Provide functionality for setting enemy spawn points, managing movement, attack,
  **   and rendering of enemies and their animations.
  *
- *?   @note Spawn points are not yet implemented with new tmx level.
- *?   @note Slight bug with the enemy moving to last known player position.
- *
- *    TODO: Fix bug
- *    TODO: Implements spawn point generation
- *    TODO: Handle enemy attacks
+ *    TODO: Fix bug where by chance the enemy thinks its moving in the same position (float point errors)
  *    TODO: Handle player to enemy collisions
- *    TODO: make entity movement function and generalize player movement too
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
@@ -49,11 +43,22 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
 static bool IsPlayerSeen(Entity* enemy);
 
 /**
+ * Updates the given enemy's attack hitbox property.
+ *
+ * @param enemy The enemy to update.
+ * @param attackWidth Attack hitbox width.
+ * @param attackHeight Attack hitbox height.
+ */
+static void UpdateEnemyAttackHitbox(Entity* enemy, int attackWidth, int attackHeight);
+
+/**
  * Renders an enemy's attack animation based off of it's Direction.
  *
- * TODO: Implement
+ * @param enemy The enemy to render an attack for.
+ * @param attackWidth Attack hitbox width.
+ * @param attackHeight Attack hitbox height.
  */
-static void RenderEnemyAttack();
+static void RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight);
 
 /**
  * Handles the enemy movement towards a given position.
@@ -104,9 +109,7 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
     }
 
     SetupEnemyAnimation(&enemy, type);
-
     TraceLog(LOG_INFO, "ENEMY.C (EnemyStartup): Enemy set successfully.");
-
     return enemy;
 }
 
@@ -133,10 +136,71 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
     MoveEnemyToPos(enemy, player.pos, lastPlayerPos);
 }
 
-// TODO: Implement
-void EnemyAttack() {}
+void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
+    if(enemy == NULL) {
+        TraceLog(LOG_WARNING, "ENEMY.C (EnemyAttack, line: %d): NULL enemy was found.", __LINE__);
+        return;
+    }
 
-void EnemyRender(Entity* enemy) {
+    if(enemy->state == ATTACKING && TimerDone(&enemyAnimArray[ATTACK_ANIMATION].timer)) {
+        enemy->state = IDLE;
+        return;
+    }
+
+    UpdateEnemyAttackHitbox(enemy, attackWidth, attackWidth);
+
+    if(EntityAttack(enemy, &player, 0) && enemy->state != ATTACKING) {
+        Timer* timer = &enemyAnimArray[ATTACK_ANIMATION].timer;
+
+        if(TimerDone(timer)) {
+            // Start a new timer.
+            StartTimerWithDelay(timer, 0.5, 0.5);
+        }
+        // Wait on delay
+        if(CheckIfDelayed(timer)) return;
+        enemy->state  = ATTACKING;
+        player.health = 0;
+        TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
+    }
+}
+
+static void UpdateEnemyAttackHitbox(Entity* enemy, int attackWidth, int attackHeight) {
+    enemy->attack = (Rectangle){ .x      = enemy->pos.x,
+                                 .y      = enemy->pos.y,
+                                 .width  = attackWidth - 4,
+                                 .height = attackHeight - 8 };
+
+    // handles setting the attack hitbox based upon the direction enemy is facing
+    switch(enemy->directionFace) {
+            // Attack hitbox offset
+        case RIGHT:
+            enemy->attack.x += 3;
+            enemy->attack.y += 13;
+            break;
+        case DOWN:
+            SWAP(enemy->attack.width, enemy->attack.height);
+            enemy->attack.x += 1;
+            enemy->attack.y += 19;
+            break;
+        case LEFT:
+            enemy->attack.x -= 15;
+            enemy->attack.y += 13;
+            break;
+        case UP:
+            SWAP(enemy->attack.width, enemy->attack.height);
+            enemy->attack.x += 1;
+            enemy->attack.y -= 0;
+            break;
+        default:
+            TraceLog(LOG_WARNING, "ENEMY.C (EnemyAttack, line: %d): Invalid directionFace was found.", __LINE__);
+            break;
+    }
+
+    enemy->attack.x = floor(enemy->attack.x);
+    enemy->attack.y = floor(enemy->attack.y);
+}
+
+void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int attackHeight) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): NULL enemy was found.", __LINE__);
         return;
@@ -146,22 +210,57 @@ void EnemyRender(Entity* enemy) {
         case IDLE:
             EntityRender(
                 enemy, &enemyAnimArray[IDLE_ANIMATION],
-                ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+                width * enemy->faceValue, height, 0, 0, 0.0f);
             break;
         case MOVING:
             EntityRender(
                 enemy, &enemyAnimArray[MOVE_ANIMATION],
-                ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+                width * enemy->faceValue, height, 0, 0, 0.0f);
             break;
-        case ATTACKING: break;
+        case ATTACKING:
+            RenderEnemyAttack(enemy, attackWidth, attackHeight);
+            break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): Invalid enemy state given.", __LINE__);
             break;
     }
 }
 
-// TODO: Implement
-void RenderEnemyAttack() {}
+static void RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
+    // Rendering idle animation of enemy as the enemy should not move while attacking.
+    EntityRender(
+        enemy, &enemyAnimArray[IDLE_ANIMATION],
+        ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+
+    //? NOTE: commented out animations are kept for alternating animations
+    switch(enemy->directionFace) {
+        case RIGHT:
+            EntityRender(
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
+                -attackHeight, attackWidth + 3, attackHeight + 10, 180.0f);
+            break;
+        case DOWN:
+            EntityRender(
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
+                -attackHeight * enemy->faceValue, attackWidth - 35,
+                attackHeight + 30, -90.0f);
+            break;
+        case LEFT:
+            EntityRender(
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
+                attackHeight, attackWidth - 51, attackHeight - 11, 0.0f);
+            break;
+        case UP:
+            EntityRender(
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
+                -attackHeight * enemy->faceValue, attackWidth - 35,
+                attackHeight + 7, -90.0f);
+            break;
+        default:
+            TraceLog(LOG_WARNING, "ENEMY.C (RenderEnemyAttack, line: %d): Invalid enemy directionFace found.", __LINE__);
+            break;
+    }
+}
 
 void EnemyUnload(Entity* enemy) {
     if(enemy == NULL) {
@@ -229,23 +328,25 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     switch(type) {
         case DEMON_PABLO:
             idleEnemyAnimation =
-                CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_PABLO_IDLE);
+                CreateAnimation(DEFAULT_IDLE_FPS, ENEMY_PABLO_WIDTH, ENEMY_PABLO_HEIGHT, TILE_ENEMY_PABLO_IDLE);
 
             movingEnemyAnimation =
-                CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_PABLO_MOVE);
+                CreateAnimation(DEFAULT_MOVING_FPS, ENEMY_PABLO_WIDTH, ENEMY_PABLO_HEIGHT, TILE_ENEMY_PABLO_MOVE);
 
-            attackEnemyAnimation =
-                CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_ENEMY_PABLO_ATTACK);
+            attackEnemyAnimation = CreateAnimation(
+                DEFAULT_ATTACK_FPS, ENEMY_PABLO_ATTACK_WIDTH,
+                ENEMY_PABLO_ATTACK_HEIGHT, TILE_ENEMY_PABLO_ATTACK);
             break;
         case DEMON_DIEGO:
             idleEnemyAnimation =
-                CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_DIEGO_IDLE);
+                CreateAnimation(DEFAULT_IDLE_FPS, ENEMY_DEIGO_WIDTH, ENEMY_DEIGO_HEIGHT, TILE_ENEMY_DIEGO_IDLE);
 
             movingEnemyAnimation =
-                CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_ENEMY_DIEGO_MOVE);
+                CreateAnimation(DEFAULT_MOVING_FPS, ENEMY_DEIGO_WIDTH, ENEMY_DEIGO_HEIGHT, TILE_ENEMY_DIEGO_MOVE);
 
-            attackEnemyAnimation =
-                CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_ENEMY_DIEGO_ATTACK);
+            attackEnemyAnimation = CreateAnimation(
+                DEFAULT_ATTACK_FPS, ENEMY_DEIGO_ATTACK_WIDTH,
+                ENEMY_DEIGO_ATTACK_HEIGHT, TILE_ENEMY_DIEGO_ATTACK);
             break;
         case DEMON_WAFFLES:
             // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
@@ -260,8 +361,9 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     enemyAnimArray[ATTACK_ANIMATION] = attackEnemyAnimation;
 
     // Starting timers for both idle and moving animations
-    StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0f);
-    StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0f);
+    StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0);
+    StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0);
+    StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 1.0);
 }
 
 static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos) {

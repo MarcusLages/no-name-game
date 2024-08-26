@@ -112,6 +112,12 @@ void EntityRender(
         entityWidth, entityHeight, rotation);
 }
 
+bool CheckEntityCollision(Entity* attacker, Entity* victim) {
+    if(attacker == NULL || victim == NULL) return false;
+    UpdateEntityHitbox(victim);
+    return CheckCollisionRecs(attacker->attack, victim->hitbox);
+}
+
 bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints) {
     UpdateEntityHitbox(victim);
     bool attackHit = CheckCollisionRecs(attacker->attack, victim->hitbox);

@@ -141,6 +141,11 @@ extern Entity player;
 void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerPos);
 
 /**
+ * TODO: comment
+ */
+bool CheckEntityCollision(Entity* attacker, Entity* victim);
+
+/**
  * Responsible for rendering the entity with the specified animation.
  *
  * ! @attention returns if given either a NULL entity or animation.

@@ -27,7 +27,7 @@
 
 /**
  * Macro to swap two number variables.
- * 
+ *
  * @param a Number
  * @param b Number
  */
@@ -65,5 +65,15 @@ int CenterComponentX(int componentWidth);
  *
  */
 int CenterComponentY(int componenteHeight);
+
+/**
+ * Determines if the given doubles are equal with a given precision.
+ *
+ * @param d1 First double to compare.
+ * @param d2 Second double to compare.
+ *
+ * @returns True if the doubles are equal false otherwise.
+ */
+bool IsDoubleEqual(double d1, double d2, float precision);
 
 #endif // UTILS_H_
