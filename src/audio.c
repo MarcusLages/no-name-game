@@ -5,24 +5,13 @@
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
  *
- *    @include
+ *    @include audio.h, raymath.h, stdlib.h
  *
  ***********************************************************************************************/
 
 #include "../include/audio.h"
 #include "raymath.h"
 #include <stdlib.h>
-
-//* ------------------------------------------
-//* ENUMERATIONS
-
-/**
- * Enum to check which type of audio file is an input.
- *
- * @param SoundType 0
- * @param MusicType 0
- */
-typedef enum AudioType { SoundType = 0, MusicType } AudioType;
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -64,8 +53,6 @@ static void LoadSongs();
  * Function to unload songs from songs array.
  */
 static void UnloadSongs();
-
-// static void LoopThroughData();
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
@@ -123,17 +110,6 @@ void SetAudioVolume(float master, float sfx, float music) {
         TraceLog(LOG_INFO, "AUDIO.C (SetAudioVolume): Music volume changed to: %.2f", musicVolume);
     }
 }
-
-// void IncrementVolume(float masterIncrement, float sfxIncrement, float musicIncrement) {
-//     if(masterIncrement == 0.0f && sfxIncrement == 0.0f && musicIncrement == 0.0f)
-//         return;
-
-//     masterIncrement += masterVolume;
-//     sfxIncrement += sfxVolume;
-//     musicIncrement += musicVolume;
-
-//     SetAudioVolume(masterIncrement, sfxIncrement, musicIncrement);
-// }
 
 float GetSfxVolume() { return sfxVolume; }
 
@@ -193,17 +169,3 @@ static void UnloadSongs() {
 
     TraceLog(LOG_INFO, "AUDIO.C (UnloadSongs): All songs unloaded successfully.");
 }
-
-// ? Ignore it, it's my try on using function pointers
-// static void LoopThroughArray(AudioType type, void* array, void (*callback)(void*)) {
-//     int max;
-
-//     switch(type) {
-//         case SoundType: max = MAX_SFX; break;
-//         case MusicType: max = MAX_SONGS; break;
-//     }
-
-//     for(int index; index < max; index++) {
-//         callback( (void*) array );
-//     }
-// }
