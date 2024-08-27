@@ -105,14 +105,13 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type);
  * ! @attention returns if the enemy is NULL, has an invalid state or if it is no longer attacking.
  *
  * @param enemy The reference to the enemy to handle the attack for.
- * @param attackWidth Attack hitbox width.
- * @param attackHeight Attack hitbox height.
+ * @param type Type of enemy.
  *
  * ? @note Manages the timer for the enemy attack animation.
  * ? @note Calls UpdateEnemyAttackHitbox to update the given enemy's attack hotbox.
- * ? @note Calls EntityAttack to handle enemy attack if the hitboxes intersect.
+ * ? @note Calls EntityAttack to handle and check enemy attack if the hitboxes intersect.
  */
-void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight);
+void EnemyAttack(Entity* enemy, EnemyType type);
 
 /**
  * Renders the enemy animation based off of it's GameState.

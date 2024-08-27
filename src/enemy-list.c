@@ -284,9 +284,7 @@ static void MoveEnemies() {
 static void HandleEnemiesAttack() {
     EnemyNode* currEnemy = enemies;
     while(currEnemy != NULL) {
-        int attackWidth  = GetAttackWidth(currEnemy->type);
-        int attackHeight = GetAttackHeight(currEnemy->type);
-        EnemyAttack(&currEnemy->enemy, attackWidth, attackHeight);
+        EnemyAttack(&currEnemy->enemy, currEnemy->type);
         currEnemy = currEnemy->next;
     }
 }

@@ -47,10 +47,9 @@ static bool IsPlayerSeen(Entity* enemy, EnemyType type);
  * Updates the given enemy's attack hitbox property.
  *
  * @param enemy The enemy to update.
- * @param attackWidth Attack hitbox width.
- * @param attackHeight Attack hitbox height.
+ * @param type Type of enemy.
  */
-static void UpdateEnemyAttackHitbox(Entity* enemy, int attackWidth, int attackHeight);
+static void UpdateEnemyAttackHitbox(Entity* enemy, EnemyType type);
 
 /**
  * Renders an enemy's attack animation based off of it's Direction.
@@ -79,6 +78,11 @@ static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerP
  * TODO: Comment
  */
 static void GetTiles(int tiles[], EnemyType type);
+
+/**
+ * TODO: Comment
+ */
+static void LoadWafflesAttackHitbox(Entity* enemy);
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
@@ -149,7 +153,7 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type) {
     MoveEnemyToPos(enemy, player.pos, lastPlayerPos);
 }
 
-void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
+void EnemyAttack(Entity* enemy, EnemyType type) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (EnemyAttack, line: %d): NULL enemy was found.", __LINE__);
         return;
@@ -160,7 +164,7 @@ void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
         return;
     }
 
-    UpdateEnemyAttackHitbox(enemy, attackWidth, attackWidth);
+    UpdateEnemyAttackHitbox(enemy, type);
 
     if(EntityAttack(enemy, &player, 0) && enemy->state != ATTACKING) {
         Timer* timer = &enemyAnimArray[ATTACK_ANIMATION].timer;
@@ -178,40 +182,15 @@ void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
 }
 
 // TODO: watch out for waffles
-static void UpdateEnemyAttackHitbox(Entity* enemy, int attackWidth, int attackHeight) {
-    enemy->attack = (Rectangle){ .x      = enemy->pos.x,
-                                 .y      = enemy->pos.y,
-                                 .width  = attackWidth - 4,
-                                 .height = attackHeight - 8 };
-
-    // handles setting the attack hitbox based upon the direction enemy is facing
-    switch(enemy->directionFace) {
-            // Attack hitbox offset
-        case RIGHT:
-            enemy->attack.x += 3;
-            enemy->attack.y += 13;
-            break;
-        case DOWN:
-            SWAP(enemy->attack.width, enemy->attack.height);
-            enemy->attack.x += 1;
-            enemy->attack.y += 19;
-            break;
-        case LEFT:
-            enemy->attack.x -= 15;
-            enemy->attack.y += 13;
-            break;
-        case UP:
-            SWAP(enemy->attack.width, enemy->attack.height);
-            enemy->attack.x += 1;
-            enemy->attack.y -= 0;
-            break;
+static void UpdateEnemyAttackHitbox(Entity* enemy, EnemyType type) {
+    switch(type) {
+        case DEMON_DIEGO:
+        case DEMON_PABLO: LoadStandardEntityAttackHitbox(enemy); break;
+        case DEMON_WAFFLES: break; LoadWafflesAttackHitbox(enemy);
         default:
-            TraceLog(LOG_WARNING, "ENEMY.C (EnemyAttack, line: %d): Invalid directionFace was found.", __LINE__);
+            TraceLog(LOG_WARNING, "ENEMY.C (UpdateEnemyAttackHitbox, line: %d): Invalid EnemyType was given.", __LINE__);
             break;
     }
-
-    enemy->attack.x = floor(enemy->attack.x);
-    enemy->attack.y = floor(enemy->attack.y);
 }
 
 void EnemyRender(Entity* enemy, EnemyType type) {
@@ -245,34 +224,35 @@ void EnemyRender(Entity* enemy, EnemyType type) {
     }
 }
 
+//TODO: Split on profile as well:
 static void
 RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight, int width, int height) {
     // Rendering idle animation of enemy as the enemy should not move while attacking.
     EntityRender(enemy, &enemyAnimArray[IDLE_ANIMATION], width * enemy->faceValue, height, 0, 0, 0.0f);
-    // DrawRectangleRec(enemy->attack, RED);
+    DrawRectangleRec(enemy->attack, RED);
+    DrawPixelV(enemy->pos, GREEN);
 
     switch(enemy->directionFace) {
         case RIGHT:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
-                -attackHeight, attackWidth + 3, attackHeight + 10, 180.0f);
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
+                attackHeight, width / 4, attackHeight / 2, 0.0f);
             break;
         case DOWN:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
-                -attackHeight * enemy->faceValue, attackWidth - 35,
-                attackHeight + 30, -90.0f);
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
+                attackHeight * enemy->faceValue, width + width / 8, attackHeight, 90.0f);
             break;
         case LEFT:
             EntityRender(
                 enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
-                attackHeight, attackWidth - 51, attackHeight - 11, 0.0f);
+                attackHeight, -width - width / 4, attackHeight / 2, 0.0f);
             break;
         case UP:
             EntityRender(
                 enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
-                -attackHeight * enemy->faceValue, attackWidth - 35,
-                attackHeight + 7, -90.0f);
+                -attackHeight * enemy->faceValue, -width / 8,
+                attackHeight + height / 8, -90.0f);
             break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (RenderEnemyAttack, line: %d): Invalid enemy directionFace found.", __LINE__);
@@ -446,4 +426,38 @@ static void GetTiles(int* tiles, EnemyType type) {
     for(int i = 0; i < MAX_ENEMY_ANIMATIONS; i++) {
         tiles[i] = tileNum++;
     };
+}
+
+static void LoadWafflesAttackHitbox(Entity* enemy) {
+    int attackWidth  = ENEMY_WAFFLES_ATTACK_WIDTH - 4;
+    int attackHeight = ENEMY_WAFFLES_ATTACK_HEIGHT - 8;
+    enemy->attack    = (Rectangle){
+           .x = enemy->pos.x, .y = enemy->pos.y, .width = attackWidth, .height = attackHeight
+    };
+
+    switch(enemy->directionFace) {
+        case RIGHT:
+            enemy->attack.x += ENEMY_WAFFLES_WIDTH / 2;
+            enemy->attack.y += (ENEMY_WAFFLES_HEIGHT / 2) - attackHeight / 2;
+            break;
+        case DOWN:
+            SWAP(enemy->attack.width, enemy->attack.height);
+            enemy->attack.x += 0;
+            enemy->attack.y += ENEMY_WAFFLES_HEIGHT - ENEMY_WAFFLES_HEIGHT / 4;
+            break;
+        case LEFT:
+            enemy->attack.x += -attackWidth + (ENEMY_WAFFLES_WIDTH / 2);
+            enemy->attack.y += (ENEMY_WAFFLES_HEIGHT / 2) - attackHeight / 2;
+            break;
+        case UP:
+            SWAP(enemy->attack.width, enemy->attack.height);
+            enemy->attack.x += 0;
+            enemy->attack.y += -ENEMY_WAFFLES_HEIGHT / 6;
+            break;
+        default:
+            TraceLog(LOG_WARNING, "ENEMY.C (LoadStandardEntityAttackHitbox, line: %d): Invalid directionFace was found.", __LINE__);
+            break;
+    }
+    enemy->attack.x = floor(enemy->attack.x);
+    enemy->attack.y = floor(enemy->attack.y);
 }

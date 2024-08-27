@@ -28,7 +28,7 @@
 #define DEFAULT_ATTACK_FPS 8
 
 // Temporary attack rectangle size
-//TODO: move to player.h as it is more related to that
+// TODO: Rename to ENTITY_ATTACK_WIDTH and height
 #define PLAYER_ATTACK_WIDTH  32
 #define PLAYER_ATTACK_HEIGHT 21
 
@@ -230,5 +230,10 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
  * @param entity Pointer to the entity that will check collision with all the collidable tiles on the map
  */
 void EntityWorldCollision(Entity* entity);
+
+/**
+ * TODO: Comment
+ */
+void LoadStandardEntityAttackHitbox(Entity* entity);
 
 #endif // !ENTITY_H
