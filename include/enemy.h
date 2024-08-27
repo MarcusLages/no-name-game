@@ -42,8 +42,6 @@
 #define ENEMY_WAFFLES_HEIGHT 48
 
 /** Attack dimensions. */
-//? NOTE: Dimensions are the same for now as sprite is the same.
-//? Testing will be need once different dimensions and sprites are given.
 #define ENEMY_PABLO_ATTACK_WIDTH  32
 #define ENEMY_PABLO_ATTACK_HEIGHT 21
 
