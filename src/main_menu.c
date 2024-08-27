@@ -17,7 +17,7 @@
 //* DEFINITIONS
 
 /** Number of buttons displayed on main menu screen. */
-#define MAX_MENU_BUTTONS 3
+#define MAX_MENU_BUTTONS 2
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -26,12 +26,10 @@
  * Enumeration representing the possible menu button options.
  *
  * @param START_BUTTON 0
- * @param OPTIONS_BUTTON 1
  * @param EXIT_BUTTON 2
  */
 typedef enum MainMenuOptions {
     START_BUTTON = 0,
-    OPTIONS_BUTTON,
     EXIT_BUTTON
 } MainMenuOptions;
 
@@ -39,7 +37,7 @@ typedef enum MainMenuOptions {
 //* MODULAR VARIABLES
 
 /** Array with all button text options for the main menu. */
-static char mainMenuOptionsText[MAX_MENU_BUTTONS][8] = { "Start", "Options", "Exit" };
+static char mainMenuOptionsText[MAX_MENU_BUTTONS][8] = { "Start", "Exit" };
 
 /** Button box array */
 static Rectangle mainMenuButtonBox[MAX_MENU_BUTTONS];
@@ -89,7 +87,6 @@ void MainMenuUpdate() {
                 // If mouse clicked, changes the current screen to the appropriate screen
                 switch(button) {
                     case START_BUTTON: nextScreen = DUNGEON; break;
-                    case OPTIONS_BUTTON: break;
                     case EXIT_BUTTON: isRunning = false; break;
                     default: break;
                 }
