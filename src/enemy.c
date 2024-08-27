@@ -87,21 +87,25 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
             enemy.speed  = ENEMY_PABLO_SPEED;
             enemy.health = ENEMY_PABLO_HEALTH;
             enemy.hitbox = (Rectangle){ .x = enemy.pos.x,
-                                        .y = enemy.pos.y + ENTITY_TILE_HEIGHT / 2,
-                                        .width  = ENTITY_TILE_WIDTH,
-                                        .height = ENTITY_TILE_HEIGHT / 2 };
+                                        .y = enemy.pos.y + ENEMY_PABLO_HEIGHT / 2,
+                                        .width  = ENEMY_PABLO_WIDTH,
+                                        .height = ENEMY_PABLO_HEIGHT / 2 };
             break;
         case DEMON_DIEGO:
-            enemy.speed     = ENEMY_DIEGO_SPEED;
-            enemy.health    = ENEMY_DIEGO_HEALTH;
-            enemy.direction = Vector2Zero();
-            enemy.hitbox    = (Rectangle){ .x = enemy.pos.x,
-                                           .y = enemy.pos.y + ENTITY_TILE_HEIGHT / 2,
-                                           .width  = ENTITY_TILE_WIDTH,
-                                           .height = ENTITY_TILE_HEIGHT / 2 };
+            enemy.speed  = ENEMY_DIEGO_SPEED;
+            enemy.health = ENEMY_DIEGO_HEALTH;
+            enemy.hitbox = (Rectangle){ .x = enemy.pos.x,
+                                        .y = enemy.pos.y + ENEMY_DEIGO_HEIGHT / 2,
+                                        .width  = ENEMY_DEIGO_WIDTH,
+                                        .height = ENEMY_DEIGO_HEIGHT / 2 };
             break;
         case DEMON_WAFFLES:
-            // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE IS READY TO PLAY
+            enemy.speed  = ENEMY_WAFFLES_SPEED;
+            enemy.health = ENEMY_WAFFLES_HEALTH;
+            enemy.hitbox = (Rectangle){ .x = enemy.pos.x,
+                                        .y = enemy.pos.y + ENEMY_WAFFLES_HEIGHT / 2,
+                                        .width  = ENEMY_WAFFLES_WIDTH,
+                                        .height = ENEMY_WAFFLES_HEIGHT / 2 };
             break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (EnemyStartup, line: %d): Invalid EnemyType was given.", __LINE__);
@@ -159,11 +163,12 @@ void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
         // Wait on delay
         if(CheckIfDelayed(timer)) return;
         enemy->state  = ATTACKING;
-        player.health = 0;
+        //player.health = 0;
         TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
     }
 }
 
+//TODO: watch out for waffles
 static void UpdateEnemyAttackHitbox(Entity* enemy, int attackWidth, int attackHeight) {
     enemy->attack = (Rectangle){ .x      = enemy->pos.x,
                                  .y      = enemy->pos.y,
@@ -226,6 +231,7 @@ void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int atta
     }
 }
 
+//TODO: watch out for waffles
 static void RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
     // Rendering idle animation of enemy as the enemy should not move while attacking.
     EntityRender(
@@ -272,6 +278,7 @@ void EnemyUnload(Entity* enemy) {
     TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy unloaded successfully.");
 }
 
+//TODO: watch out for waffles
 static bool IsPlayerSeen(Entity* enemy) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (IsPlayerSeen, line: %d): NULL enemy was found.", __LINE__);
@@ -349,7 +356,15 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
                 ENEMY_DEIGO_ATTACK_HEIGHT, TILE_ENEMY_DIEGO_ATTACK);
             break;
         case DEMON_WAFFLES:
-            // TODO: IMPLEMENT FOR WHEN DEMON WAFFLE FRIES IS READY TO PLAY
+            idleEnemyAnimation =
+                CreateAnimation(DEFAULT_IDLE_FPS, ENEMY_WAFFLES_WIDTH, ENEMY_WAFFLES_HEIGHT, TILE_ENEMY_WAFFLES_IDLE);
+
+            movingEnemyAnimation =
+                CreateAnimation(DEFAULT_MOVING_FPS, ENEMY_WAFFLES_WIDTH, ENEMY_WAFFLES_HEIGHT, TILE_ENEMY_WAFFLES_MOVE);
+
+            attackEnemyAnimation = CreateAnimation(
+                DEFAULT_ATTACK_FPS, ENEMY_WAFFLES_ATTACK_WIDTH,
+                ENEMY_WAFFLES_ATTACK_HEIGHT, TILE_ENEMY_WAFFLES_ATTACK);
             break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (SetupEnemyAnimation, line: %d): Invalid EnemyType was given.", __LINE__);
@@ -360,7 +375,6 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     enemyAnimArray[MOVE_ANIMATION]   = movingEnemyAnimation;
     enemyAnimArray[ATTACK_ANIMATION] = attackEnemyAnimation;
 
-    // Starting timers for both idle and moving animations
     StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0);
     StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0);
     StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 1.0);

@@ -85,7 +85,7 @@ void DungeonUpdate() {
     if(!IsPlayerDead()) {
         PlayerUpdate();
         UpdateEnemies();
-        PlayerEnemyCollision();
+        //PlayerEnemyCollision();
 
         // Update camera to follow the player
         camera.target = (Vector2){ (int) player.pos.x + 8, (int) player.pos.y + 16 };
@@ -186,6 +186,20 @@ static void LoadTextures() {
     img = LoadImage("resources/player-attack.png");
     textures[TILE_ENEMY_DIEGO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
+
+    img                               = LoadImage("resources/waffles-idle.png");
+    textures[TILE_ENEMY_WAFFLES_IDLE] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    img = LoadImage("resources/waffles-movement.png");
+    textures[TILE_ENEMY_WAFFLES_MOVE] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    //! NOTE: player attack is used here temporailly. New asset must be found.
+    img = LoadImage("resources/player-attack.png");
+    textures[TILE_ENEMY_WAFFLES_ATTACK] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
     TraceLog(LOG_INFO, "DUNGEON.C (LoadTextures): All dungeon textures loaded.");
 }
 

@@ -32,6 +32,17 @@ EnemyNode* enemies;
 static void AddEnemies(int numOfEnemies, PositionArray positionArray);
 
 /**
+ * Adds a specified enemy to the enemies list with a given pos.
+ *
+ * @param pos The position that the enemy should spawn.
+ * @param type Type of enemy.
+ *
+ * ! @note Calls AddEnemyNode.
+ * ? @note the given position must be a valid position on the map (position is not checked internally).
+ */
+static void AddParticularEnemy(Vector2 pos, EnemyType type);
+
+/**
  * Creates the enemies linked list and returns a reference to the first EnemyNode in the list.
  *
  * @param enemy The enemy to add as the first EnemyNode.
@@ -136,13 +147,13 @@ void SetupEnemies() {
         }
         cursor = cursor->next;
     }
+    AddParticularEnemy((Vector2){ 74, 10 }, DEMON_WAFFLES);
     AdjustEnemies();
+    UnloadRooms();
     TraceLog(LOG_INFO, "ENEMY-LIST.C (SetupEnemies): Enemies set successfully.");
 }
 
 void UpdateEnemies() {
-    // TODO: Temp. Checking player death is handled in dungeon.c the way Marcus did it. remove this.
-    if(player.health <= 0) return;
     CleanUpEnemies();
     MoveEnemies();
     HandleEnemiesAttack();
@@ -222,6 +233,12 @@ static void AddEnemies(int numOfEnemies, PositionArray positionArray) {
     UnloadRandomSequence(randNums);
 }
 
+static void AddParticularEnemy(Vector2 pos, EnemyType type) {
+    Entity enemy =
+        EnemyStartup((Vector2){ (float) pos.x * TILE_WIDTH, (float) pos.y * TILE_HEIGHT }, type);
+    AddEnemyNode(enemy, type);
+}
+
 static EnemyNode* CreateEnemyList(Entity enemy, EnemyType type) {
     EnemyNode* enemyNode = (EnemyNode*) malloc(sizeof(EnemyNode));
     if(enemyNode == NULL) {
@@ -270,25 +287,21 @@ static EnemyType GetRandomEnemyType() {
     int value      = abs(GetRandomValue(0, 100));
     EnemyType type = DEMON_PABLO;
 
-    if(value > 50 && value <= 80) {
-        type = DEMON_DIEGO;
-    } else if(value > 80 && value <= 100) {
-        // TODO: Change to WAFFLES once ready.
+    if(value > 50 && value <= 100) {
         type = DEMON_DIEGO;
     }
-
     return type;
 }
 
 static void AdjustEnemies() {
     EnemyNode* cursor = enemies;
     while(cursor != NULL) {
-        Vector2 diff = cursor->enemy.pos;
-        int hitbox_X = cursor->enemy.hitbox.x;
-        int hitbox_Y = cursor->enemy.hitbox.y;
+        Vector2 diff   = cursor->enemy.pos;
+        float hitbox_X = cursor->enemy.hitbox.x;
+        float hitbox_Y = cursor->enemy.hitbox.y;
 
-        diff.x = diff.x - hitbox_X;
-        diff.y = diff.y - hitbox_Y;
+        diff.x = floorf(diff.x - hitbox_X);
+        diff.y = floorf(diff.y - hitbox_Y);
 
         cursor->enemy.pos = Vector2Add(cursor->enemy.pos, diff);
         cursor            = cursor->next;

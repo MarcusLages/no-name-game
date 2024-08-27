@@ -68,10 +68,11 @@ void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int en
     // if there is a delay return
     if(CheckIfDelayed(&animation->timer)) return;
 
-    if(!isPaused)
+    if(!isPaused) {
         animation->curFrame =
             (int) (GetElapsedTime(&animation->timer) * animation->fps) %
             animation->numOfFrames;
+    }
     Rectangle source = animation->frames[animation->curFrame];
 
     source.width  = entityWidth;

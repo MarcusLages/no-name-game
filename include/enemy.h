@@ -39,7 +39,7 @@
 #define ENEMY_DEIGO_HEIGHT 32
 
 #define ENEMY_WAFFLES_WIDTH  32
-#define ENEMY_WAFFLES_HEIGHT 32
+#define ENEMY_WAFFLES_HEIGHT 48
 
 /** Attack dimensions. */
 //? NOTE: Dimensions are the same for now as sprite is the same.
