@@ -14,6 +14,7 @@
 #include "../include/player.h"
 #include "../include/screen.h"
 #include "../include/tile.h"
+#include "../include/audio.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -76,6 +77,11 @@ void DungeonStartup() {
     SetupEnemies();
     PlayerStartup();
 
+    if(!IsMusicStreamPlaying(songs[DUNGEON_SONG])) {
+        StopMusicStream(songs[MENU_SONG]);
+        PlayMusicStream(songs[DUNGEON_SONG]);
+    }
+
     TraceLog(LOG_INFO, "DUNGEON.C (DungeonStartup): Dungeon loaded successfully.");
 }
 
@@ -83,6 +89,8 @@ void DungeonUpdate() {
     // If player is dead, no need to check for anything
     // Instead, sends him to the final screen
     if(!IsPlayerDead()) {
+        UpdateMusicStream(songs[DUNGEON_SONG]);
+
         PlayerUpdate();
         UpdateEnemies();
         PlayerEnemyCollision();

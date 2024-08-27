@@ -92,6 +92,8 @@ void PauseStartup() {
 void PauseUpdate() {
     Vector2 mouse = GetMousePosition();
 
+    UpdateMusicStream(songs[DUNGEON_SONG]);
+
     float master = GetMasterVolume();
     float sfx    = GetSfxVolume();
     float music  = GetMusicVolume();

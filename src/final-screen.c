@@ -69,11 +69,18 @@ void FinalScreenStartup() {
         initialButtonY += 60 + 20;
     }
 
+    if(!IsMusicStreamPlaying(songs[MENU_SONG])) {
+        StopMusicStream(songs[DUNGEON_SONG]);
+        PlayMusicStream(songs[MENU_SONG]);
+    }
+
     TraceLog(LOG_INFO, "FINAL-SCREEN.C (FinalScreenStartup): Final screen set successfully.");
 }
 
 void FinalScreenUpdate() {
     Vector2 mouse = GetMousePosition();
+
+    UpdateMusicStream(songs[MENU_SONG]);
 
     // Checks mouse click or hover on a button on the menu
     for(int button = 0; button < MAX_FINAL_SCREEN_BUTTONS; button++) {

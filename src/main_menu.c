@@ -66,11 +66,18 @@ void MainMenuStartup() {
         initialButtonY += 60 + 20;
     }
 
+    if(!IsMusicStreamPlaying(songs[MENU_SONG])) {
+        StopMusicStream(songs[DUNGEON_SONG]);
+        PlayMusicStream(songs[MENU_SONG]);
+    }
+
     TraceLog(LOG_INFO, "MAIN-MENU.C (MainMenuStartup): Main menu set successfully.");
 }
 
 void MainMenuUpdate() {
     Vector2 mouse = GetMousePosition();
+
+    UpdateMusicStream(songs[MENU_SONG]);
 
     // Checks mouse click or hover on a button on the main menu
     for(int button = 0; button < MAX_MENU_BUTTONS; button++) {

@@ -98,14 +98,14 @@ void SetAudioVolume(float master, float sfx, float music) {
     }
 
     if(!FloatEquals(music, musicVolume)) {
-        // if(music > 1)
-        //     music = 1;
-        // else if(music < 0)
-        //     music = 0;
-        // musicVolume = music;
-        // for(int index = 0; index < MAX_SONGS; index++) {
-        //     SetMusicVolume(songs[index], musicVolume);
-        // }
+        if(music > 1)
+            music = 1;
+        else if(music < 0)
+            music = 0;
+        musicVolume = music;
+        for(int index = 0; index < MAX_SONGS; index++) {
+            SetMusicVolume(songs[index], musicVolume);
+        }
 
         TraceLog(LOG_INFO, "AUDIO.C (SetAudioVolume): Music volume changed to: %.2f", musicVolume);
     }
@@ -153,16 +153,18 @@ static void LoadSongs() {
         TraceLog(LOG_FATAL, "AUDIO.C (LoadSongs, line: %d): Memory allocation for songs failure.", __LINE__);
     }
 
-    // songs[MENU_SONG]    = LoadMusicStream("resources/music/menu-song.mp3");
-    // songs[DUNGEON_SONG] = LoadMusicStream("resources/music/dungeon-song.mp3");
+    songs[MENU_SONG]    = LoadMusicStream("resources/music/menu-song.mp3");
+    songs[DUNGEON_SONG] = LoadMusicStream("resources/music/dungeon-song.mp3");
 
     TraceLog(LOG_INFO, "AUDIO.C (LoadSongs): All songs loaded successfully.");
 }
 
 // TODO: Add songs and uncomment
 static void UnloadSongs() {
-    // for(int songIndex = 0; songIndex < MAX_SONGS; songIndex++)
-    //     UnloadMusicStream(songs[songIndex]);
+    for(int songIndex = 0; songIndex < MAX_SONGS; songIndex++) {
+        StopMusicStream(songs[songIndex]);
+        UnloadMusicStream(songs[songIndex]);
+    }
 
     free(songs);
     songs = NULL;
