@@ -115,7 +115,8 @@ void SetupEnemies() {
         }
         cursor = cursor->next;
     }
-    AddParticularEnemy((Vector2){ 74, 10 }, DEMON_WAFFLES);
+    // 74, 10
+    AddParticularEnemy((Vector2){ 14, 15 }, DEMON_WAFFLES);
     AdjustEnemies();
     UnloadRooms();
     TraceLog(LOG_INFO, "ENEMY-LIST.C (SetupEnemies): Enemies set successfully.");
@@ -130,11 +131,7 @@ void UpdateEnemies() {
 void RenderEnemies() {
     EnemyNode* currEnemy = enemies;
     while(currEnemy != NULL) {
-        int attackWidth  = GetAttackWidth(currEnemy->type);
-        int attackHeight = GetAttackHeight(currEnemy->type);
-        int width        = GetWidth(currEnemy->type);
-        int height       = GetHeight(currEnemy->type);
-        EnemyRender(&currEnemy->enemy, width, height, attackWidth, attackHeight);
+        EnemyRender(&currEnemy->enemy, currEnemy->type);
         currEnemy = currEnemy->next;
     }
 }
@@ -279,7 +276,7 @@ static void AdjustEnemies() {
 static void MoveEnemies() {
     EnemyNode* currEnemy = enemies;
     while(currEnemy != NULL) {
-        EnemyMovement(&currEnemy->enemy, &(currEnemy->lastPlayerPos));
+        EnemyMovement(&currEnemy->enemy, &(currEnemy->lastPlayerPos), currEnemy->type);
         currEnemy = currEnemy->next;
     }
 }

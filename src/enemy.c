@@ -37,10 +37,11 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
  * Determines if the player is seen by a given enemy.
  *
  * @param enemy The enemy to check agaist.
+ * @param type Type of enemy.
  *
  * @returns True if the player is seen and false otherwise.
  */
-static bool IsPlayerSeen(Entity* enemy);
+static bool IsPlayerSeen(Entity* enemy, EnemyType type);
 
 /**
  * Updates the given enemy's attack hitbox property.
@@ -57,8 +58,11 @@ static void UpdateEnemyAttackHitbox(Entity* enemy, int attackWidth, int attackHe
  * @param enemy The enemy to render an attack for.
  * @param attackWidth Attack hitbox width.
  * @param attackHeight Attack hitbox height.
+ * @param width Width of the enemy entity.
+ * @param height Height of the enemy entity.
  */
-static void RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight);
+static void
+RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight, int width, int height);
 
 /**
  * Handles the enemy movement towards a given position.
@@ -122,13 +126,13 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
     return enemy;
 }
 
-void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos) {
+void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (EnemyMovement, line: %d): NULL enemy was found.", __LINE__);
         return;
     }
 
-    if(!IsPlayerSeen(enemy)) {
+    if(!IsPlayerSeen(enemy, type)) {
         // Does not set to idle if precision is off.
         // TODO Needs to be fixed
         if(IsVectorEqual(enemy->pos, *lastPlayerPos, 0.01f)) {
@@ -210,11 +214,16 @@ static void UpdateEnemyAttackHitbox(Entity* enemy, int attackWidth, int attackHe
     enemy->attack.y = floor(enemy->attack.y);
 }
 
-void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int attackHeight) {
+void EnemyRender(Entity* enemy, EnemyType type) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): NULL enemy was found.", __LINE__);
         return;
     }
+
+    int attackWidth  = GetAttackWidth(type);
+    int attackHeight = GetAttackHeight(type);
+    int width        = GetWidth(type);
+    int height       = GetHeight(type);
 
     switch(enemy->state) {
         case IDLE:
@@ -228,7 +237,7 @@ void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int atta
                 width * enemy->faceValue, height, 0, 0, 0.0f);
             break;
         case ATTACKING:
-            RenderEnemyAttack(enemy, attackWidth, attackHeight);
+            RenderEnemyAttack(enemy, attackWidth, attackHeight, width, height);
             break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): Invalid enemy state given.", __LINE__);
@@ -236,14 +245,12 @@ void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int atta
     }
 }
 
-// TODO: watch out for waffles
-static void RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
+static void
+RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight, int width, int height) {
     // Rendering idle animation of enemy as the enemy should not move while attacking.
-    EntityRender(
-        enemy, &enemyAnimArray[IDLE_ANIMATION],
-        ENTITY_TILE_WIDTH * enemy->faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
+    EntityRender(enemy, &enemyAnimArray[IDLE_ANIMATION], width * enemy->faceValue, height, 0, 0, 0.0f);
+    // DrawRectangleRec(enemy->attack, RED);
 
-    //? NOTE: commented out animations are kept for alternating animations
     switch(enemy->directionFace) {
         case RIGHT:
             EntityRender(
@@ -283,8 +290,7 @@ void EnemyUnload(Entity* enemy) {
     TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy unloaded successfully.");
 }
 
-// TODO: watch out for waffles
-static bool IsPlayerSeen(Entity* enemy) {
+static bool IsPlayerSeen(Entity* enemy, EnemyType type) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (IsPlayerSeen, line: %d): NULL enemy was found.", __LINE__);
         return false;
@@ -296,15 +302,16 @@ static bool IsPlayerSeen(Entity* enemy) {
 
     // check if the vector from enemy to player is clear of any collisions
     float incrementAmount = 1 / distance;
+    int width             = GetWidth(type);
+    int height            = GetHeight(type);
 
     for(float i = 0; i < 1.0f; i += incrementAmount) {
         Vector2 playerCenter = { player.pos.x + ENTITY_TILE_WIDTH / 2,
                                  player.pos.y + ENTITY_TILE_HEIGHT / 2 };
-        Vector2 enemyCenter  = { enemy->pos.x + ENTITY_TILE_WIDTH / 2,
-                                 enemy->pos.y + ENTITY_TILE_HEIGHT / 2 };
-        Vector2 resVec       = Vector2Lerp(playerCenter, enemyCenter, i);
-        CollisionNode* head  = collidableTiles;
+        Vector2 enemyCenter = { enemy->pos.x + width / 2, enemy->pos.y + height / 2 };
+        Vector2 resVec = Vector2Lerp(playerCenter, enemyCenter, i);
 
+        CollisionNode* head = collidableTiles;
         while(head != NULL) {
             int x = (int) resVec.x / TILE_WIDTH;
             int y = (int) resVec.y / TILE_HEIGHT;
@@ -316,7 +323,6 @@ static bool IsPlayerSeen(Entity* enemy) {
             head = head->next;
         }
     }
-
     return true;
 }
 

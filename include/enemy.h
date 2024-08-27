@@ -93,10 +93,11 @@ Entity EnemyStartup(Vector2 position, EnemyType type);
  *
  * @param enemy The enemy to handle movement.
  * @param lastPlayerPos The last known location of the player.
+ * @param type Type of enemy.
  *
  * ? @note Needs a reference to the lastPlayerPos of the given enemy.
  */
-void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos);
+void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type);
 
 /**
  * Handles the given enemy's attack.
@@ -119,12 +120,9 @@ void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight);
  * ! @attention returns if the enemy is NULL or has an invalid state.
  *
  * @param enemy The reference to the enemy to render.
- * @param width Enemy width.
- * @param height Enemy height.
- * @param attackWidth Attack hitbox width.
- * @param attackHeight Attack hitbox height.
+ * @param type Type of enemy.
  */
-void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int attackHeight);
+void EnemyRender(Entity* enemy, EnemyType type);
 
 /**
  * Unloads all the enemies and animations associated with an enemy entity.
