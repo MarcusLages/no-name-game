@@ -297,7 +297,7 @@ static bool IsPlayerSeen(Entity* enemy) {
     // check if the vector from enemy to player is clear of any collisions
     float incrementAmount = 1 / distance;
 
-    for(float i = incrementAmount; i < 1.0f; i += incrementAmount) {
+    for(float i = 0; i < 1.0f; i += incrementAmount) {
         Vector2 playerCenter = { player.pos.x + ENTITY_TILE_WIDTH / 2,
                                  player.pos.y + ENTITY_TILE_HEIGHT / 2 };
         Vector2 enemyCenter  = { enemy->pos.x + ENTITY_TILE_WIDTH / 2,
