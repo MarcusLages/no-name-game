@@ -10,6 +10,7 @@
  ***********************************************************************************************/
 
 #include "../include/pause.h"
+#include "../include/screen.h"
 #include "../include/audio.h"
 #include "../include/utils.h"
 #include "raylib.h"
@@ -17,7 +18,7 @@
 //* ------------------------------------------
 //* DEFINITIONS
 
-#define MAX_PAUSE_MENU_BUTTONS 6
+#define MAX_PAUSE_MENU_BUTTONS 7
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -29,13 +30,14 @@ bool isPaused;
 
 /**
  * Enum for accessing all pause menu buttons on pauseOptionsText and pauseButtonBox.
- * 
+ *
  * @param MASTER_MINUS  0
  * @param MASTER_PLUS   1
  * @param SFX_MINUS     2
  * @param SFX_PLUS      3
  * @param MUSIC_MINUS   4
  * @param MUSIC_PLUS    5
+ * @param GO_MAIN_MENU  6
  */
 typedef enum PauseMenuOptions {
     MASTER_MINUS = 0,
@@ -43,15 +45,17 @@ typedef enum PauseMenuOptions {
     SFX_MINUS,
     SFX_PLUS,
     MUSIC_MINUS,
-    MUSIC_PLUS
+    MUSIC_PLUS,
+    GO_MAIN_MENU
 } PauseMenuOptions;
 
 //* ------------------------------------------
 //* MODULAR VARIABLES
 
 /** Array with all button text options for the pause menu. */
-static char pauseMenuOptionsText[MAX_PAUSE_MENU_BUTTONS][2] = { "-", "+", "-",
-                                                             "+", "-", "+" };
+static char pauseMenuOptionsText[MAX_PAUSE_MENU_BUTTONS][10] = { "-", "+", "-",
+                                                                "+", "-", "+",
+                                                                "Main Menu" };
 
 /** Button box array */
 static Rectangle pauseMenuButtonBox[MAX_PAUSE_MENU_BUTTONS];
@@ -68,13 +72,20 @@ static int hoveredButton;
 void PauseStartup() {
     hoveredButton = -1;
 
-    int initialButtonY = GetScreenHeight() / 2;
+    int initialButtonY = GetScreenHeight() / 2 - 120;
     for(int i = 0; i < MAX_PAUSE_MENU_BUTTONS; i++) {
-        pauseMenuButtonBox[i] = (Rectangle){ .x = (float) CenterComponentX(240),
-                                            .y = initialButtonY,
-                                            .width  = 240,
-                                            .height = 60 };
-        initialButtonY += 60 + 20;
+        pauseMenuButtonBox[i] = (Rectangle){ .x = (float) CenterComponentOnScreenX(60) + 160,
+                                             .y = initialButtonY,
+                                             .width  = 60,
+                                             .height = 60 };
+        if(i == (MAX_PAUSE_MENU_BUTTONS - 1)) {
+            pauseMenuButtonBox[i].width = 240;
+            pauseMenuButtonBox[i].x = (float) CenterComponentOnScreenX(pauseMenuButtonBox[i].width);
+            pauseMenuButtonBox[i].y += 20;
+        } else if(i % 2 == 1) {
+            initialButtonY += 60 + 20;
+            pauseMenuButtonBox[i].x += 80;
+        }
     }
 }
 
@@ -98,12 +109,13 @@ void PauseUpdate() {
                 PlaySound(soundFX[CLICK_SFX]);
                 // If mouse clicked, changes the current screen to the appropriate screen
                 switch(button) {
-                    case MASTER_MINUS: master += 0.1f; break;
-                    case MASTER_PLUS: master -= 0.1f; break;
-                    case SFX_MINUS: sfx += 0.1f; break;
+                    case MASTER_MINUS: master -= 0.1f; break;
+                    case MASTER_PLUS: master += 0.1f; break;
+                    case SFX_MINUS: sfx -= 0.1f; break;
                     case SFX_PLUS: sfx += 0.1f; break;
-                    case MUSIC_MINUS: music += 0.1f; break;
+                    case MUSIC_MINUS: music -= 0.1f; break;
                     case MUSIC_PLUS: music += 0.1f; break;
+                    case GO_MAIN_MENU: nextScreen = MAIN_MENU; break;
                     default: break;
                 }
             }
@@ -119,18 +131,29 @@ void PauseUpdate() {
 void PauseRender() {
     char pauseMsg[]     = "PAUSED";
     Rectangle pauseMenu = (Rectangle){ .height = 450, .width = 600 };
-    pauseMenu.x         = CenterComponentX(pauseMenu.width);
-    pauseMenu.y         = CenterComponentY(pauseMenu.height);
+    pauseMenu.x         = CenterComponentOnScreenX(pauseMenu.width);
+    pauseMenu.y         = CenterComponentOnsScreenY(pauseMenu.height);
 
     DrawRectangleRec(pauseMenu, ColorAlpha(GRAY, 0.8f));
-    DrawText(pauseMsg, CenterComponentX(MeasureText(pauseMsg, 30)), pauseMenu.y + 30, 30, RED);
+    DrawText(pauseMsg, CenterComponentOnScreenX(MeasureText(pauseMsg, 30)), pauseMenu.y + 30, 30, RED);
 
     // Draws all pauseMenuButtonBox
     for(int i = 0; i < MAX_PAUSE_MENU_BUTTONS; i++) {
+        switch(i) {
+            case 0:
+                DrawText("Master volume", pauseMenuButtonBox[i].x - 400, pauseMenuButtonBox[i].y, 40, WHITE);
+                break;
+            case 2:
+                DrawText("Sfx volume", pauseMenuButtonBox[i].x - 400, pauseMenuButtonBox[i].y, 40, WHITE);
+                break;
+            case 4:
+                DrawText("Music volume", pauseMenuButtonBox[i].x - 400, pauseMenuButtonBox[i].y, 40, WHITE);
+                break;
+        }
         DrawRectangleRec(pauseMenuButtonBox[i], ((i == hoveredButton) ? RED : BLACK));
         DrawText(
             pauseMenuOptionsText[i],
-            CenterComponentX(MeasureText(pauseMenuOptionsText[i], 40)),
+            CenterInnerComponentX(MeasureText(pauseMenuOptionsText[i], 40), pauseMenuButtonBox[i].x, pauseMenuButtonBox[i].width),
             pauseMenuButtonBox[i].y + 10, 40, RAYWHITE);
     }
 }

@@ -11,12 +11,16 @@
 
 #include "../include/utils.h"
 
-int CenterComponentX(int componentWidth) {
+int CenterComponentOnScreenX(int componentWidth) {
     return (GetScreenWidth() - componentWidth) / 2;
 }
 
-int CenterComponentY(int componentHeight) {
+int CenterComponentOnsScreenY(int componentHeight) {
     return (GetScreenHeight() - componentHeight) / 2;
+}
+
+int CenterInnerComponentX(int innerComponentWidth, int outerComponentX, int outerComponentWidth) {
+    return outerComponentX + outerComponentWidth / 2 - innerComponentWidth / 2;
 }
 
 bool IsVectorEqual(Vector2 v1, Vector2 v2, float precision) {

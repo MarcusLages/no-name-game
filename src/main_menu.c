@@ -61,7 +61,7 @@ void MainMenuStartup() {
 
     int initialButtonY = SCREEN_HEIGHT / 2;
     for(int i = 0; i < MAX_MENU_BUTTONS; i++) {
-        mainMenuButtonBox[i] = (Rectangle){ .x = (float) CenterComponentX(240),
+        mainMenuButtonBox[i] = (Rectangle){ .x = (float) CenterComponentOnScreenX(240),
                                             .y = initialButtonY,
                                             .width  = 240,
                                             .height = 60 };
@@ -106,14 +106,14 @@ void MainMenuRender() {
     ClearBackground(GRAY);
 
     // Game name
-    DrawText("No Name Game Name", CenterComponentX(460), SCREEN_HEIGHT / 3, 50, BLACK);
+    DrawText("No Name Game Name", CenterComponentOnScreenX(460), SCREEN_HEIGHT / 3, 50, BLACK);
 
     // Draws all mainMenuButtonBox
     for(int i = 0; i < MAX_MENU_BUTTONS; i++) {
         DrawRectangleRec(mainMenuButtonBox[i], ((i == hoveredButton) ? RED : BLACK));
         DrawText(
             mainMenuOptionsText[i],
-            CenterComponentX(MeasureText(mainMenuOptionsText[i], 40)),
+            CenterComponentOnScreenX(MeasureText(mainMenuOptionsText[i], 40)),
             mainMenuButtonBox[i].y + 10, 40, RAYWHITE);
     }
 }

@@ -62,7 +62,7 @@ void FinalScreenStartup() {
 
     int initialButtonY = SCREEN_HEIGHT / 2;
     for(int i = 0; i < MAX_FINAL_SCREEN_BUTTONS; i++) {
-        finalScreenButtonBox[i] = (Rectangle){ .x = CenterComponentX(240),
+        finalScreenButtonBox[i] = (Rectangle){ .x = CenterComponentOnScreenX(240),
                                                .y      = initialButtonY,
                                                .width  = 240,
                                                .height = 60 };
@@ -108,16 +108,16 @@ void FinalScreenRender() {
     ClearBackground(GRAY);
 
     if(player.health > 0)
-        DrawText("You won?!", CenterComponentX(MeasureText("You won?!", 50)), SCREEN_HEIGHT / 3, 50, GREEN);        
+        DrawText("You won?!", CenterComponentOnScreenX(MeasureText("You won?!", 50)), SCREEN_HEIGHT / 3, 50, GREEN);        
     else
-        DrawText("YOU LOST!", CenterComponentX(MeasureText("YOU LOST!", 50)), SCREEN_HEIGHT / 3, 50, RED);        
+        DrawText("YOU LOST!", CenterComponentOnScreenX(MeasureText("YOU LOST!", 50)), SCREEN_HEIGHT / 3, 50, RED);        
 
     // Draws all buttons
     for(int i = 0; i < MAX_FINAL_SCREEN_BUTTONS; i++) {
         DrawRectangleRec(finalScreenButtonBox[i], ((i == hoveredButton) ? RED : BLACK));
         DrawText(
             finalScreenOptionsText[i],
-            CenterComponentX(MeasureText(finalScreenOptionsText[i], 40)),
+            CenterComponentOnScreenX(MeasureText(finalScreenOptionsText[i], 40)),
             finalScreenButtonBox[i].y + 10, 40, RAYWHITE);
     }
 }

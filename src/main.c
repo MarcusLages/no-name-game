@@ -94,6 +94,8 @@ static void GameStartup() {
 static void GameUpdate() {
     // Checks for a transitions to the next screen
     if(currentScreen != nextScreen) {
+        isPaused = false;
+
         // Unloads currentScreen
         switch(currentScreen) {
             case MAIN_MENU:

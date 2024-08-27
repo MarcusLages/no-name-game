@@ -54,7 +54,7 @@ bool IsVectorEqual(Vector2 v1, Vector2 v2, float precision);
  * @return X position the component should have to be centered on screen
  *
  */
-int CenterComponentX(int componentWidth);
+int CenterComponentOnScreenX(int componentWidth);
 
 /**
  * Used to return the y position that a component should have to be
@@ -64,7 +64,19 @@ int CenterComponentX(int componentWidth);
  * @return Centered y position the component should have
  *
  */
-int CenterComponentY(int componenteHeight);
+int CenterComponentOnsScreenY(int componenteHeight);
+
+/**
+ * Used to return the x position that a component should have to be
+ * centered inside another outer component.
+ *
+ * @param innerComponentWidth   Width of the inner component
+ * @param outerComponenX        X position of the outer component
+ * @param outerComponentWidth   Width of the outer component
+ * @return X position the component should have to be centered on screen
+ *
+ */
+int CenterInnerComponentX(int innerComponentWidth, int outerComponentX, int outerComponentWidth);
 
 /**
  * Determines if the given doubles are equal with a given precision.
