@@ -5,13 +5,16 @@
 **   screens to load, update, render, unload and transition to.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
+*    @version 0.2
 *
-*    @include screen.h
+*    @include trace-log.h, screen.h, audio.h, pause.h
 *
 ***********************************************************************************************/
 
 #include "../include/screen.h"
+#include "../include/trace-log.h"
+#include "../include/audio.h"
+#include "../include/pause.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -62,23 +65,30 @@ int main() {
 }
 
 static void GameStartup() {
+    // Set custom tracelog function to TraceLog()
+    SetTraceLogCallback(CustomLog);
+
     // Game running
     isRunning = true;
+    isPaused = false;
 
     // Initialize window
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "No name game name");
     SetTargetFPS(FRAME_RATE);
 
+    // Setup audio devices
+    InitializeAudio();
+
     // Sets up initial screen to Main Menu
     currentScreen = MAIN_MENU;
     nextScreen = MAIN_MENU;
-    // currentScreen = TEST_SCREEN;
-    // nextScreen = TEST_SCREEN;
-
 
     // Starts up Main Menu
     MainMenuStartup();
-    // TestScreenStartup();
+    PauseStartup();
+
+    TraceLog(LOG_INFO, "MAIN.C (GameStartup): Game initialized at screen : %d successfully.", currentScreen);
+
 }
 
 static void GameUpdate() {
@@ -92,8 +102,8 @@ static void GameUpdate() {
             case DUNGEON:
                 DungeonUnload();
                 break;
-            case TEST_SCREEN:
-                TestScreenUnload();
+            case FINAL_SCREEN:
+                FinalScreenUnload();
                 break;
             default: break;
         }
@@ -106,23 +116,31 @@ static void GameUpdate() {
             case DUNGEON:
                 DungeonStartup();
                 break;
-            case TEST_SCREEN:
-                TestScreenStartup();
+            case FINAL_SCREEN:
+                FinalScreenStartup();
                 break;
             default: break;
         }
     }
 
+    // Checks if player paused the game
+    if(IsKeyPressed(KEY_SPACE))
+        isPaused = !isPaused;
+
     // Updates the current screen
+    
     switch(currentScreen) {
             case MAIN_MENU:
                 MainMenuUpdate();
                 break;
             case DUNGEON:
-                DungeonUpdate();
+                if(isPaused)
+                    PauseUpdate();
+                else
+                    DungeonUpdate();
                 break;
-            case TEST_SCREEN:
-                TestScreenUpdate();
+            case FINAL_SCREEN:
+                FinalScreenUpdate();
                 break;
             default: break;
     }
@@ -142,9 +160,11 @@ static void GameRender() {
                 BeginMode2D(camera);
                 DungeonRender();
                 EndMode2D();
+                if(isPaused)
+                    PauseRender();
                 break;
-            case TEST_SCREEN:
-                TestScreenRender();
+            case FINAL_SCREEN:
+                FinalScreenRender();
                 break;
             default: break;
         }
@@ -161,11 +181,16 @@ static void GameClosing() {
             case DUNGEON:
                 DungeonUnload();
                 break;
-            case TEST_SCREEN:
-                TestScreenUnload();
+            case FINAL_SCREEN:
+                FinalScreenUnload();
                 break;
             default: break;
     }
+
+    // Close audio and music
+    UnloadAudio();
+
+    TraceLog(LOG_INFO, "MAIN.C (GameClosing): Game unloaded and closed successfully.");
 
     CloseWindow();
 }

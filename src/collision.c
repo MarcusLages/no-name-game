@@ -4,24 +4,14 @@
 **   information for 2D rays and rectangles.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
+*    @version 0.2
 *
-*    @include collision.h
+*    @include collision.h, utils.h
 *
 **********************************************************************************************/
 
 #include "../include/collision.h"
-
-//* ------------------------------------------
-//* DEFINITIONS
-
-/**
- * Macro to swap two number variables.
- * 
- * @param a Number
- * @param b Number
- */
-#define swap(a, b) ((a != b) ? (a += b, b = a - b, a -= b) : 0)
+#include "../include/utils.h"
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -70,8 +60,8 @@ RayCollision2D RayRectCollision(Ray2D ray, Rectangle hitbox) {
     
     // Sort the collision point in case they are in different quadrants
     // instead of the origin quadrant (0,0)
-    if (nearColTime.x > farColTime.x) swap(nearColTime.x, farColTime.x);
-    if (nearColTime.y > farColTime.y) swap(nearColTime.y, farColTime.y);
+    if (nearColTime.x > farColTime.x) SWAP(nearColTime.x, farColTime.x);
+    if (nearColTime.y > farColTime.y) SWAP(nearColTime.y, farColTime.y);
 
     // Checks for collision rules, if they are not met,
     // returns RayCollision2D structure with no hit
@@ -162,10 +152,11 @@ RayCollision2D HitboxCollision(Rectangle hitboxIn, Vector2 direction, Rectangle 
 CollisionNode* CreateCollisionList(int indexX, int indexY, float timeHit) {
     CollisionNode* newList = (CollisionNode*) malloc(sizeof(CollisionNode));
     if (newList == NULL) {
-        exit(EXIT_FAILURE);
+        TraceLog(LOG_FATAL, "COLLISION.C (CreateCollisionList, line: %d): Memory allocation failure.", __LINE__);
     }
     newList->collidedHitbox = (CollidedHitboxInfo) { (Vector2) {indexX, indexY}, timeHit };
     newList->next = NULL;
+
     return newList;
 }
 
@@ -177,7 +168,7 @@ void AddCollisionNode(CollisionNode* head, int indexX, int indexY, float timeHit
 
     newNode = (CollisionNode*) malloc(sizeof(CollisionNode));
     if (newNode == NULL) {
-        exit(EXIT_FAILURE);
+        TraceLog(LOG_FATAL, "COLLISION.C (AddCollisionNode, line: %d): Memory allocation failure.", __LINE__);
     }
 
     newNode->collidedHitbox = (CollidedHitboxInfo) { (Vector2) {indexX, indexY}, timeHit };
@@ -221,6 +212,7 @@ void FreeCollisionList(CollisionNode* head) {
         free(currentNode);
         currentNode = NULL;
     }
+
 }
 
 static void SwapCollisionNode(CollisionNode* nodeA, CollisionNode* nodeB) {

@@ -1,15 +1,17 @@
 /***********************************************************************************************
-*
-**   main-menu.c is responsible for managing and displaying the main menu screen. 
-*   
-*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.1
-*
-*    @include screen.h
-*
-***********************************************************************************************/
+ *
+ **   main-menu.c is responsible for managing and displaying the main menu screen.
+ *
+ *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+ *    @version 0.2
+ *
+ *    @include screen.h
+ *
+ ***********************************************************************************************/
 
 #include "../include/screen.h"
+#include "../include/audio.h"
+#include "../include/utils.h"
 
 //* ------------------------------------------
 //* DEFINITIONS
@@ -21,8 +23,8 @@
 //* ENUMERATIONS
 
 /**
- * Enumeration representing the possible menu mainMenuButtonBox.
- * 
+ * Enumeration representing the possible menu button options.
+ *
  * @param START_BUTTON 0
  * @param OPTIONS_BUTTON 1
  * @param EXIT_BUTTON 2
@@ -36,9 +38,8 @@ typedef enum MainMenuOptions {
 //* ------------------------------------------
 //* MODULAR VARIABLES
 
-// TODO: Change variables to not be global.
 /** Array with all button text options for the main menu. */
-static char mainMenuOptionsText[MAX_MENU_BUTTONS][8] = {"Start", "Options", "Exit"};
+static char mainMenuOptionsText[MAX_MENU_BUTTONS][8] = { "Start", "Options", "Exit" };
 
 /** Button box array */
 static Rectangle mainMenuButtonBox[MAX_MENU_BUTTONS];
@@ -50,20 +51,7 @@ static Rectangle mainMenuButtonBox[MAX_MENU_BUTTONS];
 static int hoveredButton;
 
 //* ------------------------------------------
-//* FUNCTIONS PROTOTYPES
-
-/** 
- * Used to return the x position that a component should have to be
- * centered on the screen based on its width.
- * 
- * @param componentWidth
- * @return Centered x position the component should have 
- * 
-*/
-static int CenterComponentX(int componentWidth);
-
-//* ------------------------------------------
-//* FUNCTION IMPLEMENTATIONS
+//* FUNCTIONS IMPLEMENTATIONS
 
 void MainMenuStartup() {
     // Sets up currentScreen
@@ -73,39 +61,36 @@ void MainMenuStartup() {
 
     int initialButtonY = SCREEN_HEIGHT / 2;
     for(int i = 0; i < MAX_MENU_BUTTONS; i++) {
-        mainMenuButtonBox[i] = (Rectangle) {
-            .x = (float) CenterComponentX(240),
-            .y = initialButtonY,
-            .width = 240,
-            .height = 60
-        };
+        mainMenuButtonBox[i] = (Rectangle){ .x = (float) CenterComponentX(240),
+                                            .y = initialButtonY,
+                                            .width  = 240,
+                                            .height = 60 };
         initialButtonY += 60 + 20;
     }
+
+    TraceLog(LOG_INFO, "MAIN-MENU.C (MainMenuStartup): Main menu set successfully.");
 }
 
 void MainMenuUpdate() {
     Vector2 mouse = GetMousePosition();
 
     // Checks mouse click or hover on a button on the main menu
-    for(int i = 0; i < MAX_MENU_BUTTONS; i++) {
-        if(CheckCollisionPointRec(mouse, mainMenuButtonBox[i])) {
+    for(int button = 0; button < MAX_MENU_BUTTONS; button++) {
+        if(CheckCollisionPointRec(mouse, mainMenuButtonBox[button])) {
             // If mouse hovered, changes the value of the hoveredButton var to the
             // index of the mouse button and breaks the collision checking loop.
             if(!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                hoveredButton = i;
+                // Sound keeps repeating on hover
+                // PlaySound(soundFX[HOVER_SFX]);
+                hoveredButton = button;
                 break;
-            }
-            else {
+            } else {
+                PlaySound(soundFX[CLICK_SFX]);
                 // If mouse clicked, changes the current screen to the appropriate screen
-                switch (i) {
-                    case START_BUTTON:
-                        nextScreen = DUNGEON;
-                        break;
-                    case OPTIONS_BUTTON:
-                        break;
-                    case EXIT_BUTTON:
-                        isRunning = false;
-                        break;
+                switch(button) {
+                    case START_BUTTON: nextScreen = DUNGEON; break;
+                    case OPTIONS_BUTTON: break;
+                    case EXIT_BUTTON: isRunning = false; break;
                     default: break;
                 }
             }
@@ -126,13 +111,11 @@ void MainMenuRender() {
     // Draws all mainMenuButtonBox
     for(int i = 0; i < MAX_MENU_BUTTONS; i++) {
         DrawRectangleRec(mainMenuButtonBox[i], ((i == hoveredButton) ? RED : BLACK));
-        DrawText(mainMenuOptionsText[i], CenterComponentX(MeasureText(mainMenuOptionsText[i], 40)), mainMenuButtonBox[i].y + 10, 40, RAYWHITE);
+        DrawText(
+            mainMenuOptionsText[i],
+            CenterComponentX(MeasureText(mainMenuOptionsText[i], 40)),
+            mainMenuButtonBox[i].y + 10, 40, RAYWHITE);
     }
-
 }
 
 void MainMenuUnload() {}
-
-static int CenterComponentX(int componentWidth) {
-    return (SCREEN_WIDTH - componentWidth) / 2;
-}

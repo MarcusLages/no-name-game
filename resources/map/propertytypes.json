@@ -1,0 +1,55 @@
+[
+    {
+        "color": "#ffa0a0a4",
+        "drawFill": true,
+        "id": 1,
+        "members": [
+            {
+                "name": "height",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "width",
+                "type": "int",
+                "value": 0
+            }
+        ],
+        "name": "RoomArea",
+        "type": "class",
+        "useAs": [
+            "property",
+            "map",
+            "layer",
+            "object",
+            "tile",
+            "tileset",
+            "wangcolor",
+            "wangset",
+            "project"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "RoomSize",
+        "storageType": "int",
+        "type": "enum",
+        "values": [
+            "SMALL",
+            "MEDIUM",
+            "LARGE"
+        ],
+        "valuesAsFlags": false
+    },
+    {
+        "id": 2,
+        "name": "RoomType",
+        "storageType": "int",
+        "type": "enum",
+        "values": [
+            "SAFE",
+            "HOSTILE"
+        ],
+        "valuesAsFlags": false
+    }
+]
