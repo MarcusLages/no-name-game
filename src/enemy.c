@@ -71,6 +71,11 @@ static void RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight);
  */
 static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos);
 
+/**
+ * TODO: Comment
+ */
+static void GetTiles(int tiles[], EnemyType type);
+
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
@@ -162,13 +167,13 @@ void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
         }
         // Wait on delay
         if(CheckIfDelayed(timer)) return;
-        enemy->state  = ATTACKING;
-        //player.health = 0;
+        enemy->state = ATTACKING;
+        // player.health = 0;
         TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
     }
 }
 
-//TODO: watch out for waffles
+// TODO: watch out for waffles
 static void UpdateEnemyAttackHitbox(Entity* enemy, int attackWidth, int attackHeight) {
     enemy->attack = (Rectangle){ .x      = enemy->pos.x,
                                  .y      = enemy->pos.y,
@@ -231,7 +236,7 @@ void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int atta
     }
 }
 
-//TODO: watch out for waffles
+// TODO: watch out for waffles
 static void RenderEnemyAttack(Entity* enemy, int attackWidth, int attackHeight) {
     // Rendering idle animation of enemy as the enemy should not move while attacking.
     EntityRender(
@@ -278,7 +283,7 @@ void EnemyUnload(Entity* enemy) {
     TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy unloaded successfully.");
 }
 
-//TODO: watch out for waffles
+// TODO: watch out for waffles
 static bool IsPlayerSeen(Entity* enemy) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (IsPlayerSeen, line: %d): NULL enemy was found.", __LINE__);
@@ -321,10 +326,6 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
         return;
     }
 
-    Animation idleEnemyAnimation;
-    Animation movingEnemyAnimation;
-    Animation attackEnemyAnimation;
-
     enemy->animations.size = MAX_ENEMY_ANIMATIONS;
     enemyAnimArray = (Animation*) malloc(sizeof(Animation) * enemy->animations.size);
 
@@ -332,44 +333,21 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
         TraceLog(LOG_FATAL, "ENEMY.C (SetupEnemyAnimation, line: %d): Memory allocation failure.", __LINE__);
     }
 
-    switch(type) {
-        case DEMON_PABLO:
-            idleEnemyAnimation =
-                CreateAnimation(DEFAULT_IDLE_FPS, ENEMY_PABLO_WIDTH, ENEMY_PABLO_HEIGHT, TILE_ENEMY_PABLO_IDLE);
+    int width        = GetWidth(type);
+    int height       = GetHeight(type);
+    int attackWidth  = GetAttackWidth(type);
+    int attackHeight = GetAttackHeight(type);
+    int tiles[3];
+    GetTiles(tiles, type);
 
-            movingEnemyAnimation =
-                CreateAnimation(DEFAULT_MOVING_FPS, ENEMY_PABLO_WIDTH, ENEMY_PABLO_HEIGHT, TILE_ENEMY_PABLO_MOVE);
+    Animation idleEnemyAnimation =
+        CreateAnimation(DEFAULT_IDLE_FPS, width, height, tiles[0]);
 
-            attackEnemyAnimation = CreateAnimation(
-                DEFAULT_ATTACK_FPS, ENEMY_PABLO_ATTACK_WIDTH,
-                ENEMY_PABLO_ATTACK_HEIGHT, TILE_ENEMY_PABLO_ATTACK);
-            break;
-        case DEMON_DIEGO:
-            idleEnemyAnimation =
-                CreateAnimation(DEFAULT_IDLE_FPS, ENEMY_DEIGO_WIDTH, ENEMY_DEIGO_HEIGHT, TILE_ENEMY_DIEGO_IDLE);
+    Animation movingEnemyAnimation =
+        CreateAnimation(DEFAULT_MOVING_FPS, width, height, tiles[1]);
 
-            movingEnemyAnimation =
-                CreateAnimation(DEFAULT_MOVING_FPS, ENEMY_DEIGO_WIDTH, ENEMY_DEIGO_HEIGHT, TILE_ENEMY_DIEGO_MOVE);
-
-            attackEnemyAnimation = CreateAnimation(
-                DEFAULT_ATTACK_FPS, ENEMY_DEIGO_ATTACK_WIDTH,
-                ENEMY_DEIGO_ATTACK_HEIGHT, TILE_ENEMY_DIEGO_ATTACK);
-            break;
-        case DEMON_WAFFLES:
-            idleEnemyAnimation =
-                CreateAnimation(DEFAULT_IDLE_FPS, ENEMY_WAFFLES_WIDTH, ENEMY_WAFFLES_HEIGHT, TILE_ENEMY_WAFFLES_IDLE);
-
-            movingEnemyAnimation =
-                CreateAnimation(DEFAULT_MOVING_FPS, ENEMY_WAFFLES_WIDTH, ENEMY_WAFFLES_HEIGHT, TILE_ENEMY_WAFFLES_MOVE);
-
-            attackEnemyAnimation = CreateAnimation(
-                DEFAULT_ATTACK_FPS, ENEMY_WAFFLES_ATTACK_WIDTH,
-                ENEMY_WAFFLES_ATTACK_HEIGHT, TILE_ENEMY_WAFFLES_ATTACK);
-            break;
-        default:
-            TraceLog(LOG_WARNING, "ENEMY.C (SetupEnemyAnimation, line: %d): Invalid EnemyType was given.", __LINE__);
-            break;
-    }
+    Animation attackEnemyAnimation =
+        CreateAnimation(DEFAULT_ATTACK_FPS, attackWidth, attackHeight, tiles[2]);
 
     enemyAnimArray[IDLE_ANIMATION]   = idleEnemyAnimation;
     enemyAnimArray[MOVE_ANIMATION]   = movingEnemyAnimation;
@@ -382,4 +360,84 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
 
 static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos) {
     MoveEntityTowardsPos(enemy, position, lastPlayerPos);
+}
+
+int GetWidth(EnemyType type) {
+    int width = 0;
+
+    switch(type) {
+        case DEMON_PABLO: width = ENEMY_PABLO_WIDTH; break;
+        case DEMON_DIEGO: width = ENEMY_DEIGO_WIDTH; break;
+        case DEMON_WAFFLES: width = ENEMY_WAFFLES_WIDTH; break;
+
+        default:
+            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackWidth, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
+            width = ENEMY_PABLO_WIDTH;
+            break;
+    }
+    return width;
+}
+
+int GetHeight(EnemyType type) {
+    int height = 0;
+
+    switch(type) {
+        case DEMON_PABLO: height = ENEMY_PABLO_HEIGHT; break;
+        case DEMON_DIEGO: height = ENEMY_DEIGO_HEIGHT; break;
+        case DEMON_WAFFLES: height = ENEMY_WAFFLES_HEIGHT; break;
+
+        default:
+            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackHeight, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
+            height = ENEMY_PABLO_HEIGHT;
+            break;
+    }
+    return height;
+}
+
+int GetAttackWidth(EnemyType type) {
+    int width = 0;
+
+    switch(type) {
+        case DEMON_PABLO: width = ENEMY_PABLO_ATTACK_WIDTH; break;
+        case DEMON_DIEGO: width = ENEMY_DEIGO_ATTACK_WIDTH; break;
+        case DEMON_WAFFLES: width = ENEMY_WAFFLES_ATTACK_WIDTH; break;
+
+        default:
+            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackWidth, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
+            width = ENEMY_PABLO_ATTACK_WIDTH;
+            break;
+    }
+    return width;
+}
+
+int GetAttackHeight(EnemyType type) {
+    int height = 0;
+
+    switch(type) {
+        case DEMON_PABLO: height = ENEMY_PABLO_ATTACK_HEIGHT; break;
+        case DEMON_DIEGO: height = ENEMY_DEIGO_ATTACK_HEIGHT; break;
+        case DEMON_WAFFLES: height = ENEMY_WAFFLES_ATTACK_HEIGHT; break;
+
+        default:
+            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackHeight, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
+            height = ENEMY_PABLO_ATTACK_HEIGHT;
+            break;
+    }
+    return height;
+}
+
+static void GetTiles(int* tiles, EnemyType type) {
+    int tileNum = TILE_ENEMY_PABLO_IDLE;
+    switch(type) {
+        case DEMON_PABLO: tileNum = TILE_ENEMY_PABLO_IDLE; break;
+        case DEMON_DIEGO: tileNum = TILE_ENEMY_DIEGO_IDLE; break;
+        case DEMON_WAFFLES: tileNum = TILE_ENEMY_WAFFLES_IDLE; break;
+
+        default:
+            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetTiles, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
+            break;
+    }
+    for(int i = 0; i < MAX_ENEMY_ANIMATIONS; i++) {
+        tiles[i] = tileNum++;
+    };
 }

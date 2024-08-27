@@ -137,4 +137,36 @@ void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int atta
  */
 void EnemyUnload(Entity* enemy);
 
+/**
+ * Returns the proper width of the given enemy type.
+ *
+ * @param type The enemy type.
+ * @returns Returns the entity width.
+ */
+int GetWidth(EnemyType type);
+
+/**
+ * Returns the proper height of the given enemy type.
+ *
+ * @param type The enemy type.
+ * @returns Returns the entity height.
+ */
+int GetHeight(EnemyType type);
+
+/**
+ * Returns an attack width associated with a given enemy type.
+ *
+ * @param type The enemy type.
+ * @returns Returns the attack width.
+ */
+int GetAttackWidth(EnemyType type);
+
+/**
+ * Returns an attack height associated with a given enemy type.
+ *
+ * @param type The enemy type.
+ * @returns Returns the attack height.
+ */
+int GetAttackHeight(EnemyType type);
+
 #endif // ENEMY_H_

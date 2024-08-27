@@ -103,38 +103,6 @@ static void MoveEnemies();
  */
 static void HandleEnemiesAttack();
 
-/**
- * Returns the proper width of the given enemy type.
- *
- * @param type The enemy type.
- * @returns Returns the entity width.
- */
-static int GetWidth(EnemyType type);
-
-/**
- * Returns the proper height of the given enemy type.
- *
- * @param type The enemy type.
- * @returns Returns the entity height.
- */
-static int GetHeight(EnemyType type);
-
-/**
- * Returns an attack width associated with a given enemy type.
- *
- * @param type The enemy type.
- * @returns Returns the attack width.
- */
-static int GetAttackWidth(EnemyType type);
-
-/**
- * Returns an attack height associated with a given enemy type.
- *
- * @param type The enemy type.
- * @returns Returns the attack height.
- */
-static int GetAttackHeight(EnemyType type);
-
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
 
@@ -324,68 +292,4 @@ static void HandleEnemiesAttack() {
         EnemyAttack(&currEnemy->enemy, attackWidth, attackHeight);
         currEnemy = currEnemy->next;
     }
-}
-
-static int GetWidth(EnemyType type) {
-    int width = 0;
-
-    switch(type) {
-        case DEMON_PABLO: width = ENEMY_PABLO_WIDTH; break;
-        case DEMON_DIEGO: width = ENEMY_DEIGO_WIDTH; break;
-        case DEMON_WAFFLES: width = ENEMY_WAFFLES_WIDTH; break;
-
-        default:
-            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackWidth, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
-            width = ENEMY_PABLO_WIDTH;
-            break;
-    }
-    return width;
-}
-
-static int GetHeight(EnemyType type) {
-    int height = 0;
-
-    switch(type) {
-        case DEMON_PABLO: height = ENEMY_PABLO_HEIGHT; break;
-        case DEMON_DIEGO: height = ENEMY_DEIGO_HEIGHT; break;
-        case DEMON_WAFFLES: height = ENEMY_WAFFLES_HEIGHT; break;
-
-        default:
-            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackHeight, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
-            height = ENEMY_PABLO_HEIGHT;
-            break;
-    }
-    return height;
-}
-
-static int GetAttackWidth(EnemyType type) {
-    int width = 0;
-
-    switch(type) {
-        case DEMON_PABLO: width = ENEMY_PABLO_ATTACK_WIDTH; break;
-        case DEMON_DIEGO: width = ENEMY_DEIGO_ATTACK_WIDTH; break;
-        case DEMON_WAFFLES: width = ENEMY_WAFFLES_ATTACK_WIDTH; break;
-
-        default:
-            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackWidth, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
-            width = ENEMY_PABLO_ATTACK_WIDTH;
-            break;
-    }
-    return width;
-}
-
-static int GetAttackHeight(EnemyType type) {
-    int height = 0;
-
-    switch(type) {
-        case DEMON_PABLO: height = ENEMY_PABLO_ATTACK_HEIGHT; break;
-        case DEMON_DIEGO: height = ENEMY_DEIGO_ATTACK_HEIGHT; break;
-        case DEMON_WAFFLES: height = ENEMY_WAFFLES_ATTACK_HEIGHT; break;
-
-        default:
-            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackHeight, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
-            height = ENEMY_PABLO_ATTACK_HEIGHT;
-            break;
-    }
-    return height;
 }

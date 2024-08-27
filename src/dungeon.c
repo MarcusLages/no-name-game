@@ -85,6 +85,7 @@ void DungeonUpdate() {
     if(!IsPlayerDead()) {
         PlayerUpdate();
         UpdateEnemies();
+        //? Removed for now:
         //PlayerEnemyCollision();
 
         // Update camera to follow the player
