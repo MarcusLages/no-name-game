@@ -38,7 +38,6 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
  *
  * @param enemy The enemy to check agaist.
  * @param type Type of enemy.
- *
  * @returns True if the player is seen and false otherwise.
  */
 static bool IsPlayerSeen(Entity* enemy, EnemyType type);
@@ -71,22 +70,29 @@ static void RenderEnemyAttack(Entity* enemy, EnemyType type);
 static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos);
 
 /**
- * TODO: Comment
- */
-static void GetTiles(int tiles[], int size, EnemyType type);
-
-/**
- * TODO: Comment
+ * Sets the attack hitbox for the enemy: DEMON_WAFFLES.
+ *
+ * ! @attention enemy MUST be of entity DEMON_WAFFLES.
+ *
+ * @param enemy The waffles enemy.
  */
 static void LoadWafflesAttackHitbox(Entity* enemy);
 
 /**
- * TODO: Comment
+ * Renders the attack animation for: DEMON_PABLO, DEMON_DIEGO.
+ *
+ * ! @attention enemy MUST be of entity DEMON_PABLO OR DEMON_DIEGO.
+ *
+ * @param enemy An enemy entity.
  */
 static void RenderPabloDiegoAttack(Entity* enemy);
 
 /**
- * TODO: Comment
+ * Renders the attack animation for: DEMON_WAFFLES.
+ *
+ * ! @attention enemy MUST be of entity DEMON_WAFFLES.
+ *
+ * @param enemy The waffles enemy.
  */
 static void RenderWafflesAttack(Entity* enemy);
 
@@ -173,7 +179,7 @@ void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
 
         if(TimerDone(timer)) {
             *hasAttacked = false;
-            StartTimerWithDelay(timer, 0.5, 0.5);
+            StartTimerWithDelay(timer, 0.5, 0.8);
         }
 
         if(CheckIfDelayed(timer)) return;
@@ -185,17 +191,6 @@ void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
     } else {
         enemy->state = (enemy->state == MOVING) ? MOVING : IDLE;
         return;
-    }
-}
-
-static void UpdateEnemyAttackHitbox(Entity* enemy, EnemyType type) {
-    switch(type) {
-        case DEMON_DIEGO:
-        case DEMON_PABLO: LoadStandardEntityAttackHitbox(enemy); break;
-        case DEMON_WAFFLES: LoadWafflesAttackHitbox(enemy); break;
-        default:
-            TraceLog(LOG_WARNING, "ENEMY.C (UpdateEnemyAttackHitbox, line: %d): Invalid EnemyType was given.", __LINE__);
-            break;
     }
 }
 
@@ -226,6 +221,27 @@ void EnemyRender(Entity* enemy, EnemyType type) {
     }
 }
 
+void EnemyUnload(Entity* enemy) {
+    if(enemy == NULL) {
+        TraceLog(LOG_FATAL, "ENEMY.C (EnemyUnload, line: %d): NULL enemy was given.", __LINE__);
+    }
+    UnloadAnimationArray(&enemy->animations);
+
+    TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy animations unloaded successfully.");
+    TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy unloaded successfully.");
+}
+
+static void UpdateEnemyAttackHitbox(Entity* enemy, EnemyType type) {
+    switch(type) {
+        case DEMON_DIEGO:
+        case DEMON_PABLO: LoadStandardEntityAttackHitbox(enemy); break;
+        case DEMON_WAFFLES: LoadWafflesAttackHitbox(enemy); break;
+        default:
+            TraceLog(LOG_WARNING, "ENEMY.C (UpdateEnemyAttackHitbox, line: %d): Invalid EnemyType was given.", __LINE__);
+            break;
+    }
+}
+
 static void RenderEnemyAttack(Entity* enemy, EnemyType type) {
     //? For Debugging:
     // DrawRectangleRec(enemy->attack, RED);
@@ -239,16 +255,6 @@ static void RenderEnemyAttack(Entity* enemy, EnemyType type) {
             TraceLog(LOG_WARNING, "ENEMY.C (UpdateEnemyAttackHitbox, line: %d): Invalid EnemyType was given.", __LINE__);
             break;
     }
-}
-
-void EnemyUnload(Entity* enemy) {
-    if(enemy == NULL) {
-        TraceLog(LOG_FATAL, "ENEMY.C (EnemyUnload, line: %d): NULL enemy was given.", __LINE__);
-    }
-    UnloadAnimationArray(&enemy->animations);
-
-    TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy animations unloaded successfully.");
-    TraceLog(LOG_INFO, "ENEMY.C (EnemyUnload): Enemy unloaded successfully.");
 }
 
 static bool IsPlayerSeen(Entity* enemy, EnemyType type) {
@@ -327,86 +333,6 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
 
 static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos) {
     MoveEntityTowardsPos(enemy, position, lastPlayerPos);
-}
-
-int GetWidth(EnemyType type) {
-    int width = 0;
-
-    switch(type) {
-        case DEMON_PABLO: width = ENEMY_PABLO_WIDTH; break;
-        case DEMON_DIEGO: width = ENEMY_DEIGO_WIDTH; break;
-        case DEMON_WAFFLES: width = ENEMY_WAFFLES_WIDTH; break;
-
-        default:
-            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackWidth, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
-            width = ENEMY_PABLO_WIDTH;
-            break;
-    }
-    return width;
-}
-
-int GetHeight(EnemyType type) {
-    int height = 0;
-
-    switch(type) {
-        case DEMON_PABLO: height = ENEMY_PABLO_HEIGHT; break;
-        case DEMON_DIEGO: height = ENEMY_DEIGO_HEIGHT; break;
-        case DEMON_WAFFLES: height = ENEMY_WAFFLES_HEIGHT; break;
-
-        default:
-            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackHeight, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
-            height = ENEMY_PABLO_HEIGHT;
-            break;
-    }
-    return height;
-}
-
-int GetAttackWidth(EnemyType type) {
-    int width = 0;
-
-    switch(type) {
-        case DEMON_PABLO: width = ENEMY_PABLO_ATTACK_WIDTH; break;
-        case DEMON_DIEGO: width = ENEMY_DEIGO_ATTACK_WIDTH; break;
-        case DEMON_WAFFLES: width = ENEMY_WAFFLES_ATTACK_WIDTH; break;
-
-        default:
-            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackWidth, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
-            width = ENEMY_PABLO_ATTACK_WIDTH;
-            break;
-    }
-    return width;
-}
-
-int GetAttackHeight(EnemyType type) {
-    int height = 0;
-
-    switch(type) {
-        case DEMON_PABLO: height = ENEMY_PABLO_ATTACK_HEIGHT; break;
-        case DEMON_DIEGO: height = ENEMY_DEIGO_ATTACK_HEIGHT; break;
-        case DEMON_WAFFLES: height = ENEMY_WAFFLES_ATTACK_HEIGHT; break;
-
-        default:
-            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetAttackHeight, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
-            height = ENEMY_PABLO_ATTACK_HEIGHT;
-            break;
-    }
-    return height;
-}
-
-static void GetTiles(int* tiles, int size, EnemyType type) {
-    int tileNum = TILE_ENEMY_PABLO_IDLE;
-    switch(type) {
-        case DEMON_PABLO: tileNum = TILE_ENEMY_PABLO_IDLE; break;
-        case DEMON_DIEGO: tileNum = TILE_ENEMY_DIEGO_IDLE; break;
-        case DEMON_WAFFLES: tileNum = TILE_ENEMY_WAFFLES_IDLE; break;
-
-        default:
-            TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetTiles, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
-            break;
-    }
-    for(int i = 0; i < size; i++) {
-        tiles[i] = tileNum++;
-    };
 }
 
 static void LoadWafflesAttackHitbox(Entity* enemy) {

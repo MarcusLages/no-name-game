@@ -99,8 +99,8 @@ void PlayerStartup() {
     player.animations.animationArr[ATTACK_ANIMATION] = attackPlayerAnimation;
 
     // Starting timers for both idle and moving animations
-    StartTimer(&playerAnimArray[IDLE_ANIMATION].timer, -1.0f);
-    StartTimer(&playerAnimArray[MOVE_ANIMATION].timer, -1.0f);
+    StartTimer(&playerAnimArray[IDLE_ANIMATION].timer, -1.0);
+    StartTimer(&playerAnimArray[MOVE_ANIMATION].timer, -1.0);
 
     TraceLog(LOG_INFO, "PLAYER.C (PlayerStartup): Player set successfully.");
 }
@@ -163,7 +163,7 @@ static void PlayerMovement() {
 static void PlayerAttack() {
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
-        StartTimer(&playerAnimArray[ATTACK_ANIMATION].timer, 0.5f);
+        StartTimer(&playerAnimArray[ATTACK_ANIMATION].timer, 0.5);
         PlaySound(soundFX[PLAYER_SLASH_SFX]);
 
         LoadStandardEntityAttackHitbox(&player);

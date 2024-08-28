@@ -165,4 +165,13 @@ int GetAttackWidth(EnemyType type);
  */
 int GetAttackHeight(EnemyType type);
 
+/**
+ * Populates an array of integers with integers that represent the TextureFile types for the given EnemyType.
+ *
+ * @param tiles Array to populate.
+ * @param size Size of the array.
+ * @param type Type of enemy to base the tiles off of.
+ */
+void GetTiles(int tiles[], int size, EnemyType type);
+
 #endif // ENEMY_H_
