@@ -159,6 +159,7 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type) {
     MoveEnemyToPos(enemy, player.pos, lastPlayerPos);
 }
 
+// TODO: watch out for waffles, more delay on his attack
 void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (EnemyAttack, line: %d): NULL enemy was found.", __LINE__);
@@ -469,20 +470,20 @@ static void RenderWafflesAttack(Entity* enemy) {
     // TODO: sync with attack animation
     Animation idleAnimation = enemyAnimArray[IDLE_ANIMATION];
     idleAnimation.fps       = 10;
-    // Render IDLE
-    EntityRender(enemy, &idleAnimation, width * enemy->faceValue, height, 0, 0, 0.0f);
 
     switch(enemy->faceValue) {
         case 1:
             EntityRender(
                 enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
-                attackHeight, -attackWidth / 4, attackHeight / 4, 0.0f);
+                attackHeight, -attackWidth / 2 + width / 3, -height / 3, 0.0f);
             break;
         case -1:
             EntityRender(
                 enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
-                attackHeight, -attackWidth / 8, attackHeight / 4, 0.0f);
+                attackHeight, -width + width / 8, -height / 3, 0.0f);
             break;
         default: break;
     }
+    // Render IDLE
+    EntityRender(enemy, &idleAnimation, width * enemy->faceValue, height, 0, 0, 0.0f);
 }
