@@ -91,8 +91,7 @@ struct RoomNode {
     RoomSize roomSize;
     /**
      * The type of room.
-     *
-     * ! @note This property may or may not be needed. Left here for now.
+     * TODO: @note This property may or may not be needed. Left here for now.
      */
     RoomType roomType;
     /** The next room. */

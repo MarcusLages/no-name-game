@@ -23,7 +23,7 @@
 #define TILE_HEIGHT 16
 
 /** How many textures are loaded in the game.  */
-#define MAX_TEXTURES 9
+#define MAX_TEXTURES 12
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -58,7 +58,6 @@ typedef enum TextureFile {
     TILE_ENEMY_DIEGO_IDLE,
     TILE_ENEMY_DIEGO_MOVE,
     TILE_ENEMY_DIEGO_ATTACK,
-    // ? Not yet added
     TILE_ENEMY_WAFFLES_IDLE,
     TILE_ENEMY_WAFFLES_MOVE,
     TILE_ENEMY_WAFFLES_ATTACK,

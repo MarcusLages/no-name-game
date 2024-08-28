@@ -154,6 +154,8 @@ void UnloadRooms() {
         free(temp);
         temp = NULL;
     }
+
+    TraceLog(LOG_INFO, "spawner.c-UnloadRooms: All rooms have been unloaded.");
 }
 
 bool CheckRoomExists(int roomNumber) {

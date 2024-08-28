@@ -55,7 +55,7 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
             entity->faceValue     = -1;
             entity->directionFace = LEFT;
         }
-
+        // TODO BUGFIX: Down and UP are overwirrten
         if(position.y > entity->pos.y) {
             entity->directionFace = DOWN;
         } else if(position.y < entity->pos.y) {
@@ -80,7 +80,7 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
     entity->direction = Vector2Scale(entity->direction, entity->speed);
 
     EntityWorldCollision(entity);
-    // SetEntityStatebyDir(entity, lastPlayerPos);
+    SetEntityStatebyDir(entity, lastPlayerPos);
 
     entity->pos = Vector2Add(entity->pos, Vector2Scale(entity->direction, deltaTime));
 }
@@ -216,4 +216,38 @@ void EntityWorldCollision(Entity* entity) {
         FreeCollisionList(entityCollisionList);
         entityCollisionList = NULL;
     }
+}
+
+void LoadStandardEntityAttackHitbox(Entity* entity) {
+    int attackWidth  = PLAYER_ATTACK_WIDTH - 4;
+    int attackHeight = PLAYER_ATTACK_HEIGHT - 8;
+    entity->attack   = (Rectangle){
+          .x = entity->pos.x, .y = entity->pos.y, .width = attackWidth, .height = attackHeight
+    };
+
+    switch(entity->directionFace) {
+        case RIGHT:
+            entity->attack.x += ENTITY_TILE_WIDTH / 2;
+            entity->attack.y += (ENTITY_TILE_HEIGHT / 2) - attackHeight / 2;
+            break;
+        case DOWN:
+            SWAP(entity->attack.width, entity->attack.height);
+            entity->attack.x += 0;
+            entity->attack.y += ENTITY_TILE_HEIGHT - ENTITY_TILE_HEIGHT / 4;
+            break;
+        case LEFT:
+            entity->attack.x += -attackWidth + (ENTITY_TILE_WIDTH / 2);
+            entity->attack.y += (ENTITY_TILE_HEIGHT / 2) - attackHeight / 2;
+            break;
+        case UP:
+            SWAP(entity->attack.width, entity->attack.height);
+            entity->attack.x += 0;
+            entity->attack.y += -ENTITY_TILE_HEIGHT / 6;
+            break;
+        default:
+            TraceLog(LOG_WARNING, "ENEMY.C (LoadStandardEntityAttackHitbox, line: %d): Invalid directionFace was found.", __LINE__);
+            break;
+    }
+    entity->attack.x = floor(entity->attack.x);
+    entity->attack.y = floor(entity->attack.y);
 }

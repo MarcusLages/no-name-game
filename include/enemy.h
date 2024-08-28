@@ -39,19 +39,17 @@
 #define ENEMY_DEIGO_HEIGHT 32
 
 #define ENEMY_WAFFLES_WIDTH  32
-#define ENEMY_WAFFLES_HEIGHT 32
+#define ENEMY_WAFFLES_HEIGHT 48
 
 /** Attack dimensions. */
-//? NOTE: Dimensions are the same for now as sprite is the same.
-//? Testing will be need once different dimensions and sprites are given.
 #define ENEMY_PABLO_ATTACK_WIDTH  32
 #define ENEMY_PABLO_ATTACK_HEIGHT 21
 
 #define ENEMY_DEIGO_ATTACK_WIDTH  32
 #define ENEMY_DEIGO_ATTACK_HEIGHT 21
 
-#define ENEMY_WAFFLES_ATTACK_WIDTH  32
-#define ENEMY_WAFFLES_ATTACK_HEIGHT 21
+#define ENEMY_WAFFLES_ATTACK_WIDTH  96
+#define ENEMY_WAFFLES_ATTACK_HEIGHT 96
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -78,9 +76,9 @@ typedef enum EnemyType {
  *
  * ! @attention returns an EMPTY Entity when given an invalid type.
  *
- * @param position The initial position to set for the enemy.
- * @param type The type of enemy to start.
- * @returns An Entity.
+ * @param position  The initial position to set for the enemy.
+ * @param type      The type of enemy to start.
+ * @returns         An Entity.
  *
  * ? @note Timers started here are needed for the whole duration of the game.
  */
@@ -91,27 +89,28 @@ Entity EnemyStartup(Vector2 position, EnemyType type);
  *
  * ! @attention returns when given a NULL enemy reference.
  *
- * @param enemy The enemy to handle movement.
+ * @param enemy         The enemy to handle movement.
  * @param lastPlayerPos The last known location of the player.
+ * @param type          Type of enemy.
  *
  * ? @note Needs a reference to the lastPlayerPos of the given enemy.
  */
-void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos);
+void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type);
 
 /**
  * Handles the given enemy's attack.
  *
  * ! @attention returns if the enemy is NULL, has an invalid state or if it is no longer attacking.
  *
- * @param enemy The reference to the enemy to handle the attack for.
- * @param attackWidth Attack hitbox width.
- * @param attackHeight Attack hitbox height.
+ * @param enemy         The reference to the enemy to handle the attack for.
+ * @param type          Type of enemy.
+ * @param hasAttacked   Indicates if this enemy has attacked.
  *
  * ? @note Manages the timer for the enemy attack animation.
  * ? @note Calls UpdateEnemyAttackHitbox to update the given enemy's attack hotbox.
- * ? @note Calls EntityAttack to handle enemy attack if the hitboxes intersect.
+ * ? @note Calls EntityAttack to handle and check enemy attack if the hitboxes intersect.
  */
-void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight);
+void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked);
 
 /**
  * Renders the enemy animation based off of it's GameState.
@@ -119,12 +118,9 @@ void EnemyAttack(Entity* enemy, int attackWidth, int attackHeight);
  * ! @attention returns if the enemy is NULL or has an invalid state.
  *
  * @param enemy The reference to the enemy to render.
- * @param width Enemy width.
- * @param height Enemy height.
- * @param attackWidth Attack hitbox width.
- * @param attackHeight Attack hitbox height.
+ * @param type  Type of enemy.
  */
-void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int attackHeight);
+void EnemyRender(Entity* enemy, EnemyType type);
 
 /**
  * Unloads all the enemies and animations associated with an enemy entity.
@@ -136,5 +132,46 @@ void EnemyRender(Entity* enemy, int width, int height, int attackWidth, int atta
  * ! @note Unallocates memory for the array in enemy.animations.
  */
 void EnemyUnload(Entity* enemy);
+
+/**
+ * Returns the proper width of the given enemy type.
+ *
+ * @param type  The enemy type.
+ * @returns     Returns the entity width.
+ */
+int GetWidth(EnemyType type);
+
+/**
+ * Returns the proper height of the given enemy type.
+ *
+ * @param type  The enemy type.
+ * @returns     Returns the entity height.
+ */
+int GetHeight(EnemyType type);
+
+/**
+ * Returns an attack width associated with a given enemy type.
+ *
+ * @param type  The enemy type.
+ * @returns     Returns the attack width.
+ */
+int GetAttackWidth(EnemyType type);
+
+/**
+ * Returns an attack height associated with a given enemy type.
+ *
+ * @param type  The enemy type.
+ * @returns     Returns the attack height.
+ */
+int GetAttackHeight(EnemyType type);
+
+/**
+ * Populates an array of integers with integers that represent the TextureFile types for the given EnemyType.
+ *
+ * @param tiles Array to populate.
+ * @param size  Size of the array.
+ * @param type  Type of enemy to base the tiles off of.
+ */
+void GetTiles(int tiles[], int size, EnemyType type);
 
 #endif // ENEMY_H_
