@@ -109,7 +109,7 @@ static void HandleEnemiesAttack();
 void SetupEnemies() {
     RoomNode* cursor = rooms;
     while(cursor != NULL) {
-        if(cursor->roomNumber != 0) {
+        if(cursor->roomNumber != 0 && cursor->roomNumber != 1) {
             int numOfEnemies = GetNumOfEnemies(cursor->roomSize);
             AddEnemies(numOfEnemies, cursor->positionArray);
         }

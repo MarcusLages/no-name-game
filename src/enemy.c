@@ -187,12 +187,11 @@ void EnemyAttack(Entity* enemy, EnemyType type) {
     }
 }
 
-// TODO: watch out for waffles
 static void UpdateEnemyAttackHitbox(Entity* enemy, EnemyType type) {
     switch(type) {
         case DEMON_DIEGO:
         case DEMON_PABLO: LoadStandardEntityAttackHitbox(enemy); break;
-        case DEMON_WAFFLES: break; LoadWafflesAttackHitbox(enemy);
+        case DEMON_WAFFLES: LoadWafflesAttackHitbox(enemy); break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (UpdateEnemyAttackHitbox, line: %d): Invalid EnemyType was given.", __LINE__);
             break;
@@ -238,7 +237,7 @@ static void RenderEnemyAttack(Entity* enemy, EnemyType type) {
     switch(type) {
         case DEMON_DIEGO:
         case DEMON_PABLO: RenderPabloDiegoAttack(enemy); break;
-        case DEMON_WAFFLES: break; RenderWafflesAttack(enemy);
+        case DEMON_WAFFLES: RenderWafflesAttack(enemy); break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (UpdateEnemyAttackHitbox, line: %d): Invalid EnemyType was given.", __LINE__);
             break;
@@ -424,22 +423,22 @@ static void LoadWafflesAttackHitbox(Entity* enemy) {
 
     switch(enemy->directionFace) {
         case RIGHT:
-            enemy->attack.x += width / 2;
-            enemy->attack.y += (height / 2) - attackHeight / 2;
+            // enemy->attack.x += width / 2;
+            // enemy->attack.y += (height / 2) - attackHeight / 2;
             break;
         case DOWN:
-            SWAP(enemy->attack.width, enemy->attack.height);
-            enemy->attack.x += 0;
-            enemy->attack.y += height - height / 4;
+            // SWAP(enemy->attack.width, enemy->attack.height);
+            // enemy->attack.x += 0;
+            // enemy->attack.y += height - height / 4;
             break;
         case LEFT:
-            enemy->attack.x += -attackWidth + (width / 2);
-            enemy->attack.y += (height / 2) - attackHeight / 2;
+            // enemy->attack.x += -attackWidth + (width / 2);
+            // enemy->attack.y += (height / 2) - attackHeight / 2;
             break;
         case UP:
             SWAP(enemy->attack.width, enemy->attack.height);
-            enemy->attack.x += 0;
-            enemy->attack.y += -height / 6;
+            enemy->attack.x += width / 2 - attackWidth / 2;
+            enemy->attack.y += 0;
             break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (LoadStandardEntityAttackHitbox, line: %d): Invalid directionFace was found.", __LINE__);
