@@ -48,8 +48,8 @@
 #define ENEMY_DEIGO_ATTACK_WIDTH  32
 #define ENEMY_DEIGO_ATTACK_HEIGHT 21
 
-#define ENEMY_WAFFLES_ATTACK_WIDTH  32
-#define ENEMY_WAFFLES_ATTACK_HEIGHT 21
+#define ENEMY_WAFFLES_ATTACK_WIDTH  48
+#define ENEMY_WAFFLES_ATTACK_HEIGHT 32
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -104,12 +104,13 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type);
  *
  * @param enemy The reference to the enemy to handle the attack for.
  * @param type Type of enemy.
+ * @param hasAttacked Indicates if this enemy has attacked.
  *
  * ? @note Manages the timer for the enemy attack animation.
  * ? @note Calls UpdateEnemyAttackHitbox to update the given enemy's attack hotbox.
  * ? @note Calls EntityAttack to handle and check enemy attack if the hitboxes intersect.
  */
-void EnemyAttack(Entity* enemy, EnemyType type);
+void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked);
 
 /**
  * Renders the enemy animation based off of it's GameState.

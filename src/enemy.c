@@ -73,7 +73,7 @@ static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerP
 /**
  * TODO: Comment
  */
-static void GetTiles(int tiles[], EnemyType type);
+static void GetTiles(int tiles[], int size, EnemyType type);
 
 /**
  * TODO: Comment
@@ -159,31 +159,31 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type) {
     MoveEnemyToPos(enemy, player.pos, lastPlayerPos);
 }
 
-void EnemyAttack(Entity* enemy, EnemyType type) {
+void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (EnemyAttack, line: %d): NULL enemy was found.", __LINE__);
         return;
     }
 
-    if(enemy->state == ATTACKING && TimerDone(&enemyAnimArray[ATTACK_ANIMATION].timer)) {
-        enemy->state = IDLE;
-        return;
-    }
-
     UpdateEnemyAttackHitbox(enemy, type);
 
-    if(EntityAttack(enemy, &player, 0) && enemy->state != ATTACKING) {
+    if(EntityAttack(enemy, &player, 0)) {
         Timer* timer = &enemyAnimArray[ATTACK_ANIMATION].timer;
 
         if(TimerDone(timer)) {
-            // Start a new timer.
+            *hasAttacked = false;
             StartTimerWithDelay(timer, 0.5, 0.5);
         }
-        // Wait on delay
+
         if(CheckIfDelayed(timer)) return;
+        if(*hasAttacked) return;
         enemy->state = ATTACKING;
+        *hasAttacked = true;
         // player.health = 0;
         TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
+    } else {
+        enemy->state = (enemy->state == MOVING) ? MOVING : IDLE;
+        return;
     }
 }
 
@@ -218,12 +218,7 @@ void EnemyRender(Entity* enemy, EnemyType type) {
                 enemy, &enemyAnimArray[MOVE_ANIMATION],
                 width * enemy->faceValue, height, 0, 0, 0.0f);
             break;
-        case ATTACKING:
-            EntityRender(
-                enemy, &enemyAnimArray[IDLE_ANIMATION],
-                width * enemy->faceValue, height, 0, 0, 0.0f);
-            RenderEnemyAttack(enemy, type);
-            break;
+        case ATTACKING: RenderEnemyAttack(enemy, type); break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (EnemyRender, line: %d): Invalid enemy state given.", __LINE__);
             break;
@@ -231,8 +226,9 @@ void EnemyRender(Entity* enemy, EnemyType type) {
 }
 
 static void RenderEnemyAttack(Entity* enemy, EnemyType type) {
-    DrawRectangleRec(enemy->attack, RED);
-    DrawPixelV(enemy->pos, GREEN);
+    //? For Debugging:
+    // DrawRectangleRec(enemy->attack, RED);
+    // DrawPixelV(enemy->pos, GREEN);
 
     switch(type) {
         case DEMON_DIEGO:
@@ -308,7 +304,7 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     int attackWidth  = GetAttackWidth(type);
     int attackHeight = GetAttackHeight(type);
     int tiles[3];
-    GetTiles(tiles, type);
+    GetTiles(tiles, MAX_ENEMY_ANIMATIONS, type);
 
     Animation idleEnemyAnimation =
         CreateAnimation(DEFAULT_IDLE_FPS, width, height, tiles[0]);
@@ -325,7 +321,7 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
 
     StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0);
     StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0);
-    StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 1.0);
+    // StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 1.0);
 }
 
 static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos) {
@@ -396,7 +392,7 @@ int GetAttackHeight(EnemyType type) {
     return height;
 }
 
-static void GetTiles(int* tiles, EnemyType type) {
+static void GetTiles(int* tiles, int size, EnemyType type) {
     int tileNum = TILE_ENEMY_PABLO_IDLE;
     switch(type) {
         case DEMON_PABLO: tileNum = TILE_ENEMY_PABLO_IDLE; break;
@@ -407,42 +403,22 @@ static void GetTiles(int* tiles, EnemyType type) {
             TraceLog(LOG_ERROR, "ENEMY-LIST.C (GetTiles, line: %d): Invalid EnemyType given. Defaulting to PABLO.", __LINE__);
             break;
     }
-    for(int i = 0; i < MAX_ENEMY_ANIMATIONS; i++) {
+    for(int i = 0; i < size; i++) {
         tiles[i] = tileNum++;
     };
 }
 
 static void LoadWafflesAttackHitbox(Entity* enemy) {
-    int width        = ENEMY_WAFFLES_WIDTH;
-    int height       = ENEMY_WAFFLES_HEIGHT;
-    int attackWidth  = ENEMY_WAFFLES_ATTACK_WIDTH - 4;
-    int attackHeight = ENEMY_WAFFLES_ATTACK_HEIGHT - 8;
-    enemy->attack    = (Rectangle){
-           .x = enemy->pos.x, .y = enemy->pos.y, .width = attackWidth, .height = attackHeight
-    };
+    int width  = ENEMY_WAFFLES_HEIGHT - 4;
+    int height = ENEMY_WAFFLES_HEIGHT - 4;
+    enemy->attack =
+        (Rectangle){ .x = enemy->pos.x, .y = enemy->pos.y, .width = width, .height = height };
+    enemy->attack.x += 0;
+    enemy->attack.y += height / 4;
 
-    switch(enemy->directionFace) {
-        case RIGHT:
-            // enemy->attack.x += width / 2;
-            // enemy->attack.y += (height / 2) - attackHeight / 2;
-            break;
-        case DOWN:
-            // SWAP(enemy->attack.width, enemy->attack.height);
-            // enemy->attack.x += 0;
-            // enemy->attack.y += height - height / 4;
-            break;
-        case LEFT:
-            // enemy->attack.x += -attackWidth + (width / 2);
-            // enemy->attack.y += (height / 2) - attackHeight / 2;
-            break;
-        case UP:
-            SWAP(enemy->attack.width, enemy->attack.height);
-            enemy->attack.x += width / 2 - attackWidth / 2;
-            enemy->attack.y += 0;
-            break;
-        default:
-            TraceLog(LOG_WARNING, "ENEMY.C (LoadStandardEntityAttackHitbox, line: %d): Invalid directionFace was found.", __LINE__);
-            break;
+    switch(enemy->faceValue) {
+        case 1: enemy->attack.x += -width / 4; break;
+        default: break;
     }
     enemy->attack.x = floor(enemy->attack.x);
     enemy->attack.y = floor(enemy->attack.y);
@@ -453,6 +429,8 @@ static void RenderPabloDiegoAttack(Entity* enemy) {
     int height       = ENEMY_PABLO_HEIGHT;
     int attackWidth  = ENEMY_PABLO_ATTACK_WIDTH;
     int attackHeight = ENEMY_PABLO_ATTACK_HEIGHT;
+
+    EntityRender(enemy, &enemyAnimArray[IDLE_ANIMATION], width * enemy->faceValue, height, 0, 0, 0.0f);
 
     switch(enemy->directionFace) {
         case RIGHT:
@@ -488,30 +466,23 @@ static void RenderWafflesAttack(Entity* enemy) {
     int attackWidth  = ENEMY_WAFFLES_ATTACK_WIDTH;
     int attackHeight = ENEMY_WAFFLES_ATTACK_HEIGHT;
 
-    switch(enemy->directionFace) {
-        case RIGHT:
-            EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
-                attackHeight, width / 4, attackHeight / 2, 0.0f);
-            break;
-        case DOWN:
-            EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
-                attackHeight * enemy->faceValue, width + width / 8, attackHeight, 90.0f);
-            break;
-        case LEFT:
+    // TODO: sync with attack animation
+    Animation idleAnimation = enemyAnimArray[IDLE_ANIMATION];
+    idleAnimation.fps       = 10;
+    // Render IDLE
+    EntityRender(enemy, &idleAnimation, width * enemy->faceValue, height, 0, 0, 0.0f);
+
+    switch(enemy->faceValue) {
+        case 1:
             EntityRender(
                 enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
-                attackHeight, -width - width / 4, attackHeight / 2, 0.0f);
+                attackHeight, -attackWidth / 4, attackHeight / 4, 0.0f);
             break;
-        case UP:
+        case -1:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
-                -attackHeight * enemy->faceValue, -width / 8,
-                attackHeight + height / 8, -90.0f);
+                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
+                attackHeight, -attackWidth / 8, attackHeight / 4, 0.0f);
             break;
-        default:
-            TraceLog(LOG_WARNING, "ENEMY.C (RenderWafflesAttack, line: %d): Invalid enemy directionFace found.", __LINE__);
-            break;
+        default: break;
     }
 }

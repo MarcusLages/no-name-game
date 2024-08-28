@@ -170,7 +170,6 @@ static void LoadTextures() {
     textures[TILE_ENEMY_PABLO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    //! NOTE: player attack is used here temporailly. New asset must be found.
     img = LoadImage("resources/player-attack.png");
     textures[TILE_ENEMY_PABLO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
@@ -183,7 +182,6 @@ static void LoadTextures() {
     textures[TILE_ENEMY_DIEGO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    //! NOTE: player attack is used here temporailly. New asset must be found.
     img = LoadImage("resources/player-attack.png");
     textures[TILE_ENEMY_DIEGO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
@@ -196,8 +194,7 @@ static void LoadTextures() {
     textures[TILE_ENEMY_WAFFLES_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    //! NOTE: player attack is used here temporailly. New asset must be found.
-    img = LoadImage("resources/player-attack.png");
+    img = LoadImage("resources/waffles-attack.png");
     textures[TILE_ENEMY_WAFFLES_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 

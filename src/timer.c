@@ -55,5 +55,5 @@ double TimeRemaining(Timer* timer) {
 
 bool CheckIfDelayed(Timer* timer) {
     double elapsedTime = GetElapsedTime(timer);
-    return elapsedTime < 0.0;
+    return elapsedTime < 0.0f;
 }

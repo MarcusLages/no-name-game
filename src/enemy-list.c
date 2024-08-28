@@ -109,6 +109,7 @@ static void HandleEnemiesAttack();
 void SetupEnemies() {
     RoomNode* cursor = rooms;
     while(cursor != NULL) {
+        // TODO: remove cursor->roomNumber != 1 once waffles is done.
         if(cursor->roomNumber != 0 && cursor->roomNumber != 1) {
             int numOfEnemies = GetNumOfEnemies(cursor->roomSize);
             AddEnemies(numOfEnemies, cursor->positionArray);
@@ -213,6 +214,7 @@ static EnemyNode* CreateEnemyList(Entity enemy, EnemyType type) {
     enemyNode->enemy         = enemy;
     enemyNode->type          = type;
     enemyNode->lastPlayerPos = enemy.pos;
+    enemyNode->hasAttacked   = false;
     enemyNode->next          = NULL;
     return enemyNode;
 }
@@ -284,7 +286,7 @@ static void MoveEnemies() {
 static void HandleEnemiesAttack() {
     EnemyNode* currEnemy = enemies;
     while(currEnemy != NULL) {
-        EnemyAttack(&currEnemy->enemy, currEnemy->type);
+        EnemyAttack(&currEnemy->enemy, currEnemy->type, &currEnemy->hasAttacked);
         currEnemy = currEnemy->next;
     }
 }

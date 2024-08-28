@@ -23,6 +23,7 @@
 #define ENTITY_TILE_HEIGHT 32
 
 /** Default animation refresh rate. */
+//TODO: seem like the belong in animation.h
 #define DEFAULT_IDLE_FPS   2
 #define DEFAULT_MOVING_FPS 8
 #define DEFAULT_ATTACK_FPS 8
