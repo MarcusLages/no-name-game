@@ -1,6 +1,6 @@
 /***********************************************************************************************
  *
- **   Provide functionality for ....
+ **   Provide functionality for required utility functions specialized for enemy entities.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2

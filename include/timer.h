@@ -68,9 +68,8 @@ void StartTimerWithDelay(Timer* timer, double lifetime, double delay);
  *
  * ! @attention returns false if given a NULL pointer.
  *
- * @param timer Timer to check.
- *
- * @returns True if the timer is done false otherwise.
+ * @param timer Timer to check. 
+ * @returns     True if the timer is done false otherwise.
  */
 bool TimerDone(Timer* timer);
 
@@ -80,19 +79,17 @@ bool TimerDone(Timer* timer);
  * ! @attention returns -1.0 if given a NULL pointer.
  *
  * @param timer Timer to check.
- *
- * @returns Time elaspsed.
+ * @returns     Time elaspsed.
  */
 double GetElapsedTime(Timer* timer);
 
 /**
- *Returns the time remaining with the specified timer.
+ * Returns the time remaining with the specified timer.
  *
  * ! @attention returns -1.0 if given a NULL pointer.
  *
  * @param timer Timer to check.
- *
- * @returns Time remaining.
+ * @returns     Time remaining.
  *
  * ? @note Returns INFINITY if the timer was started with -1.0f (infinite timer).
  */
@@ -104,8 +101,7 @@ double TimeRemaining(Timer* timer);
  * ! @attention returns false if given a NULL pointer.
  *
  * @param timer Timer to check.
- *
- * @returns True if there is a delay, false otherwise.
+ * @returns     True if there is a delay, false otherwise.
  */
 bool CheckIfDelayed(Timer* timer);
 

@@ -133,8 +133,8 @@ extern Entity player;
  *
  * ! @attention Returns if given a NULL entity.
  *
- * @param entity The reference to the entity to move.
- * @param position The position to move the entity towards.
+ * @param entity        The reference to the entity to move.
+ * @param position      The position to move the entity towards.
  * @param lastPlayerPos The last known position of the player relative to an enemy entity.
  *
  * ? @note pass NULL to lastPlayerPos if the entity is not an enemy.
@@ -179,8 +179,8 @@ void EntityRender(
  * @param attacker      Pointer to the attacker entity
  * @param victim        Pointer to the entity that is getting hit
  * @param attackPoints  How much life will the victim lose
- * @return If the attack happened or not.
- *         (OBS: Might be used or not or changed to a callback function)
+ * @return              If the attack happened or not.
+ *                      (OBS: Might be used or not or changed to a callback function)
  */
 bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints);
 

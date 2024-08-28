@@ -22,7 +22,7 @@ EnemyNode* enemies;
 /**
  * Adds a specified number of enemies to the enemies list with a given positionArray at random positions.
  *
- * @param numOfEnemies Number of enemies to add.
+ * @param numOfEnemies  Number of enemies to add.
  * @param positionArray The array object holding the positions and the number of positions.
  *
  * ! @note Calls CreateEnemyList and AddEnemyNode.
@@ -34,8 +34,8 @@ static void AddEnemies(int numOfEnemies, PositionArray positionArray);
 /**
  * Adds a specified enemy to the enemies list with a given pos.
  *
- * @param pos The position that the enemy should spawn.
- * @param type Type of enemy.
+ * @param pos   The position that the enemy should spawn.
+ * @param type  Type of enemy.
  *
  * ! @note Calls AddEnemyNode.
  * ? @note the given position must be a valid position on the map (position is not checked internally).
@@ -46,9 +46,8 @@ static void AddParticularEnemy(Vector2 pos, EnemyType type);
  * Creates the enemies linked list and returns a reference to the first EnemyNode in the list.
  *
  * @param enemy The enemy to add as the first EnemyNode.
- * @param type Type of enemy to add.
- *
- * @returns The reference to the first EnemyNode.
+ * @param type  Type of enemy to add.
+ * @returns     The reference to the first EnemyNode.
  *
  * ! @note Allocates memory for the first EnemyNode.
  */
@@ -60,7 +59,7 @@ static EnemyNode* CreateEnemyList(Entity enemy, EnemyType type);
  * ! @attention Returns if there is a NULL head pointer.
  *
  * @param enemy The enemy to add as an EnemyNode.
- * @param type Type of enemy to add.
+ * @param type  Type of enemy to add.
  *
  * ! @note Allocates memory for an EnemyNode.
  */
@@ -69,9 +68,8 @@ static void AddEnemyNode(Entity enemy, EnemyType type);
 /**
  * Returns the number of enemies for a given roomSize.
  *
- * @param roomSize The roomSize to assess.
- *
- * @returns The number of enemies as an int.
+ * @param roomSize  The roomSize to assess.
+ * @returns         The number of enemies as an int.
  */
 static int GetNumOfEnemies(RoomSize roomSize);
 
@@ -109,15 +107,13 @@ static void HandleEnemiesAttack();
 void SetupEnemies() {
     RoomNode* cursor = rooms;
     while(cursor != NULL) {
-        // TODO: remove cursor->roomNumber != 1 once waffles is done.
-        if(cursor->roomNumber != 0 && cursor->roomNumber != 1) {
+        if(cursor->roomNumber != 0) {
             int numOfEnemies = GetNumOfEnemies(cursor->roomSize);
             AddEnemies(numOfEnemies, cursor->positionArray);
         }
         cursor = cursor->next;
     }
-    // 74, 10
-    AddParticularEnemy((Vector2){ 14, 15 }, DEMON_WAFFLES);
+    AddParticularEnemy((Vector2){ 74, 10 }, DEMON_WAFFLES);
     AdjustEnemies();
     UnloadRooms();
     TraceLog(LOG_INFO, "ENEMY-LIST.C (SetupEnemies): Enemies set successfully.");

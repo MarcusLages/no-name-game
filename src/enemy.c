@@ -37,8 +37,8 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type);
  * Determines if the player is seen by a given enemy.
  *
  * @param enemy The enemy to check agaist.
- * @param type Type of enemy.
- * @returns True if the player is seen and false otherwise.
+ * @param type  Type of enemy.
+ * @returns     True if the player is seen and false otherwise.
  */
 static bool IsPlayerSeen(Entity* enemy, EnemyType type);
 
@@ -46,7 +46,7 @@ static bool IsPlayerSeen(Entity* enemy, EnemyType type);
  * Updates the given enemy's attack hitbox property.
  *
  * @param enemy The enemy to update.
- * @param type Type of enemy.
+ * @param type  Type of enemy.
  */
 static void UpdateEnemyAttackHitbox(Entity* enemy, EnemyType type);
 
@@ -54,15 +54,15 @@ static void UpdateEnemyAttackHitbox(Entity* enemy, EnemyType type);
  * Renders an enemy's attack animation based off of it's Direction.
  *
  * @param enemy The enemy to render an attack for.
- * @param type Type of enemy.
+ * @param type  Type of enemy.
  */
 static void RenderEnemyAttack(Entity* enemy, EnemyType type);
 
 /**
  * Handles the enemy movement towards a given position.
  *
- * @param enemy The reference to the enemy to move.
- * @param position The position to move the entity towards.
+ * @param enemy         The reference to the enemy to move.
+ * @param position      The position to move the entity towards.
  * @param lastPlayerPos The last known position of the player relative to the given enemy.
  *
  * ? @note Calls MoveEntityTowardsPos()

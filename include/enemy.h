@@ -76,9 +76,9 @@ typedef enum EnemyType {
  *
  * ! @attention returns an EMPTY Entity when given an invalid type.
  *
- * @param position The initial position to set for the enemy.
- * @param type The type of enemy to start.
- * @returns An Entity.
+ * @param position  The initial position to set for the enemy.
+ * @param type      The type of enemy to start.
+ * @returns         An Entity.
  *
  * ? @note Timers started here are needed for the whole duration of the game.
  */
@@ -89,9 +89,9 @@ Entity EnemyStartup(Vector2 position, EnemyType type);
  *
  * ! @attention returns when given a NULL enemy reference.
  *
- * @param enemy The enemy to handle movement.
+ * @param enemy         The enemy to handle movement.
  * @param lastPlayerPos The last known location of the player.
- * @param type Type of enemy.
+ * @param type          Type of enemy.
  *
  * ? @note Needs a reference to the lastPlayerPos of the given enemy.
  */
@@ -102,9 +102,9 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type);
  *
  * ! @attention returns if the enemy is NULL, has an invalid state or if it is no longer attacking.
  *
- * @param enemy The reference to the enemy to handle the attack for.
- * @param type Type of enemy.
- * @param hasAttacked Indicates if this enemy has attacked.
+ * @param enemy         The reference to the enemy to handle the attack for.
+ * @param type          Type of enemy.
+ * @param hasAttacked   Indicates if this enemy has attacked.
  *
  * ? @note Manages the timer for the enemy attack animation.
  * ? @note Calls UpdateEnemyAttackHitbox to update the given enemy's attack hotbox.
@@ -118,7 +118,7 @@ void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked);
  * ! @attention returns if the enemy is NULL or has an invalid state.
  *
  * @param enemy The reference to the enemy to render.
- * @param type Type of enemy.
+ * @param type  Type of enemy.
  */
 void EnemyRender(Entity* enemy, EnemyType type);
 
@@ -136,32 +136,32 @@ void EnemyUnload(Entity* enemy);
 /**
  * Returns the proper width of the given enemy type.
  *
- * @param type The enemy type.
- * @returns Returns the entity width.
+ * @param type  The enemy type.
+ * @returns     Returns the entity width.
  */
 int GetWidth(EnemyType type);
 
 /**
  * Returns the proper height of the given enemy type.
  *
- * @param type The enemy type.
- * @returns Returns the entity height.
+ * @param type  The enemy type.
+ * @returns     Returns the entity height.
  */
 int GetHeight(EnemyType type);
 
 /**
  * Returns an attack width associated with a given enemy type.
  *
- * @param type The enemy type.
- * @returns Returns the attack width.
+ * @param type  The enemy type.
+ * @returns     Returns the attack width.
  */
 int GetAttackWidth(EnemyType type);
 
 /**
  * Returns an attack height associated with a given enemy type.
  *
- * @param type The enemy type.
- * @returns Returns the attack height.
+ * @param type  The enemy type.
+ * @returns     Returns the attack height.
  */
 int GetAttackHeight(EnemyType type);
 
@@ -169,8 +169,8 @@ int GetAttackHeight(EnemyType type);
  * Populates an array of integers with integers that represent the TextureFile types for the given EnemyType.
  *
  * @param tiles Array to populate.
- * @param size Size of the array.
- * @param type Type of enemy to base the tiles off of.
+ * @param size  Size of the array.
+ * @param type  Type of enemy to base the tiles off of.
  */
 void GetTiles(int tiles[], int size, EnemyType type);
 

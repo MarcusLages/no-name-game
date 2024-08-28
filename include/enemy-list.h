@@ -21,11 +21,11 @@
 /**
  * EnemyNode struct represents an enemy who has a reference to another enemy.
  *
- * @param enemy Enemy entity of this node.
- * @param type Enemy type of this node.
+ * @param enemy         Enemy entity of this node.
+ * @param type          Enemy type of this node.
  * @param lastPlayerPos Last known location of player to this enemy.
- * @param hasAttacked Indicates if this enemy has attacked.
- * @param next  Next enemy node.
+ * @param hasAttacked   Indicates if this enemy has attacked.
+ * @param next          Next enemy node.
  */
 typedef struct EnemyNode EnemyNode;
 struct EnemyNode {
