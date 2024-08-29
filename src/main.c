@@ -103,6 +103,7 @@ static void GameUpdate() {
                 break;
             case DUNGEON:
                 DungeonUnload();
+                UIScreenUnload();
                 break;
             case FINAL_SCREEN:
                 FinalScreenUnload();
@@ -117,6 +118,7 @@ static void GameUpdate() {
                 break;
             case DUNGEON:
                 DungeonStartup();
+                UIScreenStartup();
                 break;
             case FINAL_SCREEN:
                 FinalScreenStartup();
@@ -140,6 +142,7 @@ static void GameUpdate() {
                     PauseUpdate();
                 else
                     DungeonUpdate();
+                    UIScreenUpdate();
                 break;
             case FINAL_SCREEN:
                 FinalScreenUpdate();
@@ -159,6 +162,7 @@ static void GameRender() {
                 MainMenuRender();
                 break;
             case DUNGEON:
+                UIScreenRender();
                 BeginMode2D(camera);
                 DungeonRender();
                 EndMode2D();

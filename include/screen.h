@@ -36,15 +36,13 @@
  * @param SETTINGS      2
  * @param PAUSE         3
  * @param FINAL_SCREEN  4
- * @param UI_SCREEN     5
  */
 enum GameScreen {
     MAIN_MENU    = 0,
     DUNGEON      = 1,
     SETTINGS     = 2,
     PAUSE        = 3,
-    FINAL_SCREEN = 4,
-    UI_SCREEN    = 5
+    FINAL_SCREEN = 4
 };
 typedef enum GameScreen GameScreen;
 
@@ -96,5 +94,14 @@ void FinalScreenUpdate();
 void FinalScreenRender();
 /** Unloads (frees memory of) all final screen resources. */
 void FinalScreenUnload();
+
+/** Starts the UI screen by setting shapes and loading images needed. */
+void UIScreenStartup();
+/** Updates the UI screen. */
+void UIScreenUpdate();
+/** Renders the UI screen. */
+void UIScreenRender();
+/** Unloads anything used in memory by the UI screen. */
+void UIScreenUnload();
 
 #endif // !SCREEN_H

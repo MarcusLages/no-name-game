@@ -12,8 +12,6 @@
 #include "../include/screen.h"
 
 void UIScreenStartup() {
-    currentScreen = UI_SCREEN;
-
     // setup positions for what need to be renderd
 }
 
