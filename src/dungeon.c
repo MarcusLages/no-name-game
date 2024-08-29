@@ -10,11 +10,11 @@
  *
  **********************************************************************************************/
 
+#include "../include/audio.h"
 #include "../include/enemy-list.h"
 #include "../include/player.h"
 #include "../include/screen.h"
 #include "../include/tile.h"
-#include "../include/audio.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -94,7 +94,7 @@ void DungeonUpdate() {
         PlayerUpdate();
         UpdateEnemies();
         //? Removed for now:
-        //PlayerEnemyCollision();
+        // PlayerEnemyCollision();
 
         // Update camera to follow the player
         camera.target = (Vector2){ (int) player.pos.x + 8, (int) player.pos.y + 16 };
@@ -145,7 +145,6 @@ void DungeonUnload() {
     worldCanvas = NULL;
 
     TraceLog(LOG_INFO, "DUNGEON.C (DungeonUnload): World dungeon tilemap framebuffer unloaded successfully.");
-
     TraceLog(LOG_INFO, "DUNGEON.C (DungeonUnload): Dungeon unloaded successfully.");
 }
 
@@ -166,31 +165,31 @@ static void LoadTextures() {
     textures[TILE_PLAYER_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                          = LoadImage("resources/player-attack2.png");
+    img                          = LoadImage("resources/player-attack.png");
     textures[TILE_PLAYER_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                             = LoadImage("resources/enemy-1-idle.png");
+    img                             = LoadImage("resources/pablo-idle.png");
     textures[TILE_ENEMY_PABLO_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img = LoadImage("resources/enemy-1-movement.png");
+    img                             = LoadImage("resources/pablo-movement.png");
     textures[TILE_ENEMY_PABLO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img = LoadImage("resources/player-attack.png");
+    img = LoadImage("resources/pablo-deigo-attack.png");
     textures[TILE_ENEMY_PABLO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                             = LoadImage("resources/enemy-2-idle.png");
+    img                             = LoadImage("resources/deigo-idle.png");
     textures[TILE_ENEMY_DIEGO_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img = LoadImage("resources/enemy-2-movement.png");
+    img                             = LoadImage("resources/deigo-movement.png");
     textures[TILE_ENEMY_DIEGO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img = LoadImage("resources/player-attack.png");
+    img = LoadImage("resources/pablo-deigo-attack.png");
     textures[TILE_ENEMY_DIEGO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
