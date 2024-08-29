@@ -81,11 +81,20 @@ int CenterInnerComponentX(int innerComponentWidth, int outerComponentX, int oute
 /**
  * Determines if the given doubles are equal with a given precision.
  *
- * @param d1 First double to compare.
- * @param d2 Second double to compare.
- *
- * @returns True if the doubles are equal false otherwise.
+ * @param d1    First double to compare.
+ * @param d2    Second double to compare.
+ * @returns     True if the doubles are equal false otherwise.
  */
 bool IsDoubleEqual(double d1, double d2, float precision);
+
+/**
+ * Converts the given seconds to a time format of HH:mm:ss:ns and returns it as a string.
+ * 
+ * ! @attention Assumes that the given string has been allocated a size of at least 11. 
+ *
+ * @param str       The string to format into.
+ * @param s         Seconds to format.
+ */
+void ConvertToTimeFormat(char* str, double s);
 
 #endif // UTILS_H_

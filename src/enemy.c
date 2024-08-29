@@ -165,7 +165,6 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type) {
     MoveEnemyToPos(enemy, player.pos, lastPlayerPos);
 }
 
-// TODO: watch out for waffles, more delay on his attack
 void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
     if(enemy == NULL) {
         TraceLog(LOG_WARNING, "ENEMY.C (EnemyAttack, line: %d): NULL enemy was found.", __LINE__);
@@ -186,6 +185,7 @@ void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
         if(*hasAttacked) return;
         enemy->state = ATTACKING;
         *hasAttacked = true;
+        // TODO: uncomment when coding is done
         // player.health = 0;
         TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
     } else {

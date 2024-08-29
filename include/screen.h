@@ -61,6 +61,9 @@ extern GameScreen nextScreen;
 /** Closes the game if true. */
 extern bool isRunning;
 
+/** The timer for player personal record as a string. */
+extern char* timerAsStr;
+
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
@@ -94,5 +97,14 @@ void FinalScreenUpdate();
 void FinalScreenRender();
 /** Unloads (frees memory of) all final screen resources. */
 void FinalScreenUnload();
+
+/** Starts the UI screen by setting shapes and loading images needed. */
+void UIScreenStartup();
+/** Updates the UI screen. */
+void UIScreenUpdate();
+/** Renders the UI screen. */
+void UIScreenRender();
+/** Unloads anything used in memory by the UI screen. */
+void UIScreenUnload();
 
 #endif // !SCREEN_H

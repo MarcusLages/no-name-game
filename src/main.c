@@ -1,20 +1,21 @@
 /***********************************************************************************************
-*
-**   main.c is responsible for taking care of initializing basic core functionalities and all
-**   low-level assemblying of the code, managing the game life cycle functions, choosing which
-**   screens to load, update, render, unload and transition to.
-*   
-*    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.2
-*
-*    @include trace-log.h, screen.h, audio.h, pause.h
-*
-***********************************************************************************************/
+ *
+ **   main.c is responsible for taking care of initializing basic core functionalities and all
+ **   low-level assemblying of the code, managing the game life cycle functions, choosing which
+ **   screens to load, update, render, unload and transition to.
+ *
+ *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
+ *    @version 0.2
+ *
+ *    @include trace-log.h, screen.h, audio.h, pause.h
+ *
+ ***********************************************************************************************/
 
-#include "../include/screen.h"
-#include "../include/trace-log.h"
 #include "../include/audio.h"
 #include "../include/pause.h"
+#include "../include/screen.h"
+#include "../include/trace-log.h"
+#include "../include/timer.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -30,6 +31,13 @@ GameScreen nextScreen;
 
 /** Closes the game if true. */
 bool isRunning;
+
+//* ------------------------------------------
+//* MODULAR VARIABLES
+
+/** Timer to track the time the game has been paused for. */
+//TODO: use this to remove pause time from player timer
+static Timer timePaused;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -70,7 +78,7 @@ static void GameStartup() {
 
     // Game running
     isRunning = true;
-    isPaused = false;
+    isPaused  = false;
 
     // Initialize window
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "No name game name");
@@ -81,14 +89,13 @@ static void GameStartup() {
 
     // Sets up initial screen to Main Menu
     currentScreen = MAIN_MENU;
-    nextScreen = MAIN_MENU;
+    nextScreen    = MAIN_MENU;
 
     // Starts up Main Menu
     MainMenuStartup();
     PauseStartup();
 
     TraceLog(LOG_INFO, "MAIN.C (GameStartup): Game initialized at screen : %d successfully.", currentScreen);
-
 }
 
 static void GameUpdate() {
@@ -98,78 +105,65 @@ static void GameUpdate() {
 
         // Unloads currentScreen
         switch(currentScreen) {
-            case MAIN_MENU:
-                MainMenuUnload();
-                break;
+            case MAIN_MENU: MainMenuUnload(); break;
             case DUNGEON:
                 DungeonUnload();
+                UIScreenUnload();
                 break;
-            case FINAL_SCREEN:
-                FinalScreenUnload();
-                break;
+            case FINAL_SCREEN: FinalScreenUnload(); break;
             default: break;
         }
 
         // Starts up nextScreen
         switch(nextScreen) {
-            case MAIN_MENU:
-                MainMenuStartup();
-                break;
+            case MAIN_MENU: MainMenuStartup(); break;
             case DUNGEON:
                 DungeonStartup();
+                UIScreenStartup();
                 break;
-            case FINAL_SCREEN:
-                FinalScreenStartup();
-                break;
+            case FINAL_SCREEN: FinalScreenStartup(); break;
             default: break;
         }
     }
 
     // Checks if player paused the game
-    if(IsKeyPressed(KEY_SPACE))
-        isPaused = !isPaused;
+    if(IsKeyPressed(KEY_SPACE)) isPaused = !isPaused;
 
     // Updates the current screen
-    
+
     switch(currentScreen) {
-            case MAIN_MENU:
-                MainMenuUpdate();
-                break;
-            case DUNGEON:
-                if(isPaused)
-                    PauseUpdate();
-                else
-                    DungeonUpdate();
-                break;
-            case FINAL_SCREEN:
-                FinalScreenUpdate();
-                break;
-            default: break;
+        case MAIN_MENU: MainMenuUpdate(); break;
+        case DUNGEON:
+            if(isPaused)
+                PauseUpdate();
+            else {
+                UIScreenUpdate();
+                DungeonUpdate();
+            }
+            break;
+        case FINAL_SCREEN: FinalScreenUpdate(); break;
+        default: break;
     }
 }
 
 static void GameRender() {
     // Starts the camera and rendering process
     BeginDrawing();
-        ClearBackground(BLACK);
+    ClearBackground(BLACK);
 
-        // Renders the currentScreen
-        switch(currentScreen) {
-            case MAIN_MENU:
-                MainMenuRender();
-                break;
-            case DUNGEON:
-                BeginMode2D(camera);
-                DungeonRender();
-                EndMode2D();
-                if(isPaused)
-                    PauseRender();
-                break;
-            case FINAL_SCREEN:
-                FinalScreenRender();
-                break;
-            default: break;
-        }
+    // Renders the currentScreen
+    switch(currentScreen) {
+        case MAIN_MENU: MainMenuRender(); break;
+        case DUNGEON:
+            BeginMode2D(camera);
+            DungeonRender();
+            EndMode2D();
+            UIScreenRender();
+            if(isPaused) PauseRender();
+            break;
+        case FINAL_SCREEN: FinalScreenRender(); break;
+        default: break;
+    }
 
     EndDrawing();
 }
@@ -177,16 +171,13 @@ static void GameRender() {
 static void GameClosing() {
     // Unloads everything from the currentScreen
     switch(currentScreen) {
-            case MAIN_MENU:
-                MainMenuUnload();
-                break;
-            case DUNGEON:
-                DungeonUnload();
-                break;
-            case FINAL_SCREEN:
-                FinalScreenUnload();
-                break;
-            default: break;
+        case MAIN_MENU: MainMenuUnload(); break;
+        case DUNGEON:
+            DungeonUnload();
+            UIScreenUnload();
+            break;
+        case FINAL_SCREEN: FinalScreenUnload(); break;
+        default: break;
     }
 
     // Close audio and music

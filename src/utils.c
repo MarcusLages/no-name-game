@@ -10,6 +10,9 @@
  ***********************************************************************************************/
 
 #include "../include/utils.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int CenterComponentOnScreenX(int componentWidth) {
     return (GetScreenWidth() - componentWidth) / 2;
@@ -34,4 +37,49 @@ bool IsVectorEqual(Vector2 v1, Vector2 v2, float precision) {
 
 bool IsDoubleEqual(double d1, double d2, float precision) {
     return fabs(d1 - d2) < precision;
+}
+
+void ConvertToTimeFormat(char* str, double s) {
+    double totalSeconds = s;
+    int hours           = totalSeconds / 3600;
+    totalSeconds -= hours * 3600;
+    int minutes = totalSeconds / 60;
+    totalSeconds -= minutes * 60;
+    int seconds      = totalSeconds;
+    int floatSeconds = (totalSeconds - seconds) * 100;
+
+    char* hoursStr        = (char*) malloc(3 * sizeof(char));
+    char* minutesStr      = (char*) malloc(3 * sizeof(char));
+    char* secondsStr      = (char*) malloc(3 * sizeof(char));
+    char* floatSecondsStr = (char*) malloc(3 * sizeof(char));
+
+    int numbers[]      = { hours, minutes, seconds, floatSeconds };
+    int numbersSize    = 4;
+    char* numbersStr[] = { hoursStr, minutesStr, secondsStr, floatSecondsStr };
+
+    for(int i = 0; i < numbersSize; i++) {
+        sprintf(numbersStr[i], "%d", numbers[i]);
+        if(numbers[i] < 10) {
+            char zero[] = "0";
+            strcat(zero, numbersStr[i]);
+            strcpy(numbersStr[i], zero);
+        }
+    }
+
+    char time[11];
+
+    strcpy(time, hoursStr);
+
+    strcat(time, ":");
+    strcat(time, minutesStr);
+    strcat(time, ":");
+    strcat(time, secondsStr);
+    strcat(time, ".");
+    strcat(time, floatSecondsStr);
+    strcpy(str, time);
+
+    free(floatSecondsStr);
+    free(secondsStr);
+    free(minutesStr);
+    free(hoursStr);
 }

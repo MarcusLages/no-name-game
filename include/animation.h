@@ -111,6 +111,7 @@ typedef struct AnimationArray {
  * @param textureFileType   Type of texture as a TextureFile.
  *
  * ! @note This function is responsible for creating animation.reactangles in the heap.
+ * ? @note The timer of this animation must be started/managed externally.
  *
  * @returns An Animation.
  */
@@ -127,11 +128,27 @@ Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile te
  * @param entityHeight  Height of an entity's sprite tile.
  * @param rotation      Rotation of the Rectangles to draw.
  *
- * ? @note Assumes that the GameState has been handles for the entity and the animation desired is provided.
+ * ? @note Assumes that the GameState and timer of this animation has been handled.
  * ? @note Uses DrawTexturePro from Raylib.
  * ? @note Uses TimerDone and GetElapsedTime from timer.c
  */
 void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, float rotation);
+
+/**
+ * Draws the provided animation at a given frame at the destination rectangle.
+ *
+ * ! @attention returns if given a NULL animation.
+ *
+ * @param animation     Animation to draw.
+ * @param dest          Destination rectangle to draw on.
+ * @param entityWidth   Width of an entity's sprite tile.
+ * @param entityHeight  Height of an entity's sprite tile.
+ * @param rotation      Rotation of the Rectangles to draw.
+ * @param frame         Frame to draw.
+ * 
+ * ? @note Uses DrawTexturePro from Raylib.
+ */
+void DrawAnimationFrame(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, int frame);
 
 /**
  * Unloads and frees the memory of all the Animations in the animation array.

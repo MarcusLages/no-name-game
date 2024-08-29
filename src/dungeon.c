@@ -156,7 +156,6 @@ static void StartCamera() {
 }
 
 static void LoadTextures() {
-
     Image img                  = LoadImage("resources/player-idle2.png");
     textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
@@ -203,6 +202,10 @@ static void LoadTextures() {
 
     img = LoadImage("resources/waffles-attack.png");
     textures[TILE_ENEMY_WAFFLES_ATTACK] = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    img = LoadImage("resources/heart-meter.png");
+    textures[TILE_HEALTH_METER] = LoadTextureFromImage(img);
     UnloadImage(img);
 
     TraceLog(LOG_INFO, "DUNGEON.C (LoadTextures): All dungeon textures loaded.");
