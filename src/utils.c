@@ -40,12 +40,11 @@ bool IsDoubleEqual(double d1, double d2, float precision) {
 }
 
 void ConvertToTimeFormat(char* str, double s) {
-    // This first part needs work. After a minute seconds dont reset to 0
     double totalSeconds = s;
     int hours           = totalSeconds / 3600;
-    totalSeconds -= totalSeconds / 3600;
+    totalSeconds -= hours * 3600;
     int minutes = totalSeconds / 60;
-    totalSeconds -= totalSeconds / 60;
+    totalSeconds -= minutes * 60;
     int seconds      = totalSeconds;
     int floatSeconds = (totalSeconds - seconds) * 100;
 
