@@ -17,6 +17,11 @@
 #include "../include/utils.h"
 
 //* ------------------------------------------
+//* DEFINITIONS
+
+#define ENEMY_ATTACK_RANGE  30
+
+//* ------------------------------------------
 //* MACROS
 
 /** Shortcut macro to access an enemy's animation array. */
@@ -171,26 +176,23 @@ void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
         return;
     }
 
-    UpdateEnemyAttackHitbox(enemy, type);
+    float distance = Vector2Distance(enemy->pos, player.pos);
+    Timer* timer = &enemyAnimArray[ATTACK_ANIMATION].timer;
 
-    if(EntityAttack(enemy, &player, 0)) {
-        Timer* timer = &enemyAnimArray[ATTACK_ANIMATION].timer;
+    if(distance <= ENEMY_ATTACK_RANGE && TimerDone(timer)) {
+        *hasAttacked = false;
+        StartTimerWithDelay(timer, 0.5, 0.8);
+    }
 
-        if(TimerDone(timer)) {
-            *hasAttacked = false;
-            StartTimerWithDelay(timer, 0.5, 0.8);
-        }
-
-        if(CheckIfDelayed(timer)) return;
-        if(*hasAttacked) return;
-        enemy->state = ATTACKING;
-        *hasAttacked = true;
-        // TODO: uncomment when coding is done
-        // player.health = 0;
-        TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
-    } else {
+    if(CheckIfDelayed(timer)) return;
+    enemy->state = ATTACKING;
+    *hasAttacked = true;
+    if(enemyAnimArray[ATTACK_ANIMATION].curFrame == 1) {
+        UpdateEnemyAttackHitbox(enemy, type);
+        if(EntityAttack(enemy, &player, 1))
+            TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
+    } else if(TimerDone(timer)) {
         enemy->state = (enemy->state == MOVING) ? MOVING : IDLE;
-        return;
     }
 }
 

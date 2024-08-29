@@ -121,8 +121,8 @@ void SetupEnemies() {
 
 void UpdateEnemies() {
     CleanUpEnemies();
-    MoveEnemies();
     HandleEnemiesAttack();
+    MoveEnemies();
 }
 
 void RenderEnemies() {
