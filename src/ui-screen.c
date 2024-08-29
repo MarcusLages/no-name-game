@@ -10,6 +10,7 @@
  **********************************************************************************************/
 
 #include "../include/animation.h"
+#include "../include/player.h"
 #include "../include/screen.h"
 #include "../include/utils.h"
 
@@ -34,10 +35,12 @@ static Timer timer = { 0.0, 0.0 };
 /** */
 static Animation heartMeterAnimation;
 
+static int heartFrame;
+
 void UIScreenStartup() {
-    // setup positions and items for what need to be rendered
     heartMeterAnimation =
         CreateAnimation(0, HEART_METER_WIDTH, HEART_METER_HEIGHT, TILE_HEALTH_METER);
+    heartFrame = 0;
     timerAsStr = (char*) malloc((STANDARD_TIMER_LEN + 1) * sizeof(char));
 
     if(timerAsStr == NULL) {
@@ -48,14 +51,19 @@ void UIScreenStartup() {
 }
 
 void UIScreenUpdate() {
-    // updated health time etc...
+    if(player.health <= 0) {
+        heartFrame = 1;
+    } else {
+        heartFrame = 0;
+    }
 }
 
 void UIScreenRender() {
-    // Render HUD
     double elapsedTime = GetElapsedTime(&timer);
-    DrawRectangle(0, 0, 400, 100, LIGHTGRAY);
-    DrawTriangle((Vector2){ 400, 0 }, (Vector2){ 400, 100 }, (Vector2){ 450, 0 }, LIGHTGRAY);
+    //? Removed UI shapes for now.
+    // DrawRectangle(0, 0, 400, 100, ColorAlpha(GRAY, 0.8f));
+    // DrawTriangle((Vector2){ 400, 0 }, (Vector2){ 400, 100 }, (Vector2){ 450, 0 }, ColorAlpha(GRAY, 0.8f));
+    // DrawRectangle(SCREEN_WIDTH - 250, 0, 250, 40, ColorAlpha(GRAY, 0.8f));
 
     ConvertToTimeFormat(timerAsStr, elapsedTime);
     DrawText(TextFormat("Elapsed Time: %s", timerAsStr), 10, 10, 30, RED);
@@ -63,10 +71,8 @@ void UIScreenRender() {
     DrawAnimationFrame(
         &heartMeterAnimation,
         (Rectangle){ 10, 100 / 2, HEART_METER_WIDTH * 4, HEART_METER_HEIGHT * 4 },
-        HEART_METER_WIDTH, HEART_METER_HEIGHT, 0.0f, 0);
+        HEART_METER_WIDTH, HEART_METER_HEIGHT, 0.0f, heartFrame);
 
-
-    DrawRectangle(SCREEN_WIDTH - 250, 0, 250, 40, LIGHTGRAY);
     DrawText("[SPACE] For Menu", SCREEN_WIDTH - 210, 10, 20, RED);
 }
 

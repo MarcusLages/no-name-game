@@ -129,8 +129,8 @@ static void GameUpdate() {
             if(isPaused)
                 PauseUpdate();
             else {
-                DungeonUpdate();
                 UIScreenUpdate();
+                DungeonUpdate();
             }
             break;
         case FINAL_SCREEN: FinalScreenUpdate(); break;
@@ -164,7 +164,10 @@ static void GameClosing() {
     // Unloads everything from the currentScreen
     switch(currentScreen) {
         case MAIN_MENU: MainMenuUnload(); break;
-        case DUNGEON: DungeonUnload(); break;
+        case DUNGEON:
+            DungeonUnload();
+            UIScreenUnload();
+            break;
         case FINAL_SCREEN: FinalScreenUnload(); break;
         default: break;
     }
