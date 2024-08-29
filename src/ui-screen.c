@@ -22,7 +22,7 @@
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
-
+// TODO: does not pause when pause menu is started.
 char* timerAsStr;
 
 //* ------------------------------------------
@@ -39,7 +39,7 @@ void UIScreenStartup() {
     heartMeterAnimation =
         CreateAnimation(0, HEART_METER_WIDTH, HEART_METER_HEIGHT, TILE_HEALTH_METER);
     timerAsStr = (char*) malloc((STANDARD_TIMER_LEN + 1) * sizeof(char));
-    
+
     if(timerAsStr == NULL) {
         TraceLog(LOG_FATAL, "UI-SCREEN.C (UIScreenStartup, line: %d): Memory allocation failure.", __LINE__);
     }
@@ -61,8 +61,13 @@ void UIScreenRender() {
     DrawText(TextFormat("Elapsed Time: %s", timerAsStr), 10, 10, 30, RED);
 
     DrawAnimationFrame(
-        &heartMeterAnimation, (Rectangle){ 10, 105, HEART_METER_WIDTH, HEART_METER_HEIGHT },
+        &heartMeterAnimation,
+        (Rectangle){ 10, 100 / 2, HEART_METER_WIDTH * 4, HEART_METER_HEIGHT * 4 },
         HEART_METER_WIDTH, HEART_METER_HEIGHT, 0.0f, 0);
+
+
+    DrawRectangle(SCREEN_WIDTH - 250, 0, 250, 40, LIGHTGRAY);
+    DrawText("[SPACE] For Menu", SCREEN_WIDTH - 210, 10, 20, RED);
 }
 
 void UIScreenUnload() {
