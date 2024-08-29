@@ -29,6 +29,7 @@ Entity player;
 //* ------------------------------------------
 //* MODULAR VARIABLES
 
+/** Timer for the step sfx of the player. */
 static Timer playerStepTimer;
 
 //* ------------------------------------------
