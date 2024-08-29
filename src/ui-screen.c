@@ -1,11 +1,11 @@
 /**********************************************************************************************
- *    TODO:
- **   ...
+ *
+ **   Provides the functionality for displaying the UI (or HUD) in game.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.2
  *
- *    @include screen.h
+ *    @include screen.h, animation.h, timer.h, player.h and utils.h
  *
  **********************************************************************************************/
 
