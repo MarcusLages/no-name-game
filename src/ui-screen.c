@@ -30,18 +30,16 @@ char* timerAsStr;
 //* ------------------------------------------
 //* MODULAR VARIABLES
 
-/**  */
+/** Timer object for the player personal record. */
 static Timer timer = { 0.0, 0.0 };
 
-/** */
+/** The animation object for the health meter. */
 static Animation heartMeterAnimation;
-
-static int heartFrame;
 
 void UIScreenStartup() {
     heartMeterAnimation =
         CreateAnimation(0, HEART_METER_WIDTH, HEART_METER_HEIGHT, TILE_HEALTH_METER);
-    heartFrame = 0;
+    heartMeterAnimation.curFrame = 0;
     timerAsStr = (char*) malloc((STANDARD_TIMER_LEN + 1) * sizeof(char));
 
     if(timerAsStr == NULL) {
@@ -53,11 +51,11 @@ void UIScreenStartup() {
 
 void UIScreenUpdate() {
     if(player.health <= 0) {
-        heartFrame = 1;
+        heartMeterAnimation.curFrame = 1;
     } else {
         double elapsedTime = GetElapsedTime(&timer);
         ConvertToTimeFormat(timerAsStr, elapsedTime);
-        heartFrame = 0;
+        heartMeterAnimation.curFrame = 0;
     }
 }
 
@@ -72,7 +70,7 @@ void UIScreenRender() {
     DrawAnimationFrame(
         &heartMeterAnimation,
         (Rectangle){ 10, 100 / 2, HEART_METER_WIDTH * 4, HEART_METER_HEIGHT * 4 },
-        HEART_METER_WIDTH, HEART_METER_HEIGHT, 0.0f, heartFrame);
+        HEART_METER_WIDTH, HEART_METER_HEIGHT, 0.0f, heartMeterAnimation.curFrame);
 
     DrawText("[SPACE] For Menu", SCREEN_WIDTH - 210, 10, 20, RED);
 }
