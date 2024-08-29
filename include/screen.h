@@ -36,13 +36,15 @@
  * @param SETTINGS      2
  * @param PAUSE         3
  * @param FINAL_SCREEN  4
+ * @param UI_SCREEN     5
  */
 enum GameScreen {
     MAIN_MENU    = 0,
     DUNGEON      = 1,
     SETTINGS     = 2,
     PAUSE        = 3,
-    FINAL_SCREEN = 4
+    FINAL_SCREEN = 4,
+    UI_SCREEN    = 5
 };
 typedef enum GameScreen GameScreen;
 
