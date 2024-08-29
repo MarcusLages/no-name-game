@@ -16,6 +16,7 @@
 #define SCREEN_H
 
 #include "raylib.h"
+#include "timer.h"
 
 //* ------------------------------------------
 //* DEFINITIONS
@@ -60,6 +61,9 @@ extern GameScreen nextScreen;
 
 /** Closes the game if true. */
 extern bool isRunning;
+
+/** The timer for player personal record. */
+extern Timer timer;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
