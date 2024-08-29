@@ -12,6 +12,7 @@
 #include "../include/animation.h"
 #include "../include/player.h"
 #include "../include/screen.h"
+#include "../include/timer.h"
 #include "../include/utils.h"
 
 //* ------------------------------------------
@@ -54,18 +55,18 @@ void UIScreenUpdate() {
     if(player.health <= 0) {
         heartFrame = 1;
     } else {
+        double elapsedTime = GetElapsedTime(&timer);
+        ConvertToTimeFormat(timerAsStr, elapsedTime);
         heartFrame = 0;
     }
 }
 
 void UIScreenRender() {
-    double elapsedTime = GetElapsedTime(&timer);
     //? Removed UI shapes for now.
     // DrawRectangle(0, 0, 400, 100, ColorAlpha(GRAY, 0.8f));
     // DrawTriangle((Vector2){ 400, 0 }, (Vector2){ 400, 100 }, (Vector2){ 450, 0 }, ColorAlpha(GRAY, 0.8f));
     // DrawRectangle(SCREEN_WIDTH - 250, 0, 250, 40, ColorAlpha(GRAY, 0.8f));
 
-    ConvertToTimeFormat(timerAsStr, elapsedTime);
     DrawText(TextFormat("Elapsed Time: %s", timerAsStr), 10, 10, 30, RED);
 
     DrawAnimationFrame(

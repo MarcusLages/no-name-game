@@ -15,6 +15,7 @@
 #include "../include/pause.h"
 #include "../include/screen.h"
 #include "../include/trace-log.h"
+#include "../include/timer.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -30,6 +31,13 @@ GameScreen nextScreen;
 
 /** Closes the game if true. */
 bool isRunning;
+
+//* ------------------------------------------
+//* MODULAR VARIABLES
+
+/** Timer to track the time the game has been paused for. */
+//TODO: use this to remove pause time from player timer
+static Timer timePaused;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES

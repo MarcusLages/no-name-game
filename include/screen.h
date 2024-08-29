@@ -16,7 +16,6 @@
 #define SCREEN_H
 
 #include "raylib.h"
-#include "timer.h"
 
 //* ------------------------------------------
 //* DEFINITIONS
