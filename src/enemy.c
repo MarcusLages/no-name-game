@@ -19,7 +19,7 @@
 //* ------------------------------------------
 //* DEFINITIONS
 
-#define ENEMY_ATTACK_RANGE  30
+#define ENEMY_ATTACK_RANGE 30
 
 //* ------------------------------------------
 //* MACROS

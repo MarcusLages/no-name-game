@@ -121,6 +121,7 @@ void SetupEnemies() {
 
 void UpdateEnemies() {
     CleanUpEnemies();
+    //TODO: Update all enemies hitboxes
     HandleEnemiesAttack();
     MoveEnemies();
 }

@@ -46,21 +46,36 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
     // Ensures the entity cannot move while attacking
     if(entity->state == ATTACKING) return;
 
+
     if(lastPlayerPos != NULL) {
-        // handle enemy props
-        if(position.x > entity->pos.x) {
-            entity->faceValue     = 1;
-            entity->directionFace = RIGHT;
-        } else if(position.x < entity->pos.x) {
-            entity->faceValue     = -1;
-            entity->directionFace = LEFT;
+        Vector2 entityPos = (Vector2){
+            .x = entity->hitbox.x + entity->hitbox.width / 2,
+            .y = entity->hitbox.y + entity->hitbox.height / 2,
+        };
+        Vector2 playerPos =
+            (Vector2){ .x = lastPlayerPos->x + player.hitbox.width / 2,
+                       .y = lastPlayerPos->y + player.hitbox.height / 2 };
+
+        Vector2 distance = Vector2Subtract(entityPos, playerPos);
+        float min        = __min(distance.x, distance.y);
+
+        if(min == distance.x) {
+            // handle enemy props
+            if(position.x > entity->pos.x) {
+                entity->faceValue     = 1;
+                entity->directionFace = RIGHT;
+            } else if(position.x < entity->pos.x) {
+                entity->faceValue     = -1;
+                entity->directionFace = LEFT;
+            }
+        } else if(min == distance.y) {
+            if(position.y > entity->pos.y) {
+                entity->directionFace = DOWN;
+            } else if(position.y < entity->pos.y) {
+                entity->directionFace = UP;
+            }
         }
-        // TODO BUGFIX: Down and UP are overwirrten
-        if(position.y > entity->pos.y) {
-            entity->directionFace = DOWN;
-        } else if(position.y < entity->pos.y) {
-            entity->directionFace = UP;
-        }
+
         entity->direction = (Vector2){
             (int) position.x - (int) entity->pos.x,
             (int) position.y - (int) entity->pos.y,
