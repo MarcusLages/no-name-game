@@ -57,24 +57,28 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
                        .y = lastPlayerPos->y + player.hitbox.height / 2 };
 
         Vector2 distance = Vector2Subtract(entityPos, playerPos);
-        float min        = __min(distance.x, distance.y);
+        distance.x = abs(distance.x);
+        distance.y = abs(distance.y);
 
-        if(min == distance.x) {
+        if(distance.x < distance.y) {
             // handle enemy props
             if(position.x > entity->pos.x) {
-                entity->faceValue     = 1;
                 entity->directionFace = RIGHT;
             } else if(position.x < entity->pos.x) {
-                entity->faceValue     = -1;
                 entity->directionFace = LEFT;
             }
-        } else if(min == distance.y) {
+        } else {
             if(position.y > entity->pos.y) {
                 entity->directionFace = DOWN;
             } else if(position.y < entity->pos.y) {
                 entity->directionFace = UP;
             }
         }
+
+        if(position.x > entity->pos.x)
+            entity->faceValue     = 1;
+        else
+            entity->faceValue     = -1;
 
         entity->direction = (Vector2){
             (int) position.x - (int) entity->pos.x,
