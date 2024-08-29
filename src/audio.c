@@ -63,7 +63,7 @@ void InitializeAudio() {
     LoadSFX();
     LoadSongs();
 
-    SetAudioVolume(0.5f, 0.5f, 0.5f);
+    SetAudioVolume(0.5f, 0.4f, 0.3f);
 }
 
 void UnloadAudio() {
@@ -91,7 +91,16 @@ void SetAudioVolume(float master, float sfx, float music) {
             sfx = 0;
         sfxVolume = sfx;
         for(int index = 0; index < MAX_SFX; index++) {
-            SetSoundVolume(soundFX[index], sfxVolume);
+            switch(index) {
+                case STEP_SFX:
+                    SetSoundVolume(soundFX[index], sfxVolume * 0.6);
+                    break;
+                case PLAYER_SLASH_SFX:
+                    SetSoundVolume(soundFX[index], sfxVolume * 2);
+                    break;
+                default:
+                    SetSoundVolume(soundFX[index], sfxVolume);
+            }
         }
 
         TraceLog(LOG_INFO, "AUDIO.C (SetAudioVolume): Sfx volume changed to: %.2f", sfxVolume);
