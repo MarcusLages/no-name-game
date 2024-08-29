@@ -27,6 +27,11 @@
 Entity player;
 
 //* ------------------------------------------
+//* MODULAR VARIABLES
+
+static Timer playerStepTimer;
+
+//* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
 /**
@@ -102,6 +107,9 @@ void PlayerStartup() {
     StartTimer(&playerAnimArray[IDLE_ANIMATION].timer, -1.0);
     StartTimer(&playerAnimArray[MOVE_ANIMATION].timer, -1.0);
 
+    playerStepTimer = (Timer) {0.0f, 0.0f};
+    StartTimer(&playerStepTimer, 0.45f);
+
     TraceLog(LOG_INFO, "PLAYER.C (PlayerStartup): Player set successfully.");
 }
 
@@ -155,7 +163,10 @@ static void PlayerMovement() {
         player.directionFace = UP;
     }
 
-    // TODO: Check player's speed and if it's already zero, don't even need to check
+    if(!Vector2Equals(player.direction, Vector2Zero()) && TimerDone(&playerStepTimer)) {
+        PlaySound(soundFX[STEP_SFX]);
+        StartTimer(&playerStepTimer, playerStepTimer.lifeTime);
+    }
 
     MovePlayerToPos(player.direction);
 }
