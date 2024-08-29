@@ -80,6 +80,23 @@ void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int en
     DrawTexturePro(animation->texture, source, dest, (Vector2){ 0, 0 }, rotation, WHITE);
 }
 
+void DrawAnimationFrame(
+    Animation* animation, Rectangle dest, int entityWidth, int entityHeight,
+    float rotation, int frame) {
+    if(animation == NULL) return;
+    if(frame >= animation->numOfFrames || frame < 0) {
+        TraceLog(LOG_WARNING, "ANIMATION.C (DrawAnimationFrame, line: %d): Invalid frame index given.", __LINE__);
+        return;
+    }
+
+    Rectangle source    = animation->frames[frame];
+    animation->curFrame = frame;
+
+    source.width  = entityWidth;
+    source.height = entityHeight;
+    DrawTexturePro(animation->texture, source, dest, (Vector2){ 0, 0 }, rotation, WHITE);
+}
+
 void UnloadAnimationArray(AnimationArray* animationArray) {
     for(int i = 0; i < animationArray->size; i++) {
         AnimationUnload(&(animationArray->animationArr[i]));

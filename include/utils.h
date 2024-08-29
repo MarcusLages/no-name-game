@@ -88,7 +88,9 @@ int CenterInnerComponentX(int innerComponentWidth, int outerComponentX, int oute
 bool IsDoubleEqual(double d1, double d2, float precision);
 
 /**
- * Converts the given seconds to a time format of HH:mm:ss and returns it as a string.
+ * Converts the given seconds to a time format of HH:mm:ss:ns and returns it as a string.
+ * 
+ * ! @attention Assumes that the given string has been allocated a size of at least 11. 
  *
  * @param str       The string to format into.
  * @param s         Seconds to format.

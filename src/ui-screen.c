@@ -9,18 +9,42 @@
  *
  **********************************************************************************************/
 
+#include "../include/animation.h"
 #include "../include/screen.h"
 #include "../include/utils.h"
 
 //* ------------------------------------------
+//* DEFINITIONS
+
+#define STANDARD_TIMER_LEN 11
+#define HEART_METER_WIDTH  13
+#define HEART_METER_HEIGHT 12
+
+//* ------------------------------------------
 //* GLOBAL VARIABLES
 
-Timer timer;
+char* timerAsStr;
+
+//* ------------------------------------------
+//* MODULAR VARIABLES
+
+/**  */
+static Timer timer = { 0.0, 0.0 };
+
+/** */
+static Animation heartMeterAnimation;
 
 void UIScreenStartup() {
     // setup positions and items for what need to be rendered
-
+    heartMeterAnimation =
+        CreateAnimation(0, HEART_METER_WIDTH, HEART_METER_HEIGHT, TILE_HEALTH_METER);
+    timerAsStr = (char*) malloc((STANDARD_TIMER_LEN + 1) * sizeof(char));
+    
+    if(timerAsStr == NULL) {
+        TraceLog(LOG_FATAL, "UI-SCREEN.C (UIScreenStartup, line: %d): Memory allocation failure.", __LINE__);
+    }
     StartTimer(&timer, -1.0);
+    TraceLog(LOG_INFO, "UI-SCREEN.C (UIScreenStartup): UI screen set successfully.");
 }
 
 void UIScreenUpdate() {
@@ -30,15 +54,20 @@ void UIScreenUpdate() {
 void UIScreenRender() {
     // Render HUD
     double elapsedTime = GetElapsedTime(&timer);
-    DrawRectangle(0, 0, 250, 100, BLUE);
-    DrawTriangle((Vector2){ 250, 0 }, (Vector2){ 250, 100 }, (Vector2){ 300, 0 }, BLUE);
+    DrawRectangle(0, 0, 400, 100, LIGHTGRAY);
+    DrawTriangle((Vector2){ 400, 0 }, (Vector2){ 400, 100 }, (Vector2){ 450, 0 }, LIGHTGRAY);
 
-    char timeAsStr[11];
-    ConvertToTimeFormat(timeAsStr, elapsedTime);
+    ConvertToTimeFormat(timerAsStr, elapsedTime);
+    DrawText(TextFormat("Elapsed Time: %s", timerAsStr), 10, 10, 30, RED);
 
-    DrawText(TextFormat("Elapsed Time: %s", timeAsStr), 10, 10, 40, RED);
+    DrawAnimationFrame(
+        &heartMeterAnimation, (Rectangle){ 10, 105, HEART_METER_WIDTH, HEART_METER_HEIGHT },
+        HEART_METER_WIDTH, HEART_METER_HEIGHT, 0.0f, 0);
 }
 
 void UIScreenUnload() {
-    // unload anything memory related
+    free(timerAsStr);
+    timerAsStr = NULL;
+    AnimationUnload(&heartMeterAnimation);
+    TraceLog(LOG_INFO, "UI-SCREEN.C (UIScreenUnload): UI screen unloaded successfully.");
 }

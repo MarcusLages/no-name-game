@@ -62,8 +62,8 @@ extern GameScreen nextScreen;
 /** Closes the game if true. */
 extern bool isRunning;
 
-/** The timer for player personal record. */
-extern Timer timer;
+/** The timer for player personal record as a string. */
+extern char* timerAsStr;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES

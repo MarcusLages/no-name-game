@@ -23,7 +23,7 @@
 #define TILE_HEIGHT 16
 
 /** How many textures are loaded in the game.  */
-#define MAX_TEXTURES 12
+#define MAX_TEXTURES 13
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -31,9 +31,6 @@
 /**
  * Enum for accessing the textures loaded in the game through
  * the textures.
- *
- * ? @note Waffles has not been added yet. Once
- *         you add them, don't forget to increase the MAX_TEXTURES def
  *
  * @param TILE_PLAYER_IDLE              0
  * @param TILE_PLAYER_MOVE              1
@@ -47,6 +44,7 @@
  * @param TILE_ENEMY_WAFFLES_IDLE       9
  * @param TILE_ENEMY_WAFFLES_MOVE      10
  * @param TILE_ENEMY_WAFFLES_ATTACK    11
+ * @param TILE_HEALTH_METER            12
  */
 typedef enum TextureFile {
     TILE_PLAYER_IDLE = 0,
@@ -61,6 +59,7 @@ typedef enum TextureFile {
     TILE_ENEMY_WAFFLES_IDLE,
     TILE_ENEMY_WAFFLES_MOVE,
     TILE_ENEMY_WAFFLES_ATTACK,
+    TILE_HEALTH_METER,
 } TextureFile;
 
 //* ------------------------------------------
