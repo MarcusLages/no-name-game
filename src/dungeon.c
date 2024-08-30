@@ -6,15 +6,16 @@
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.3
  *
- *    @include  screen.h, tile.h, audio.h, enemy-list.h, player.h
+ *    @include  <stdlib.h>, screen.h, tile.h, audio.h, enemy-list.h, player.h
  *
  **********************************************************************************************/
 
-#include "../include/screen.h"
-#include "../include/tile.h"
 #include "../include/audio.h"
 #include "../include/enemy-list.h"
 #include "../include/player.h"
+#include "../include/screen.h"
+#include "../include/tile.h"
+#include <stdlib.h>
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -156,35 +157,35 @@ static void StartCamera() {
 }
 
 static void LoadTextures() {
-    Image img                  = LoadImage("resources/img/player/player-idle2.png");
+    Image img = LoadImage("resources/img/player/player-idle2.png");
     textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                        = LoadImage("resources/img/player/player-movement2.png");
+    img = LoadImage("resources/img/player/player-movement2.png");
     textures[TILE_PLAYER_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                          = LoadImage("resources/img/player/player-attack.png");
+    img = LoadImage("resources/img/player/player-attack.png");
     textures[TILE_PLAYER_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                             = LoadImage("resources/img/enemies/pablo-idle.png");
+    img = LoadImage("resources/img/enemies/pablo-idle.png");
     textures[TILE_ENEMY_PABLO_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                             = LoadImage("resources/img/enemies/pablo-movement.png");
+    img = LoadImage("resources/img/enemies/pablo-movement.png");
     textures[TILE_ENEMY_PABLO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                               = LoadImage("resources/img/enemies/pablo-diego-attack.png");
+    img = LoadImage("resources/img/enemies/pablo-diego-attack.png");
     textures[TILE_ENEMY_PABLO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                             = LoadImage("resources/img/enemies/diego-idle.png");
+    img = LoadImage("resources/img/enemies/diego-idle.png");
     textures[TILE_ENEMY_DIEGO_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                             = LoadImage("resources/img/enemies/diego-movement.png");
+    img = LoadImage("resources/img/enemies/diego-movement.png");
     textures[TILE_ENEMY_DIEGO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
@@ -192,7 +193,7 @@ static void LoadTextures() {
     textures[TILE_ENEMY_DIEGO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                               = LoadImage("resources/img/enemies/waffles-idle.png");
+    img = LoadImage("resources/img/enemies/waffles-idle.png");
     textures[TILE_ENEMY_WAFFLES_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 

@@ -21,10 +21,9 @@
 #define MAX_ENEMY_ANIMATIONS 3
 
 /** Health points for each enemy. */
-// TODO: Once attack systems are up and running place proper health points here.
 #define ENEMY_PABLO_HEALTH   1
-#define ENEMY_DIEGO_HEALTH   1
-#define ENEMY_WAFFLES_HEALTH 1
+#define ENEMY_DIEGO_HEALTH   2
+#define ENEMY_WAFFLES_HEALTH 4
 
 /** Speed rates for each enemy. */
 #define ENEMY_PABLO_SPEED   40
