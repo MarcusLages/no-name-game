@@ -54,9 +54,9 @@ typedef enum RoomType { SAFE = 0, HOSTILE } RoomType;
 /**
  * Represents information to describe an array of Vector2 positions.
  *
- * @param position Array of Vector2 positions.
- * @param currSize Current size of the array.
- * @param size The max possible size of the array.
+ * @param position  Array of Vector2 positions.
+ * @param currSize  Current size of the array.
+ * @param size      The max possible size of the array.
  */
 typedef struct PositionArray {
     /** Array of possible positions. */
@@ -70,11 +70,11 @@ typedef struct PositionArray {
 /**
  * Represents information needed to describe a room as a Node in a linked list.
  *
- * @param positionArray The array object for positions.
- * @param roomNumber The unique room number of this room.
- * @param roomSize The size of this room.
- * @param roomType The type of this room.
- * @param next Next RoomNode in the list.
+ * @param positionArray Array object for positions.
+ * @param roomNumber    Unique room number of this room.
+ * @param roomSize      Size of this room.
+ * @param roomType      Type of this room.
+ * @param next          Next RoomNode in the list.
  */
 typedef struct RoomNode RoomNode;
 struct RoomNode {
@@ -88,11 +88,6 @@ struct RoomNode {
     int roomNumber;
     /** The size of the room. */
     RoomSize roomSize;
-    /**
-     * The type of room.
-     * TODO: @note This property may or may not be needed. Left here for now.
-     */
-    RoomType roomType;
     /** The next room. */
     RoomNode* next;
 };
@@ -100,7 +95,7 @@ struct RoomNode {
 //* ------------------------------------------
 //* GLOBAL VARIABLES
 
-/** The list of all rooms. */
+/** The list of all rooms in the dungeon. */
 extern RoomNode* rooms;
 
 //* ------------------------------------------
@@ -119,28 +114,27 @@ void AddPositionToRoom(int roomNumber, Vector2 position);
 /**
  * Creates a RoomNode in memory and returns a reference.
  *
- * @param initPos The initial position to add in the room.
- * @param roomNumber The room number to set.
- * @param roomSize The room size to set.
- * @param roomType The room type to set.
- *
- * @returns A reference to the RoomNode created.
+ * @param initPos       The initial position to add in the room.
+ * @param roomNumber    The room number to set.
+ * @param roomSize      The room size to set.
+ * @param roomType      The room type to set.
+ * @returns             A reference to the RoomNode created.
  *
  * ! @note Allocates memory for the RoomNode.
  */
-RoomNode* CreateRoomList(Vector2 initPos, int roomNumber, RoomSize roomSize, RoomType roomType);
+RoomNode* CreateRoomList(Vector2 initPos, int roomNumber, RoomSize roomSize);
 
 /**
  * Adds a RoomNode to the current list of rooms.
  *
- * @param initPos The initial position to add in the room.
- * @param roomNumber The room number to set.
- * @param roomSize The room size to set.
- * @param roomType The room type to set.
+ * @param initPos       The initial position to add in the room.
+ * @param roomNumber    The room number to set.
+ * @param roomSize      The room size to set.
+ * @param roomType      The room type to set.
  *
  * ? @note Calls CreateRoomList to create the node.
  */
-void AddRoomNode(Vector2 position, int roomNumber, RoomSize roomSize, RoomType roomType);
+void AddRoomNode(Vector2 position, int roomNumber, RoomSize roomSize);
 
 /**
  * Unallocates the entire list of rooms.

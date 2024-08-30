@@ -163,20 +163,17 @@ void DrawTmxLayer(tmx_map* map, tmx_layer* layer) {
                         tmx_get_property(tile->properties, "roomNumber");
                     tmx_property* roomSizeProp =
                         tmx_get_property(tile->properties, "roomSize");
-                    tmx_property* roomTypeProp =
-                        tmx_get_property(tile->properties, "roomType");
 
                     // If the properties exist on the tile we create/add rooms
-                    if(roomNumberProp != NULL && roomSizeProp != NULL && roomTypeProp != NULL) {
+                    if(roomNumberProp != NULL && roomSizeProp != NULL) {
                         int roomNumber    = roomNumberProp->value.integer;
                         RoomSize roomSize = roomSizeProp->value.integer;
-                        RoomType roomType = roomTypeProp->value.integer;
 
                         if(rooms == NULL) {
-                            rooms = CreateRoomList((Vector2){ col, row }, roomNumber, roomSize, roomType);
+                            rooms = CreateRoomList((Vector2){ col, row }, roomNumber, roomSize);
                         } else {
                             if(!CheckRoomExists(roomNumber)) {
-                                AddRoomNode((Vector2){ col, row }, roomNumber, roomSize, roomType);
+                                AddRoomNode((Vector2){ col, row }, roomNumber, roomSize);
                             } else {
                                 // This room already exists so we add a position to it.
                                 AddPositionToRoom(roomNumber, (Vector2){ col, row });

@@ -48,7 +48,6 @@ static PositionArray CreatePositionArray(int arraySize) {
 
     newPosArr.currSize = 0;
     newPosArr.size     = arraySize;
-
     return newPosArr;
 }
 
@@ -99,7 +98,7 @@ static void UnloadPositionArray(PositionArray* positionArray) {
     positionArray->positions = NULL;
 }
 
-RoomNode* CreateRoomList(Vector2 initPos, int roomNumber, RoomSize roomSize, RoomType roomType) {
+RoomNode* CreateRoomList(Vector2 initPos, int roomNumber, RoomSize roomSize) {
     RoomNode* room = (RoomNode*) malloc(sizeof(RoomNode));
 
     if(room == NULL) {
@@ -122,16 +121,14 @@ RoomNode* CreateRoomList(Vector2 initPos, int roomNumber, RoomSize roomSize, Roo
     room->positionArray = CreatePositionArray(arraySize);
     room->roomNumber    = roomNumber;
     room->roomSize      = roomSize;
-    room->roomType      = roomType;
     room->next          = NULL;
 
     AddPosition(&room->positionArray, initPos);
-
     return room;
 }
 
-void AddRoomNode(Vector2 position, int roomNumber, RoomSize roomSize, RoomType roomType) {
-    RoomNode* room = CreateRoomList(position, roomNumber, roomSize, roomType);
+void AddRoomNode(Vector2 position, int roomNumber, RoomSize roomSize) {
+    RoomNode* room = CreateRoomList(position, roomNumber, roomSize);
 
     RoomNode* cursor = rooms;
     while(cursor->next != NULL) {
@@ -151,11 +148,9 @@ void UnloadRooms() {
         rooms          = rooms->next;
 
         UnloadPositionArray(&temp->positionArray);
-
         free(temp);
         temp = NULL;
     }
-
     TraceLog(LOG_INFO, "spawner.c-UnloadRooms: All rooms have been unloaded.");
 }
 
