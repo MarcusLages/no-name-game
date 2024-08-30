@@ -187,11 +187,12 @@ void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
 
     if(CheckIfDelayed(timer)) return;
     enemy->state = ATTACKING;
-    *hasAttacked = true;
     if(enemyAnimArray[ATTACK_ANIMATION].curFrame == 1) {
         UpdateEnemyAttackHitbox(enemy, type);
-        if(EntityAttack(enemy, &player, 1))
+        if(EntityAttack(enemy, &player, 0) && !(*hasAttacked)) {
+            *hasAttacked = true;
             TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
+        }
     } else if(TimerDone(timer)) {
         enemy->state = (enemy->state == MOVING) ? MOVING : IDLE;
     }

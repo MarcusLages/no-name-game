@@ -5,13 +5,14 @@
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.3
  *
- *    @include tile.h, collision.h, spawner.h, texture.h 
+ *    @include <stdlib.h>, tile.h, collision.h, spawner.h, texture.h
  *
  **********************************************************************************************/
 #include "../include/tile.h"
 #include "../include/collision.h"
 #include "../include/spawner.h"
 #include "../include/texture.h"
+#include <stdlib.h>
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
