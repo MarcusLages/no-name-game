@@ -162,19 +162,26 @@ void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
 
     if(distance <= ENEMY_ATTACK_RANGE && TimerDone(timer)) {
         *hasAttacked = false;
+        enemy->state = MOVING;
         StartTimerWithDelay(timer, 0.5, 0.8);
     }
 
     if(CheckIfDelayed(timer)) return;
+
     enemy->state = ATTACKING;
+
+    if(TimerDone(timer)) {
+        enemy->state = IDLE;
+    }
+
     if(enemyAnimArray[ATTACK_ANIMATION].curFrame == 1) {
         UpdateEnemyAttackHitbox(enemy, type);
-        if(EntityAttack(enemy, &player, 0) && !(*hasAttacked)) {
-            *hasAttacked = true;
-            TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
+        if(!(*hasAttacked)) {
+            if(EntityAttack(enemy, &player, 0)) {
+                *hasAttacked = true;
+                TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
+            }
         }
-    } else if(TimerDone(timer)) {
-        enemy->state = (enemy->state == MOVING) ? MOVING : IDLE;
     }
 }
 
@@ -290,7 +297,7 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
     int height       = GetHeight(type);
     int attackWidth  = GetAttackWidth(type);
     int attackHeight = GetAttackHeight(type);
-    int tiles[3];
+    int tiles[MAX_ENEMY_ANIMATIONS];
     GetTiles(tiles, MAX_ENEMY_ANIMATIONS, type);
 
     Animation idleEnemyAnimation =
