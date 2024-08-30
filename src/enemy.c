@@ -396,7 +396,6 @@ static void RenderWafflesAttack(Entity* enemy) {
     int attackWidth  = ENEMY_WAFFLES_ATTACK_WIDTH;
     int attackHeight = ENEMY_WAFFLES_ATTACK_HEIGHT;
 
-    // TODO: sync with attack animation
     Animation idleAnimation = enemyAnimArray[IDLE_ANIMATION];
     idleAnimation.fps       = 10;
 
