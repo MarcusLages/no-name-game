@@ -48,14 +48,11 @@ void ConvertToTimeFormat(char* str, int size, double sec) {
 
     minutes = totalSeconds / 60;
     totalSeconds -= minutes * 60;
-    
+
     seconds      = totalSeconds;
     floatSeconds = (totalSeconds - seconds) * 100;
 
-    char hoursStr[3];
-    char minutesStr[3];
-    char secondsStr[3];
-    char floatSecondsStr[3];
+    char hoursStr[3], minutesStr[3], secondsStr[3], floatSecondsStr[3];
 
     int numbers[]      = { hours, minutes, seconds, floatSeconds };
     int numbersSize    = 4;
