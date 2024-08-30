@@ -331,7 +331,6 @@ static void SetupEnemyAnimation(Entity* enemy, EnemyType type) {
 
     StartTimer(&enemyAnimArray[IDLE_ANIMATION].timer, -1.0);
     StartTimer(&enemyAnimArray[MOVE_ANIMATION].timer, -1.0);
-    // StartTimer(&enemyAnimArray[ATTACK_ANIMATION].timer, 1.0);
 }
 
 static void MoveEnemyToPos(Entity* enemy, Vector2 position, Vector2* lastPlayerPos) {
