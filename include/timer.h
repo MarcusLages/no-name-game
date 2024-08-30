@@ -5,7 +5,7 @@
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.3
  *
- *    @include stdlib, raylib.h, raymath.h
+ *    @include raylib.h, raymath.h
  *    @cite raylib
  *
  ***********************************************************************************************/
@@ -13,7 +13,6 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include <stdlib.h>
 #include "raylib.h"
 #include "raymath.h"
 
@@ -68,7 +67,7 @@ void StartTimerWithDelay(Timer* timer, double lifetime, double delay);
  *
  * ! @attention returns false if given a NULL pointer.
  *
- * @param timer Timer to check. 
+ * @param timer Timer to check.
  * @returns     True if the timer is done false otherwise.
  */
 bool TimerDone(Timer* timer);
@@ -97,7 +96,7 @@ double TimeRemaining(Timer* timer);
 
 /**
  * Checks if the given timer is going through a delay.
- * 
+ *
  * ! @attention returns false if given a NULL pointer.
  *
  * @param timer Timer to check.
@@ -107,10 +106,10 @@ bool CheckIfDelayed(Timer* timer);
 
 /**
  * Resets the given timer.
- * 
- * ! @attention returns if given a NULL pointer. 
+ *
+ * ! @attention returns if given a NULL pointer.
  * Sets the lifetime and starttime to 0.0.
- * 
+ *
  * @param timer Timer to reset.
  */
 void ResetTimer(Timer* timer);

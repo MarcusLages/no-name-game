@@ -5,11 +5,12 @@
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.3
  *
- *    @include spawner.h
+ *    @include <stdlib.h>, spawner.h
  *
  ***********************************************************************************************/
 
 #include "../include/spawner.h"
+#include <stdlib.h>
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES

@@ -5,15 +5,14 @@
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.3
  *
- *    @include stdlib.h, raylib.h
- *    @cite raylib 
+ *    @include raylib.h
+ *    @cite raylib
  *
  ***********************************************************************************************/
 
 #ifndef SPAWNER_H_
 #define SPAWNER_H_
 
-#include <stdlib.h>
 #include "raylib.h"
 
 //* ------------------------------------------

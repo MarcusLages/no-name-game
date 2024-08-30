@@ -25,7 +25,6 @@
  */
 #define ABS(x) (x > 0 ? x : x * (-1))
 
-
 /**
  * Macro to swap two number variables.
  *
@@ -90,8 +89,8 @@ bool IsDoubleEqual(double d1, double d2, float precision);
 
 /**
  * Converts the given seconds to a time format of HH:mm:ss:ns and returns it as a string.
- * 
- * ! @attention Assumes that the given string has been allocated a size of at least 11. 
+ *
+ * ! @attention Assumes that the given string has been allocated a size of at least 11.
  *
  * @param str       The string to format into.
  * @param size      The size of the str desired. (must match size of str given as well.)

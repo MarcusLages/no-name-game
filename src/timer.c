@@ -6,12 +6,13 @@
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.3
  *
- *    @include timer.h
+ *    @include <stdlib.h>, timer.h, and utils.h
  *
  ***********************************************************************************************/
 
 #include "../include/timer.h"
 #include "../include/utils.h"
+#include <stdlib.h>
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
