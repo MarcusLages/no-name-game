@@ -5,7 +5,7 @@
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
  *
- *    @include <stdlib.h>, raylib.h and raymath.h
+ *    @include raylib.h, <stdlib.h> 
  *
  ***********************************************************************************************/
 
@@ -13,7 +13,6 @@
 #define SPAWNER_H_
 
 #include "raylib.h"
-#include "raymath.h"
 #include <stdlib.h>
 
 //* ------------------------------------------

@@ -12,7 +12,6 @@
 #ifndef ENEMY_LIST_H_
 #define ENEMY_LIST_H_
 
-#include "../include/spawner.h"
 #include "enemy.h"
 
 //* ------------------------------------------

@@ -5,11 +5,12 @@
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
  *
- *    @include enemy-list.h
+ *    @include enemy-list.h, spawner,=.h
  *
  ***********************************************************************************************/
 
 #include "../include/enemy-list.h"
+#include "../include/spawner.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
