@@ -4,7 +4,7 @@
  **   like rendering and general logic.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
  *    @include entity.h, utils.h
  *

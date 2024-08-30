@@ -3,9 +3,9 @@
  **   pause.c is responsible for implementing pausing and display the pause menu on screen.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include raylib.h, pause.h
+ *    @include pause.h, screen.h, audio.h, utils.h
  *
  ***********************************************************************************************/
 

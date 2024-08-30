@@ -3,15 +3,16 @@
  **   audio.c is responsible for implementing general audio handling functions (sfx and audio).
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include audio.h, raymath.h, stdlib.h
+ *    @include stdlib.h, audio.h, raymath.h
+ *    @cite raylib
  *
  ***********************************************************************************************/
 
+#include <stdlib.h>
 #include "../include/audio.h"
 #include "raymath.h"
-#include <stdlib.h>
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES

@@ -3,9 +3,9 @@
  **   timer.h is responsible for defining a simple timer to be easily used to time game processes.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include raymath.h, raylib.h
+ *    @include stdlib, raylib.h, raymath.h
  *    @cite raylib
  *
  ***********************************************************************************************/
@@ -13,9 +13,9 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+#include <stdlib.h>
 #include "raylib.h"
 #include "raymath.h"
-#include <stdlib.h>
 
 //* -----------------------------------------
 //* STRUCTURES

@@ -3,9 +3,9 @@
  **   main-menu.c is responsible for managing and displaying the main menu screen.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include screen.h
+ *    @include screen.h, audio.h, utils.h
  *
  ***********************************************************************************************/
 

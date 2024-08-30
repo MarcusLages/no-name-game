@@ -4,7 +4,7 @@
 **   update, render, and unload.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.2
+*    @version 0.3
 *
 *    @include entity.h
 *

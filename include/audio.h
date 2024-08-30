@@ -4,9 +4,10 @@
  **   (sfx and music).
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
  *    @include raylib.h
+ *    @cite raylib
  *
  ***********************************************************************************************/
 

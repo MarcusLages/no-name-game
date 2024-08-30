@@ -3,7 +3,7 @@
  **   texture.h is responsible for dealing with general texture and tileset information.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
  *    @include raylib.h
  *    @cite raylib

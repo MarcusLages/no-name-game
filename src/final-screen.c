@@ -3,15 +3,15 @@
  **   final-screen.c is responsible for managing and displaying the main menu screen.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include screen.h, utils.h, player.h
+ *    @include screen.h, audio.h, player.h, utils.h
  *
  **********************************************************************************************/
 
 #include "../include/screen.h"
-#include "../include/player.h"
 #include "../include/audio.h"
+#include "../include/player.h"
 #include "../include/utils.h"
 
 //* ------------------------------------------

@@ -3,16 +3,16 @@
  **   Provides the functionality for displaying the UI (or HUD) in game.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
  *    @include screen.h, animation.h, timer.h, player.h and utils.h
  *
  **********************************************************************************************/
 
-#include "../include/animation.h"
-#include "../include/player.h"
 #include "../include/screen.h"
+#include "../include/animation.h"
 #include "../include/timer.h"
+#include "../include/player.h"
 #include "../include/utils.h"
 
 //* ------------------------------------------

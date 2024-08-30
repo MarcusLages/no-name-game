@@ -4,17 +4,17 @@
  **   dungeon game screen.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include enemy.h, player.h, screen.h, tile.h
+ *    @include  screen.h, tile.h, audio.h, enemy-list.h, player.h
  *
  **********************************************************************************************/
 
+#include "../include/screen.h"
+#include "../include/tile.h"
 #include "../include/audio.h"
 #include "../include/enemy-list.h"
 #include "../include/player.h"
-#include "../include/screen.h"
-#include "../include/tile.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES

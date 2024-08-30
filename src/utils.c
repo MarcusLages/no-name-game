@@ -3,16 +3,16 @@
  **   Provides the implementations for general math utils and macros that are used often.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include utils.h
+ *    @include stdio.h, stdlib.h, string.h, utils.h
  *
  ***********************************************************************************************/
 
-#include "../include/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../include/utils.h"
 
 int CenterComponentOnScreenX(int componentWidth) {
     return (GetScreenWidth() - componentWidth) / 2;

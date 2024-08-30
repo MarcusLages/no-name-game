@@ -5,16 +5,16 @@
  **   screens to load, update, render, unload and transition to.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include trace-log.h, screen.h, audio.h, pause.h
+ *    @include screen.h, trace-log.h, pause.h, audio.h, timer.h
  *
  ***********************************************************************************************/
 
-#include "../include/audio.h"
-#include "../include/pause.h"
 #include "../include/screen.h"
 #include "../include/trace-log.h"
+#include "../include/pause.h"
+#include "../include/audio.h"
 #include "../include/timer.h"
 
 //* ------------------------------------------

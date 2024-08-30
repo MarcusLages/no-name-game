@@ -3,9 +3,10 @@
  **   Provides definitions for math utils and macros that are used often.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
  *    @include raylib.h, raymath.h
+ *    @cite raylib
  *
  ***********************************************************************************************/
 

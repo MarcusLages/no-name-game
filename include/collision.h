@@ -4,9 +4,9 @@
 **   for 2D rays and rectangles.
 *   
 *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
-*    @version 0.2
+*    @version 0.3
 *
-*    @include raymath.h, raylib.h, stdlib.h
+*    @include stdlib.h, raylib.h, raymath.h
 *    @cite raylib
 *
 **********************************************************************************************/

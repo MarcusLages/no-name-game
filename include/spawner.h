@@ -3,17 +3,18 @@
  **   Provides definitions for forming rooms to handle enemy spawning.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include raylib.h, <stdlib.h> 
+ *    @include stdlib.h, raylib.h
+ *    @cite raylib 
  *
  ***********************************************************************************************/
 
 #ifndef SPAWNER_H_
 #define SPAWNER_H_
 
-#include "raylib.h"
 #include <stdlib.h>
+#include "raylib.h"
 
 //* ------------------------------------------
 //* DEFINITIONS

@@ -3,7 +3,7 @@
  **   trace-log.c is responsible for implementating a custom trace log function.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
  *    @include trace-log.h, stdio.h, stdlib.h
  *

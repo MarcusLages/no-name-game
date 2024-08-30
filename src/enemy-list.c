@@ -3,9 +3,9 @@
  **   Provides functionality for handling multiple enemies.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include enemy-list.h, spawner,=.h
+ *    @include enemy-list.h, spawner.h
  *
  ***********************************************************************************************/
 

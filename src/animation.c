@@ -3,9 +3,9 @@
  **   animation.c is responsible for implementating functions to create, draw, and unload animations.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
- *    @version 0.2
+ *    @version 0.3
  *
- *    @include animation.h
+ *    @include animation.h, pause.h
  *
  **********************************************************************************************/
 
