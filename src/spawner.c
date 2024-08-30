@@ -42,8 +42,7 @@ static PositionArray CreatePositionArray(int arraySize) {
     newPosArr.positions = (Vector2*) calloc(arraySize, sizeof(Vector2));
 
     if(newPosArr.positions == NULL) {
-        TraceLog(LOG_FATAL, "spawner.c-CreatePositionArray: Memory allocation failure.");
-        exit(EXIT_FAILURE);
+        TraceLog(LOG_FATAL, "SPAWNER.C (CreatePositionArray, line: %d): Memory allocation failure.", __LINE__);
     }
 
     newPosArr.currSize = 0;
@@ -53,17 +52,17 @@ static PositionArray CreatePositionArray(int arraySize) {
 
 void AddPosition(PositionArray* positionArray, Vector2 position) {
     if(positionArray == NULL) {
-        TraceLog(LOG_WARNING, "spawner.c-AddPosition: NULL positionArray was given.");
+        TraceLog(LOG_WARNING, "SPAWNER.C (AddPosition, line: %d): NULL positionArray was given.", __LINE__);
         return;
     }
 
     if(positionArray->currSize == positionArray->size) {
-        TraceLog(LOG_WARNING, "spawner.c-AddPosition: Inserting into a full array.");
+        TraceLog(LOG_WARNING, "SPAWNER.C (AddPosition, line: %d): Inserting into a full array.", __LINE__);
         return;
     }
 
     if(positionArray->positions == NULL) {
-        TraceLog(LOG_WARNING, "spawner.c-AddPosition: NULL array of position was found.");
+        TraceLog(LOG_WARNING, "SPAWNER.C (AddPosition, line: %d): NULL array of positions was found.", __LINE__);
         return;
     }
 
@@ -85,12 +84,12 @@ void AddPositionToRoom(int roomNumber, Vector2 position) {
 
 static void UnloadPositionArray(PositionArray* positionArray) {
     if(positionArray == NULL) {
-        TraceLog(LOG_WARNING, "spawner.c-UnloadPositionArray: NULL positionArray was given.");
+        TraceLog(LOG_WARNING, "SPAWNER.C (UnloadPositionArray, line: %d): NULL positionArray was given.", __LINE__);
         return;
     }
 
     if(positionArray->positions == NULL) {
-        TraceLog(LOG_WARNING, "spawner.c-UnloadPositionArray: NULL array of position was found.");
+        TraceLog(LOG_WARNING, "SPAWNER.C (UnloadPositionArray, line: %d): NULL array of positions was found.", __LINE__);
         return;
     }
 
@@ -102,19 +101,17 @@ RoomNode* CreateRoomList(Vector2 initPos, int roomNumber, RoomSize roomSize) {
     RoomNode* room = (RoomNode*) malloc(sizeof(RoomNode));
 
     if(room == NULL) {
-        TraceLog(LOG_FATAL, "spawner.c-CreateRoomList: Memory allocation failure.");
-        exit(EXIT_FAILURE);
+        TraceLog(LOG_FATAL, "SPAWNER.C (CreateRoomList, line: %d): Memory allocation failure.", __LINE__);
     }
 
-    int arraySize = 0;
+    int arraySize = SM_ROOM_POS;
 
     switch(roomSize) {
-        case SMALL: arraySize = SM_ROOM_POS; break;
+        case SMALL: break;
         case MEDIUM: arraySize = MD_ROOM_POS; break;
         case LARGE: arraySize = LG_ROOM_POS; break;
         default:
-            TraceLog(LOG_FATAL, "spawner.c-CreateRoomList: Invalid roomSize given. Could not allocate memory in positionArray.");
-            exit(EXIT_FAILURE);
+            TraceLog(LOG_INFO, "SPAWNER.C (CreateRoomList, line: %d): Invalid RoomSize given. Defaulting to SMALL RoomSize.", __LINE__);
             break;
     }
 
@@ -139,7 +136,7 @@ void AddRoomNode(Vector2 position, int roomNumber, RoomSize roomSize) {
 
 void UnloadRooms() {
     if(rooms == NULL) {
-        TraceLog(LOG_WARNING, "spawner.c-UnloadRooms: Reference to rooms list is lost could not unload.");
+        TraceLog(LOG_WARNING, "SPAWNER.C (UnloadRooms, line: %d): Reference to rooms list is lost. Could not unload.", __LINE__);
         return;
     }
 
@@ -151,7 +148,7 @@ void UnloadRooms() {
         free(temp);
         temp = NULL;
     }
-    TraceLog(LOG_INFO, "spawner.c-UnloadRooms: All rooms have been unloaded.");
+    TraceLog(LOG_INFO, "SPAWNER.C (UnloadRooms): All rooms have been unloaded.");
 }
 
 bool CheckRoomExists(int roomNumber) {
