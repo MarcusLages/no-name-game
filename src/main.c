@@ -116,6 +116,7 @@ static void GameUpdate() {
         switch(nextScreen) {
             case MAIN_MENU: MainMenuStartup(); break;
             case DUNGEON:
+                ResetTimer(&pauseTimer);
                 DungeonStartup();
                 UIScreenStartup();
                 break;

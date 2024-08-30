@@ -86,8 +86,10 @@ void UIScreenRender() {
 }
 
 void UIScreenUnload() {
-    free(timerAsStr);
-    timerAsStr = NULL;
-    AnimationUnload(&heartMeterAnimation);
-    TraceLog(LOG_INFO, "UI-SCREEN.C (UIScreenUnload): UI screen unloaded successfully.");
+    if(timerAsStr != NULL) {
+        free(timerAsStr);
+        timerAsStr = NULL;
+        AnimationUnload(&heartMeterAnimation);
+        TraceLog(LOG_INFO, "UI-SCREEN.C (UIScreenUnload): UI screen unloaded successfully.");
+    }
 }
