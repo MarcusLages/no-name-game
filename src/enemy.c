@@ -177,7 +177,7 @@ void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
     if(enemyAnimArray[ATTACK_ANIMATION].curFrame == 1) {
         UpdateEnemyAttackHitbox(enemy, type);
         if(!(*hasAttacked)) {
-            if(EntityAttack(enemy, &player, 0)) {
+            if(EntityAttack(enemy, &player, 1)) {
                 *hasAttacked = true;
                 TraceLog(LOG_INFO, "ENEMY.C (EnemyAttack): Player was hit by enemy.");
             }
