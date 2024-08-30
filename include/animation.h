@@ -16,14 +16,19 @@
 #include "timer.h"
 
 //* ------------------------------------------
+//* DEFINITIONS
+
+/** Default animation refresh rate. */
+#define DEFAULT_IDLE_FPS   2
+#define DEFAULT_MOVING_FPS 8
+#define DEFAULT_ATTACK_FPS 8
+
+//* ------------------------------------------
 //* ENUMERATIONS
 
 /**
  * Enum for accessing specific animations in an Entity's
  * animation array.
- *
- * @attention Not all can be accessed if an entity doesn't have that
- *            animation.
  *
  * @param IDLE_ANIMATION      0
  * @param MOVE_ANIMATION      1
@@ -109,11 +114,10 @@ typedef struct AnimationArray {
  * @param tileWidth         Width of a single tile.
  * @param tileHeight        Height of a single tile.
  * @param textureFileType   Type of texture as a TextureFile.
+ * @returns An Animation.
  *
  * ! @note This function is responsible for creating animation.reactangles in the heap.
- * ? @note The timer of this animation must be started/managed externally.
- *
- * @returns An Animation.
+ * ? @note The timer of this animation must be started/managed externally. *
  */
 Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType);
 
@@ -145,10 +149,12 @@ void DrawAnimation(Animation* animation, Rectangle dest, int entityWidth, int en
  * @param entityHeight  Height of an entity's sprite tile.
  * @param rotation      Rotation of the Rectangles to draw.
  * @param frame         Frame to draw.
- * 
+ *
  * ? @note Uses DrawTexturePro from Raylib.
  */
-void DrawAnimationFrame(Animation* animation, Rectangle dest, int entityWidth, int entityHeight, float rotation, int frame);
+void DrawAnimationFrame(
+    Animation* animation, Rectangle dest, int entityWidth, int entityHeight,
+    float rotation, int frame);
 
 /**
  * Unloads and frees the memory of all the Animations in the animation array.

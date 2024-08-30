@@ -46,7 +46,6 @@ static int FindNumOfTiles(int tileWidth, TextureFile textureType);
 //* FUNCTION IMPLEMENTATIONS
 
 Animation CreateAnimation(int fps, int tileWidth, int tileHeight, TextureFile textureType) {
-    //! Returning a blank animation if an incorrect textureType is given.
     if(textureType < 0 || textureType > MAX_TEXTURES) return (Animation){};
 
     int numOfTiles    = FindNumOfTiles(tileWidth, textureType);
@@ -119,7 +118,6 @@ void AnimationUnload(Animation* animation) {
 static Rectangle* GetSpriteRectangles(int numOfFrames, int tileWidth, int tileHeight) {
     Rectangle* frames = (Rectangle*) malloc(sizeof(Rectangle) * numOfFrames);
 
-    //! If allocation fails program exits.
     if(frames == NULL) {
         TraceLog(LOG_FATAL, "ANIMATION.C (GetSpriteRectangles, line: %d): Memory allocation for animation failure.", __LINE__);
     }

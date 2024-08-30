@@ -22,16 +22,10 @@
 #define ENTITY_TILE_WIDTH  16
 #define ENTITY_TILE_HEIGHT 32
 
-/** Default animation refresh rate. */
-//TODO: seem like the belong in animation.h
-#define DEFAULT_IDLE_FPS   2
-#define DEFAULT_MOVING_FPS 8
-#define DEFAULT_ATTACK_FPS 8
-
 // Temporary attack rectangle size
 // TODO: Rename to ENTITY_ATTACK_WIDTH and height
-#define PLAYER_ATTACK_WIDTH  32
-#define PLAYER_ATTACK_HEIGHT 21
+#define ENTITY_ATTACK_WIDTH  32
+#define ENTITY_ATTACK_HEIGHT 21
 
 //* ------------------------------------------
 //* ENUMERATIONS
@@ -142,11 +136,6 @@ extern Entity player;
 void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerPos);
 
 /**
- * TODO: comment
- */
-bool CheckEntityCollision(Entity* attacker, Entity* victim);
-
-/**
  * Responsible for rendering the entity with the specified animation.
  *
  * ! @attention returns if given either a NULL entity or animation.
@@ -172,7 +161,6 @@ void EntityRender(
  * 
  * TODO: Might change to a callback instead of using attack points
  * TODO: Change state of victim to HIT
- * TODO FIXME: Check size for Waffles
  * 
  * @attention It's necessary to update the attacker's attack hitbox before calling the function.
  * 

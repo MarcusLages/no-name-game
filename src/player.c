@@ -99,7 +99,7 @@ void PlayerStartup() {
         CreateAnimation(DEFAULT_MOVING_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_MOVE);
 
     Animation attackPlayerAnimation =
-        CreateAnimation(DEFAULT_ATTACK_FPS, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT, TILE_PLAYER_ATTACK);
+        CreateAnimation(DEFAULT_ATTACK_FPS, ENTITY_ATTACK_WIDTH, ENTITY_ATTACK_HEIGHT, TILE_PLAYER_ATTACK);
 
     player.animations.animationArr[IDLE_ANIMATION]   = idlePlayerAnimation;
     player.animations.animationArr[MOVE_ANIMATION]   = movingPlayerAnimation;
@@ -214,26 +214,26 @@ static void RenderPlayerAttack() {
         case RIGHT:
             EntityRender(
                 &player, &playerAnimArray[ATTACK_ANIMATION],
-                -PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT,
-                ENTITY_TILE_WIDTH / 4, PLAYER_ATTACK_HEIGHT / 2, 0.0f);
+                -ENTITY_ATTACK_WIDTH, ENTITY_ATTACK_HEIGHT,
+                ENTITY_TILE_WIDTH / 4, ENTITY_ATTACK_HEIGHT / 2, 0.0f);
             break;
         case DOWN:
             EntityRender(
                 &player, &playerAnimArray[ATTACK_ANIMATION],
-                -PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT * player.faceValue,
-                ENTITY_TILE_WIDTH + ENTITY_TILE_WIDTH / 8, PLAYER_ATTACK_HEIGHT, 90.0f);
+                -ENTITY_ATTACK_WIDTH, ENTITY_ATTACK_HEIGHT * player.faceValue,
+                ENTITY_TILE_WIDTH + ENTITY_TILE_WIDTH / 8, ENTITY_ATTACK_HEIGHT, 90.0f);
             break;
         case LEFT:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION], PLAYER_ATTACK_WIDTH,
-                PLAYER_ATTACK_HEIGHT, -ENTITY_TILE_WIDTH - ENTITY_TILE_WIDTH / 4,
-                PLAYER_ATTACK_HEIGHT / 2, 0.0f);
+                &player, &playerAnimArray[ATTACK_ANIMATION], ENTITY_ATTACK_WIDTH,
+                ENTITY_ATTACK_HEIGHT, -ENTITY_TILE_WIDTH - ENTITY_TILE_WIDTH / 4,
+                ENTITY_ATTACK_HEIGHT / 2, 0.0f);
             break;
         case UP:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION], -PLAYER_ATTACK_WIDTH,
-                -PLAYER_ATTACK_HEIGHT * player.faceValue, -ENTITY_TILE_WIDTH / 8,
-                PLAYER_ATTACK_HEIGHT + ENTITY_TILE_HEIGHT / 8, -90.0f);
+                &player, &playerAnimArray[ATTACK_ANIMATION], -ENTITY_ATTACK_WIDTH,
+                -ENTITY_ATTACK_HEIGHT * player.faceValue, -ENTITY_TILE_WIDTH / 8,
+                ENTITY_ATTACK_HEIGHT + ENTITY_TILE_HEIGHT / 8, -90.0f);
             break;
         default: break;
     }

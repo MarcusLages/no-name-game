@@ -132,12 +132,6 @@ void EntityRender(
         entityWidth, entityHeight, rotation);
 }
 
-bool CheckEntityCollision(Entity* attacker, Entity* victim) {
-    if(attacker == NULL || victim == NULL) return false;
-    UpdateEntityHitbox(victim);
-    return CheckCollisionRecs(attacker->attack, victim->hitbox);
-}
-
 bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints) {
     UpdateEntityHitbox(victim);
     bool attackHit = CheckCollisionRecs(attacker->attack, victim->hitbox);
@@ -239,8 +233,8 @@ void EntityWorldCollision(Entity* entity) {
 }
 
 void LoadStandardEntityAttackHitbox(Entity* entity) {
-    int attackWidth  = PLAYER_ATTACK_WIDTH - 4;
-    int attackHeight = PLAYER_ATTACK_HEIGHT - 8;
+    int attackWidth  = ENTITY_ATTACK_WIDTH - 4;
+    int attackHeight = ENTITY_ATTACK_HEIGHT - 8;
     entity->attack   = (Rectangle){
           .x = entity->pos.x, .y = entity->pos.y, .width = attackWidth, .height = attackHeight
     };
