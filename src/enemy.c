@@ -9,7 +9,7 @@
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.2
  *
- *    @include enemy.h and utils.h
+ *    @include enemy.h, utils.h
  *
  ***********************************************************************************************/
 

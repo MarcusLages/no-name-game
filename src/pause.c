@@ -13,7 +13,6 @@
 #include "../include/screen.h"
 #include "../include/audio.h"
 #include "../include/utils.h"
-#include "raylib.h"
 
 //* ------------------------------------------
 //* DEFINITIONS
