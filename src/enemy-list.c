@@ -14,6 +14,10 @@
 #include <stdlib.h>
 
 //* ------------------------------------------
+//* DEFINITIONS
+const Vector2 WAFFLES_POS = { 74, 10 };
+
+//* ------------------------------------------
 //* GLOBAL VARIABLES
 
 EnemyNode* enemies;
@@ -115,7 +119,7 @@ void SetupEnemies() {
         }
         cursor = cursor->next;
     }
-    AddParticularEnemy((Vector2){ 74, 10 }, DEMON_WAFFLES);
+    AddParticularEnemy(WAFFLES_POS, DEMON_WAFFLES);
     AdjustEnemies();
     UnloadRooms();
     TraceLog(LOG_INFO, "ENEMY-LIST.C (SetupEnemies): Enemies set successfully.");
@@ -167,13 +171,10 @@ void UnloadEnemies() {
     while(enemies != NULL) {
         EnemyNode* temp = enemies;
         enemies         = enemies->next;
-
         EnemyUnload(&temp->enemy);
-
         free(temp);
         temp = NULL;
     }
-
     TraceLog(LOG_INFO, "ENEMY-LIST.C (UnloadEnemies): Enemies list unloaded successfully.");
 }
 
@@ -230,7 +231,6 @@ static void AddEnemyNode(Entity enemy, EnemyType type) {
     while(cursor->next != NULL) {
         cursor = cursor->next;
     }
-
     cursor->next = enemyNode;
 }
 
@@ -253,9 +253,7 @@ static EnemyType GetRandomEnemyType() {
     int value      = abs(GetRandomValue(0, 100));
     EnemyType type = DEMON_PABLO;
 
-    if(value > 50 && value <= 100) {
-        type = DEMON_DIEGO;
-    }
+    if(value > 50 && value <= 100) type = DEMON_DIEGO;
     return type;
 }
 

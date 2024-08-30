@@ -80,8 +80,8 @@ void PlayerStartup() {
                                         .y     = player.pos.y + ENTITY_TILE_HEIGHT / 2,
                                         .width = ENTITY_TILE_WIDTH,
                                         .height = ENTITY_TILE_HEIGHT / 2 };
-    player.speed         = 100;
-    player.health        = 1;
+    player.speed         = PLAYER_SPEED;
+    player.health        = PLAYER_HEALTH;
     player.direction     = Vector2Zero();
     player.faceValue     = 1;
     player.state         = IDLE;
@@ -89,8 +89,7 @@ void PlayerStartup() {
 
     // Create and initialize animations in the player's animation array
     player.animations.size = MAX_PLAYER_ANIMATIONS;
-    player.animations.animationArr =
-        (Animation*) malloc(sizeof(Animation) * player.animations.size);
+    playerAnimArray = (Animation*) malloc(sizeof(Animation) * player.animations.size);
 
     Animation idlePlayerAnimation =
         CreateAnimation(DEFAULT_IDLE_FPS, ENTITY_TILE_WIDTH, ENTITY_TILE_HEIGHT, TILE_PLAYER_IDLE);
@@ -101,9 +100,9 @@ void PlayerStartup() {
     Animation attackPlayerAnimation =
         CreateAnimation(DEFAULT_ATTACK_FPS, ENTITY_ATTACK_WIDTH, ENTITY_ATTACK_HEIGHT, TILE_PLAYER_ATTACK);
 
-    player.animations.animationArr[IDLE_ANIMATION]   = idlePlayerAnimation;
-    player.animations.animationArr[MOVE_ANIMATION]   = movingPlayerAnimation;
-    player.animations.animationArr[ATTACK_ANIMATION] = attackPlayerAnimation;
+    playerAnimArray[IDLE_ANIMATION]   = idlePlayerAnimation;
+    playerAnimArray[MOVE_ANIMATION]   = movingPlayerAnimation;
+    playerAnimArray[ATTACK_ANIMATION] = attackPlayerAnimation;
 
     // Starting timers for both idle and moving animations
     StartTimer(&playerAnimArray[IDLE_ANIMATION].timer, -1.0);
@@ -174,17 +173,18 @@ static void PlayerMovement() {
 }
 
 static void PlayerAttack() {
+    Timer* timer = &playerAnimArray[ATTACK_ANIMATION].timer;
+
     if(IsKeyPressed(KEY_E) && player.state != ATTACKING) {
         player.state = ATTACKING;
-        StartTimer(&playerAnimArray[ATTACK_ANIMATION].timer, 0.5);
+        StartTimer(timer, 0.5);
         PlaySound(soundFX[PLAYER_SLASH_SFX]);
 
         LoadStandardEntityAttackHitbox(&player);
-
         PlayerAttackHit();
     }
 
-    if(player.state == ATTACKING && TimerDone(&playerAnimArray[ATTACK_ANIMATION].timer)) {
+    if(player.state == ATTACKING && TimerDone(timer)) {
         player.state = IDLE;
     }
 }
@@ -210,28 +210,29 @@ static void RenderPlayerAttack() {
         &player, &playerAnimArray[IDLE_ANIMATION],
         ENTITY_TILE_WIDTH * player.faceValue, ENTITY_TILE_HEIGHT, 0, 0, 0.0f);
 
+    Animation* attackAnimation = &playerAnimArray[ATTACK_ANIMATION];
+
     switch(player.directionFace) {
         case RIGHT:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION],
-                -ENTITY_ATTACK_WIDTH, ENTITY_ATTACK_HEIGHT,
+                &player, attackAnimation, -ENTITY_ATTACK_WIDTH, ENTITY_ATTACK_HEIGHT,
                 ENTITY_TILE_WIDTH / 4, ENTITY_ATTACK_HEIGHT / 2, 0.0f);
             break;
         case DOWN:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION],
-                -ENTITY_ATTACK_WIDTH, ENTITY_ATTACK_HEIGHT * player.faceValue,
+                &player, attackAnimation, -ENTITY_ATTACK_WIDTH,
+                ENTITY_ATTACK_HEIGHT * player.faceValue,
                 ENTITY_TILE_WIDTH + ENTITY_TILE_WIDTH / 8, ENTITY_ATTACK_HEIGHT, 90.0f);
             break;
         case LEFT:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION], ENTITY_ATTACK_WIDTH,
+                &player, attackAnimation, ENTITY_ATTACK_WIDTH,
                 ENTITY_ATTACK_HEIGHT, -ENTITY_TILE_WIDTH - ENTITY_TILE_WIDTH / 4,
                 ENTITY_ATTACK_HEIGHT / 2, 0.0f);
             break;
         case UP:
             EntityRender(
-                &player, &playerAnimArray[ATTACK_ANIMATION], -ENTITY_ATTACK_WIDTH,
+                &player, attackAnimation, -ENTITY_ATTACK_WIDTH,
                 -ENTITY_ATTACK_HEIGHT * player.faceValue, -ENTITY_TILE_WIDTH / 8,
                 ENTITY_ATTACK_HEIGHT + ENTITY_TILE_HEIGHT / 8, -90.0f);
             break;

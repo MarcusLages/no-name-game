@@ -21,6 +21,12 @@
 /** How many different animations the player has. */
 #define MAX_PLAYER_ANIMATIONS 3
 
+/** Player's health points. */
+#define PLAYER_HEALTH 1
+
+/** Player's speed. */
+#define PLAYER_SPEED 100
+
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
 

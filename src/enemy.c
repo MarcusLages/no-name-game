@@ -335,34 +335,32 @@ static void LoadWafflesAttackHitbox(Entity* enemy) {
 }
 
 static void RenderPabloDiegoAttack(Entity* enemy) {
-    int width        = ENEMY_PABLO_WIDTH;
-    int height       = ENEMY_PABLO_HEIGHT;
-    int attackWidth  = ENEMY_PABLO_ATTACK_WIDTH;
-    int attackHeight = ENEMY_PABLO_ATTACK_HEIGHT;
+    int width                  = ENEMY_PABLO_WIDTH;
+    int height                 = ENEMY_PABLO_HEIGHT;
+    int attackWidth            = ENEMY_PABLO_ATTACK_WIDTH;
+    int attackHeight           = ENEMY_PABLO_ATTACK_HEIGHT;
+    Animation* attackAnimation = &enemyAnimArray[ATTACK_ANIMATION];
 
     EntityRender(enemy, &enemyAnimArray[IDLE_ANIMATION], width * enemy->faceValue, height, 0, 0, 0.0f);
 
     switch(enemy->directionFace) {
         case RIGHT:
-            EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
-                attackHeight, width / 4, attackHeight / 2, 0.0f);
+            EntityRender(enemy, attackAnimation, -attackWidth, attackHeight, width / 4, attackHeight / 2, 0.0f);
             break;
         case DOWN:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
-                attackHeight * enemy->faceValue, width + width / 8, attackHeight, 90.0f);
+                enemy, attackAnimation, -attackWidth, attackHeight * enemy->faceValue,
+                width + width / 8, attackHeight, 90.0f);
             break;
         case LEFT:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
-                attackHeight, -width - width / 4, attackHeight / 2, 0.0f);
+                enemy, attackAnimation, attackWidth, attackHeight,
+                -width - width / 4, attackHeight / 2, 0.0f);
             break;
         case UP:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], -attackWidth,
-                -attackHeight * enemy->faceValue, -width / 8,
-                attackHeight + height / 8, -90.0f);
+                enemy, attackAnimation, -attackWidth, -attackHeight * enemy->faceValue,
+                -width / 8, attackHeight + height / 8, -90.0f);
             break;
         default:
             TraceLog(LOG_WARNING, "ENEMY.C (RenderPabloDiegoAttack, line: %d): Invalid enemy directionFace found.", __LINE__);
@@ -376,19 +374,20 @@ static void RenderWafflesAttack(Entity* enemy) {
     int attackWidth  = ENEMY_WAFFLES_ATTACK_WIDTH;
     int attackHeight = ENEMY_WAFFLES_ATTACK_HEIGHT;
 
-    Animation idleAnimation = enemyAnimArray[IDLE_ANIMATION];
-    idleAnimation.fps       = 10;
+    Animation* attackAnimation = &enemyAnimArray[ATTACK_ANIMATION];
+    Animation idleAnimation    = enemyAnimArray[IDLE_ANIMATION];
+    idleAnimation.fps          = 10;
 
     switch(enemy->faceValue) {
         case 1:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
-                attackHeight, -attackWidth / 2 + width / 3, -height / 3, 0.0f);
+                enemy, attackAnimation, attackWidth, attackHeight,
+                -attackWidth / 2 + width / 3, -height / 3, 0.0f);
             break;
         case -1:
             EntityRender(
-                enemy, &enemyAnimArray[ATTACK_ANIMATION], attackWidth,
-                attackHeight, -width + width / 8, -height / 3, 0.0f);
+                enemy, attackAnimation, attackWidth, attackHeight,
+                -width + width / 8, -height / 3, 0.0f);
             break;
         default: break;
     }
