@@ -156,55 +156,55 @@ static void StartCamera() {
 }
 
 static void LoadTextures() {
-    Image img                  = LoadImage("resources/player-idle2.png");
+    Image img                  = LoadImage("resources/img/player/player-idle2.png");
     textures[TILE_PLAYER_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                        = LoadImage("resources/player-movement2.png");
+    img                        = LoadImage("resources/img/player/player-movement2.png");
     textures[TILE_PLAYER_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                          = LoadImage("resources/player-attack.png");
+    img                          = LoadImage("resources/img/player/player-attack.png");
     textures[TILE_PLAYER_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                             = LoadImage("resources/pablo-idle.png");
+    img                             = LoadImage("resources/img/enemies/pablo-idle.png");
     textures[TILE_ENEMY_PABLO_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                             = LoadImage("resources/pablo-movement.png");
+    img                             = LoadImage("resources/img/enemies/pablo-movement.png");
     textures[TILE_ENEMY_PABLO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img = LoadImage("resources/pablo-deigo-attack.png");
+    img                               = LoadImage("resources/img/enemies/pablo-diego-attack.png");
     textures[TILE_ENEMY_PABLO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                             = LoadImage("resources/deigo-idle.png");
+    img                             = LoadImage("resources/img/enemies/diego-idle.png");
     textures[TILE_ENEMY_DIEGO_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                             = LoadImage("resources/deigo-movement.png");
+    img                             = LoadImage("resources/img/enemies/diego-movement.png");
     textures[TILE_ENEMY_DIEGO_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img = LoadImage("resources/pablo-deigo-attack.png");
+    img = LoadImage("resources/img/enemies/pablo-diego-attack.png");
     textures[TILE_ENEMY_DIEGO_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img                               = LoadImage("resources/waffles-idle.png");
+    img                               = LoadImage("resources/img/enemies/waffles-idle.png");
     textures[TILE_ENEMY_WAFFLES_IDLE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img = LoadImage("resources/waffles-movement.png");
+    img = LoadImage("resources/img/enemies/waffles-movement.png");
     textures[TILE_ENEMY_WAFFLES_MOVE] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img = LoadImage("resources/waffles-attack.png");
+    img = LoadImage("resources/img/enemies/waffles-attack.png");
     textures[TILE_ENEMY_WAFFLES_ATTACK] = LoadTextureFromImage(img);
     UnloadImage(img);
 
-    img = LoadImage("resources/heart-meter.png");
+    img                         = LoadImage("resources/img/heart-meter.png");
     textures[TILE_HEALTH_METER] = LoadTextureFromImage(img);
     UnloadImage(img);
 
