@@ -5,7 +5,7 @@
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.3
  *
- *    @include screen.h, animation.h, timer.h, player.h and utils.h
+ *    @include <stdlib.h>, screen.h, animation.h, timer.h, player.h and utils.h
  *
  **********************************************************************************************/
 
@@ -13,6 +13,7 @@
 #include "../include/player.h"
 #include "../include/screen.h"
 #include "../include/utils.h"
+#include <stdlib.h>
 
 //* ------------------------------------------
 //* DEFINITIONS

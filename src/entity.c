@@ -6,12 +6,13 @@
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.3
  *
- *    @include entity.h, utils.h
+ *    @include <stdlib.h> entity.h, utils.h
  *
  ***********************************************************************************************/
 
 #include "../include/entity.h"
 #include "../include/utils.h"
+#include <stdlib.h>
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -57,8 +58,8 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
                        .y = lastPlayerPos->y + player.hitbox.height / 2 };
 
         Vector2 distance = Vector2Subtract(entityPos, playerPos);
-        distance.x = abs(distance.x);
-        distance.y = abs(distance.y);
+        distance.x       = abs(distance.x);
+        distance.y       = abs(distance.y);
 
         if(distance.x < distance.y) {
             // handle enemy props
@@ -76,9 +77,9 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
         }
 
         if(position.x > entity->pos.x)
-            entity->faceValue     = 1;
+            entity->faceValue = 1;
         else
-            entity->faceValue     = -1;
+            entity->faceValue = -1;
 
         entity->direction = (Vector2){
             (int) position.x - (int) entity->pos.x,

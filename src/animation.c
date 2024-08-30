@@ -5,12 +5,13 @@
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.3
  *
- *    @include animation.h, pause.h
+ *    @include <stdlib.h>, animation.h, pause.h
  *
  **********************************************************************************************/
 
 #include "../include/animation.h"
 #include "../include/pause.h"
+#include <stdlib.h>
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES

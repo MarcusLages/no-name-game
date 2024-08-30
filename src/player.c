@@ -6,7 +6,7 @@
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.3
  *
- *    @include player.h, audio.h, enemy-list.h, utils.h
+ *    @include <stdlib.h>, player.h, audio.h, enemy-list.h, utils.h
  *
  ***********************************************************************************************/
 
@@ -14,6 +14,7 @@
 #include "../include/audio.h"
 #include "../include/enemy-list.h"
 #include "../include/utils.h"
+#include <stdlib.h>
 
 //* ------------------------------------------
 //* MACROS
@@ -108,7 +109,7 @@ void PlayerStartup() {
     StartTimer(&playerAnimArray[IDLE_ANIMATION].timer, -1.0);
     StartTimer(&playerAnimArray[MOVE_ANIMATION].timer, -1.0);
 
-    playerStepTimer = (Timer) {0.0f, 0.0f};
+    playerStepTimer = (Timer){ 0.0f, 0.0f };
     StartTimer(&playerStepTimer, 0.45f);
 
     TraceLog(LOG_INFO, "PLAYER.C (PlayerStartup): Player set successfully.");

@@ -9,12 +9,13 @@
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.3
  *
- *    @include enemy.h, utils.h
+ *    @include <stdlib.h> enemy.h, utils.h
  *
  ***********************************************************************************************/
 
 #include "../include/enemy.h"
 #include "../include/utils.h"
+#include <stdlib.h>
 
 //* ------------------------------------------
 //* DEFINITIONS
@@ -177,7 +178,7 @@ void EnemyAttack(Entity* enemy, EnemyType type, bool* hasAttacked) {
     }
 
     float distance = Vector2Distance(enemy->pos, player.pos);
-    Timer* timer = &enemyAnimArray[ATTACK_ANIMATION].timer;
+    Timer* timer   = &enemyAnimArray[ATTACK_ANIMATION].timer;
 
     if(distance <= ENEMY_ATTACK_RANGE && TimerDone(timer)) {
         *hasAttacked = false;

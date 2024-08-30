@@ -5,12 +5,13 @@
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.3
  *
- *    @include enemy-list.h, spawner.h
+ *    @include <stdlib.h>, enemy-list.h, spawner.h
  *
  ***********************************************************************************************/
 
 #include "../include/enemy-list.h"
 #include "../include/spawner.h"
+#include <stdlib.h>
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -122,7 +123,7 @@ void SetupEnemies() {
 
 void UpdateEnemies() {
     CleanUpEnemies();
-    //TODO: Update all enemies hitboxes
+    // TODO: Update all enemies hitboxes
     HandleEnemiesAttack();
     MoveEnemies();
 }
