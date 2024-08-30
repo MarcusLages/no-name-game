@@ -108,8 +108,8 @@ void PlayerStartup() {
     StartTimer(&playerAnimArray[IDLE_ANIMATION].timer, -1.0);
     StartTimer(&playerAnimArray[MOVE_ANIMATION].timer, -1.0);
 
-    playerStepTimer = (Timer){ 0.0f, 0.0f };
-    StartTimer(&playerStepTimer, 0.45f);
+    playerStepTimer = (Timer){ 0.0, 0.0 };
+    StartTimer(&playerStepTimer, 0.45);
 
     TraceLog(LOG_INFO, "PLAYER.C (PlayerStartup): Player set successfully.");
 }
