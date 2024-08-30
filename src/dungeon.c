@@ -91,11 +91,8 @@ void DungeonUpdate() {
     // Instead, sends him to the final screen
     if(!IsPlayerDead() && enemies != NULL) {
         UpdateMusicStream(songs[DUNGEON_SONG]);
-
         PlayerUpdate();
         UpdateEnemies();
-        //? Removed for now:
-        // PlayerEnemyCollision();
 
         // Update camera to follow the player
         camera.target = (Vector2){ (int) player.pos.x + 8, (int) player.pos.y + 16 };
