@@ -188,23 +188,6 @@ static void PlayerAttack() {
     }
 }
 
-void PlayerEnemyCollision() {
-    if(player.health > 0) {
-        EnemyNode* currEnemy = enemies;
-
-        while(currEnemy != NULL && player.health > 0) {
-            Entity* enemy = &currEnemy->enemy;
-
-            UpdateEntityHitbox(&player);
-            UpdateEntityHitbox(enemy);
-            bool attackHit = CheckCollisionRecs(enemy->hitbox, player.hitbox);
-            if(attackHit) player.health--;
-
-            currEnemy = currEnemy->next;
-        }
-    }
-}
-
 static void PlayerAttackHit() {
     EnemyNode* currEnemy = enemies;
     bool soundHit        = false;

@@ -48,9 +48,4 @@ void PlayerUnload();
  */
 void PlayerUpdate();
 
-/**
- * Handles player collision with the enemies list by movement.
- */
-void PlayerEnemyCollision();
-
 #endif //PLAYER_H_
