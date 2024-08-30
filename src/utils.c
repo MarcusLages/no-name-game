@@ -39,14 +39,18 @@ bool IsDoubleEqual(double d1, double d2, float precision) {
     return fabs(d1 - d2) < precision;
 }
 
-void ConvertToTimeFormat(char* str, int size, double s) {
-    double totalSeconds = s;
-    int hours           = totalSeconds / 3600;
+void ConvertToTimeFormat(char* str, int size, double sec) {
+    double totalSeconds = sec;
+    int hours = 0, minutes = 0, seconds = 0, floatSeconds = 0;
+
+    hours = totalSeconds / 3600;
     totalSeconds -= hours * 3600;
-    int minutes = totalSeconds / 60;
+
+    minutes = totalSeconds / 60;
     totalSeconds -= minutes * 60;
-    int seconds      = totalSeconds;
-    int floatSeconds = (totalSeconds - seconds) * 100;
+    
+    seconds      = totalSeconds;
+    floatSeconds = (totalSeconds - seconds) * 100;
 
     char hoursStr[3];
     char minutesStr[3];
@@ -66,7 +70,7 @@ void ConvertToTimeFormat(char* str, int size, double s) {
         }
     }
 
-    int finalSize = size < 11 ? 11 : size;
+    int finalSize = size < STANDARD_TIMER_LEN ? STANDARD_TIMER_LEN : size;
     char time[finalSize];
 
     strcpy(time, hoursStr);

@@ -18,7 +18,7 @@
 //* ------------------------------------------
 //* DEFINITIONS
 
-#define STANDARD_TIMER_LEN 11
+/** The dimensions of the heart tile. */
 #define HEART_METER_WIDTH  13
 #define HEART_METER_HEIGHT 12
 

@@ -33,6 +33,9 @@
  */
 #define SWAP(a, b) ((a != b) ? (a += b, b = a - b, a -= b) : 0)
 
+/** The standard timer length for the time format. */
+#define STANDARD_TIMER_LEN 11
+
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
 
@@ -94,8 +97,8 @@ bool IsDoubleEqual(double d1, double d2, float precision);
  *
  * @param str       The string to format into.
  * @param size      The size of the str desired. (must match size of str given as well.)
- * @param s         Seconds to format.
+ * @param sec         Seconds to format.
  */
-void ConvertToTimeFormat(char* str, int size, double s);
+void ConvertToTimeFormat(char* str, int size, double sec);
 
 #endif // UTILS_H_
