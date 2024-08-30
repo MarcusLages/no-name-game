@@ -3,7 +3,6 @@
  **   Provide functionality for setting enemy spawn points, managing movement, attack,
  **   and rendering of enemies and their animations.
  *
- *    TODO: Fix bug where by chance the enemy thinks its moving in the same position (float point errors)
  *    TODO: Handle player to enemy collisions
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
@@ -135,8 +134,6 @@ void EnemyMovement(Entity* enemy, Vector2* lastPlayerPos, EnemyType type) {
     }
 
     if(!IsPlayerSeen(enemy, type)) {
-        // Does not set to idle if precision is off.
-        // TODO Needs to be fixed
         if(IsVectorEqual(enemy->pos, *lastPlayerPos, 0.01f)) {
             enemy->pos   = *lastPlayerPos;
             enemy->state = IDLE;
