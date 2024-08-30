@@ -9,10 +9,9 @@
  *
  **********************************************************************************************/
 
-#include "../include/screen.h"
 #include "../include/animation.h"
-#include "../include/timer.h"
 #include "../include/player.h"
+#include "../include/screen.h"
 #include "../include/utils.h"
 
 //* ------------------------------------------
@@ -24,7 +23,7 @@
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
-// TODO: does not pause when pause menu is started.
+
 char* timerAsStr;
 
 //* ------------------------------------------
@@ -36,35 +35,45 @@ static Timer timer = { 0.0, 0.0 };
 /** The animation object for the health meter. */
 static Animation heartMeterAnimation;
 
+/** Total time the game has been paused for. */
+static double totalPausedTime = 0.0;
+
 void UIScreenStartup() {
-    heartMeterAnimation =
-        CreateAnimation(0, HEART_METER_WIDTH, HEART_METER_HEIGHT, TILE_HEALTH_METER);
-    heartMeterAnimation.curFrame = 0;
     timerAsStr = (char*) malloc((STANDARD_TIMER_LEN + 1) * sizeof(char));
 
     if(timerAsStr == NULL) {
         TraceLog(LOG_FATAL, "UI-SCREEN.C (UIScreenStartup, line: %d): Memory allocation failure.", __LINE__);
     }
+
+    heartMeterAnimation =
+        CreateAnimation(0, HEART_METER_WIDTH, HEART_METER_HEIGHT, TILE_HEALTH_METER);
+    heartMeterAnimation.curFrame = 0;
     StartTimer(&timer, -1.0);
+
     TraceLog(LOG_INFO, "UI-SCREEN.C (UIScreenStartup): UI screen set successfully.");
 }
 
-void UIScreenUpdate() {
+void UIScreenUpdate(Timer* pauseTimer) {
     if(player.health <= 0) {
+        // setting the heart to empty.
         heartMeterAnimation.curFrame = 1;
+        ResetTimer(pauseTimer);
     } else {
         double elapsedTime = GetElapsedTime(&timer);
-        ConvertToTimeFormat(timerAsStr, elapsedTime);
-        heartMeterAnimation.curFrame = 0;
+
+        // Adding paused time from the pauseTimer
+        if(!IsDoubleEqual(pauseTimer->startTime, 0.0, 0.00001f)) {
+            totalPausedTime += GetElapsedTime(pauseTimer);
+            ResetTimer(pauseTimer);
+        }
+
+        // Calulating the difference and setting the string.
+        elapsedTime -= totalPausedTime;
+        ConvertToTimeFormat(timerAsStr, STANDARD_TIMER_LEN, elapsedTime);
     }
 }
 
 void UIScreenRender() {
-    //? Removed UI shapes for now.
-    // DrawRectangle(0, 0, 400, 100, ColorAlpha(GRAY, 0.8f));
-    // DrawTriangle((Vector2){ 400, 0 }, (Vector2){ 400, 100 }, (Vector2){ 450, 0 }, ColorAlpha(GRAY, 0.8f));
-    // DrawRectangle(SCREEN_WIDTH - 250, 0, 250, 40, ColorAlpha(GRAY, 0.8f));
-
     DrawText(TextFormat("Elapsed Time: %s", timerAsStr), 10, 10, 30, RED);
 
     DrawAnimationFrame(

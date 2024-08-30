@@ -11,11 +11,10 @@
  *
  ***********************************************************************************************/
 
+#include "../include/audio.h"
+#include "../include/pause.h"
 #include "../include/screen.h"
 #include "../include/trace-log.h"
-#include "../include/pause.h"
-#include "../include/audio.h"
-#include "../include/timer.h"
 
 //* ------------------------------------------
 //* GLOBAL VARIABLES
@@ -36,8 +35,7 @@ bool isRunning;
 //* MODULAR VARIABLES
 
 /** Timer to track the time the game has been paused for. */
-//TODO: use this to remove pause time from player timer
-static Timer timePaused;
+static Timer pauseTimer;
 
 //* ------------------------------------------
 //* FUNCTION PROTOTYPES
@@ -134,10 +132,11 @@ static void GameUpdate() {
     switch(currentScreen) {
         case MAIN_MENU: MainMenuUpdate(); break;
         case DUNGEON:
-            if(isPaused)
+            if(isPaused) {
                 PauseUpdate();
-            else {
-                UIScreenUpdate();
+                if(TimerDone(&pauseTimer)) StartTimer(&pauseTimer, -1.0);
+            } else {
+                UIScreenUpdate(&pauseTimer);
                 DungeonUpdate();
             }
             break;

@@ -7,7 +7,7 @@
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.3
  *
- *    @include raylib.h
+ *    @include raylib.h and timer.h
  *    @cite raylib
  *
  **********************************************************************************************/
@@ -16,6 +16,7 @@
 #define SCREEN_H
 
 #include "raylib.h"
+#include "../include/timer.h"
 
 //* ------------------------------------------
 //* DEFINITIONS
@@ -100,8 +101,12 @@ void FinalScreenUnload();
 
 /** Starts the UI screen by setting shapes and loading images needed. */
 void UIScreenStartup();
-/** Updates the UI screen. */
-void UIScreenUpdate();
+/**
+ * Updates the UI screen.
+ *
+ * @param pauseTimer Timer to time the number of seconds the pause menu has been up for, if any.
+ */
+void UIScreenUpdate(Timer* pauseTimer);
 /** Renders the UI screen. */
 void UIScreenRender();
 /** Unloads anything used in memory by the UI screen. */

@@ -20,14 +20,14 @@
 
 void StartTimer(Timer* timer, double lifetime) {
     if(timer == NULL) return;
-    //if(IsDoubleEqual(lifetime, 0.0, 0.00001f)) return;
+    // if(IsDoubleEqual(lifetime, 0.0, 0.00001f)) return;
     timer->startTime = GetTime();
     timer->lifeTime  = lifetime;
 }
 
 void StartTimerWithDelay(Timer* timer, double lifetime, double delay) {
     if(timer == NULL) return;
-    //if(IsDoubleEqual(lifetime, 0.0, 0.00001f)) return;
+    // if(IsDoubleEqual(lifetime, 0.0, 0.00001f)) return;
     timer->startTime = GetTime() + delay;
     timer->lifeTime  = lifetime;
 }
@@ -56,4 +56,10 @@ double TimeRemaining(Timer* timer) {
 bool CheckIfDelayed(Timer* timer) {
     double elapsedTime = GetElapsedTime(timer);
     return elapsedTime < 0.0f;
+}
+
+void ResetTimer(Timer* timer) {
+    if(timer == NULL) return;
+    timer->lifeTime  = 0.0;
+    timer->startTime = 0.0;
 }

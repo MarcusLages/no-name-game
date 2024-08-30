@@ -105,4 +105,14 @@ double TimeRemaining(Timer* timer);
  */
 bool CheckIfDelayed(Timer* timer);
 
+/**
+ * Resets the given timer.
+ * 
+ * ! @attention returns if given a NULL pointer. 
+ * Sets the lifetime and starttime to 0.0.
+ * 
+ * @param timer Timer to reset.
+ */
+void ResetTimer(Timer* timer);
+
 #endif // TIMER_H

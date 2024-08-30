@@ -9,10 +9,10 @@
  *
  ***********************************************************************************************/
 
+#include "../include/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/utils.h"
 
 int CenterComponentOnScreenX(int componentWidth) {
     return (GetScreenWidth() - componentWidth) / 2;
@@ -39,7 +39,7 @@ bool IsDoubleEqual(double d1, double d2, float precision) {
     return fabs(d1 - d2) < precision;
 }
 
-void ConvertToTimeFormat(char* str, double s) {
+void ConvertToTimeFormat(char* str, int size, double s) {
     double totalSeconds = s;
     int hours           = totalSeconds / 3600;
     totalSeconds -= hours * 3600;
@@ -48,10 +48,10 @@ void ConvertToTimeFormat(char* str, double s) {
     int seconds      = totalSeconds;
     int floatSeconds = (totalSeconds - seconds) * 100;
 
-    char* hoursStr        = (char*) malloc(3 * sizeof(char));
-    char* minutesStr      = (char*) malloc(3 * sizeof(char));
-    char* secondsStr      = (char*) malloc(3 * sizeof(char));
-    char* floatSecondsStr = (char*) malloc(3 * sizeof(char));
+    char hoursStr[3];
+    char minutesStr[3];
+    char secondsStr[3];
+    char floatSecondsStr[3];
 
     int numbers[]      = { hours, minutes, seconds, floatSeconds };
     int numbersSize    = 4;
@@ -66,10 +66,10 @@ void ConvertToTimeFormat(char* str, double s) {
         }
     }
 
-    char time[11];
+    int finalSize = size < 11 ? 11 : size;
+    char time[finalSize];
 
     strcpy(time, hoursStr);
-
     strcat(time, ":");
     strcat(time, minutesStr);
     strcat(time, ":");
@@ -77,9 +77,4 @@ void ConvertToTimeFormat(char* str, double s) {
     strcat(time, ".");
     strcat(time, floatSecondsStr);
     strcpy(str, time);
-
-    free(floatSecondsStr);
-    free(secondsStr);
-    free(minutesStr);
-    free(hoursStr);
 }

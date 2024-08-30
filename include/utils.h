@@ -94,8 +94,9 @@ bool IsDoubleEqual(double d1, double d2, float precision);
  * ! @attention Assumes that the given string has been allocated a size of at least 11. 
  *
  * @param str       The string to format into.
+ * @param size      The size of the str desired. (must match size of str given as well.)
  * @param s         Seconds to format.
  */
-void ConvertToTimeFormat(char* str, double s);
+void ConvertToTimeFormat(char* str, int size, double s);
 
 #endif // UTILS_H_
