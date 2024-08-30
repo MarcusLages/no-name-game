@@ -22,7 +22,7 @@
  *
  * @note Uses Raylib's DrawTexturePro, so it's necessary to be done inside a Drawing/Texture mode.
  */
-void DrawTmxLayer(tmx_map* map, tmx_layer* layer);
+static void DrawTmxLayer(tmx_map* map, tmx_layer* layer);
 
 /**
  * Renders a tmx_tile into a RenderTexture2D or to the screen in a specific (x, y) coordinate.
@@ -30,7 +30,7 @@ void DrawTmxLayer(tmx_map* map, tmx_layer* layer);
  * @note - The (x, y) coordinate is based on the tile, not on the pixels.
  * @note - Uses Raylib's DrawTexturePro, so it's necessary to be done inside a Drawing/Texture mode.
  */
-void DrawTmxTile(tmx_tile* tile, int tileX, int tileY);
+static void DrawTmxTile(tmx_tile* tile, int tileX, int tileY);
 
 /**
  * Loads a Texture2D for a .tmx map when needed.
@@ -128,7 +128,7 @@ void TmxMapFrameBufRender(RenderTexture2D* framebuffer, tmx_map* map) {
     TraceLog(LOG_INFO, "TILE.C (TmxMapFrameBufRender): Texture rendered from tmx map.");
 }
 
-void DrawTmxLayer(tmx_map* map, tmx_layer* layer) {
+static void DrawTmxLayer(tmx_map* map, tmx_layer* layer) {
     // Loops through all the tiles on the map to render them
     for(int row = 0; row < map->height; row++) {
         for(int col = 0; col < map->width; col++) {
@@ -226,7 +226,7 @@ void UnloadMapTexture(Texture2D* texture) {
         texture->id);
 }
 
-void DrawTmxTile(tmx_tile* tile, int tileX, int tileY) {
+static void DrawTmxTile(tmx_tile* tile, int tileX, int tileY) {
     // DrawTexturePro information
     Texture2D* tileTexture = NULL;
     Rectangle sourceRect;
