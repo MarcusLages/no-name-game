@@ -217,8 +217,6 @@ static void InitializeTiles() {
     TmxMapFrameBufRender(worldCanvas, mapTmx);
 
     // Frees the map.tmx
-    // ! ATTENTION: Pay attention if there will be any problem with the
-    // ! UnloadMapTexture() from tile.c
     tmx_map_free(mapTmx);
     mapTmx = NULL;
 
