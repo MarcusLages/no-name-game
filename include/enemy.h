@@ -174,4 +174,20 @@ int GetAttackHeight(EnemyType type);
  */
 void GetTiles(int tiles[], int size, EnemyType type);
 
+/**
+ * Checks the enemy given and returns the proper health points.
+ *
+ * @param type  The enemy type.
+ * @returns     Returns the health points of the given enemy.
+ */
+int GetHealth(EnemyType type);
+
+/**
+ * Checks the enemy given and returns the proper speed.
+ *
+ * @param type  The enemy type.
+ * @returns     Returns the speed of the given enemy.
+ */
+int GetSpeed(EnemyType type);
+
 #endif // ENEMY_H_

@@ -112,36 +112,16 @@ Entity EnemyStartup(Vector2 position, EnemyType type) {
     enemy.faceValue     = 1;
     enemy.state         = IDLE;
     enemy.directionFace = RIGHT;
+    enemy.speed         = GetSpeed(type);
+    enemy.health        = GetHealth(type);
 
-    switch(type) {
-        case DEMON_PABLO:
-            enemy.speed  = ENEMY_PABLO_SPEED;
-            enemy.health = ENEMY_PABLO_HEALTH;
-            enemy.hitbox = (Rectangle){ .x = enemy.pos.x,
-                                        .y = enemy.pos.y + ENEMY_PABLO_HEIGHT / 2,
-                                        .width  = ENEMY_PABLO_WIDTH,
-                                        .height = ENEMY_PABLO_HEIGHT / 2 };
-            break;
-        case DEMON_DIEGO:
-            enemy.speed  = ENEMY_DIEGO_SPEED;
-            enemy.health = ENEMY_DIEGO_HEALTH;
-            enemy.hitbox = (Rectangle){ .x = enemy.pos.x,
-                                        .y = enemy.pos.y + ENEMY_DEIGO_HEIGHT / 2,
-                                        .width  = ENEMY_DEIGO_WIDTH,
-                                        .height = ENEMY_DEIGO_HEIGHT / 2 };
-            break;
-        case DEMON_WAFFLES:
-            enemy.speed  = ENEMY_WAFFLES_SPEED;
-            enemy.health = ENEMY_WAFFLES_HEALTH;
-            enemy.hitbox = (Rectangle){ .x = enemy.pos.x,
-                                        .y = enemy.pos.y + ENEMY_WAFFLES_HEIGHT / 2,
-                                        .width  = ENEMY_WAFFLES_WIDTH,
-                                        .height = ENEMY_WAFFLES_HEIGHT / 2 };
-            break;
-        default:
-            TraceLog(LOG_WARNING, "ENEMY.C (EnemyStartup, line: %d): Invalid EnemyType was given.", __LINE__);
-            return (Entity){};
-    }
+    int width  = GetWidth(type);
+    int height = GetHeight(type);
+
+    enemy.hitbox = (Rectangle){ .x      = enemy.pos.x,
+                                .y      = enemy.pos.y + height / 2,
+                                .width  = width,
+                                .height = height / 2 };
 
     SetupEnemyAnimation(&enemy, type);
     TraceLog(LOG_INFO, "ENEMY.C (EnemyStartup): Enemy set successfully.");
@@ -247,10 +227,6 @@ static void UpdateEnemyAttackHitbox(Entity* enemy, EnemyType type) {
 }
 
 static void RenderEnemyAttack(Entity* enemy, EnemyType type) {
-    //? For Debugging:
-    // DrawRectangleRec(enemy->attack, RED);
-    // DrawPixelV(enemy->pos, GREEN);
-
     switch(type) {
         case DEMON_DIEGO:
         case DEMON_PABLO: RenderPabloDiegoAttack(enemy); break;
