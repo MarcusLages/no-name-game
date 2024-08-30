@@ -9,9 +9,9 @@
  *
  **********************************************************************************************/
 
-#include "../include/screen.h"
 #include "../include/audio.h"
 #include "../include/player.h"
+#include "../include/screen.h"
 #include "../include/utils.h"
 
 //* ------------------------------------------
@@ -94,7 +94,7 @@ void FinalScreenUpdate() {
                 break;
             } else {
                 PlaySound(soundFX[CLICK_SFX]);
-                
+
                 // If mouse clicked, changes the current screen to the appropriate screen
                 switch(button) {
                     case RESTART_BUTTON: nextScreen = DUNGEON; break;
@@ -114,10 +114,19 @@ void FinalScreenRender() {
     // Draft clear background main menu
     ClearBackground(GRAY);
 
-    if(player.health > 0)
-        DrawText("You won?!", CenterComponentOnScreenX(MeasureText("You won?!", 50)), SCREEN_HEIGHT / 3, 50, GREEN);        
-    else
-        DrawText("YOU LOST!", CenterComponentOnScreenX(MeasureText("YOU LOST!", 50)), SCREEN_HEIGHT / 3, 50, RED);        
+    if(player.health > 0) {
+        DrawText(
+            "You won?!", CenterComponentOnScreenX(MeasureText("You won?!", 50)),
+            SCREEN_HEIGHT / 3, 50, GREEN);
+    } else {
+        DrawText(
+            "YOU LOST!", CenterComponentOnScreenX(MeasureText("YOU LOST!", 50)),
+            SCREEN_HEIGHT / 3, 50, RED);
+    }
+    DrawText(
+        TextFormat("You lasted: %s", timerAsStr),
+        CenterComponentOnScreenX(MeasureText("You lasted: 00:00:00.00", 30)) + 10,
+        SCREEN_HEIGHT / 3 + 70, 30, RED);
 
     // Draws all buttons
     for(int i = 0; i < MAX_FINAL_SCREEN_BUTTONS; i++) {

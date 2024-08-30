@@ -104,11 +104,11 @@ static void GameUpdate() {
         // Unloads currentScreen
         switch(currentScreen) {
             case MAIN_MENU: MainMenuUnload(); break;
-            case DUNGEON:
-                DungeonUnload();
+            case DUNGEON: DungeonUnload(); break;
+            case FINAL_SCREEN:
+                FinalScreenUnload();
                 UIScreenUnload();
                 break;
-            case FINAL_SCREEN: FinalScreenUnload(); break;
             default: break;
         }
 
