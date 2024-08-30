@@ -15,9 +15,6 @@
 
 void CustomLog(int msgType, const char* text, va_list args) {
     switch(msgType) {
-        case LOG_ALL:
-        case LOG_TRACE:
-            break;
         case LOG_DEBUG:
             printf("[DEBUG] : ");
             break;
@@ -34,7 +31,8 @@ void CustomLog(int msgType, const char* text, va_list args) {
             printf("[FATAL ERROR] : ");
             exit(EXIT_FAILURE);
             break;
-        case LOG_NONE:
+        default:
+            printf("[LOG] : ");
             break;
     }
 
