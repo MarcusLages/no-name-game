@@ -133,7 +133,6 @@ void EntityRender(
 }
 
 bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints) {
-    UpdateEntityHitbox(victim);
     bool attackHit = CheckCollisionRecs(attacker->attack, victim->hitbox);
 
     if(attackHit) {
@@ -154,8 +153,6 @@ RayCollision2D EntityRectCollision(Entity entity, Rectangle hitboxTarget) {
 
     if(Vector2Equals(entity.direction, Vector2Zero())) return collision;
 
-    UpdateEntityHitbox(&entity);
-
     collision = HitboxCollision(entity.hitbox, entity.direction, hitboxTarget);
     return collision;
 }
@@ -165,9 +162,6 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget) {
     collision.hit = false;
 
     if(Vector2Equals(entityIn.direction, Vector2Zero())) return collision;
-
-    UpdateEntityHitbox(&entityIn);
-    UpdateEntityHitbox(&entityTarget);
 
     collision =
         HitboxCollision(entityIn.hitbox, entityIn.direction, entityTarget.hitbox);
