@@ -22,8 +22,7 @@
 #define ENTITY_TILE_WIDTH  16
 #define ENTITY_TILE_HEIGHT 32
 
-// Temporary attack rectangle size
-// TODO: Rename to ENTITY_ATTACK_WIDTH and height
+// Entity attack rectangle size
 #define ENTITY_ATTACK_WIDTH  32
 #define ENTITY_ATTACK_HEIGHT 21
 

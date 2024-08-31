@@ -155,7 +155,6 @@ static void UnloadSFX() {
     TraceLog(LOG_INFO, "AUDIO.C (UnloadSFX): All SFX unloaded successfully.");
 }
 
-// TODO: Add songs and the uncomment
 static void LoadSongs() {
     // ALlocate memory
     songs = (Music*) malloc(MAX_SFX * sizeof(Music));
@@ -169,7 +168,6 @@ static void LoadSongs() {
     TraceLog(LOG_INFO, "AUDIO.C (LoadSongs): All songs loaded successfully.");
 }
 
-// TODO: Add songs and uncomment
 static void UnloadSongs() {
     for(int songIndex = 0; songIndex < MAX_SONGS; songIndex++) {
         StopMusicStream(songs[songIndex]);

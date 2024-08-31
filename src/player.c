@@ -197,7 +197,6 @@ static void PlayerAttackHit() {
     while(currEnemy != NULL) {
         Entity* enemy = &currEnemy->enemy;
         if(EntityAttack(&player, enemy, 1) && !soundHit) {
-            // TODO: Test SLASH_HIT_SFX, slash + enemy dying and just enemy dying
             PlaySound(soundFX[ENEMY_DEAD_SFX]);
             soundHit = false;
         }
