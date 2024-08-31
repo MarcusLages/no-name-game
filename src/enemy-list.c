@@ -94,18 +94,22 @@ static EnemyType GetRandomEnemyType();
 static void AdjustEnemies();
 
 /**
- * Handles the movement of of each enemy in the list of enemies.
+ * Handles the movement of an enemy node in the list of enemies.
  *
  * ? @note Calls EnemyMovement on each enemy (see enemy.c).
+ * 
+ * @param currEnemy Currenty enemy node being checked.
  */
-static void MoveEnemies();
+static void MoveEnemies(EnemyNode* currEnemy);
 
 /**
- * Handles enemy attack of each enemy in the list of enemies.
+ * Handles enemy attack of an enemy node in the list of enemies.
  *
  * ? @note Calls EnemyAttack on each enemy (see enemy.c).
+ * 
+ * @param currEnemy Currenty enemy node being checked.
  */
-static void HandleEnemiesAttack();
+static void HandleEnemiesAttack(EnemyNode* currEnemy);
 
 //* ------------------------------------------
 //* FUNCTION IMPLEMENTATIONS
@@ -126,10 +130,17 @@ void SetupEnemies() {
 }
 
 void UpdateEnemies() {
+    EnemyNode* currEnemy = enemies;
+
     CleanUpEnemies();
-    // TODO: Update all enemies hitboxes
-    HandleEnemiesAttack();
-    MoveEnemies();
+
+    while(currEnemy != NULL) {
+        UpdateEntityHitbox(&currEnemy->enemy);
+        HandleEnemiesAttack(currEnemy);
+        MoveEnemies(currEnemy);
+
+        currEnemy = currEnemy->next;
+    }
 }
 
 void RenderEnemies() {
@@ -272,18 +283,10 @@ static void AdjustEnemies() {
     }
 }
 
-static void MoveEnemies() {
-    EnemyNode* currEnemy = enemies;
-    while(currEnemy != NULL) {
-        EnemyMovement(&currEnemy->enemy, &(currEnemy->lastPlayerPos), currEnemy->type);
-        currEnemy = currEnemy->next;
-    }
+static void MoveEnemies(EnemyNode* currEnemy) {
+    EnemyMovement(&currEnemy->enemy, &(currEnemy->lastPlayerPos), currEnemy->type);
 }
 
-static void HandleEnemiesAttack() {
-    EnemyNode* currEnemy = enemies;
-    while(currEnemy != NULL) {
-        EnemyAttack(&currEnemy->enemy, currEnemy->type, &currEnemy->hasAttacked);
-        currEnemy = currEnemy->next;
-    }
+static void HandleEnemiesAttack(EnemyNode* currEnemy) {
+    EnemyAttack(&currEnemy->enemy, currEnemy->type, &currEnemy->hasAttacked);
 }
