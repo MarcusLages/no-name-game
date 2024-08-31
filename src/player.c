@@ -45,7 +45,6 @@ static void PlayerMovement();
  * Handles the player's attack.
  *
  * ? @note Manages the timer for the player attack animation.
- * TODO: collisions, enemy health, etc..
  */
 static void PlayerAttack();
 

@@ -108,9 +108,9 @@ void SetAudioVolume(float master, float sfx, float music);
 /**
  * Increment the value of the value of each kind of volume by each parameter.
  * 
- * @param masterIncrement Volume increment for master volume
- * @param sfxIncrement Volume increment for sfx volume
- * @param musicIncrement Volume increment for music volume
+ * @param masterIncrement   Volume increment for master volume
+ * @param sfxIncrement      Volume increment for sfx volume
+ * @param musicIncrement    Volume increment for music volume
  */
 // void IncrementVolume(float masterIncrement, float sfxIncrement, float musicIncrement);
 
