@@ -3,8 +3,6 @@
  **   Provide functionality for setting enemy spawn points, managing movement, attack,
  **   and rendering of enemies and their animations.
  *
- *    TODO: Handle player to enemy collisions
- *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.3
  *

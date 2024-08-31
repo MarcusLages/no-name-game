@@ -137,6 +137,7 @@ void PlayerUnload() {
 }
 
 void PlayerUpdate() {
+    UpdateEntityHitbox(&player);
     PlayerMovement();
     PlayerAttack();
 }
