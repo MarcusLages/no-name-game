@@ -22,6 +22,7 @@ Or Simply follow this tutorial by [Andrew Hamel Codes](https://youtu.be/xWWqhQ1J
 # Dependencies
 
 - [TMX C Loader](https://github.com/baylej/tmx) by Bayle Jonathan and several other contributors. From [libTMX](https://libtmx.readthedocs.io/en/latest/).
+- [Raylib](https://www.raylib.com/index.html) by [raysan5](https://github.com/raysan5).
 
 # Assets:
 
