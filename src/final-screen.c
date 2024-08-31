@@ -137,5 +137,3 @@ void FinalScreenRender() {
             finalScreenButtonBox[i].y + 10, 40, RAYWHITE);
     }
 }
-
-void FinalScreenUnload() {}

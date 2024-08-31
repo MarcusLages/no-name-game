@@ -121,5 +121,3 @@ void MainMenuRender() {
             mainMenuButtonBox[i].y + 10, 40, RAYWHITE);
     }
 }
-
-void MainMenuUnload() {}

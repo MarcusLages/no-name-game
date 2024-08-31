@@ -1,6 +1,6 @@
 /**********************************************************************************************
  *
- **   Provides the functionality for displaying the UI (or HUD) in game.
+ **   ui-screen.c provides the functionality for displaying the UI (or HUD) in game.
  *
  *    @authors Marcus Vinicius Santos Lages, Samarjit Bhogal
  *    @version 0.3

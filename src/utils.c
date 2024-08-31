@@ -1,6 +1,6 @@
 /***********************************************************************************************
  *
- **   Provides the implementations for general math utils and macros that are used often.
+ **   utisl.c provides the implementations for general math utils and macros that are used often.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.3

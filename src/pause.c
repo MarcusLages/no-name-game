@@ -102,8 +102,6 @@ void PauseUpdate() {
             // If mouse hovered, changes the value of the hoveredButton var to the
             // index of the mouse button and breaks the collision checking loop.
             if(!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                // Sound keeps repeating on hover
-                // PlaySound(soundFX[HOVER_SFX]);
                 hoveredButton = button;
                 break;
             } else {

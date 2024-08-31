@@ -32,6 +32,13 @@
 void PlayerStartup();
 
 /**
+ * Updates information required to move the player and handle their attacks.
+ * 
+ * ? @note Calls PlayerMovement and PlayerAttack.
+ */
+void PlayerUpdate();
+
+/**
  * Renders the player animation based off of it's GameState.
  */
 void PlayerRender();
@@ -40,12 +47,5 @@ void PlayerRender();
  * Unloads all the animations associated with the player entity.
  */
 void PlayerUnload();
-
-/**
- * Updates information required to move the player and handle their attacks.
- * 
- * ? @note Calls PlayerMovement and PlayerAttack.
- */
-void PlayerUpdate();
 
 #endif //PLAYER_H_

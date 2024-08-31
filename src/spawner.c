@@ -1,6 +1,6 @@
 /***********************************************************************************************
  *
- **   Provides functionality for forming rooms to handle enemy spawning.
+ **   spawner.c provides functionality for forming rooms to handle enemy spawning.
  *
  *    @authors Marcus Vinicius Santos Lages and Samarjit Bhogal
  *    @version 0.3

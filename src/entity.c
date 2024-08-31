@@ -105,50 +105,6 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
     entity->pos = Vector2Add(entity->pos, Vector2Scale(entity->direction, deltaTime));
 }
 
-static void SetEntityStatebyDir(Entity* entity, Vector2* lastPlayerPos) {
-    if(entity == NULL) {
-        TraceLog(LOG_WARNING, "ENTITY-C (SetEntityStatebyDir, line: %d): NULL entity was given.", __LINE__);
-        return;
-    }
-
-    if((Vector2Equals(entity->direction, Vector2Zero()) && entity->state != ATTACKING) ||
-       Vector2Equals(entity->direction, Vector2Zero())) {
-        entity->state = IDLE;
-        if(lastPlayerPos != NULL) *lastPlayerPos = entity->pos;
-    } else {
-        entity->state = entity->state == ATTACKING ? ATTACKING : MOVING;
-    }
-}
-
-void EntityRender(
-    Entity* entity, Animation* animation, int entityWidth, int entityHeight,
-    int xOffset, int yOffset, float rotation) {
-    if(entity == NULL || animation == NULL) return;
-    DrawAnimation(
-        animation,
-        (Rectangle){ (int) (entity->pos.x) + xOffset, (int) (entity->pos.y) + yOffset,
-                     entityWidth < 0 ? -entityWidth : entityWidth,
-                     entityHeight < 0 ? -entityHeight : entityHeight },
-        entityWidth, entityHeight, rotation);
-}
-
-bool CheckEntityCollision(Entity* attacker, Entity* victim) {
-    if(attacker == NULL || victim == NULL) return false;
-    UpdateEntityHitbox(victim);
-    return CheckCollisionRecs(attacker->attack, victim->hitbox);
-}
-
-bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints) {
-    UpdateEntityHitbox(victim);
-    bool attackHit = CheckCollisionRecs(attacker->attack, victim->hitbox);
-
-    if(attackHit) {
-        victim->health -= attackPoints;
-    }
-
-    return attackHit;
-}
-
 void UpdateEntityHitbox(Entity* entity) {
     entity->hitbox.x = entity->pos.x;
     entity->hitbox.y = entity->pos.y + entity->hitbox.height;
@@ -238,6 +194,17 @@ void EntityWorldCollision(Entity* entity) {
     }
 }
 
+bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints) {
+    UpdateEntityHitbox(victim);
+    bool attackHit = CheckCollisionRecs(attacker->attack, victim->hitbox);
+
+    if(attackHit) {
+        victim->health -= attackPoints;
+    }
+
+    return attackHit;
+}
+
 void LoadStandardEntityAttackHitbox(Entity* entity) {
     int attackWidth  = PLAYER_ATTACK_WIDTH - 4;
     int attackHeight = PLAYER_ATTACK_HEIGHT - 8;
@@ -270,4 +237,31 @@ void LoadStandardEntityAttackHitbox(Entity* entity) {
     }
     entity->attack.x = floor(entity->attack.x);
     entity->attack.y = floor(entity->attack.y);
+}
+
+void EntityRender(
+    Entity* entity, Animation* animation, int entityWidth, int entityHeight,
+    int xOffset, int yOffset, float rotation) {
+    if(entity == NULL || animation == NULL) return;
+    DrawAnimation(
+        animation,
+        (Rectangle){ (int) (entity->pos.x) + xOffset, (int) (entity->pos.y) + yOffset,
+                     entityWidth < 0 ? -entityWidth : entityWidth,
+                     entityHeight < 0 ? -entityHeight : entityHeight },
+        entityWidth, entityHeight, rotation);
+}
+
+static void SetEntityStatebyDir(Entity* entity, Vector2* lastPlayerPos) {
+    if(entity == NULL) {
+        TraceLog(LOG_WARNING, "ENTITY-C (SetEntityStatebyDir, line: %d): NULL entity was given.", __LINE__);
+        return;
+    }
+
+    if((Vector2Equals(entity->direction, Vector2Zero()) && entity->state != ATTACKING) ||
+       Vector2Equals(entity->direction, Vector2Zero())) {
+        entity->state = IDLE;
+        if(lastPlayerPos != NULL) *lastPlayerPos = entity->pos;
+    } else {
+        entity->state = entity->state == ATTACKING ? ATTACKING : MOVING;
+    }
 }

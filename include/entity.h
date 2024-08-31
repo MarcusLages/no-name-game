@@ -142,49 +142,6 @@ extern Entity player;
 void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerPos);
 
 /**
- * TODO: comment
- */
-bool CheckEntityCollision(Entity* attacker, Entity* victim);
-
-/**
- * Responsible for rendering the entity with the specified animation.
- *
- * ! @attention returns if given either a NULL entity or animation.
- *
- * @param entity        Pointer to the entity to render.
- * @param animation     Animation to apply to the entity.
- * @param entityWidth   Width of the entity.
- * @param entityHeight  Height of the entity.
- * @param xOffset       X-direction pixel offset from the current x of the entity.
- * @param yOffset       Y-direction pixel offset from the current y of the entity.
- * @param rotation      Rotation amount as a float.
- *
- * ? @note rotation rotates the animation relative to the (entity.x + xOffset), (entity.y + yOffset)
- */
-void EntityRender(
-    Entity* entity, Animation* animation, int entityWidth, int entityHeight,
-    int xOffset, int yOffset, float rotation);
-
-//* Entity collision logic
-
-/**
- * Function used to check if the attack of an entity hit another entity's hitbox.
- * 
- * TODO: Might change to a callback instead of using attack points
- * TODO: Change state of victim to HIT
- * TODO FIXME: Check size for Waffles
- * 
- * @attention It's necessary to update the attacker's attack hitbox before calling the function.
- * 
- * @param attacker      Pointer to the attacker entity
- * @param victim        Pointer to the entity that is getting hit
- * @param attackPoints  How much life will the victim lose
- * @return              If the attack happened or not.
- *                      (OBS: Might be used or not or changed to a callback function)
- */
-bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints);
-
-/**
  * Function that should be called to update the entity hitbox collision before a collision is called.
  *
  * @param entity Pointer to the entity that will update its hitbox
@@ -233,8 +190,42 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
 void EntityWorldCollision(Entity* entity);
 
 /**
+ * Function used to check if the attack of an entity hit another entity's hitbox.
+ * 
+ * @attention It's necessary to update the attacker's attack hitbox before calling the function.
+ * 
+ * @param attacker      Pointer to the attacker entity
+ * @param victim        Pointer to the entity that is getting hit
+ * @param attackPoints  How much life will the victim lose
+ * @return              If the attack happened or not.
+ *                      (OBS: Might be used or not or changed to a callback function)
+ */
+bool EntityAttack(Entity* attacker, Entity* victim, int attackPoints);
+
+/**
  * TODO: Comment
  */
 void LoadStandardEntityAttackHitbox(Entity* entity);
+
+
+
+/**
+ * Responsible for rendering the entity with the specified animation.
+ *
+ * ! @attention returns if given either a NULL entity or animation.
+ *
+ * @param entity        Pointer to the entity to render.
+ * @param animation     Animation to apply to the entity.
+ * @param entityWidth   Width of the entity.
+ * @param entityHeight  Height of the entity.
+ * @param xOffset       X-direction pixel offset from the current x of the entity.
+ * @param yOffset       Y-direction pixel offset from the current y of the entity.
+ * @param rotation      Rotation amount as a float.
+ *
+ * ? @note rotation rotates the animation relative to the (entity.x + xOffset), (entity.y + yOffset)
+ */
+void EntityRender(
+    Entity* entity, Animation* animation, int entityWidth, int entityHeight,
+    int xOffset, int yOffset, float rotation);
 
 #endif // !ENTITY_H

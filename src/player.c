@@ -45,7 +45,6 @@ static void PlayerMovement();
  * Handles the player's attack.
  *
  * ? @note Manages the timer for the player attack animation.
- * TODO: collisions, enemy health, etc..
  */
 static void PlayerAttack();
 
@@ -115,6 +114,11 @@ void PlayerStartup() {
     TraceLog(LOG_INFO, "PLAYER.C (PlayerStartup): Player set successfully.");
 }
 
+void PlayerUpdate() {
+    PlayerMovement();
+    PlayerAttack();
+}
+
 void PlayerRender() {
     switch(player.state) {
         case IDLE:
@@ -135,11 +139,6 @@ void PlayerRender() {
 void PlayerUnload() {
     UnloadAnimationArray(&player.animations);
     TraceLog(LOG_INFO, "PLAYER.C (PlayerUnload): Player animations unloaded successfully.");
-}
-
-void PlayerUpdate() {
-    PlayerMovement();
-    PlayerAttack();
 }
 
 static void PlayerMovement() {
@@ -196,7 +195,6 @@ static void PlayerAttackHit() {
     while(currEnemy != NULL) {
         Entity* enemy = &currEnemy->enemy;
         if(EntityAttack(&player, enemy, 1) && !soundHit) {
-            // TODO: Test SLASH_HIT_SFX, slash + enemy dying and just enemy dying
             PlaySound(soundFX[ENEMY_DEAD_SFX]);
             soundHit = false;
         }
