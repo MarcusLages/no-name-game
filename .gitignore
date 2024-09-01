@@ -55,8 +55,8 @@ dkms.conf
 .vscode
 
 # MakeFile compiler settings
-MakeFile
-MakeFile.Andriod
+# MakeFile
+# MakeFile.Android
 
 # clang-format
 *.clang-format
