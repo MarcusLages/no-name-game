@@ -97,7 +97,7 @@ bool IsDoubleEqual(double d1, double d2, float precision);
  *
  * @param str       The string to format into.
  * @param size      The size of the str desired. (must match size of str given as well.)
- * @param sec         Seconds to format.
+ * @param sec       Seconds to format.
  */
 void ConvertToTimeFormat(char* str, int size, double sec);
 

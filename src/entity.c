@@ -89,8 +89,8 @@ void MoveEntityTowardsPos(Entity* entity, Vector2 position, Vector2* lastPlayerP
 
     SetEntityStatebyDir(entity, lastPlayerPos);
 
-    //? Delta time helps not let entity speed depend on framerate.
-    //? Iat helps to take account for time between frames too.
+    //? Delta time helps to not let entity speed depend on framerate.
+    //? It helps to take account for time between frames too.
     //! NOTE: Do not add deltaTime before checking collisions only after.
     float deltaTime = GetFrameTime();
 

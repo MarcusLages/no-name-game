@@ -157,10 +157,7 @@ void EntityRender(
 
 /**
  * Function used to check if the attack of an entity hit another entity's hitbox.
- * 
- * TODO: Might change to a callback instead of using attack points
- * TODO: Change state of victim to HIT
- * 
+ *  
  * @attention It's necessary to update the attacker's attack hitbox before calling the function.
  * 
  * @param attacker      Pointer to the attacker entity
@@ -220,7 +217,12 @@ RayCollision2D EntitiesCollision(Entity entityIn, Entity entityTarget);
 void EntityWorldCollision(Entity* entity);
 
 /**
- * TODO: Comment
+ * Sets the attack hitbox for the entities of standard size.
+ * 
+ * An entity of standard size is one with:
+ *  - Width: 16 pixels Height: 32 pixels.
+ * 
+ * ! @attention entity MUST have a standard size.
  */
 void LoadStandardEntityAttackHitbox(Entity* entity);
 
