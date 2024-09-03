@@ -5,6 +5,8 @@ Our focus is using to exercise our knowledge in C, data structures, game program
 
 This game is not complete and is in it's beta stages.
 
+Check out our game here on [itch.io](https://lnkd.in/g7SpeRvQ)
+
 # Programmers
 
 - Marcus Lages ([@MarcusLages](https://github.com/MarcusLages))
