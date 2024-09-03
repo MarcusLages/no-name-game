@@ -201,7 +201,7 @@ CFLAGS += -Wall -std=c99 -D_DEFAULT_SOURCE -Wno-missing-braces
 ifeq ($(BUILD_MODE),DEBUG)
     CFLAGS += -g -O0
 else
-    CFLAGS += -s -O1
+    CFLAGS += -s -O1 --static
 endif
 
 # Additional flags for compiler (if desired)
@@ -253,7 +253,7 @@ endif
 
 # Define include paths for required headers
 # NOTE: Several external required libraries (stb and others)
-INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external -Iinclude
+INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external -Iinclude -IC:/raylib/w64devkit/include
 
 # Define additional directories containing required header files
 ifeq ($(PLATFORM),PLATFORM_RPI)
@@ -275,10 +275,10 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
 endif
 
 # Define library paths containing required libs.
-LDFLAGS = -L. -L$(RAYLIB_RELEASE_PATH) -L$(RAYLIB_PATH)/src
+LDFLAGS = -L. -L$(RAYLIB_RELEASE_PATH) -L$(RAYLIB_PATH)/src -LC:/raylib/w64devkit/lib
 
 # Library paths from mingw32/64 compiler
-LDFLAGS += -Llib -L"/c/msys64/mingw64/x86_64-w64-mingw32/lib" -L"/c/msys64/mingw64/lib"
+LDFLAGS += -Llib -L"C:/msys64/mingw64/x86_64-w64-mingw32/lib" -L"C:/msys64/mingw64/lib"
 
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),BSD)
